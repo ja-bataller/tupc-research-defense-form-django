@@ -1,0 +1,48 @@
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In - TUP-C Research Defense Form Web App</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static '/css/login_signup.css' %}">
+
+    
+</head>
+
+<body>
+    <div class="container">
+        <div class="row content">
+            <div class="col-md-6 mb-3">
+                <img class="img-fluid" src="{% static '/img/laptop-boy.jpg' %}" alt="">
+            </div>
+            <div class="col-md-6">
+                <h1 class="signin-text mb-4">Log In</h1>
+                <form>
+                    <div class="form-group">
+                        <label for="email">Username</label>
+                        <input type="text" name="username_input" class="form-control" placeholder="TUPC-XX-XXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                    <!-- <div class="form-group form-check">
+                        <input type="checkbox" name="checkbox" class="form-check-input" id="checkbox">
+                        <label class="form-check-label" for="checkbox">Remember Me</label>
+                    </div> -->
+                    <button class="btn btn-class mt-2 w-100">Login</button>
+
+                    <hr class="mt-5">
+                    <p class="text-center">Don't have an account yet? <a href="{% url 'signup' %}">Sign up</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
