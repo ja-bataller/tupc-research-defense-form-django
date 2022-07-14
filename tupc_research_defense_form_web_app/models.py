@@ -15,9 +15,9 @@ class User(AbstractUser):
     is_subject_teacher = models.BooleanField(default=False)
     is_student = models.BooleanField(default=True)
 
-    is_superuser = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=True)
-    is_developer = models.BooleanField(default=True)
+    # is_superuser = models.BooleanField(default=True)
+    # is_staff = models.BooleanField(default=True)
+    # is_developer = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'username'
 

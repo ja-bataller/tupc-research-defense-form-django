@@ -9,6 +9,17 @@
     <title>Log In - TUP-C Research Defense Form Web App</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    
+    <!-- Fontawesome 6.1.1 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Izitoast 1.4.0 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"
+        integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <link rel="stylesheet" href="{% static '/css/login_signup.css' %}">
 
     
@@ -22,14 +33,16 @@
             </div>
             <div class="col-md-6">
                 <h1 class="signin-text mb-4">Log In</h1>
-                <form>
+                <form method="POST">
+                    {% csrf_token %}
+
                     <div class="form-group">
                         <label for="email">Username</label>
-                        <input type="text" name="username_input" class="form-control" placeholder="TUPC-XX-XXXX">
+                        <input type="text" name="username_input" class="form-control" placeholder="TUPC-XX-XXXX" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" name="password" class="form-control">
+                        <input type="password" name="password_input" class="form-control" required>
                     </div>
                     <!-- <div class="form-group form-check">
                         <input type="checkbox" name="checkbox" class="form-check-input" id="checkbox">
@@ -43,6 +56,46 @@
             </div>
         </div>
     </div>
+
+    <!-- Izitoast 1.4.0 CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
+    integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    {% if response == 'user does not exist' %}
+    <script>
+        iziToast.error({
+            title: "User not registered.",
+            message: "The Username you entered is not yet registered.",
+            position: "topCenter",
+            timeout: 5000,
+        });
+    </script>
+    {% endif %}
+
+    {% if response == 'incorrect password' %}
+    <script>
+        iziToast.error({
+            title: "Incorrect Password.",
+            message: "The Password you entered is incorrect.",
+            position: "topCenter",
+            timeout: 5000,
+        });
+    </script>
+    {% endif %}
+
+    {% if response == 'unauthorized access' %}
+    <script>
+        iziToast.warning({
+            title: "Unauthorized Access.",
+            message: "You are not authorized to access the students portal.",
+            position: "topCenter",
+            timeout: 5000,
+        });
+    </script>
+    {% endif %}
+
+
 </body>
 
 </html>
