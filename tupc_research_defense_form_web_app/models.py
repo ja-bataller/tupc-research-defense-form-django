@@ -8,7 +8,7 @@ class User(AbstractUser):
     department = models.CharField(max_length=256, blank=True)
 
     is_user = models.BooleanField(default=True)
-    is_adminstrator = models.BooleanField(default=False)
+    is_administrator = models.BooleanField(default=False)
     is_derpartment_head = models.BooleanField(default=False)
     is_panel = models.BooleanField(default=False)
     is_adviser = models.BooleanField(default=False)
