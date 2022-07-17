@@ -33,7 +33,7 @@ def index(request):
                     print("Incorrect Password")
                     context = {'response': "incorrect password"}
                     return render(request, 'index.html', context)
-            
+
             elif user_check.is_administrator == 1:
                     if user_check.password == password_form:
                         user = User.objects.get(
@@ -57,6 +57,7 @@ def index(request):
             return render(request, 'index.html', context)
 
     return render(request, 'index.html')
+##################################################################################
 
 #  Sign up Page
 def signup(request):
@@ -104,6 +105,7 @@ def signup(request):
 
     context = {'form': form}
     return render(request, 'signup.html', context)
+##################################################################################
 
 # Log out
 def logout_user(request):
@@ -111,8 +113,8 @@ def logout_user(request):
     return redirect('index')
 
 
-@login_required(login_url='index')
 # Student - Dashboard Page
+@login_required(login_url='index')
 def studentDashboard(request):
     current_user = (request.user)
     currentpassword = (request.user.password)
@@ -125,10 +127,10 @@ def studentDashboard(request):
     context = {'user_full_name': user_full_name}
 
     return render(request, 'student-dashboard.html', context)
+##################################################################################
 
-
-@login_required(login_url='index')
 # Student - Panel Conforme Page
+@login_required(login_url='index')
 def studentProfile(request):
     current_user = (request.user)
     currentpassword = (request.user.password)
@@ -180,7 +182,7 @@ def studentProfile(request):
             return render(request, 'student-profile.html', context)
 
     return render(request, 'student-profile.html', context)
-
+##################################################################################
 
 # Student - Panel Conforme Page
 @login_required(login_url='index')
@@ -196,10 +198,11 @@ def studentPanelConforme(request):
     context = {'user_full_name': user_full_name}
 
     return render(request, 'student-panel-conforme.html', context)
+##################################################################################
 
 
-@login_required(login_url='index')
 # Admin - Dashboard Page
+@login_required(login_url='index')
 def adminDashboard(request):
     current_user = (request.user)
     currentpassword = (request.user.password)
@@ -212,3 +215,104 @@ def adminDashboard(request):
     context = {'user_full_name': user_full_name}
 
     return render(request, 'admin-dashboard.html', context)
+##################################################################################
+
+# Admin - Department Head Check
+@login_required(login_url='index')
+def adminDepartmentHead(request):
+
+    try:
+        dept_head_check = User.objects.get(is_department_head=1)
+        print(dept_head_check.username)
+        print("Account Exist")
+        return redirect('admin-department-head-acc')
+
+    except:
+        print("Create Account")
+        return redirect('admin-department-head-create')
+##################################################################################
+
+# Admin - Department Head Create Account Page
+@login_required(login_url='index')
+def adminDepartmentHeadCreateAcc(request):
+    current_user = (request.user)
+    currentpassword = (request.user.password)
+
+    user_first_name = current_user.first_name
+    user_last_name = current_user.last_name
+
+    user_full_name = user_first_name + " " + user_last_name
+
+    form = SignUpForm()
+
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+
+        confirm_password = request.POST.get('confirm_password_input')
+        print(confirm_password)
+
+        if form.is_valid():
+            print("valid form")
+
+            user = form.save(commit=False)
+
+            if user.password == confirm_password:
+                print("valid password")
+                user.save()
+
+                user_check = User.objects.get(username=user.username)
+                user_check.first_name = request.POST.get('first_name_input')
+                user_check.last_name = request.POST.get('last_name_input')
+                user_check.department = "Industrial Technology"
+                user_check.is_department_head = 1
+                user_check.save()
+                
+                context = {'user_full_name': user_full_name, 'user_first_name': user_first_name, 'user_last_name': user_last_name, 'username' : current_user.username, 'response' : "account created"}
+
+                return render(request, 'admin-dept-head-account.html', context)
+
+            else:
+                print("password mismatch")
+                context = {'user_full_name': user_full_name, 'user_first_name': user_first_name, 'user_last_name': user_last_name, 'username' : current_user.username, 'form' : form, 'response' : 'password mismatch'}
+                return render(request, 'admin-dept-head-create-acc.html', context)
+
+        else:
+            print("user exist")
+            context = {'user_full_name': user_full_name, 'user_first_name': user_first_name, 'user_last_name': user_last_name, 'username' : current_user.username, 'form' : form, 'response' : 'user exist'}
+            return render(request, 'admin-dept-head-create-acc.html', context)
+
+
+    context = {'user_full_name': user_full_name, 'user_first_name': user_first_name, 'user_last_name': user_last_name, 'username' : current_user.username, 'form' : form}
+    return render(request, 'admin-dept-head-create-acc.html', context)
+##################################################################################
+
+# Admin - Department Head Account Page
+@login_required(login_url='index')
+def adminDepartmentHeadAcc(request):
+    current_user = (request.user)
+    currentpassword = (request.user.password)
+
+    user_first_name = current_user.first_name
+    user_last_name = current_user.last_name
+
+    user_full_name = user_first_name + " " + user_last_name
+
+    dept_head_check = User.objects.get(is_department_head=1)
+
+    print(dept_head_check.username)
+    dept_head_username = dept_head_check.username
+    dept_head_email = dept_head_check.email
+    dept_head_first_name = dept_head_check.first_name
+    dept_head_last_name = dept_head_check.last_name
+    dept_head_department = dept_head_check.department
+
+    context = {
+        'user_full_name': user_full_name, 
+        'dept_head_username': dept_head_username, 
+        'dept_head_email': dept_head_email, 
+        'dept_head_first_name': dept_head_first_name, 
+        'dept_head_last_name': dept_head_last_name, 
+        'dept_head_department': dept_head_department, 
+        }
+
+    return render(request, 'admin-dept-head-account.html', context)

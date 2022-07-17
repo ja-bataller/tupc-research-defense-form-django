@@ -12,5 +12,8 @@ urlpatterns = [
    path('student-dashboard/', views.studentDashboard, name ="student-dashboard"), 
    path('student-panel-conforme/', views.studentPanelConforme, name ="student-panel-conforme"), 
 
-   path('admin-dashboard/', views.adminDashboard, name ="admin-dashboard"), 
+   path('admin-dashboard/', views.adminDashboard, name ="admin-dashboard"),
+      path('admin-department-head/', views.adminDepartmentHead, name ="admin-department-head"),
+   path('admin-department-head-acc/', views.adminDepartmentHeadAcc, name ="admin-department-head-acc"),
+   path('admin-department-head-create/', views.adminDepartmentHeadCreateAcc, name ="admin-department-head-create"),  
 ]

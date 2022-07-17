@@ -9,7 +9,7 @@ class User(AbstractUser):
 
     is_user = models.BooleanField(default=True)
     is_administrator = models.BooleanField(default=False)
-    is_derpartment_head = models.BooleanField(default=False)
+    is_department_head = models.BooleanField(default=False)
     is_panel = models.BooleanField(default=False)
     is_adviser = models.BooleanField(default=False)
     is_subject_teacher = models.BooleanField(default=False)
@@ -22,5 +22,3 @@ class User(AbstractUser):
     USERNAME_FIELD = 'username'
 
 ####################################################################################################################
-
-
