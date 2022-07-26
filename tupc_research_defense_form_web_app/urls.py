@@ -10,7 +10,10 @@ urlpatterns = [
    # Student Views
    path('student-profile/', views.studentProfile, name ="student-profile"), 
    path('student-dashboard/', views.studentDashboard, name ="student-dashboard"), 
-   path('student-panel-conforme/', views.studentPanelConforme, name ="student-panel-conforme"), 
+
+   path('student-panel-conforme-bet3/', views.studentPanelConformeBet3, name ="student-panel-conforme-bet3"), 
+   path('student-panel-conforme-bet3-create/', views.studentPanelConformeBet3Create, name ="student-panel-conforme-bet3-create"), 
+   path('student-panel-conforme-bet3-form/', views.studentPanelConformeBet3Form, name ="student-panel-conforme-bet3-form"), 
 
    path('admin-dashboard/', views.adminDashboard, name ="admin-dashboard"),
    path('admin-department-head/', views.adminDepartmentHead, name ="admin-department-head"),

@@ -5,9 +5,9 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     course = models.CharField(max_length=256, blank=True)
-    major = models.CharField(max_length=256, blank=True)
     department = models.CharField(max_length=256, blank=True)
 
+    honorific = models.CharField(max_length=256, blank=True)
     middle_name = models.CharField(max_length=256, blank=True)
 
     is_user = models.BooleanField(default=True)
@@ -16,7 +16,7 @@ class User(AbstractUser):
     is_panel = models.BooleanField(default=False)
     is_adviser = models.BooleanField(default=False)
     is_subject_teacher = models.BooleanField(default=False)
-    is_student = models.BooleanField(default=True)
+    is_student = models.BooleanField(default=False)
 
     # is_superuser = models.BooleanField(default=True)
     # is_staff = models.BooleanField(default=True)
@@ -33,3 +33,41 @@ class StudentCourseMajor(models.Model):
 
     def __str__(self) -> str:
         return self.course_major_abbr
+    
+####################################################################################################################
+
+class PanelConformeBET3(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+
+    dept_head = models.CharField(max_length=256)
+    dept_head_status = models.CharField(max_length=256)
+
+    panel_member_1 = models.CharField(max_length=256)
+    panel_member_2 = models.CharField(max_length=256)
+    panel_member_3 = models.CharField(max_length=256)
+    panel_member_4 = models.CharField(max_length=256)
+    panel_member_5 = models.CharField(max_length=256)
+
+    panel_member_status_1 = models.CharField(max_length=256)
+    panel_member_status_2 = models.CharField(max_length=256)
+    panel_member_status_3 = models.CharField(max_length=256)
+    panel_member_status_4 = models.CharField(max_length=256)
+    panel_member_status_5 = models.CharField(max_length=256)
+
+    student_member_1 = models.CharField(max_length=256)
+    student_member_2 = models.CharField(max_length=256)
+    student_member_3 = models.CharField(max_length=256)
+    student_member_4 = models.CharField(max_length=256)
+    student_member_5 = models.CharField(max_length=256)
+
+    course = models.CharField(max_length=256)
+    major = models.CharField(max_length=256)
+
+    research_title = models.CharField(max_length=256)
+
+    date_submitted = models.CharField(max_length=256)
+
+    form_status = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.student_leader_username

@@ -48,6 +48,19 @@
 
                                     <form method="POST">
                                         {% csrf_token %}
+
+                                        <div class="form-group">
+                                            <label>Honorific</label>
+                                            <select class="custom-select" name="honorific_input" required>
+                                              <option selected>Choose honorific here...</option>
+                                              <option value="Mr.">Mr.</option>
+                                              <option value="Ms.">Ms.</option>
+                                              <option value="Mrs.">Mrs.</option>
+                                              <option value="Engr.">Engr.</option>
+                                              <option value="Dr.">Dr.</option>
+                                              <option value="Dra.">Dra.</option>
+                                            </select>
+                                          </div>
                     
                                         <div class="form-group">
                                             <label>First Name</label>

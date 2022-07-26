@@ -8,6 +8,10 @@ from pyparsing import empty
 from .forms import SignUpForm
 from .models import *
 
+from datetime import date
+
+today = date.today()
+
 User = get_user_model()
 
 # Index / Log in Page
@@ -203,9 +207,26 @@ def studentProfile(request):
     return render(request, 'student-profile.html', context)
 ##################################################################################
 
-# Student - Panel Conforme Page
+
+# Student - Panel Conforme BET-3 Process
 @login_required(login_url='index')
-def studentPanelConforme(request):
+def studentPanelConformeBet3(request):
+    current_user = (request.user)
+
+    try:
+        panel_conforme_bet3_check = PanelConformeBET3.objects.get(student_leader_username=current_user)
+        print("Panel Conforme - BET-3 Exist")
+        return redirect('student-panel-conforme-bet3-form')
+
+    except:
+        print("Panel Conforme - BET-3 Create")
+        return redirect('student-panel-conforme-bet3-create')
+
+##################################################################################
+
+# Student - Panel Conforme BET-3 Create Page
+@login_required(login_url='index')
+def studentPanelConformeBet3Create(request):
     current_user = (request.user)
     currentpassword = (request.user.password)
 
@@ -216,35 +237,130 @@ def studentPanelConforme(request):
 
     user_middle_initial = None
     leader_member_name = None
+    leader_member_name_2 = None
 
     user_course = current_user.course
-
     
     if user_middle_name == "":
         leader_member_name = user_first_name + " " + user_last_name
+        leader_member_name_2 = user_last_name + ", " + user_first_name
 
     else:
         user_middle_initial = user_middle_name[0]
         leader_member_name = user_first_name + " " + user_middle_initial + ". " + user_last_name
+        leader_member_name_2 = user_last_name + ", " + user_first_name + " " + user_middle_initial + "."
+
+    if request.method == "POST":
+        # Textual month, day and year	
+        date_today = today.strftime("%B %d, %Y")
+        print("Date Submitted =", date_today)
+
+        dept_head_check = User.objects.get(is_department_head=1)
+
+        dept_head_name_input = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
+        print("Department Head =", dept_head_name_input)
+
+
+        panel1_input = request.POST.get('panel1_input')
+        print("Panel 1 =", panel1_input)
+
+        panel2_input = request.POST.get('panel2_input')
+        print("Panel 2 =", panel2_input)
+
+        panel3_input = request.POST.get('panel3_input')
+        print("Panel 3 =", panel3_input)
+
+        panel4_input = request.POST.get('panel4_input')
+        print("Panel 4 =", panel4_input)
+
+        panel5_input = request.POST.get('panel5_input')
+        print("Panel 5 =", panel5_input)
+
+        student1_input = leader_member_name_2
+        print("Student 1 =", student1_input)
+
+        student2_input = request.POST.get('student2_input')
+        print("Student 2 =", student2_input)
+
+        student3_input = request.POST.get('student3_input')
+        print("Student 3 =", student3_input)
+
+        student4_input = request.POST.get('student4_input')
+        print("Student 4 =", student4_input)
+
+        student5_input = request.POST.get('student5_input')
+        print("Student 5 =", student5_input)
+
+
+        course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+        course_name = course_check.course
+        major_name = course_check.major
+
+        course_input = course_name
+        course_abbr = course_input.replace("Engineering", "Eng.")
+        print("Course =", course_abbr)
+
+        major_input = major_name
+        print("Major =", major_input)
+
+        research_title_input = request.POST.get('research_title_input')
+        print("Research Title =", research_title_input)
+
+        panel_conforme_form = PanelConformeBET3(
+            student_leader_username = current_user,
+            dept_head = dept_head_name_input, 
+            dept_head_status = 'pending',
+
+            panel_member_1 = panel1_input,
+            panel_member_2 = panel2_input,
+            panel_member_3 = panel3_input,
+            panel_member_4 = panel4_input,
+            panel_member_5 = panel5_input,
+
+            panel_member_status_1 = "waiting for DIT Head",
+            panel_member_status_2 = "waiting for DIT Head",
+            panel_member_status_3 = "waiting for DIT Head",
+            panel_member_status_4 = "waiting for DIT Head",
+            panel_member_status_5 = "waiting for DIT Head",
+
+            student_member_1 = student1_input,
+            student_member_2 = student2_input,
+            student_member_3 = student3_input,
+            student_member_4 = student4_input,
+            student_member_5 = student5_input,
+
+            course = course_abbr,
+            major = major_input,
+
+            research_title = research_title_input,
+
+            date_submitted = date_today,
+
+            form_status = "Pending"
+            )
+
+        panel_conforme_form.save()
+        return redirect('student-dashboard')
+
 
     try:
         dept_head_check = User.objects.get(is_department_head=1)
-        dept_head_name = dept_head_check.first_name + " " + dept_head_check.last_name
+        dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
 
         panel_check = User.objects.filter(is_panel=1)
 
-        panel_members = []
+        panel_members_list = []
 
         for panel in panel_check:
 
             if panel.middle_name == "":
-                print("Panel No M.I")
-                panel_members.append(panel.first_name + " " + panel.last_name)
+                panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel.last_name)
 
             else:
-                print("Panel have M.I")
                 panel_middle_initial = panel.middle_name[0]
-                panel_members.append(panel.first_name + " " + panel_middle_initial + ". " + panel.last_name)
+                panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel_middle_initial + ". " + panel.last_name)
+        
+        panel_members = sorted(panel_members_list)
 
         course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
         course_name = course_check.course
@@ -257,16 +373,79 @@ def studentPanelConforme(request):
 
             'panel_members' : panel_members,
 
-            'leader_member_name' : leader_member_name,
+            'leader_member_name' : leader_member_name_2,
             'course_name' : course_name,
             'major_name' : major_name,
             }
-        return render(request, 'student-panel-conforme.html', context)
+        return render(request, 'student-panel-conforme-bet-3-create.html', context)
 
     except:
         print("Incomplete Form")
         context = {'user_full_name': user_full_name}
-        return render(request, 'student-panel-conforme.html', context)
+        return render(request, 'student-panel-conforme-bet-3-create.html', context)
+##################################################################################
+
+
+# Student - Panel Conforme BET-3 Form Page
+@login_required(login_url='index')
+def studentPanelConformeBet3Form(request):
+    current_user = (request.user)
+    currentpassword = (request.user.password)
+
+    user_first_name = current_user.first_name
+    user_middle_name = current_user.middle_name
+    user_last_name = current_user.last_name
+    user_full_name = user_first_name + " " + user_last_name
+
+
+    panel_conforme_bet3_check = PanelConformeBET3.objects.get(student_leader_username=current_user)
+
+    dept_head_name = panel_conforme_bet3_check.dept_head
+
+    panel1 = panel_conforme_bet3_check.panel_member_1
+    panel2 = panel_conforme_bet3_check.panel_member_2
+    panel3 = panel_conforme_bet3_check.panel_member_3
+    panel4 = panel_conforme_bet3_check.panel_member_4
+    panel5 = panel_conforme_bet3_check.panel_member_5
+
+    student1 = panel_conforme_bet3_check.student_member_1
+    student2 = panel_conforme_bet3_check.student_member_2
+    student3 = panel_conforme_bet3_check.student_member_3
+    student4 = panel_conforme_bet3_check.student_member_4
+    student5 = panel_conforme_bet3_check.student_member_5
+
+    course = panel_conforme_bet3_check.course
+    major = panel_conforme_bet3_check.major
+
+    research_title = panel_conforme_bet3_check.research_title
+
+    form_status = panel_conforme_bet3_check.form_status
+    
+    context = {
+        'user_full_name': user_full_name,
+
+        'dept_head_name' : dept_head_name,
+
+        'panel1' : panel1,
+        'panel2' : panel2,
+        'panel3' : panel3,
+        'panel4' : panel4,
+        'panel5' : panel5,
+
+        'student1' : student1,
+        'student2' : student2,
+        'student3' : student3,
+        'student4' : student4,
+        'student5' : student5,
+
+        'course' : course,
+        'major' : major,
+
+        'research_title' : research_title,
+
+        'form_status' : form_status
+        }
+    return render(request, 'student-panel-conforme-bet-3-form.html', context)
 ##################################################################################
 
 
@@ -330,6 +509,7 @@ def adminDepartmentHeadCreateAcc(request):
                 user.save()
 
                 user_check = User.objects.get(username=user.username)
+                user_check.honorific = request.POST.get('honorific_input')
                 user_check.first_name = request.POST.get('first_name_input')
                 user_check.last_name = request.POST.get('last_name_input')
                 user_check.department = "Industrial Technology"
@@ -491,6 +671,7 @@ def adminFacultyMemberCreateAcc(request):
                 user.save()
 
                 user_check = User.objects.get(username=user.username)
+                user_check.honorific = request.POST.get('honorific_input')
                 user_check.first_name = request.POST.get('first_name_input')
                 user_check.last_name = request.POST.get('last_name_input')
                 # user_check.department = "Industrial Technology"
