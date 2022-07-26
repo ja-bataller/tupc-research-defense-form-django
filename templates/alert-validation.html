@@ -1,0 +1,35 @@
+{% if response == 'added successfully' %}
+<script>
+    iziToast.success({
+        title: "Success",
+        message: "The Course and Major has been successfully added.",
+        position: "topCenter",
+        timeout: 5000,
+    });
+</script>
+{% endif %}
+
+##################################################################################
+
+
+{% if response == 'major exist' %}
+<script>
+    iziToast.error({
+        title: "Major exist.",
+        message: "The Major you entered already exists.",
+        position: "topCenter",
+        timeout: 5000,
+    });
+</script>
+{% endif %}
+
+{% if response == 'course abbr exist' %}
+<script>
+    iziToast.error({
+        title: "Course Abbreviation exist.",
+        message: "The Course abbreviation you entered already exists.",
+        position: "topCenter",
+        timeout: 5000,
+    });
+</script>
+{% endif %}

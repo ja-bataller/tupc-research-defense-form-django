@@ -22,82 +22,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center"
-                href="{% url 'student-dashboard' %}">
-                <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%;" alt="">
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'student-dashboard' %}">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Home</span></a>
-            </li>
-
-            <!-- Divider -->
-            <!-- <hr class="sidebar-divider"> -->
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fa-solid fa-folder-open"></i>
-                    <span>Forms</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">BET-3</h6>
-                        <a class="collapse-item" href="">Panel Invitation</a>
-                        <a class="collapse-item" href="{% url 'student-panel-conforme' %}">Panel Conforme</a>
-                        <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">BET-5</h6>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                    </div>
-                </div>
-            </li>
-
-
-            <!-- Nav Item - Tables -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-                    <span>History</span></a>
-            </li> -->
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Nav Item - The Developers -->
-            <li class="nav-item">
-                <a class="nav-link" href="the-devs.html">
-                    <i class="fa-solid fa-code"></i>
-                    <span>The Devs</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
-
-        </ul>
-        <!-- End of Sidebar -->
+        {% include 'student-form-sidebar.html' %}
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -164,59 +89,74 @@
 
                                     <div class="input-group mb-5">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-default">DIT
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Department
                                                 Head</span>
                                         </div>
-                                        <input type="text" class="form-control" value="Mr. Jay Victor Gumboc"
+                                        <input type="text" class="form-control" value="{{dept_head_name}}"
                                             aria-label="Sizing example input"
                                             aria-describedby="inputGroup-sizing-default" disabled>
                                     </div>
 
                                     <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Members:</h6>
-
+                                    
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">1</span>
                                         </div>
-                                        <input type="text" class="form-control" value="Panel Member Name"
-                                            aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-default" disabled>
+                                        <select class="custom-select" name="panel1_input" id="inputGroupSelect02" required>
+                                            <option selected>Choose panel member here...</option>
+                                            {% for panel in panel_members %}
+                                            <option value="{{panel}}">{{panel}}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
 
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">2</span>
                                         </div>
-                                        <input type="text" class="form-control" value="Panel Member Name"
-                                            aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-default" disabled>
+                                        <select class="custom-select" name="panel2_input" id="inputGroupSelect02" required>
+                                            <option selected>Choose panel member here...</option>
+                                            {% for panel in panel_members %}
+                                            <option value="{{panel}}">{{panel}}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
 
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">3</span>
                                         </div>
-                                        <input type="text" class="form-control" value="Panel Member Name"
-                                            aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-default" disabled>
+                                        <select class="custom-select" name="panel3_input" id="inputGroupSelect02" required>
+                                            <option selected>Choose panel member here...</option>
+                                            {% for panel in panel_members %}
+                                            <option value="{{panel}}">{{panel}}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
 
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">4</span>
                                         </div>
-                                        <input type="text" class="form-control" value="Panel Member Name"
-                                            aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-default" disabled>
+                                        <select class="custom-select" name="panel4_input" id="inputGroupSelect02" required>
+                                            <option selected>Choose panel member here...</option>
+                                            {% for panel in panel_members %}
+                                            <option value="{{panel}}">{{panel}}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
 
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">5</span>
                                         </div>
-                                        <input type="text" class="form-control" value="Panel Member Name"
-                                            aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-default" disabled>
+                                        <select class="custom-select" name="panel5_input" id="inputGroupSelect02" required>
+                                            <option selected>Choose panel member here...</option>
+                                            {% for panel in panel_members %}
+                                            <option value="{{panel}}">{{panel}}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
 
 
@@ -228,7 +168,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">1</span>
                                         </div>
-                                        <input type="text" class="form-control" value="Group Member Name"
+                                        <input type="text" class="form-control"
+                                            value="{{leader_member_name}}"
                                             aria-label="Sizing example input"
                                             aria-describedby="inputGroup-sizing-default" disabled>
                                     </div>
@@ -237,36 +178,36 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">2</span>
                                         </div>
-                                        <input type="text" class="form-control" value="Group Member Name"
+                                        <input type="text" class="form-control"
                                             aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-default" disabled>
+                                            aria-describedby="inputGroup-sizing-default">
                                     </div>
 
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">3</span>
                                         </div>
-                                        <input type="text" class="form-control" value="Group Member Name"
+                                        <input type="text" class="form-control"
                                             aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-default" disabled>
+                                            aria-describedby="inputGroup-sizing-default">
                                     </div>
 
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">4</span>
                                         </div>
-                                        <input type="text" class="form-control" value="Group Member Name"
+                                        <input type="text" class="form-control"
                                             aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-default" disabled>
+                                            aria-describedby="inputGroup-sizing-default">
                                     </div>
 
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">5</span>
                                         </div>
-                                        <input type="text" class="form-control" value="Group Member Name"
+                                        <input type="text" class="form-control"
                                             aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-default" disabled>
+                                            aria-describedby="inputGroup-sizing-default">
                                     </div>
 
 
@@ -276,7 +217,7 @@
                                         </div>
                                         <input type="text" class="form-control" aria-label="Sizing example input"
                                             aria-describedby="inputGroup-sizing-default"
-                                            value="Bachelor of Eng. Technology" disabled>
+                                            value="{{course_name}}" disabled>
                                     </div>
 
                                     <div class="input-group mb-5">
@@ -285,7 +226,7 @@
                                         </div>
                                         <input type="text" class="form-control" aria-label="Sizing example input"
                                             aria-describedby="inputGroup-sizing-default"
-                                            value="Computer Engineering Technology" disabled>
+                                            value="{{major_name}}" disabled>
                                     </div>
 
                                     <div class="input-group mb-3">
@@ -294,18 +235,15 @@
                                                 Title:</span>
                                         </div>
                                         <input type="text" class="form-control" aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-default"
-                                            value="Development of Research Defense Web App" disabled>
+                                            aria-describedby="inputGroup-sizing-default" required
+                                            >
                                     </div>
-
 
                                     <div class="form-group">
                                         <label>Date of Defense</label>
                                         <input type="date" value="2014-02-09" class="form-control update-form" name=""
-                                            id="" required disabled>
+                                            id="" required>
                                     </div>
-
-
 
                                 </div>
                             </div>
@@ -313,7 +251,7 @@
                     </div>
 
                     <div class="float-right mb-5">
-                        <button type="button" class="btn btn-success btn-lg">Submit</button>
+                        <button type="submit" class="btn btn-success btn-lg">Submit</button>
                     </div>
 
 

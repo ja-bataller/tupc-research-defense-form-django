@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Student - Dashboard</title>
+    <title>Admin - Dashboard</title>
 
     {% include 'css-main-cdn.html ' %}
 
@@ -22,82 +22,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center"
-                href="{% url 'student-dashboard' %}">
-                <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%;" alt="">
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'student-dashboard' %}">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Home</span></a>
-            </li>
-
-            <!-- Divider -->
-            <!-- <hr class="sidebar-divider"> -->
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fa-solid fa-folder-open"></i>
-                    <span>Forms</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">BET-3</h6>
-                        <!-- <a class="collapse-item" href="">Panel Invitation</a> -->
-                        <a class="collapse-item" href="{% url 'student-panel-conforme' %}">Panel Conforme</a>
-                        <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">BET-5</h6>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                    </div>
-                </div>
-            </li>
-
-
-            <!-- Nav Item - Tables -->
-            <!-- <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span>History</span></a>
-    </li> -->
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Nav Item - The Developers -->
-            <li class="nav-item">
-                <a class="nav-link" href="the-devs.html">
-                    <i class="fa-solid fa-code"></i>
-                    <span>The Devs</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
-
-        </ul>
-        <!-- End of Sidebar -->
+        {% include 'admin-account-sidebar.html' %}
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -121,7 +46,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user_full_name}} <br>
-                                    <div class="float-right">Student</div>
+                                    <div class="float-right">Administrator</div>
                                 </span>
                                 <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}">
                             </a>
@@ -150,7 +75,8 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-3">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Faculty Members</h1>
+                        <a href="{% url 'admin-faculty-member-create' %}" type="button" class="btn btn-info float-right"><i class="fa-solid fa-user-plus"></i> New Account</a>
                     </div>
 
                     <!-- DataTales Example -->
@@ -163,32 +89,31 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Research Title</th>
-                                            <th>Form</th>
+                                            <th>ID No.</th>
+                                            <th>Name</th>
                                             <th>Faculty</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>Research Title</th>
-                                            <th>Form</th>
+                                            <th>ID No.</th>
+                                            <th>Name</th>
                                             <th>Faculty</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <!-- <tr>
-                                            <td>Development of Research Defense Web App</td>
-                                            <td>Panel Invitation</td>
-                                            <td>DIT Head</td>
-                                            <td>Pending</td>
+                                        {% for panel in members %}
+                                        <tr>
+                                            <td>{{panel.username}}</td>
+                                            <td>{{panel.first_name}} {{panel.last_name}}</td>
+                                            <td>{{panel.department}}</td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
                                             </td>
-                                        </tr> -->
+                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -218,6 +143,17 @@
     {% include 'logout-modal.html' %}
 
     {% include 'script-cdn.html' %}
+
+    {% if response == 'account created' %}
+    <script>
+        iziToast.success({
+            title: "Success",
+            message: "Account created successfully.",
+            position: "topCenter",
+            timeout: 5000,
+        });
+    </script>
+    {% endif %}
 
 </body>
 

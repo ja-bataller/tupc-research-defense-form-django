@@ -15,8 +15,8 @@ class SignUpForm(forms.ModelForm):
         fields = ('username', 'email', 'password')
 
         labels = {
-            'username': ('Username'),
-            'email': ('Email'),
+            'username': ('Username (ID No.)'),
+            'email': ('Email (GSFE)'),
             'password': ('Password'),
         }
                 
@@ -24,7 +24,7 @@ class SignUpForm(forms.ModelForm):
             # 'first_name': forms.TextInput(attrs={'class': 'form-control form-control-lg mb-3',  'autocomplete': 'off', 'style': "text-transform: capitalize;", 'required': 'on'}),
             # 'last_name': forms.TextInput(attrs={'class': 'form-control form-control-lg mb-3',  'autocomplete': 'off', 'style': "text-transform: capitalize;", 'required': 'on'}),
             # 'course': forms.ChoiceField(choices  = course),
-            'username': forms.TextInput(attrs={'class': 'form-control form-control-lg mb-3',  'autocomplete': 'off', 'name': 'usernameForm', 'required': 'on' ,'placeholder': 'TUPC-XX-XXXX'}),
+            'username': forms.TextInput(attrs={'class': 'form-control form-control-lg mb-3',  'autocomplete': 'off', 'name': 'usernameForm', 'required': 'on' ,'placeholder': 'TUPC-XX-XXXX', 'onkeyup':"this.value = this.value.toUpperCase();"}),
             'email': forms.EmailInput(attrs={'type': 'email', 'class': 'form-control form-control-lg mb-3', 'name': 'email_address', 'autocomplete': 'off', 'required': 'on'}),
             'password': forms.PasswordInput(attrs={'type': 'password', 'class': 'form-control form-control-lg', 'name': 'passwordForm', 'autocomplete': 'off', 'required': 'on'}),
         }

@@ -74,11 +74,10 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">BET-3</h6>
-                        <a class="collapse-item" href="student-panel-invitation.html">Panel Invitation</a>
-                        <a class="collapse-item" href="student-panel-conforme.html">Panel Conforme</a>
-                        <a class="collapse-item" href="student-research-title-defense.html">Research Title Defense</a>
-                        <a class="collapse-item" href="student-research-adviser-conforme.html">Research Adviser
-                            Conforme</a>
+                        <!-- <a class="collapse-item" href="">Panel Invitation</a> -->
+                        <a class="collapse-item" href="{% url 'student-panel-conforme' %}">Panel Conforme</a>
+                        <a class="collapse-item" href="">Research Title Defense</a>
+                        <a class="collapse-item" href="">Research Adviser Conforme</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">BET-5</h6>
                         <a class="collapse-item" href="#">New Form</a>
@@ -92,10 +91,10 @@
 
             <!-- Nav Item - Tables -->
             <!-- <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-                    <span>History</span></a>
-            </li> -->
+        <a class="nav-link" href="tables.html">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>History</span></a>
+    </li> -->
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -109,7 +108,6 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
-
 
 
             <!-- Sidebar Toggler (Sidebar) -->
@@ -182,22 +180,48 @@
                                 <div class="col mr-2">
 
                                     <div class="form-group">
+                                        <label for="exampleInputEmail1">First Name</label>
+                                        <input type="text" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" value="{{user_first_name}}" disabled>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Middle Name</label>
+                                        <input type="text" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" value="{{user_middle_name}}" disabled>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Last Name</label>
+                                        <input type="text" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" value="{{user_last_name}}" disabled>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Course</label>
+                                        <input type="text" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" value="{{course_name}}" disabled>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Major</label>
+                                        <input type="text" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" value="{{major_name}}" disabled>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="exampleInputEmail1">Username</label>
                                         <input type="text" class="form-control" id="exampleInputEmail1"
                                             aria-describedby="emailHelp" value="{{username}}" disabled>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Name</label>
+                                        <label for="exampleInputEmail1">Email</label>
                                         <input type="text" class="form-control" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp" value="{{user_full_name}}" disabled>
+                                            aria-describedby="emailHelp" value="{{user_email}}" disabled>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Course</label>
-                                        <input type="text" class="form-control" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp" value="{{user_course}}" disabled>
-                                    </div>
+
 
 
                                 </div>

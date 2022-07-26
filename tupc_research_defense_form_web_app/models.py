@@ -5,7 +5,10 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     course = models.CharField(max_length=256, blank=True)
+    major = models.CharField(max_length=256, blank=True)
     department = models.CharField(max_length=256, blank=True)
+
+    middle_name = models.CharField(max_length=256, blank=True)
 
     is_user = models.BooleanField(default=True)
     is_administrator = models.BooleanField(default=False)
@@ -22,3 +25,11 @@ class User(AbstractUser):
     USERNAME_FIELD = 'username'
 
 ####################################################################################################################
+
+class StudentCourseMajor(models.Model):
+    course = models.CharField(max_length=256)
+    major = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.course_major_abbr

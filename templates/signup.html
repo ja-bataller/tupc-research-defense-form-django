@@ -40,19 +40,24 @@
 
                     <div class="form-group">
                         <label>First Name</label>
-                        <input type="text" name="first_name_input" class="form-control" required>
+                        <input type="text" name="first_name_input" class="form-control"  style="text-transform: capitalize;" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Middle Name</label>
+                        <input type="text" name="middle_name_input" class="form-control" style="text-transform: capitalize;">
                     </div>
                     <div class="form-group">
                         <label>Last Name</label>
-                        <input type="text" name="last_name_input" class="form-control" required>
+                        <input type="text" name="last_name_input" class="form-control" style="text-transform: capitalize;" required>
                     </div>
+                    
                     <div class="form-group">
                         <label>Course</label>
                         <select class="custom-select" name="course_input" id="inputGroupSelect02" required>
                             <option selected>Choose your course here...</option>
-                            <option value="BET-COET">BET-COET</option>
-                            <option value="2">BET-</option>
-                            <option value="3">BET-</option>
+                            {% for abbr in course %}
+                            <option value="{{abbr.course_major_abbr}}">{{abbr.course_major_abbr}}</option>
+                            {% endfor %}
                         </select>
                     </div>
 
