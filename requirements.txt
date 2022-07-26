@@ -44,4 +44,4 @@ traitlets==5.2.1.post0
 tzdata==2022.1
 wcwidth==0.2.5
 whitenoise==6.2.0
-pywin32==0.3.1
+# pywin32==0.3.1
