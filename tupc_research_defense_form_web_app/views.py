@@ -10,6 +10,11 @@ from .models import *
 
 from datetime import date
 
+from docx import Document
+from docx2pdf import convert
+import os
+from docx.shared import Inches
+
 today = date.today()
 
 User = get_user_model()
@@ -420,7 +425,100 @@ def studentPanelConformeBet3Form(request):
     research_title = panel_conforme_bet3_check.research_title
 
     form_status = panel_conforme_bet3_check.form_status
-    
+
+    if request.method == "POST":
+        print("Download PDF")
+        doc = Document('static/forms/2-PANEL-CONFORME.docx')
+
+        header_table = doc.tables[0]
+        student_table = doc.tables[1]
+        adviser_table = doc.tables[3]
+        qr_code_table = doc.tables[2]
+
+        # print(adviser_table.cell(0, 0).text) # Adviser Name
+
+        student1 = student_table.cell(1, 0).paragraphs[0].runs[0].text = student1
+        student2 = student_table.cell(2, 0).paragraphs[0].runs[0].text = student2
+        student3 = student_table.cell(3, 0).paragraphs[0].runs[0].text = student3
+        student4 = student_table.cell(4, 0).paragraphs[0].runs[0].text = student4
+        student5 = student_table.cell(5, 0).paragraphs[0].runs[0].text = student5
+
+        course1 = student_table.cell(1, 2).paragraphs[0].runs[0].text = course
+        course2 = student_table.cell(2, 2).paragraphs[0].runs[0].text = course
+        course3 = student_table.cell(3, 2).paragraphs[0].runs[0].text = course
+        course4 = student_table.cell(4, 2).paragraphs[0].runs[0].text = course
+        course5 = student_table.cell(5, 2).paragraphs[0].runs[0].text = course
+
+        major1 = student_table.cell(1, 4).paragraphs[0].runs[0].text = major
+        major2 = student_table.cell(2, 4).paragraphs[0].runs[0].text = major
+        major3 = student_table.cell(3, 4).paragraphs[0].runs[0].text = major
+        major4 = student_table.cell(4, 4).paragraphs[0].runs[0].text = major
+        major5 = student_table.cell(5, 4).paragraphs[0].runs[0].text = major
+
+        panel_member = adviser_table.cell(0, 0).paragraphs[0].runs[0].text = 'Mr. Jay Victor Gumboc'
+        date_signed = adviser_table.cell(0, 2).paragraphs[0].runs[0].text = 'July 8, 2022'
+
+        print(doc.paragraphs[1].runs[1].text) # Date Today 1
+        print(doc.paragraphs[3].runs[0].text) # Receiver 1
+        print(doc.paragraphs[6].runs[1].text) # Receiver 2
+        print(doc.paragraphs[7].runs[1].text) # Subject
+        print(doc.paragraphs[7].runs[4].text) # Student Course
+        print(doc.paragraphs[7].runs[6].text) # Student Major
+        print(doc.paragraphs[10].runs[1].text) # Research Title
+        print(doc.paragraphs[15].runs[0].text) # Department Head Name
+
+        doc.paragraphs[1].runs[1].text = 'July 8, 2022'
+        doc.paragraphs[3].runs[0].text = 'Mr. Jay Victor Gumboc'
+        doc.paragraphs[6].runs[1].text = 'Mr. Jay Victor Gumboc'
+        doc.paragraphs[7].runs[1].text = 'BET-3'
+        doc.paragraphs[7].runs[4].text = 'Bachelor of Engineering Technology'
+        doc.paragraphs[7].runs[6].text = 'Major in Computer Engienering Technology'
+        doc.paragraphs[10].runs[1].text = 'Development of Research Defense Form Web Application'
+        doc.paragraphs[15].runs[0].text = 'Mr. Jay Victor Gumboc'
+
+        # INSERT IMAGE
+        # qr_code = qr_code_table.cell(0, 0).add_paragraph()
+        # qr_code_run = qr_code.add_run()
+        # qr_code_run.add_picture('qr-code.png',width=Inches(0.8), height=Inches(0.8))
+        # qr_code_run.alignment=WD_ALIGN_PARAGRAPH.CENTER
+
+        
+        # doc.save('2-PANEL-CONFROME-BET-3-{}.docx'.format(current_user))
+        # convert('2-PANEL-CONFROME-BET-3-{}.docx'.format(current_user))
+        # os.startfile('2-PANEL-CONFROME-BET-3-{}.pdf'.format(current_user))
+
+        doc.save('2-PANEL-CONFORME-NEW.docx')
+        convert("2-PANEL-CONFORME-NEW.docx")
+        os.startfile('2-PANEL-CONFORME-NEW.pdf')
+
+        context = {
+        'user_full_name': user_full_name,
+
+        'dept_head_name' : dept_head_name,
+
+        'panel1' : panel1,
+        'panel2' : panel2,
+        'panel3' : panel3,
+        'panel4' : panel4,
+        'panel5' : panel5,
+
+        'student1' : student1,
+        'student2' : student2,
+        'student3' : student3,
+        'student4' : student4,
+        'student5' : student5,
+
+        'course' : course,
+        'major' : major,
+
+        'research_title' : research_title,
+
+        'form_status' : form_status
+        }
+        return render(request, 'student-panel-conforme-bet-3-form.html', context)
+
+
+
     context = {
         'user_full_name': user_full_name,
 

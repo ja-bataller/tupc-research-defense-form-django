@@ -60,7 +60,7 @@
 
           <!-- Begin Page Content -->
           <div class="container-fluid">
-            
+
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
                 <h1 class="h3 mb-0 text-gray-800">
@@ -73,9 +73,13 @@
                 </h1>
 
                 {% if form_status == 'Completed' %}
-                    <div class="float-right">
-                    <button type="button" class="btn btn-success"><i class="fa-solid fa-file-pdf"></i> Download Form</button>
-                </div>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="float-right">
+                        <button type="submit" class="btn btn-success"><i class="fa-solid fa-file-pdf"></i> Download Form</button>
+                    </div>
+                </form>
+                    
                 {% endif %}
             </div>
 
