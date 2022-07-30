@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-5+w!z$k!ik+v8=$0lc#=l1awb)&!ko6g@b(f#8o13t7pvc9&5f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tupc-research-defense-form.herokuapp.com', '127.0.0.1' ]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -133,7 +133,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
 STATIC_URL = 'static/'
 

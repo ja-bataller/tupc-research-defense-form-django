@@ -75,7 +75,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">BET-3</h6>
                         <!-- <a class="collapse-item" href="">Panel Invitation</a> -->
-                        <a class="collapse-item" href="{% url 'student-panel-conforme' %}">Panel Conforme</a>
+                        <a class="collapse-item" href="{% url 'student-panel-conforme-bet3' %}">Panel Conforme</a>
                         <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a>
                         <div class="collapse-divider"></div>
@@ -125,45 +125,7 @@
             <!-- Main Content -->
             <div id="content">
 
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user_full_name}} <br>
-                                    <div class="float-right">Student</div>
-                                </span>
-                                <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{% url 'student-profile'%}">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-
-                    </ul>
-
-                </nav>
-                <!-- End of Topbar -->
+                {% include 'topbar.html'%}
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -246,18 +208,18 @@
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Current Password</label>
-                                            <input type="password" class="form-control" name="current_password_input">
+                                            <input type="password" class="form-control" name="current_password_input" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">New Password</label>
-                                            <input type="password" class="form-control" name="new_password_input">
+                                            <input type="password" class="form-control" name="new_password_input" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Confirm New Password</label>
                                             <input type="password" class="form-control"
-                                                name="confirm_new_password_input">
+                                                name="confirm_new_password_input" required>
                                         </div>
 
                                         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-lock"></i>
@@ -294,27 +256,7 @@
 
     {% include 'logout-modal.html' %}
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
-
-    <!-- Page level plugins -->
-    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
-
-    <!-- Izitoast 1.4.0 CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
-        integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {% include 'script-cdn.html' %}
 
     {% if response == 'current password is incorrect' %}
     <script>

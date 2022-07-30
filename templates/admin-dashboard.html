@@ -55,7 +55,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Faculty</h6>
                         <a class="collapse-item" href="{% url 'admin-department-head' %}">Department Head</a>
-                        <a class="collapse-item" href="#">Faculty Member</a>
+                        <a class="collapse-item" href="{% url 'admin-faculty-member' %}">Faculty Member</a>
                         <h6 class="collapse-header">Student</h6>
                         <a class="collapse-item" href="#">Students</a>
                         <a class="collapse-item" href="{% url 'admin-student-course-major' %}">+ Course & Major</a>
@@ -100,45 +100,7 @@
             <!-- Main Content -->
             <div id="content">
 
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user_full_name}} <br>
-                                    <div class="float-right">Administrator</div>
-                                </span>
-                                <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{% url 'student-profile'%}">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-
-                    </ul>
-
-                </nav>
-                <!-- End of Topbar -->
+                {% include 'topbar.html'%}
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">

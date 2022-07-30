@@ -2,163 +2,222 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
 
     <title>Admin - Department Head</title>
 
     {% include 'css-main-cdn.html ' %}
+  </head>
 
-</head>
-
-<body id="page-top">
-
+  <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+      {% include "admin-account-sidebar.html" %}
 
-       {% include "admin-account-sidebar.html" %}
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+          {% include 'topbar.html'%}
 
-            <!-- Main Content -->
-            <div id="content">
-
-                {% include 'admin-topbar.html' %}
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-3">
-                        <h1 class="h3 mb-0 text-gray-800">Department Head Profile</h1>
-                    </div>
-
-                    <!-- User Profile Start -->
-                    <div class="card border-left-info shadow h-100 py-2 mb-3">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Username</label>
-                                        <input type="text" class="form-control" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp" value="{{dept_head_username}}" disabled>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Email</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp" value="{{dept_head_email}}" disabled>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">First Name</label>
-                                        <input type="text" class="form-control" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp" value="{{dept_head_first_name}}" disabled>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Last Name</label>
-                                        <input type="text" class="form-control" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp" value="{{dept_head_last_name}}" disabled>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Department</label>
-                                        <input type="text" class="form-control" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp" value="{{dept_head_department}}" disabled>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- User Profile End -->
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-3">
-                        <h1 class="h3 mb-0 text-gray-800">Account Settings</h1>
-                    </div>
-
-                    <!-- User Profile Start -->
-                    <div class="card border-left-warning shadow h-100 py-2 mb-3">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-
-                                    <form method="POST">
-                                        {% csrf_token %}
-
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Current Password</label>
-                                            <input type="password" class="form-control" name="current_password_input">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">New Password</label>
-                                            <input type="password" class="form-control" name="new_password_input">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Confirm New Password</label>
-                                            <input type="password" class="form-control"
-                                                name="confirm_new_password_input">
-                                        </div>
-
-                                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-lock"></i>
-                                            Change Password</button>
-
-                                    </form>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- User Profile End -->
-
-                </div>
-                <!-- /.container-fluid -->
-
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-0 text-gray-800">Department Head Profile</h1>
+              <div class="custom-control custom-switch float-right">
+                <input type="checkbox" class="custom-control-input" id="edit_switch" />
+                <label class="custom-control-label" for="edit_switch">Edit</label>
+              </div>
             </div>
-            <!-- End of Main Content -->
 
-            <!-- Footer -->
-            {% include 'footer.html' %}
-            <!-- End of Footer -->
+            <form method="POST" onsubmit="savechangesBtnSpinner()">
+              {% csrf_token %}
+              <!-- User Profile Start -->
+              <div class="card border-left-info shadow h-100 py-2 mb-3">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
 
+                      <div id="honorific_value" class="form-group">
+                        <label>Honorific:</label>
+                        <input type="text" class="form-control" value="{{dept_head_honorific}}" disabled />
+                      </div>
+
+                      <div id="honorific_input" class="form-group" style="display: None;">
+                        <label>Honorific:</label>
+                        <select class="custom-select" name="honorific_input" required>
+                          <option value="default" selected>Choose honorific here...</option>
+                          <option value="Mr.">Mr.</option>
+                          <option value="Ms.">Ms.</option>
+                          <option value="Mrs.">Mrs.</option>
+                          <option value="Engr.">Engr.</option>
+                          <option value="Dr.">Dr.</option>
+                          <option value="Dra.">Dra.</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label>First Name:</label>
+                        <input id="first_name_input" name="first_name_input" type="text" class="form-control" value="{{dept_head_first_name}}" style="text-transform: capitalize" disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Middle Name:</label>
+                        <input id="middle_name_input" name="middle_name_input" type="text" class="form-control" value="{{dept_head_middle_name}}" style="text-transform: capitalize" disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Last Name:</label>
+                        <input id="last_name_input" name="last_name_input" type="text" class="form-control" value="{{dept_head_last_name}}" style="text-transform: capitalize" disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Department:</label>
+                        <input id="department_input" name="department_input" type="text" class="form-control" value="{{dept_head_department}}" disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Username (ID No.):</label>
+                        <input id="username_input" name="username_input" type="text" class="form-control" value="{{dept_head_username}}" onkeyup="this.value = this.value.toUpperCase();" disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Email (GSFE):</label>
+                        <input id="email_input" name="email_input" type="email" class="form-control" value="{{dept_head_email}}" disabled />
+                      </div>
+
+                      <div id="password_input" class="form-group" style="display: None">
+                        <label>Password:</label>
+                        <input type="password" class="form-control" name="password_input" required />
+                      </div>
+
+                      <button id="save_changes_btn" type="submit" class="btn btn-success" style="display: None"><i class="fa-solid fa-check"></i> Save Changes</button>
+                      <button id="save_change_spinner" type="submit" class="btn btn-success" style="display: None" disabled>Saving Changes.....</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <!-- User Profile End -->
+
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-0 text-gray-800">Account Settings</h1>
+            </div>
+
+            <!-- User Account Settings -->
+            <div class="card border-left-warning shadow h-100 py-2 mb-3">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <form method="POST" action="{% url 'admin-department-head-pass' %}">
+                      {% csrf_token %}
+
+                      <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" class="form-control" name="current_password_input" />
+                      </div>
+
+                      <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" class="form-control" name="new_password_input" />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" class="form-control" name="confirm_new_password_input" />
+                      </div>
+
+                      <button type="submit" class="btn btn-success"><i class="fa-solid fa-lock"></i> Change Password</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- User Accoung Settings End -->
+          </div>
+          <!-- /.container-fluid -->
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Main Content -->
 
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
+      <i class="fas fa-angle-up"></i>
     </a>
 
-    {% include 'logout-modal.html' %}
-
+    {% include 'logout-modal.html' %} 
+    
     {% include 'script-cdn.html' %}
 
-    {% if response == 'account created' %}
+    {% include 'alert-validation.html' %}
+
     <script>
-        iziToast.success({
-            title: "Success",
-            message: "Account created successfully.",
-            position: "topCenter",
-            timeout: 5000,
-        });
+      let edit_switch = document.querySelector("#edit_switch");
+
+      let username_input = document.querySelector("#username_input");
+      let email_input = document.querySelector("#email_input");
+      let honorific_value = document.querySelector("#honorific_value");
+      let honorific_input = document.querySelector("#honorific_input");
+      let first_name_input = document.querySelector("#first_name_input");
+      let middle_name_input = document.querySelector("#middle_name_input");
+      let last_name_input = document.querySelector("#last_name_input");
+      let department_input = document.querySelector("#department_input");
+
+      let password_input = document.querySelector("#password_input");
+      let save_changes_btn = document.querySelector("#save_changes_btn");
+
+      let save_change_spinner = document.querySelector("#save_change_spinner");
+
+      function savechangesBtnSpinner() {
+        save_changes_btn.style.display = "none";
+        save_change_spinner.style.display = "block";
+      }
+
+      edit_switch.addEventListener("change", function () {
+        if (edit_switch.checked) {
+          username_input.removeAttribute("disabled");
+          email_input.removeAttribute("disabled");
+
+          first_name_input.removeAttribute("disabled");
+          first_name_input.removeAttribute("disabled");
+          middle_name_input.removeAttribute("disabled");
+          last_name_input.removeAttribute("disabled");
+          // department_input.removeAttribute("disabled");
+
+          honorific_value.style.display = "none";
+          honorific_input.style.display = "block";
+          password_input.style.display = "block";
+          save_changes_btn.style.display = "block";
+        } else {
+          // username_input.setAttribute("disabled", "");
+          // email_input.setAttribute("disabled", "");
+          // first_name_input.setAttribute("disabled", "");
+          // middle_name_input.setAttribute("disabled", "");
+          // last_name_input.setAttribute("disabled", "");
+          // // department_input.setAttribute("disabled", "");
+
+          // honorific_value.style.display = "block";
+          // honorific_input.style.display = "none";
+          // password_input.style.display = "none";
+          // save_changes_btn.style.display = "none";
+          window.location.replace("{% url 'admin-department-head-acc' %}");
+        }
+      });
     </script>
-    {% endif %}
-
-</body>
-
+  </body>
 </html>

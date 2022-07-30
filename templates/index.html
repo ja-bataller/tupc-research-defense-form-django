@@ -1,101 +1,74 @@
 {% load static %}
 
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Log In - TUP-C Research Defense Form Web App</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    
-    <!-- Fontawesome 6.1.1 CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap 4.6.1 CSS CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous" />
 
-    <!-- Izitoast 1.4.0 CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"
-        integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-    <link rel="stylesheet" href="{% static '/css/login_signup.css' %}">
+    <!-- Izitoast 1.4.0 CSS CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    
-</head>
+    <!-- Custom CSS Stylesheet -->
+    <link rel="stylesheet" href="{% static '/css/login_signup.css' %}" />
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <div class="row content">
-            <div class="col-md-6 mb-3">
-                <img class="img-fluid" src="{% static '/img/laptop-boy.jpg' %}" alt="">
-            </div>
-            <div class="col-md-6">
-                <h1 class="signin-text mb-4">Log In</h1>
-                <form method="POST">
-                    {% csrf_token %}
+      <div class="row content">
+        <div class="col-md-6 mb-3">
+          <img class="img-fluid" src="{% static '/img/laptop-boy.jpg' %}" alt="" />
+        </div>
+        <div class="col-md-6">
+          <h1 class="signin-text mb-4">Log In</h1>
 
-                    <div class="form-group">
-                        <label for="email">Username</label>
-                        <input type="text" name="username_input" class="form-control" placeholder="TUPC-XX-XXXX" onkeyup="this.value = this.value.toUpperCase();" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" name="password_input" class="form-control" required>
-                    </div>
-                    <!-- <div class="form-group form-check">
+          <!-- Login Form Start -->
+          <form method="POST" onsubmit="loginBtnSpinner()">
+            {% csrf_token %}
+
+            <div class="form-group">
+              <label for="email">Username</label>
+              <input type="text" name="username_input" class="form-control" placeholder="TUPC-XX-XXXX" onkeyup="this.value = this.value.toUpperCase();" required />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" name="password_input" class="form-control" required />
+            </div>
+            <!-- <div class="form-group form-check">
                         <input type="checkbox" name="checkbox" class="form-check-input" id="checkbox">
                         <label class="form-check-label" for="checkbox">Remember Me</label>
                     </div> -->
-                    <button class="btn btn-class mt-2 w-100">Login</button>
+            <button id="login_btn" class="btn btn-class mt-2 w-100" type="submit">Login</button>
 
-                    <hr class="mt-5">
-                    <p class="text-center">Don't have an account yet? <a href="{% url 'signup' %}">Sign up</a></p>
-                </form>
-            </div>
+            <button id="login_spinner" class="btn btn-class mt-2 w-100" style="display: None" disabled>
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+
+            <hr class="mt-5" />
+            <p class="text-center">Don't have an account yet? <a href="{% url 'signup' %}">Sign up</a></p>
+          </form>
+          <!-- Login Form End -->
+          
         </div>
+      </div>
     </div>
 
-    <!-- Izitoast 1.4.0 CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
-    integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Bootstrap 4.6 Script CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
 
-    {% if response == 'user does not exist' %}
-    <script>
-        iziToast.error({
-            title: "User not registered.",
-            message: "The Username you entered is not yet registered.",
-            position: "topCenter",
-            timeout: 5000,
-        });
-    </script>
-    {% endif %}
+    <!-- Izitoat 1.4.0 Script CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    {% if response == 'incorrect password' %}
-    <script>
-        iziToast.error({
-            title: "Incorrect Password.",
-            message: "The Password you entered is incorrect.",
-            position: "topCenter",
-            timeout: 5000,
-        });
-    </script>
-    {% endif %}
+    {% include 'alert-validation.html' %}
 
-    {% if response == 'unauthorized access' %}
-    <script>
-        iziToast.warning({
-            title: "Unauthorized Access.",
-            message: "You are not authorized to access the students portal.",
-            position: "topCenter",
-            timeout: 5000,
-        });
-    </script>
-    {% endif %}
-
-
-</body>
-
+  </body>
 </html>

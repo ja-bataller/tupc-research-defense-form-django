@@ -2,80 +2,75 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
 
     <title>Admin - Department Head</title>
 
     {% include 'css-main-cdn.html ' %}
+  </head>
 
-</head>
-
-<body id="page-top">
-
+  <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+      {% include "admin-account-sidebar.html" %}
 
-        {% include "admin-account-sidebar.html" %}
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          {% include 'topbar.html' %}
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-0 text-gray-800">Create Account - Department Head</h1>
+            </div>
 
-            <!-- Main Content -->
-            <div id="content">
+            <!-- User Profile Start -->
+            <div class="card border-left-info shadow h-100 py-2 mb-3">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <form method="POST">
+                      {% csrf_token %}
 
-                {% include 'admin-topbar.html' %}
+                      <div class="form-group">
+                        <label>Honorific:</label>
+                        <select class="custom-select" name="honorific_input" required>
+                          <option value="default" selected>Choose honorific here...</option>
+                          <option value="Mr.">Mr.</option>
+                          <option value="Ms.">Ms.</option>
+                          <option value="Mrs.">Mrs.</option>
+                          <option value="Engr.">Engr.</option>
+                          <option value="Dr.">Dr.</option>
+                          <option value="Dra.">Dra.</option>
+                        </select>
+                      </div>
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+                      <div class="form-group">
+                        <label>First Name:</label>
+                        <input type="text" name="first_name_input" class="form-control"  style="text-transform: capitalize" required />
+                      </div>
 
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-3">
-                        <h1 class="h3 mb-0 text-gray-800">Create Account - Department Head</h1>
-                    </div>
+                      <div class="form-group">
+                        <label>Middle Name:</label>
+                        <input type="text" name="middle_name_input" class="form-control"  style="text-transform: capitalize"/>
+                      </div>
 
-                    <!-- User Profile Start -->
-                    <div class="card border-left-info shadow h-100 py-2 mb-3">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
+                      <div class="form-group">
+                        <label>Last Name:</label>
+                        <input type="text" name="last_name_input" class="form-control"  style="text-transform: capitalize" required />
+                      </div>
 
-                                    <form method="POST">
-                                        {% csrf_token %}
+                      <div class="form-group">{{form}}</div>
 
-                                        <div class="form-group">
-                                            <label>Honorific</label>
-                                            <select class="custom-select" name="honorific_input" required>
-                                              <option selected>Choose honorific here...</option>
-                                              <option value="Mr.">Mr.</option>
-                                              <option value="Ms.">Ms.</option>
-                                              <option value="Mrs.">Mrs.</option>
-                                              <option value="Engr.">Engr.</option>
-                                              <option value="Dr.">Dr.</option>
-                                              <option value="Dra.">Dra.</option>
-                                            </select>
-                                          </div>
-                    
-                                        <div class="form-group">
-                                            <label>First Name</label>
-                                            <input type="text" name="first_name_input" class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Last Name</label>
-                                            <input type="text" name="last_name_input" class="form-control" required>
-                                        </div>
-                    
-                                        <div class="form-group">
-                                            {{form}}
-                                        </div>
-                    
-                                        <!-- <div class="form-group">
+                      <!-- <div class="form-group">
                                             <label for="email">Username</label>
                                             <input type="text" name="username_input" class="form-control" placeholder="TUPC-XX-XXXX">
                                         </div>
@@ -88,68 +83,41 @@
                                             <label for="password">Password</label>
                                             <input type="password" name="password" class="form-control">
                                         </div> -->
-                    
-                                        <div class="form-group">
-                                            <label for="password">Confirm Password</label>
-                                            <input type="password" name="confirm_password_input" class="form-control" required>
-                                        </div>
-                    
-                                        <button class="btn btn-primary mt-2" type="submit">Sign up</button>
-                                    </form>
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- User Profile End -->
+                      <div class="form-group">
+                        <label for="password">Confirm Password:</label>
+                        <input type="password" name="confirm_password_input" class="form-control" required />
+                      </div>
 
+                      <button class="btn btn-primary mt-2" type="submit">Sign up</button>
+                    </form>
+                  </div>
                 </div>
-                <!-- /.container-fluid -->
-
+              </div>
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            {% include 'footer.html' %}
-            <!-- End of Footer -->
-
+            <!-- User Profile End -->
+          </div>
+          <!-- /.container-fluid -->
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Main Content -->
 
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
+      <i class="fas fa-angle-up"></i>
     </a>
 
-    {% include 'logout-modal.html' %}
-
-    {% include 'script-cdn.html' %}
-
-    {% if response == 'password mismatch' %}
-    <script>
-        iziToast.error({
-            title: "Password Mismatch",
-            message: "The password you entered doesn't match to the confirm password.",
-            position: "topCenter",
-            timeout: 5000,
-        });
-    </script>
-    {% endif %}
-
-    {% if response == 'user exist' %}
-    <script>
-        iziToast.error({
-            title: "User exist",
-            message: "The User already exist.",
-            position: "topCenter",
-            timeout: 5000,
-        });
-    </script>
-    {% endif %}
-
-</body>
-
+    {% include 'logout-modal.html' %} 
+    
+    {% include 'script-cdn.html' %} 
+    
+    {% include 'alert-validation.html' %}
+  </body>
 </html>

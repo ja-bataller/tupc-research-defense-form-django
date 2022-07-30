@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-# Custom - Creating User Account
+# User Account
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     course = models.CharField(max_length=256, blank=True)
@@ -26,6 +26,7 @@ class User(AbstractUser):
 
 ####################################################################################################################
 
+# Course - Major - Course Major Abbreviation
 class StudentCourseMajor(models.Model):
     course = models.CharField(max_length=256)
     major = models.CharField(max_length=256)
@@ -36,6 +37,7 @@ class StudentCourseMajor(models.Model):
     
 ####################################################################################################################
 
+# Panel Conforme - BET-3
 class PanelConformeBET3(models.Model):
     student_leader_username = models.CharField(max_length=256)
 
@@ -71,3 +73,16 @@ class PanelConformeBET3(models.Model):
 
     def __str__(self) -> str:
         return self.student_leader_username
+
+####################################################################################################################
+
+# Research Title
+class ResearchTitle(models.Model):
+    research_title = models.CharField(max_length=256)
+    course = models.CharField(max_length=256)
+    major = models.CharField(max_length=256)
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_name = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.research_title

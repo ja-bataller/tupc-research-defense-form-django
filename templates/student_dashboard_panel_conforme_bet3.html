@@ -1,0 +1,41 @@
+{% if department_head_status == "pending" %}
+<tr>
+  <td>{{research_title}}</td>
+  <td>{{form}}</td>
+  <td>{{department_head}} - DIT HEAD</td>
+  <td>Pending</td>
+  <td class="text-center">
+    <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
+  </td>
+</tr>
+{% endif %} {% if panel_member_status_1 == "pending" %}
+<tr>
+  <td>{{research_title}}</td>
+  <td>{{form}}</td>
+  <td>{{panel_member_1}} - Panel</td>
+  <td>Pending</td>
+  <td class="text-center">
+    <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
+  </td>
+</tr>
+{% endif %} {% if panel_member_status_2 == "pending" %}
+<tr>
+  <td>{{research_title}}</td>
+  <td>{{form}}</td>
+  <td>{{panel_member_2}} - Panel</td>
+  <td>Pending</td>
+  <td class="text-center">
+    <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
+  </td>
+</tr>
+{% endif %} {% if panel_member_status_3 == "pending" %}
+<tr>
+  <td>{{research_title}}</td>
+  <td>{{form}}</td>
+  <td>{{panel_member_3}} - Panel</td>
+  <td>Pending</td>
+  <td class="text-center">
+    <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
+  </td>
+</tr>
+{% endif %}
