@@ -22,7 +22,6 @@ urlpatterns = [
    path('admin-department-head-acc/', views.adminDepartmentHeadAcc, name ="admin-department-head-acc"),
    path('admin-department-head-pass/', views.adminDepartmentHeadPass, name ="admin-department-head-pass"),
 
-   path('admin-faculty-member/', views.adminFacultyMember, name ="admin-faculty-member"),
    path('admin-faculty-member-create/', views.adminFacultyMemberCreateAcc, name ="admin-faculty-member-create"), 
    path('admin-faculty-member-acc/', views.adminFacultyMemberAcc, name ="admin-faculty-member-acc"),
 

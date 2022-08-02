@@ -32,31 +32,11 @@
 </script>
 {% endif %} 
 
-{% if response == 'changed password' %}
-<script>
-  iziToast.success({
-    title: "Success",
-    message: "Your password has been changed successfully. Please re-login again.",
-    position: "topCenter",
-    timeout: 5000,
-  });
-</script>
-{% endif %}
 
 <!-- INDEX VALIDATION END -->
 
 
 <!-- ADMIN - DEPARTMENT HEAD CREATE START-->
-{% if response == 'password mismatch' %}
-<script>
-  iziToast.error({
-    title: "Invalid",
-    message: "The Password you entered doesn't match to the Confirm Password.",
-    position: "topCenter",
-    timeout: 5000,
-  });
-</script>
-{% endif %} 
 
 {% if response == 'user exist' %}
 <script>
@@ -69,16 +49,6 @@
 </script>
 {% endif %}
 
-{% if response == 'choose honorific' %}
-<script>
-  iziToast.error({
-    title: "Invalid",
-    message: "You didn't input honorific. Please choose one.",
-    position: "topCenter",
-    timeout: 5000,
-  });
-</script>
-{% endif %}
 <!-- ADMIN - DEPARTMENT HEAD CREATE END-->
 
 {% if response == 'added successfully' %}
@@ -165,16 +135,8 @@
 </script>
 {% endif %}
 
-{% if response == 'password mismatch' %}
-<script>
-  iziToast.error({
-    title: "Password Mismatch",
-    message: "The password you entered doesn't match to the confirm password.",
-    position: "topCenter",
-    timeout: 5000,
-  });
-</script>
-{% endif %} {% if response == 'user exist' %}
+
+{% if response == 'user exist' %}
 <script>
   iziToast.error({
     title: "User exist",
@@ -201,49 +163,7 @@
     timeout: 3000,
   });
 </script>
-{% endif %} {% if response == 'invalid username' %}
-<script>
-  iziToast.error({
-    title: "Invalid Username",
-    message: "Please input TUP Cavite ID No. correctly.",
-    position: "topCenter",
-    timeout: 5000,
-  });
-</script>
 {% endif %} 
-
-{% if response == 'invalid email' %}
-<script>
-  iziToast.error({
-    title: "Invalid Email",
-    message: "Please input TUP Cavite GSFE Email correctly.",
-    position: "topCenter",
-    timeout: 5000,
-  });
-</script>
-{% endif %}
-
-{% if response == 'username exist' %}
-<script>
-  iziToast.error({
-    title: "Invalid",
-    message: "The Username you entered is already taken.",
-    position: "topCenter",
-    timeout: 5000,
-  });
-</script>
-{% endif %}
-
-{% if response == 'email exist' %}
-<script>
-  iziToast.error({
-    title: "Invalid",
-    message: "The Email you entered is already taken.",
-    position: "topCenter",
-    timeout: 5000,
-  });
-</script>
-{% endif %}
 
 {% if response == 'profile updated' %}
 <script>
@@ -337,5 +257,97 @@
 {% if response == 'panel conforme bet-3 exist' %}
 <script>
   Swal.fire("Uh-oh", "It looks like you already have a pending Panel Conforme BET-3 Form. Form submission can only be done once.", "warning");
+</script>
+{% endif %}
+
+{% if response == 'changed password' %}
+<script>
+  Swal.fire("Success!", "Your password has been updated. Please login again.", "success");
+</script>
+{% endif %}
+
+<!-- Faculty Member Sign up Validation Start -->
+
+{% if response == 'choose honorific' %}
+<script>
+  iziToast.error({
+    title: "Invalid Honorific",
+    message: "You didn't input any honorific. Please choose one.",
+    position: "topCenter",
+    timeout: 5000,
+  });
+</script>
+{% endif %}
+
+{% if response == 'honorific not in list' %}
+<script>
+  Swal.fire("Uh-oh!", "You just entered a Honorific which is not in the list. Please choose one from the choices given.", "warning");
+</script>
+{% endif %}
+
+{% if response == 'choose user account' %}
+<script>
+  iziToast.error({
+    title: "Invalid User Account",
+    message: "You didn't input any user account. Please choose one.",
+    position: "topCenter",
+    timeout: 5000,
+  });
+</script>
+{% endif %}
+
+{% if response == 'DIT Head exist' %}
+<script>
+  Swal.fire("Uh-oh!", "DIT Head account already exists.", "warning");
+</script>
+{% endif %}
+
+{% if response == 'user account not in list' %}
+<script>
+  Swal.fire("Uh-oh!", "You just entered a User Account which is not in the list. Please choose one from the choices given.", "warning");
+</script>
+{% endif %}
+
+{% if response == 'invalid username' %}
+<script>
+  iziToast.error({
+    title: "Invalid Username",
+    message: "You entered TUP Cavite ID No. incorrectly.",
+    position: "topCenter",
+    timeout: 5000,
+  });
+</script>
+{% endif %} 
+
+{% if response == 'invalid email' %}
+<script>
+  iziToast.error({
+    title: "Invalid GSFE Email",
+    message: "You entered TUP Cavite GSFE Email incorrectly.",
+    position: "topCenter",
+    timeout: 5000,
+  });
+</script>
+{% endif %} 
+
+{% if response == 'username or email exist' %}
+<script>
+  iziToast.error({
+    title: "Invalid Username or Email",
+    message: "The TUPC ID No. or GSFE Email you entered is already taken.",
+    position: "topCenter",
+    timeout: 5000,
+  });
+</script>
+{% endif %}
+
+{% if response == 'password mismatch' %}
+<script>
+  iziToast.error({
+    title: "Invalid Confirm Password",
+    message: "The Password you entered doesn't match to the Confirm Password.",
+    position: "topCenter",
+    timeout: 5000,
+  });
 </script>
 {% endif %}

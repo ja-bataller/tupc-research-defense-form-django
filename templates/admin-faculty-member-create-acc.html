@@ -9,20 +9,23 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Admin - Faculty Member</title>
+    <title>Admin - Create Account - Faculty Member </title>
 
     {% include 'css-main-cdn.html ' %}
+
   </head>
 
   <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+
       {% include "admin-account-sidebar.html" %}
 
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
+          
           {% include 'topbar.html' %}
 
           <!-- Begin Page Content -->
@@ -37,13 +40,14 @@
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
+
                     <form method="POST">
                       {% csrf_token %}
 
                       <div class="form-group">
-                        <label>Honorific</label>
+                        <label>Honorific:</label>
                         <select class="custom-select" name="honorific_input" required>
-                          <option selected>Choose honorific here...</option>
+                          <option value="Default" selected>Choose honorific here...</option>
                           <option value="Mr.">Mr.</option>
                           <option value="Ms.">Ms.</option>
                           <option value="Mrs.">Mrs.</option>
@@ -54,15 +58,49 @@
                       </div>
 
                       <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" name="first_name_input" class="form-control" required />
+                        <label>First Name:</label>
+                        <input type="text" name="first_name_input" class="form-control"  style="text-transform: capitalize" required />
                       </div>
 
                       <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" name="last_name_input" class="form-control" required />
+                        <label>Middle Name:</label>
+                        <input type="text" name="middle_name_input" class="form-control"  style="text-transform: capitalize" />
                       </div>
 
+                      <div class="form-group">
+                        <label>Last Name:</label>
+                        <input type="text" name="last_name_input" class="form-control"  style="text-transform: capitalize" required />
+                      </div>
+                      
+                      {% if dit_head_exist == "exist" %}
+
+                      <!-- Show if DIT Head Account exist -->
+                      <div class="form-group">
+                        <label>User Account:</label>
+                        <select class="custom-select" name="user_account_input" required>
+                          <option value="Default" selected>Choose User account here...</option>
+                          <option value="Faculty Member">Panel / Adviser / Subject Teacher</option>
+                          <option value="Academic Affairs">Academic Affairs</option>
+                          <option value="Library">Library</option>
+                          <option value="Research & Extesion">Research & Extesion</option>
+                        </select>
+                      </div>
+
+                      {% else %}
+
+                      <div class="form-group">
+                        <label>User Account:</label>
+                        <select class="custom-select" name="user_account_input" required>
+                          <option value="Default" selected>Choose User account here...</option>
+                          <option value="DIT Head">Department of Industrial Technology Head</option>
+                          <option value="Faculty Member">Panel / Adviser / Subject Teacher</option>
+                          <option value="Academic Affairs">Academic Affairs</option>
+                          <option value="Library">Library</option>
+                          <option value="Research & Extesion">Research & Extesion</option>
+                        </select>
+                      </div>
+                      {% endif %}
+                     
                       <div class="form-group">{{form}}</div>
 
                       <!-- <div class="form-group">
@@ -84,7 +122,7 @@
                         <input type="password" name="confirm_password_input" class="form-control" required />
                       </div>
 
-                      <button class="btn btn-primary mt-2" type="submit">Sign up</button>
+                      <button class="btn btn-outline-success mt-2 w-100 btn-lg" type="submit">Sign up</button>
                     </form>
                   </div>
                 </div>
@@ -109,24 +147,10 @@
       <i class="fas fa-angle-up"></i>
     </a>
 
-    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% if response == 'password mismatch' %}
-    <script>
-      iziToast.error({
-        title: "Password Mismatch",
-        message: "The password you entered doesn't match to the confirm password.",
-        position: "topCenter",
-        timeout: 5000,
-      });
-    </script>
-    {% endif %} {% if response == 'user exist' %}
-    <script>
-      iziToast.error({
-        title: "User exist",
-        message: "The User already exist.",
-        position: "topCenter",
-        timeout: 5000,
-      });
-    </script>
-    {% endif %}
+    {% include 'logout-modal.html' %} 
+    {% include 'script-cdn.html' %} 
+    {% include 'alert-validation.html' %}
+    
+
   </body>
 </html>

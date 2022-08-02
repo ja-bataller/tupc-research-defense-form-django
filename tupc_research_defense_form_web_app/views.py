@@ -18,7 +18,7 @@ from docx.shared import Inches
 
 today = date.today()
 
-User = get_user_model()
+# User = get_user_model()
 
 ##########################################################################################################################
 
@@ -734,6 +734,7 @@ def studentPanelConformeBet3Create(request):
             major = major_input,
             student_leader_username = current_user.username,
             student_leader_name = leader_member_name_2,
+            status = "ongoing",
             )
 
         research_title_form.save()
@@ -743,11 +744,18 @@ def studentPanelConformeBet3Create(request):
 
     try:
         dept_head_check = User.objects.get(is_department_head=1)
-        dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+        dept_head_name = None
 
         panel_check = User.objects.filter(is_panel=1)
-
+ 
         panel_members_list = []
+
+        if dept_head_check.middle_name == "":
+            dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+        
+        else:
+            dept_head_middle_initial = dept_head_check.middle_name[0]
+            dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_middle_initial + ". " + dept_head_check.last_name
 
         for panel in panel_check:
 
@@ -1149,6 +1157,14 @@ def adminDepartmentHeadCreateAcc(request):
     user_full_name = None
     user_account = None
 
+    # Check if DIT Account exist
+    try:
+        User.objects.get(is_department_head=1)
+        return redirect('admin-department-head-acc')
+
+    except:
+        pass
+
     if user_middle_name == "":
        user_full_name = current_user.first_name + " " + current_user.last_name
 
@@ -1315,6 +1331,14 @@ def adminDepartmentHeadAcc(request):
 
     user_full_name = None
     user_account = None
+
+    # Check if DIT Account exist
+    try:
+        User.objects.get(is_department_head=1)
+        pass
+
+    except:
+        return redirect('admin-department-head-create')
 
     if user_middle_name == "":
        user_full_name = current_user.first_name + " " + current_user.last_name
@@ -1817,7 +1841,7 @@ def adminDepartmentHeadPass(request):
 def adminStudentAddCourseMajor(request):
     current_user = (request.user)
     
-    # Topbar
+    # Topbar Start
     user_middle_name = current_user.middle_name
     user_middle_initial = None
 
@@ -1842,6 +1866,7 @@ def adminStudentAddCourseMajor(request):
     
     elif current_user.is_administrator == 1:
         user_account = "Administrator"
+    # Topbar end
 
     if request.method == "POST":
         course_input = request.POST.get('course_input')
@@ -1894,95 +1919,41 @@ def adminStudentAddCourseMajor(request):
     return render(request, 'admin-student-add-course-major.html', context)
 
 
-# Admin - Faculty Member Check
-@login_required(login_url='index')
-def adminFacultyMember(request):
-
-    try:
-        members = User.objects.all().filter(is_panel=1)
-        print("Account Exist")
-        return redirect('admin-faculty-member-acc')
-
-    except:
-        print("Create Account")
-        return redirect('admin-faculty-member-create')
-
-
-# Admin - Faculty Member Create Account Page
-@login_required(login_url='index')
-def adminFacultyMemberCreateAcc(request):
-    current_user = (request.user)
-    currentpassword = (request.user.password)
-
-    user_first_name = current_user.first_name
-    user_last_name = current_user.last_name
-
-    user_full_name = user_first_name + " " + user_last_name
-
-    form = SignUpForm()
-
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
-
-        confirm_password = request.POST.get('confirm_password_input')
-        print(confirm_password)
-
-        if form.is_valid():
-            print("valid form")
-
-            user = form.save(commit=False)
-
-            if user.password == confirm_password:
-                print("valid password")
-                user.save()
-
-                user_check = User.objects.get(username=user.username)
-                user_check.honorific = request.POST.get('honorific_input')
-                user_check.first_name = request.POST.get('first_name_input')
-                user_check.last_name = request.POST.get('last_name_input')
-                # user_check.department = "Industrial Technology"
-                user_check.is_panel = 1
-                user_check.is_student = 0
-                # user_check.is_adviser = 1
-                # user_check.is_subject_teacher = 1
-                user_check.save()
-
-                context = {'user_full_name': user_full_name, 'user_first_name': user_first_name,
-                    'user_last_name': user_last_name, 'username': current_user.username, 'response': "account created"}
-
-                return render(request, 'admin-faculty-member-account.html', context)
-
-            else:
-                print("password mismatch")
-                context = {'user_full_name': user_full_name, 'user_first_name': user_first_name, 'user_last_name': user_last_name,
-                    'username': current_user.username, 'form': form, 'response': 'password mismatch'}
-                return render(request, 'admin-faculty-member-create-acc.html', context)
-
-        else:
-            print("user exist")
-            context = {'user_full_name': user_full_name, 'user_first_name': user_first_name,
-                'user_last_name': user_last_name, 'username': current_user.username, 'form': form, 'response': 'user exist'}
-            return render(request, 'admin-faculty-member-create-acc.html', context)
-
-    context = {'user_full_name': user_full_name, 'user_first_name': user_first_name,
-        'user_last_name': user_last_name, 'username': current_user.username, 'form': form}
-    return render(request, 'admin-faculty-member-create-acc.html', context)
-
-
 # Admin - Department Head Account Page
 @login_required(login_url='index')
 def adminFacultyMemberAcc(request):
     current_user = (request.user)
-    currentpassword = (request.user.password)
 
-    user_first_name = current_user.first_name
-    user_last_name = current_user.last_name
+    # Topbar Start
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
 
-    user_full_name = user_first_name + " " + user_last_name
+    user_full_name = None
+    user_account = None
 
-    members = User.objects.all().filter(is_panel=1)
+    if user_middle_name == "":
+       user_full_name = current_user.first_name + " " + current_user.last_name
 
-    # dept_head_check = User.objects.get(is_panel=1)
+    else:
+        user_middle_initial = user_middle_name[0]
+        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
+
+    if current_user.is_student == 1:
+        user_account = "Student"
+     
+    elif current_user.is_department_head == 1:
+        user_account = "DIT Head"
+    
+    elif current_user.is_panel == 1:
+        user_account = "Faculty Member"
+    
+    elif current_user.is_administrator == 1:
+        user_account = "Administrator"
+    # Topbar end
+
+    members = User.objects.all().filter(is_faculty_member=1)
+
+    # dept_head_check = User.objects.get(is_panel=1,)
 
     # print(dept_head_check.username)
     # dept_head_username = dept_head_check.username
@@ -1993,6 +1964,7 @@ def adminFacultyMemberAcc(request):
 
     context = {
         'user_full_name': user_full_name,
+        'user_account': user_account,
         'members' : members,
         # 'dept_head_username': dept_head_username,
         # 'dept_head_email': dept_head_email,
@@ -2002,3 +1974,414 @@ def adminFacultyMemberAcc(request):
         }
 
     return render(request, 'admin-faculty-member-account.html', context)
+
+# Admin - Faculty Member Create Account Page
+@login_required(login_url='index')
+def adminFacultyMemberCreateAcc(request):
+    current_user = (request.user)
+    form = SignUpForm()
+
+    dit_head_exist = None
+
+    try:
+        User.objects.get(is_department_head=1)
+        dit_head_exist = "exist"
+    except:
+        pass
+    
+    # Topbar Start
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
+
+    user_full_name = None
+    user_account = None
+    
+
+    if user_middle_name == "":
+       user_full_name = current_user.first_name + " " + current_user.last_name
+
+    else:
+        user_middle_initial = user_middle_name[0]
+        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
+
+    if current_user.is_student == 1:
+        user_account = "Student"
+     
+    elif current_user.is_department_head == 1:
+        user_account = "DIT Head"
+    
+    elif current_user.is_panel == 1:
+        user_account = "Panel"
+    
+    elif current_user.is_adviser == 1:
+        user_account = "Adviser"
+    
+    elif current_user.is_subject_teacher == 1:
+        user_account = "Subject Teacher"
+    
+    elif current_user.is_academic_affairs == 1:
+        user_account = "Academic Affairs"
+    
+    elif current_user.is_library == 1:
+        user_account = "Library"
+    
+    elif current_user.is_research_extension == 1:
+        user_account = "Research & Extension"
+
+    elif current_user.is_administrator == 1:
+        user_account = "Administrator"
+    # Topbar end
+
+    if request.method == "POST": 
+        honorific_list = ["Mr.", "Ms.", "Mrs.", "Engr.", "Dr.", "Dra."]
+        user_account_list = ["DIT Head", "Faculty Member", "Academic Affairs", 'Library', 'Research & Extesion']
+        
+        honorific_input = request.POST.get('honorific_input')
+        first_name_input = request.POST.get('first_name_input')
+        middle_name_input = request.POST.get('middle_name_input')
+        last_name_input = request.POST.get('last_name_input')
+        user_account_input = request.POST.get('user_account_input')
+        form = SignUpForm(request.POST)
+        confirm_password = request.POST.get('confirm_password_input')
+
+        print("Create Account Form")
+        print("Honorofic Input: ",honorific_input)
+        print("First Name: ",first_name_input)
+        print("Midle Name: ",middle_name_input)
+        print("Last Name: ",last_name_input)
+        print("User Account: ",user_account_input)
+        print("Confirm Password: ",confirm_password)
+
+
+        # Form Validation Start
+
+        if honorific_input == "Default":
+            print("Choose Honorific")
+            print(dit_head_exist)
+
+            context = {
+                # Topbar Start
+                'user_full_name': user_full_name, 
+                'user_account' : user_account,
+
+                # Form
+                'form': form,
+                'dit_head_exist' : dit_head_exist,
+
+                # Response
+                'response' : "choose honorific",
+            }
+
+            return render(request, 'admin-faculty-member-create-acc.html', context)
+
+        if honorific_input not in honorific_list:
+            print("Honorific not in list")
+            print(dit_head_exist)
+
+            context = {
+                # Topbar Start
+                'user_full_name': user_full_name, 
+                'user_account' : user_account,
+
+                # Form
+                'form': form,
+                'dit_head_exist' : dit_head_exist,
+
+                # Response
+                'response' : "honorific not in list",
+            }
+
+            return render(request, 'admin-faculty-member-create-acc.html', context)
+
+        if user_account_input == "Default":
+            print("Choose User Account")
+            print(dit_head_exist)
+
+            context = {
+                # Topbar Start
+                'user_full_name': user_full_name, 
+                'user_account' : user_account,
+
+                # Form
+                'form': form,
+                'dit_head_exist' : dit_head_exist,
+
+                # Response
+                'response' : "choose user account",
+            }
+
+            return render(request, 'admin-faculty-member-create-acc.html', context)
+
+        if user_account_input not in user_account_list:
+            print("User Account not in list")
+            print(dit_head_exist)
+
+            context = {
+                # Topbar Start
+                'user_full_name': user_full_name, 
+                'user_account' : user_account,
+
+                # Form
+                'form': form,
+                'dit_head_exist' : dit_head_exist,
+
+                # Response
+                'response' : "user account not in list",
+            }
+
+            return render(request, 'admin-faculty-member-create-acc.html', context)
+
+        if user_account_input == "DIT Head":
+            try:
+                User.objects.get(is_department_head=1)
+                print("DIT Head Account Exist")
+                print(dit_head_exist)
+
+                context = {
+                    # Topbar Start
+                    'user_full_name': user_full_name, 
+                    'user_account' : user_account,
+
+                    # Form
+                    'form': form,
+                    'dit_head_exist' : dit_head_exist,
+                }
+                return render(request, 'admin-faculty-member-create-acc.html', context)
+
+            except:
+                pass
+
+        if form.is_valid():
+            user = form.save(commit=False)
+            username_input = user.username
+            email_input = user.email
+            
+            if "TUPC" not in username_input:
+                print("Invalid Username")
+                print(dit_head_exist)
+
+                context = {
+                    # Topbar Start
+                    'user_full_name': user_full_name, 
+                    'user_account' : user_account,
+
+                    # Form
+                    'form': form,
+                    'dit_head_exist' : dit_head_exist,
+
+                    # Response
+                    'response' : "invalid username",
+                }
+
+                return render(request, 'admin-faculty-member-create-acc.html', context)
+
+            if "@gsfe.tupcavite.edu.ph" not in email_input:
+                print("Invalid Email")
+                print(dit_head_exist)
+
+                context = {
+                    # Topbar Start
+                    'user_full_name': user_full_name, 
+                    'user_account' : user_account,
+
+                    # Form
+                    'form': form,
+                    'dit_head_exist' : dit_head_exist,
+
+                    # Response
+                    'response' : "invalid email",
+                }
+
+                return render(request, 'admin-faculty-member-create-acc.html', context)
+
+            if user.password == confirm_password:
+                print("valid password")
+                user.save()
+
+                if user_account_input == "DIT Head":
+                    user_check = User.objects.get(username=user.username)
+
+                    user_check.honorific = honorific_input
+                    user_check.first_name = first_name_input.title()
+                    user_check.middle_name = middle_name_input.title()
+                    user_check.last_name = last_name_input.title()
+                    user_check.department = "DIT Head"
+                    user_check.is_department_head = 1
+                    user_check.is_panel = 1
+                    user_check.is_adviser = 1
+                    user_check.is_subject_teacher = 1
+                    user_check.is_faculty_member = 1
+                    user_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    context = {
+                        # Topbar Start
+                        'user_full_name': user_full_name, 
+                        'user_account' : user_account,
+
+                        'members': members,
+                        # Response
+                        'response' : "account created",
+                    }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+                if user_account_input == "Faculty Member":
+                    user_check = User.objects.get(username=user.username)
+
+                    user_check.honorific = honorific_input
+                    user_check.first_name = first_name_input.title()
+                    user_check.middle_name = middle_name_input.title()
+                    user_check.last_name = last_name_input.title()
+                    user_check.department = "Faculty Member"
+                    user_check.is_panel = 1
+                    user_check.is_adviser = 1
+                    user_check.is_subject_teacher = 1
+                    user_check.is_faculty_member = 1
+                    user_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    context = {
+                        # Topbar Start
+                        'user_full_name': user_full_name, 
+                        'user_account' : user_account,
+
+                        'members': members,
+                        # Response
+                        'response' : "account created",
+                    }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+                
+                if user_account_input == "Academic Affairs":
+                    user_check = User.objects.get(username=user.username)
+
+                    user_check.honorific = honorific_input
+                    user_check.first_name = first_name_input.title()
+                    user_check.middle_name = middle_name_input.title()
+                    user_check.last_name = last_name_input.title()
+                    user_check.department = "Academic Affairs"
+                    user_check.is_academic_affairs = 1
+                    user_check.is_faculty_member = 1
+                    user_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    context = {
+                        # Topbar Start
+                        'user_full_name': user_full_name, 
+                        'user_account' : user_account,
+
+                        'members': members,
+                        # Response
+                        'response' : "account created",
+                    }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+                if user_account_input == "Library":
+                    user_check = User.objects.get(username=user.username)
+
+                    user_check.honorific = honorific_input
+                    user_check.first_name = first_name_input.title()
+                    user_check.middle_name = middle_name_input.title()
+                    user_check.last_name = last_name_input.title()
+                    user_check.department = "Library"
+                    user_check.is_library = 1
+                    user_check.is_faculty_member = 1
+                    user_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    context = {
+                        # Topbar Start
+                        'user_full_name': user_full_name, 
+                        'user_account' : user_account,
+
+                        'members': members,
+                        # Response
+                        'response' : "account created",
+                    }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+                
+                if user_account_input == "Research & Extesion":
+                    user_check = User.objects.get(username=user.username)
+
+                    user_check.honorific = honorific_input
+                    user_check.first_name = first_name_input.title()
+                    user_check.middle_name = middle_name_input.title()
+                    user_check.last_name = last_name_input.title()
+                    user_check.department = "Research & Extension"
+                    user_check.is_research_extension = 1
+                    user_check.is_faculty_member = 1
+                    user_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    context = {
+                        # Topbar Start
+                        'user_full_name': user_full_name, 
+                        'user_account' : user_account,
+
+                        'members': members,
+                        # Response
+                        'response' : "account created",
+                    }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+            else:
+                print("password mismatch")
+                print(dit_head_exist)
+
+                context = {
+                    # Topbar Start
+                    'user_full_name': user_full_name, 
+                    'user_account' : user_account,
+
+                    # Form
+                    'form': form,
+                    'dit_head_exist' : dit_head_exist,
+
+                    # Response
+                    'response' : "password mismatch",
+                }
+
+                return render(request, 'admin-faculty-member-create-acc.html', context)
+
+        else:
+            print("User Exist")
+            print(dit_head_exist)
+
+            context = {
+                # Topbar Start
+                'user_full_name': user_full_name, 
+                'user_account' : user_account,
+
+                # Form
+                'form': form,
+                'dit_head_exist' : dit_head_exist,
+
+                # Response
+                'response' : "username or email exist",
+            }
+
+            return render(request, 'admin-faculty-member-create-acc.html', context)
+
+    context = {
+        # Topbar Start
+        'user_full_name': user_full_name, 
+        'user_account' : user_account,
+
+        # Form
+        'form': form,
+
+        'dit_head_exist' : dit_head_exist,
+        }
+    return render(request, 'admin-faculty-member-create-acc.html', context)
+
+
+

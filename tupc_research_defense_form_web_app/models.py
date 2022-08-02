@@ -12,11 +12,19 @@ class User(AbstractUser):
 
     is_user = models.BooleanField(default=True)
     is_administrator = models.BooleanField(default=False)
+
     is_department_head = models.BooleanField(default=False)
+
     is_panel = models.BooleanField(default=False)
     is_adviser = models.BooleanField(default=False)
     is_subject_teacher = models.BooleanField(default=False)
+
+    is_academic_affairs = models.BooleanField(default=False)
+    is_library = models.BooleanField(default=False)
+    is_research_extension = models.BooleanField(default=False)
+
     is_student = models.BooleanField(default=False)
+    is_faculty_member = models.BooleanField(default=False)
 
     # is_superuser = models.BooleanField(default=True)
     # is_staff = models.BooleanField(default=True)
@@ -83,6 +91,7 @@ class ResearchTitle(models.Model):
     major = models.CharField(max_length=256)
     student_leader_username = models.CharField(max_length=256)
     student_leader_name = models.CharField(max_length=256)
+    status = models.CharField(max_length=256)
 
     def __str__(self) -> str:
         return self.research_title
