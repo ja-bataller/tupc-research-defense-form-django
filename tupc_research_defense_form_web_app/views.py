@@ -1129,712 +1129,6 @@ def adminProfile(request):
 
     return render(request, 'admin-profile.html', context)
 
-# Admin - Department Head Check
-@login_required(login_url='index')
-def adminDepartmentHead(request):
-
-    try:
-        dept_head_check = User.objects.get(is_department_head=1)
-        print(dept_head_check.username)
-        print("Account Exist")
-        return redirect('admin-department-head-acc')
-
-    except:
-        print("Create Account")
-        return redirect('admin-department-head-create')
-
-
-# Admin - Department Head Create Account Page
-@login_required(login_url='index')
-def adminDepartmentHeadCreateAcc(request):
-    current_user = (request.user)
-    currentpassword = (request.user.password)
-
-     # Topbar
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    # Check if DIT Account exist
-    try:
-        User.objects.get(is_department_head=1)
-        return redirect('admin-department-head-acc')
-
-    except:
-        pass
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
-    
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
-
-    form = SignUpForm()
-
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
-
-        honorific_input = request.POST.get('honorific_input')
-        confirm_password = request.POST.get('confirm_password_input')
-
-        if form.is_valid():
-            print("valid form")
-
-            user = form.save(commit=False)
-
-            user_username_inut = user.username
-            user_email_inut = user.email
-
-            if honorific_input != "default":
-                pass
-
-            else:
-                context = {
-                    'user_full_name': user_full_name, 
-                    'user_account' : user_account,
-                    
-                    'username': current_user.username, 
-                    'form': form,
-
-                    'response' : "choose honorific"
-                    }
-
-                return render(request, 'admin-dept-head-create-acc.html', context)
-
-            if "TUPC" in user_username_inut:
-                pass
-
-            else:
-                context = {
-                    'user_full_name': user_full_name, 
-                    'user_account' : user_account,
-
-                    'username': current_user.username, 
-                    'form': form,
-
-                    'response' : "invalid username"
-                    }
-
-                return render(request, 'admin-dept-head-create-acc.html', context)
-            
-            if "gsfe.tupcavite.edu.ph" in user_email_inut:
-                pass
-
-            else:
-                context = {
-                    'user_full_name': user_full_name, 
-                    'user_account' : user_account,
-
-                    'username': current_user.username, 
-                    'form': form,
-
-                    'response' : "invalid email"
-                    }
-
-                return render(request, 'admin-dept-head-create-acc.html', context)
-            
-
-            if user.password == confirm_password:
-                print("valid password")
-                user.save()
-
-                user_check = User.objects.get(username=user.username)
-                user_check.honorific = request.POST.get('honorific_input')
-                user_check.first_name = request.POST.get('first_name_input').title()
-                user_check.middle_name = request.POST.get('middle_name_input').title()
-                user_check.last_name = request.POST.get('last_name_input').title()
-                user_check.department = "Industrial Technology"
-                user_check.is_department_head = 1
-                user_check.save()
-
-                dept_head_check = User.objects.get(is_department_head=1)
-
-                print(dept_head_check.username)
-                dept_head_username = dept_head_check.username
-                dept_head_email = dept_head_check.email
-                dept_head_first_name = dept_head_check.first_name
-                dept_head_middle_name = dept_head_check.middle_name
-                dept_head_last_name = dept_head_check.last_name
-                dept_head_department = dept_head_check.department
-
-                context = {
-                    'user_full_name': user_full_name,
-                    'dept_head_username': dept_head_username,
-                    'dept_head_email': dept_head_email,
-                    'dept_head_first_name': dept_head_first_name,
-                    'dept_head_middle_name': dept_head_middle_name,
-                    'dept_head_last_name': dept_head_last_name,
-                    'dept_head_department': dept_head_department,
-
-                    'response' : "account created",
-                    }
-
-                return render(request, 'admin-dept-head-account.html', context)
-
-            else:
-                print("password mismatch")
-
-                context = {
-                    'user_full_name': user_full_name, 
-                    
-                    'username': current_user.username, 
-                    'form': form, 
-                    'response': 'password mismatch'
-                    }
-
-                return render(request, 'admin-dept-head-create-acc.html', context)
-
-        else:
-            print("user exist")
-            context = {
-                'user_full_name': user_full_name, 
-                
-                'username': current_user.username, 
-                'form': form, 'response': 'user exist'}
-                
-            return render(request, 'admin-dept-head-create-acc.html', context)
-
-    context = {
-        'user_full_name': user_full_name, 
-        
-        'username': current_user.username,
-        'form': form
-          }
-          
-    return render(request, 'admin-dept-head-create-acc.html', context)
-
-
-# Admin - Department Head Account Page
-@login_required(login_url='index')
-def adminDepartmentHeadAcc(request):
-    current_user = (request.user)
-    currentpassword = (request.user.password)
-
-    # Topbar
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    # Check if DIT Account exist
-    try:
-        User.objects.get(is_department_head=1)
-        pass
-
-    except:
-        return redirect('admin-department-head-create')
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
-    
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
-
-    dept_head_check = User.objects.get(is_department_head=1)
-
-    print(dept_head_check.username)
-    dept_head_honorific = dept_head_check.honorific
-    dept_head_username = dept_head_check.username
-    dept_head_email = dept_head_check.email
-    dept_head_first_name = dept_head_check.first_name
-    dept_head_middle_name = dept_head_check.middle_name
-    dept_head_last_name = dept_head_check.last_name
-    dept_head_department = dept_head_check.department
-
-    context = {
-        'user_full_name': user_full_name,
-        'user_account' : user_account,
-
-        'dept_head_honorific': dept_head_honorific,
-        'dept_head_username': dept_head_username,
-        'dept_head_email': dept_head_email,
-        'dept_head_first_name': dept_head_first_name,
-        'dept_head_middle_name': dept_head_middle_name,
-        'dept_head_last_name': dept_head_last_name,
-        'dept_head_department': dept_head_department,
-        }
-    
-    if request.method == 'POST':
-        username_input = request.POST.get('username_input')
-        email_input = request.POST.get('email_input')
-        honorific_input = request.POST.get('honorific_input')
-        first_name_input = request.POST.get('first_name_input')
-        middle_name_input = request.POST.get('middle_name_input')
-        last_name_input = request.POST.get('last_name_input')
-        password_input = request.POST.get('password_input')
-
-        if honorific_input != "default":
-                pass
-
-        else:
-            context = {
-                'user_full_name': user_full_name,
-                'user_account' : user_account,
-
-                'dept_head_honorific': dept_head_honorific,
-                'dept_head_username': dept_head_username,
-                'dept_head_email': dept_head_email,
-                'dept_head_first_name': dept_head_first_name,
-                'dept_head_middle_name': dept_head_middle_name,
-                'dept_head_last_name': dept_head_last_name,
-                'dept_head_department': dept_head_department,
-
-                'response' : "choose honorific"
-                }
-
-            return render(request, 'admin-dept-head-account.html', context)
-
-        if "TUPC" in username_input:
-                pass
-
-        else:
-            context = {
-                'user_full_name': user_full_name,
-                'user_account' : user_account,
-
-                'dept_head_honorific': dept_head_honorific,
-                'dept_head_username': dept_head_username,
-                'dept_head_email': dept_head_email,
-                'dept_head_first_name': dept_head_first_name,
-                'dept_head_middle_name': dept_head_middle_name,
-                'dept_head_last_name': dept_head_last_name,
-                'dept_head_department': dept_head_department,
-
-                'response' : "invalid username"
-                }
-
-            return render(request, 'admin-dept-head-account.html', context)
-        
-        if "gsfe.tupcavite.edu.ph" in email_input:
-            pass
-
-        else:
-            context = {
-                'user_full_name': user_full_name,
-                'user_account': user_account,
-
-                'dept_head_honorific': dept_head_honorific,
-                'dept_head_username': dept_head_username,
-                'dept_head_email': dept_head_email,
-                'dept_head_first_name': dept_head_first_name,
-                'dept_head_middle_name': dept_head_middle_name,
-                'dept_head_last_name': dept_head_last_name,
-                'dept_head_department': dept_head_department,
-
-                'response' : "invalid email"
-                }
-
-            return render(request, 'admin-dept-head-account.html', context)
-
-        if dept_head_check.password == password_input:
-
-            dept_head_check.honorific=honorific_input
-            dept_head_check.first_name=first_name_input.title()
-            dept_head_check.middle_name=middle_name_input.title()
-            dept_head_check.last_name=last_name_input.title()
-            dept_head_check.save()
-
-            if dept_head_check.username == username_input and dept_head_check.email == email_input:
-
-                new_dept_head_check = User.objects.get(is_department_head=1)
-
-                new_dept_head_honorific = new_dept_head_check.honorific
-                new_dept_head_username = new_dept_head_check.username
-                new_dept_head_email = new_dept_head_check.email
-                new_dept_head_first_name = new_dept_head_check.first_name
-                new_dept_head_middle_name = new_dept_head_check.middle_name
-                new_dept_head_last_name = new_dept_head_check.last_name
-                new_dept_head_department = new_dept_head_check.department
-                
-                context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
-
-                    'dept_head_honorific': new_dept_head_honorific,
-                    'dept_head_username': new_dept_head_username,
-                    'dept_head_email': new_dept_head_email,
-                    'dept_head_first_name': new_dept_head_first_name,
-                    'dept_head_middle_name': new_dept_head_middle_name,
-                    'dept_head_last_name': new_dept_head_last_name,
-                    'dept_head_department':new_dept_head_department,
-
-                    'response' : "profile updated"
-                    }
-
-                return render(request, 'admin-dept-head-account.html', context)
-
-            if dept_head_check.username != username_input and dept_head_check.email == email_input:
-                try:
-                    
-                    new_dept_head_check = User.objects.get(is_department_head=1)
-
-                    new_dept_head_honorific = new_dept_head_check.honorific
-                    new_dept_head_username = new_dept_head_check.username
-                    new_dept_head_email = new_dept_head_check.email
-                    new_dept_head_first_name = new_dept_head_check.first_name
-                    new_dept_head_middle_name = new_dept_head_check.middle_name
-                    new_dept_head_last_name = new_dept_head_check.last_name
-                    new_dept_head_department = new_dept_head_check.department
-                    
-                    context = {
-                    'user_full_name': user_full_name,
-                    'user_account': user_account,
-
-                    'dept_head_honorific': new_dept_head_honorific,
-                    'dept_head_first_name': new_dept_head_first_name,
-                    'dept_head_middle_name': new_dept_head_middle_name,
-                    'dept_head_last_name': new_dept_head_last_name,
-                    'dept_head_department':new_dept_head_department,
-                    'dept_head_username': new_dept_head_username,
-                    'dept_head_email': new_dept_head_email,
-
-                    'response' : "partial update username exist"
-                    }
-
-                    return render(request, 'admin-dept-head-account.html', context)
-
-                except:
-                    dept_head_check.username=username_input
-                    dept_head_check.save()
-
-                    new_dept_head_check = User.objects.get(is_department_head=1)
-
-                    new_dept_head_honorific = new_dept_head_check.honorific
-                    new_dept_head_username = new_dept_head_check.username
-                    new_dept_head_email = new_dept_head_check.email
-                    new_dept_head_first_name = new_dept_head_check.first_name
-                    new_dept_head_middle_name = new_dept_head_check.middle_name
-                    new_dept_head_last_name = new_dept_head_check.last_name
-                    new_dept_head_department = new_dept_head_check.department
-                    
-                    context = {
-                    'dept_head_honorific': new_dept_head_honorific,
-                    'user_full_name': user_full_name,
-                    'dept_head_username': new_dept_head_username,
-                    'dept_head_email': new_dept_head_email,
-                    'dept_head_first_name': new_dept_head_first_name,
-                    'dept_head_middle_name': new_dept_head_middle_name,
-                    'dept_head_last_name': new_dept_head_last_name,
-                    'dept_head_department':new_dept_head_department,
-
-                        'response' : "profile updated"
-                        }
-
-                    return render(request, 'admin-dept-head-account.html', context)
-
-            if dept_head_check.username == username_input and dept_head_check.email != email_input:
-                
-                try:
-                    User.objects.get(email=email_input)
-
-                    context = {
-                    'user_full_name': user_full_name,
-                    'user_account': user_account,
-
-                    'dept_head_honorific': new_dept_head_honorific,
-                    'dept_head_first_name': new_dept_head_first_name,
-                    'dept_head_middle_name': new_dept_head_middle_name,
-                    'dept_head_last_name': new_dept_head_last_name,
-                    'dept_head_department':new_dept_head_department,
-                    'dept_head_username': new_dept_head_username,
-                    'dept_head_email': new_dept_head_email,
-
-                    'response' : "partial update email exist"
-                    }
-
-                    return render(request, 'admin-dept-head-account.html', context)
-
-                except:
-                    dept_head_check.email = email_input
-                    dept_head_check.save()
-
-                    new_dept_head_check = User.objects.get(is_department_head=1)
-
-                    new_dept_head_honorific = new_dept_head_check.honorific
-                    new_dept_head_username = new_dept_head_check.username
-                    new_dept_head_email = new_dept_head_check.email
-                    new_dept_head_first_name = new_dept_head_check.first_name
-                    new_dept_head_middle_name = new_dept_head_check.middle_name
-                    new_dept_head_last_name = new_dept_head_check.last_name
-                    new_dept_head_department = new_dept_head_check.department
-                    
-                    context = {
-                    'dept_head_honorific': new_dept_head_honorific,
-                    'user_full_name': user_full_name,
-                    'dept_head_username': new_dept_head_username,
-                    'dept_head_email': new_dept_head_email,
-                    'dept_head_first_name': new_dept_head_first_name,
-                    'dept_head_middle_name': new_dept_head_middle_name,
-                    'dept_head_last_name': new_dept_head_last_name,
-                    'dept_head_department':new_dept_head_department,
-
-                    'response' : "profile updated"
-                    }
-
-                    return render(request, 'admin-dept-head-account.html', context)
-                
-            if dept_head_check.username != username_input and dept_head_check.email != email_input:
-                
-                try:
-                    User.objects.get(username=username_input)
-                    User.objects.get(email=email_input)
-
-                    new_dept_head_check = User.objects.get(is_department_head=1)
-
-                    new_dept_head_honorific = new_dept_head_check.honorific
-                    new_dept_head_username = new_dept_head_check.username
-                    new_dept_head_email = new_dept_head_check.email
-                    new_dept_head_first_name = new_dept_head_check.first_name
-                    new_dept_head_middle_name = new_dept_head_check.middle_name
-                    new_dept_head_last_name = new_dept_head_check.last_name
-                    new_dept_head_department = new_dept_head_check.department
-                    
-                    context = {
-                    'user_full_name': user_full_name,
-                    'user_account': user_account,
-
-                    'dept_head_honorific': new_dept_head_honorific,
-                    'dept_head_first_name': new_dept_head_first_name,
-                    'dept_head_middle_name': new_dept_head_middle_name,
-                    'dept_head_last_name': new_dept_head_last_name,
-                    'dept_head_department':new_dept_head_department,
-                    'dept_head_username': new_dept_head_username,
-                    'dept_head_email': new_dept_head_email,
-
-                    'response' : "partial update username and email exist"
-                    }
-
-                    return render(request, 'admin-dept-head-account.html', context)
-
-                except:
-                    dept_head_check.username=username_input
-                    dept_head_check.email=email_input
-                    dept_head_check.save()
-
-                    new_dept_head_check = User.objects.get(is_department_head=1)
-
-                    new_dept_head_honorific = new_dept_head_check.honorific
-                    new_dept_head_username = new_dept_head_check.username
-                    new_dept_head_email = new_dept_head_check.email
-                    new_dept_head_first_name = new_dept_head_check.first_name
-                    new_dept_head_middle_name = new_dept_head_check.middle_name
-                    new_dept_head_last_name = new_dept_head_check.last_name
-                    new_dept_head_department = new_dept_head_check.department
-                    
-                    context = {
-                    'dept_head_honorific': new_dept_head_honorific,
-                    'user_full_name': user_full_name,
-                    'dept_head_username': new_dept_head_username,
-                    'dept_head_email': new_dept_head_email,
-                    'dept_head_first_name': new_dept_head_first_name,
-                    'dept_head_middle_name': new_dept_head_middle_name,
-                    'dept_head_last_name': new_dept_head_last_name,
-                    'dept_head_department':new_dept_head_department,
-
-                    'response' : "profile updated"
-                    }
-
-                    return render(request, 'admin-dept-head-account.html', context)
-
-        else:
-            context = {
-                'user_full_name': user_full_name,
-                'user_account' : user_account,
-
-                'dept_head_honorific': dept_head_honorific,
-                'dept_head_username': dept_head_username,
-                'dept_head_email': dept_head_email,
-                'dept_head_first_name': dept_head_first_name,
-                'dept_head_middle_name': dept_head_middle_name,
-                'dept_head_last_name': dept_head_last_name,
-                'dept_head_department': dept_head_department,
-
-                'response' : "incorrect password"
-                }
-
-            return render(request, 'admin-dept-head-account.html', context)
-
-    return render(request, 'admin-dept-head-account.html', context)
-
-
-# Admin - Department Head Change Password Page
-@login_required(login_url='index')
-def adminDepartmentHeadPass(request):
-    current_user = (request.user)
-    currentpassword = (request.user.password)
-
-   # Topbar
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
-    
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
-
-    dept_head_check = User.objects.get(is_department_head=1)
-    currentpassword = dept_head_check.password
-
-    if request.method == 'POST':
-        current_password_input = request.POST.get('current_password_input')
-        new_password_input = request.POST.get('new_password_input')
-        confirm_new_password_input = request.POST.get('confirm_new_password_input')
-
-        if current_password_input == currentpassword:
-
-            if current_password_input != new_password_input:
-
-                if new_password_input == confirm_new_password_input:
-
-                    User.objects.filter(username=dept_head_check.username).update(password=new_password_input)
-
-                    print(dept_head_check.username)
-                    dept_head_username = dept_head_check.username
-                    dept_head_email = dept_head_check.email
-                    dept_head_first_name = dept_head_check.first_name
-                    dept_head_middle_name = dept_head_check.middle_name
-                    dept_head_last_name = dept_head_check.last_name
-                    dept_head_department = dept_head_check.department
-
-                    context = {
-                        'user_full_name': user_full_name,
-                        'user_account': user_account,
-
-                        'dept_head_username': dept_head_username,
-                        'dept_head_email': dept_head_email,
-                        'dept_head_first_name': dept_head_first_name,
-                        'dept_head_middle_name': dept_head_middle_name,
-                        'dept_head_last_name': dept_head_last_name,
-                        'dept_head_department': dept_head_department,
-
-                        'response' : 'password changed',
-                        }
-
-                    return render(request, 'admin-dept-head-account.html', context)
-
-                else:
-                    print(dept_head_check.username)
-                    dept_head_username = dept_head_check.username
-                    dept_head_email = dept_head_check.email
-                    dept_head_first_name = dept_head_check.first_name
-                    dept_head_middle_name = dept_head_check.middle_name
-                    dept_head_last_name = dept_head_check.last_name
-                    dept_head_department = dept_head_check.department
-
-                    context = {
-                        'user_full_name': user_full_name,
-                        'user_account': user_account,
-
-                        'dept_head_username': dept_head_username,
-                        'dept_head_email': dept_head_email,
-                        'dept_head_first_name': dept_head_first_name,
-                        'dept_head_middle_name': dept_head_middle_name,
-                        'dept_head_last_name': dept_head_last_name,
-                        'dept_head_department': dept_head_department,
-
-                        'response' : 'confirm password mismatch',
-                        }
-
-                    return render(request, 'admin-dept-head-account.html', context)
-
-            else:
-                print(dept_head_check.username)
-                dept_head_username = dept_head_check.username
-                dept_head_email = dept_head_check.email
-                dept_head_first_name = dept_head_check.first_name
-                dept_head_middle_name = dept_head_check.middle_name
-                dept_head_last_name = dept_head_check.last_name
-                dept_head_department = dept_head_check.department
-
-                context = {
-                    'user_full_name': user_full_name,
-                    'user_account': user_account,
-
-                    'dept_head_username': dept_head_username,
-                    'dept_head_email': dept_head_email,
-                    'dept_head_first_name': dept_head_first_name,
-                    'dept_head_middle_name': dept_head_middle_name,
-                    'dept_head_last_name': dept_head_last_name,
-                    'dept_head_department': dept_head_department,
-
-                    'response' : 'same password',
-                    }
-
-                return render(request, 'admin-dept-head-account.html', context)
-
-        else:
-            print(dept_head_check.username)
-            dept_head_username = dept_head_check.username
-            dept_head_email = dept_head_check.email
-            dept_head_first_name = dept_head_check.first_name
-            dept_head_middle_name = dept_head_check.middle_name
-            dept_head_last_name = dept_head_check.last_name
-            dept_head_department = dept_head_check.department
-
-            context = {
-                'user_full_name': user_full_name,
-                'user_account': user_account,
-                
-                'dept_head_username': dept_head_username,
-                'dept_head_email': dept_head_email,
-                'dept_head_first_name': dept_head_first_name,
-                'dept_head_middle_name': dept_head_middle_name,
-                'dept_head_last_name': dept_head_last_name,
-                'dept_head_department': dept_head_department,
-
-                'response' : 'incorrect current password',
-                }
-
-            return render(request, 'admin-dept-head-account.html', context)
-
-    return render(request, 'student-profile.html', context)
-
 
 # Admin - Student Add Course and Major Page
 @login_required(login_url='index')
@@ -2384,4 +1678,426 @@ def adminFacultyMemberCreateAcc(request):
     return render(request, 'admin-faculty-member-create-acc.html', context)
 
 
+# Admin - Faculty Member Individual Account Page
+@login_required(login_url='index')
+def adminFacultyMemberData(request, id):
+    current_user = (request.user)
+    currentpassword = (request.user.password)
 
+    # Topbar Start
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
+
+    user_full_name = None
+    user_account = None
+
+    if user_middle_name == "":
+       user_full_name = current_user.first_name + " " + current_user.last_name
+
+    else:
+        user_middle_initial = user_middle_name[0]
+        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
+
+    if current_user.is_student == 1:
+        user_account = "Student"
+     
+    elif current_user.is_department_head == 1:
+        user_account = "DIT Head"
+    
+    elif current_user.is_panel == 1:
+        user_account = "Faculty Member"
+    
+    elif current_user.is_administrator == 1:
+        user_account = "Administrator"
+
+    try:
+        member_check = User.objects.get(username=id)
+    except:
+        return redirect('admin-faculty-member-acc')
+    
+
+    print(member_check.username)
+    member_honorific = member_check.honorific
+    member_username = member_check.username
+    member_email = member_check.email
+    member_first_name = member_check.first_name
+    member_middle_name = member_check.middle_name
+    member_last_name = member_check.last_name
+    member_department = member_check.department
+
+    context = {
+        'user_full_name': user_full_name,
+        'user_account' : user_account,
+
+        'member_honorific': member_honorific,
+        'member_username': member_username,
+        'member_email': member_email,
+        'member_first_name': member_first_name,
+        'member_middle_name': member_middle_name,
+        'member_last_name': member_last_name,
+        'member_department': member_department,
+        }
+    
+    if request.method == 'POST':
+        honorific_list = ["Mr.", "Ms.", "Mrs.", "Engr.", "Dr.", "Dra."]
+        user_account_list = ["DIT Head", "Faculty Member", "Academic Affairs", 'Library', 'Research & Extesion']
+        
+        username_input = request.POST.get('username_input')
+        email_input = request.POST.get('email_input')
+        honorific_input = request.POST.get('honorific_input')
+        first_name_input = request.POST.get('first_name_input')
+        middle_name_input = request.POST.get('middle_name_input')
+        last_name_input = request.POST.get('last_name_input')
+        password_input = request.POST.get('password_input')
+
+        if honorific_input != "default":
+                pass
+
+        else:
+            context = {
+                'user_full_name': user_full_name,
+                'user_account' : user_account,
+
+                'member_honorific': member_honorific,
+                'member_username': member_username,
+                'member_email': member_email,
+                'member_first_name': member_first_name,
+                'member_middle_name': member_middle_name,
+                'member_last_name': member_last_name,
+                'member_department': member_department,
+
+                'response' : "choose honorific"
+                }
+
+            return render(request, 'admin-faculty-member-data.html', context)
+
+        if "TUPC" in username_input:
+                pass
+
+        else:
+            context = {
+                'user_full_name': user_full_name,
+                'user_account' : user_account,
+
+                'member_honorific': member_honorific,
+                'member_username': member_username,
+                'member_email': member_email,
+                'member_first_name': member_first_name,
+                'member_middle_name': member_middle_name,
+                'member_last_name': member_last_name,
+                'member_department': member_department,
+
+                'response' : "invalid username"
+                }
+
+            return render(request, 'admin-faculty-member-data.html', context)
+        
+        if "gsfe.tupcavite.edu.ph" in email_input:
+            pass
+
+        else:
+            context = {
+                'user_full_name': user_full_name,
+                'user_account': user_account,
+
+                'member_honorific': member_honorific,
+                'member_username': member_username,
+                'member_email': member_email,
+                'member_first_name': member_first_name,
+                'member_middle_name': member_middle_name,
+                'member_last_name': member_last_name,
+                'member_department': member_department,
+
+                'response' : "invalid email"
+                }
+
+            return render(request, 'admin-faculty-member-data.html', context)
+
+        if member_check.password == password_input:
+
+            member_check.honorific=honorific_input
+            member_check.first_name=first_name_input.title()
+            member_check.middle_name=middle_name_input.title()
+            member_check.last_name=last_name_input.title()
+            member_check.save()
+
+            if member_check.username == username_input and member_check.email == email_input:
+
+                members = User.objects.all().filter(is_faculty_member=1)
+                
+                context = {
+                    'user_full_name': user_full_name,
+                    'user_account' : user_account,
+
+                    'members' : members,
+
+                    'response' : "profile updated"
+                    }
+
+                return render(request, 'admin-faculty-member-account.html', context)
+
+            if member_check.username != username_input and member_check.email == email_input:
+                try:
+                    User.objects.get(username=username_input)
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+                
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account' : user_account,
+
+                        'members' : members,
+
+                        'response' : "partial update username exist"
+                        }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+                except:
+                    member_check.username=username_input
+                    member_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+                    
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account': user_account,
+
+                        'members' : members,
+                        'response' : "profile updated"
+                        }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+            if member_check.username == username_input and member_check.email != email_input:
+                
+                try:
+                    User.objects.get(email=email_input)
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+                
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account' : user_account,
+
+                        'members' : members,
+
+                        'response' : "partial update email exist"
+                    }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+                except:
+                    member_check.email = email_input
+                    member_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+                
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account' : user_account,
+
+                        'members' : members,
+
+                        'response' : "profile updated"
+                        }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+                
+            if member_check.username != username_input and member_check.email != email_input:
+                
+                try:
+                    User.objects.get(username=username_input)
+                    User.objects.get(email=email_input)
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+                
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account' : user_account,
+
+                        'members' : members,
+
+                        'response' : "partial update username and email exist"
+                    }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+                except:
+                    member_check.username=username_input
+                    member_check.email=email_input
+                    member_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+                
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account' : user_account,
+
+                        'members' : members,
+
+                        'response' : "profile updated"
+                        }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+        else:
+            context = {
+                'user_full_name': user_full_name,
+                'user_account' : user_account,
+
+                'member_honorific': member_honorific,
+                'member_username': member_username,
+                'member_email': member_email,
+                'member_first_name': member_first_name,
+                'member_middle_name': member_middle_name,
+                'member_last_name': member_last_name,
+                'member_department': member_department,
+
+                'response' : "incorrect password"
+                }
+
+            return render(request, 'admin-faculty-member-data.html', context)
+
+    return render(request, 'admin-faculty-member-data.html', context)
+
+
+# Admin - Department Head Change Password Page
+@login_required(login_url='index')
+def adminFacultyMemberChangePassword(request, id):
+    current_user = (request.user)
+    currentpassword = (request.user.password)
+
+   # Topbar Start
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
+
+    user_full_name = None
+    user_account = None
+
+    if user_middle_name == "":
+       user_full_name = current_user.first_name + " " + current_user.last_name
+
+    else:
+        user_middle_initial = user_middle_name[0]
+        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
+
+    if current_user.is_student == 1:
+        user_account = "Student"
+     
+    elif current_user.is_department_head == 1:
+        user_account = "DIT Head"
+    
+    elif current_user.is_panel == 1:
+        user_account = "Faculty Member"
+    
+    elif current_user.is_administrator == 1:
+        user_account = "Administrator"
+
+    # Topbar End
+
+    faculty_member_check = User.objects.get(username=id)
+    currentpassword = faculty_member_check.password
+
+    if request.method == 'POST':
+        current_password_input = request.POST.get('current_password_input')
+        new_password_input = request.POST.get('new_password_input')
+        confirm_new_password_input = request.POST.get('confirm_new_password_input')
+
+        if current_password_input == currentpassword:
+
+            if current_password_input != new_password_input:
+
+                if new_password_input == confirm_new_password_input:
+
+                    User.objects.filter(username=faculty_member_check.username).update(password=new_password_input)
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    member_check = User.objects.get(username=id)
+                    
+                    member_username = member_check.username
+                    member_full_name = member_check.first_name + " " + member_check.last_name
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account': user_account,
+
+                        'members' : members,
+
+                        'member_username': member_username,
+                        'member_full_name': member_full_name,
+
+                        'response' : 'password changed success',
+                        }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+                else:
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    member_check = User.objects.get(username=id)
+                    
+                    member_username = member_check.username
+                    member_full_name = member_check.first_name + " " + member_check.last_name
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account': user_account,
+
+                        'members' : members,
+
+                        'member_username': member_username,
+                        'member_full_name': member_full_name,
+
+                        'response' : 'confirm change password mismatch',
+                    }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+            else:
+                member_check = User.objects.get(username=id)
+                
+                members = User.objects.all().filter(is_faculty_member=1)
+
+                member_username = member_check.username
+                member_full_name = member_check.first_name + " " + member_check.last_name
+
+                context = {
+                'user_full_name': user_full_name,
+                'user_account': user_account,
+
+                'members' : members,
+
+                'member_username': member_username,
+                'member_full_name': member_full_name,
+
+                    'response' : 'same change password',
+                }
+
+                return render(request, 'admin-faculty-member-account.html', context)
+
+        else:
+            print("incorrect current password")
+            members = User.objects.all().filter(is_faculty_member=1)
+
+            member_check = User.objects.get(username=id)
+
+            member_username = member_check.username
+            member_full_name = member_check.first_name + " " + member_check.last_name
+
+            context = {
+                'user_full_name': user_full_name,
+                'user_account': user_account,
+
+                'members' : members,
+
+                'member_username': member_username,
+                'member_full_name': member_full_name,
+
+                'response' : 'incorrect change current password',
+                }
+
+            return render(request, 'admin-faculty-member-account.html', context)
+
+    return render(request, 'student-profile.html', context)

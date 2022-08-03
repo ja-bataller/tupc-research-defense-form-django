@@ -124,17 +124,6 @@
 </script>
 {% endif %}
 
-{% if response == 'incorrect current password' %}
-<script>
-  iziToast.error({
-    title: "Invalid",
-    message: "The Current Password you entered is incorrect.",
-    position: "topCenter",
-    timeout: 5000,
-  });
-</script>
-{% endif %}
-
 
 {% if response == 'user exist' %}
 <script>
@@ -351,3 +340,15 @@
   });
 </script>
 {% endif %}
+
+{% if response == 'incorrect current password' %}
+<script>
+  iziToast.error({
+    title: "Invalid",
+    message: "The Current Password you entered is incorrect.",
+    position: "topCenter",
+    timeout: 5000,
+  });
+</script>
+{% endif %}
+

@@ -17,13 +17,11 @@ urlpatterns = [
 
    path('admin-profile/', views.adminProfile, name ="admin-profile"), 
    path('admin-dashboard/', views.adminDashboard, name ="admin-dashboard"),
-   path('admin-department-head/', views.adminDepartmentHead, name ="admin-department-head"),
-   path('admin-department-head-create/', views.adminDepartmentHeadCreateAcc, name ="admin-department-head-create"), 
-   path('admin-department-head-acc/', views.adminDepartmentHeadAcc, name ="admin-department-head-acc"),
-   path('admin-department-head-pass/', views.adminDepartmentHeadPass, name ="admin-department-head-pass"),
 
    path('admin-faculty-member-create/', views.adminFacultyMemberCreateAcc, name ="admin-faculty-member-create"), 
    path('admin-faculty-member-acc/', views.adminFacultyMemberAcc, name ="admin-faculty-member-acc"),
+   path('admin-faculty-member-data/<str:id>', views.adminFacultyMemberData, name ="admin-faculty-member-data"),
+   path('admin-faculty-member-change-password/<str:id>', views.adminFacultyMemberChangePassword, name ="admin-faculty-member-change-password"),
 
    path('admin-student-course-major/', views.adminStudentAddCourseMajor, name ="admin-student-course-major"),  
 ]
