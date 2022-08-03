@@ -122,6 +122,36 @@
         Swal.fire("{{member_username}} \n {{member_full_name}}", "The Password of this User has been changed successfully.", "success");
       </script>
     {% endif %}
+      
+    {% if response == 'sweet choose user account' %}
+      <script>
+        Swal.fire("{{member_username}} \n {{member_full_name}}", "You didn't enter any User Account for this User.", "error");
+      </script>
+    {% endif %}
+
+    {% if response == 'sweet user account not in list' %}
+      <script>
+        Swal.fire("{{member_username}} \n {{member_full_name}}", "The User Account you entered for this User is invalid.", "error");
+      </script>
+    {% endif %}
+
+    {% if response == 'sweet already' %}
+      <script>
+        Swal.fire("{{member_username}} \n {{member_full_name}}", "This User is already a {{member_department}}.", "info");
+      </script>
+    {% endif %}
+
+    {% if response == 'sweet incorrect current password' %}
+      <script>
+        Swal.fire("{{member_username}} \n {{member_full_name}}", "The Current Password you entered for this user is incorrect.", "error");
+      </script>
+    {% endif %}
+
+    {% if response == 'sweet success' %}
+      <script>
+        Swal.fire("{{member_username}} \n {{member_full_name}}", "This User is now a {{member_department}}.", "success");
+      </script>
+    {% endif %}
 
   </body>
 </html>

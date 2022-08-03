@@ -142,12 +142,13 @@
                     <div class="form-group mb-5" >
                       <label>Options:</label>
                       <select id="account_settings_option" class="custom-select" name="" required>
-                        <option value="change password" selected>Change Password</option>
+                        <option value="change password" selected >Change Password</option>
                         <option value="change user account">Change User Account</option>
                       </select>
                     </div>
-
-                    <form id="change_password_form" method="POST" action="{% url 'admin-faculty-member-change-password' member_username %}">
+                    
+                    <!-- Change Password Form -->
+                    <form id="change_password_form" method="POST" action="{% url 'admin-faculty-member-change-password' member_username %}" style="display: block;">
                       {% csrf_token %}
 
                       <div class="form-group">
@@ -168,19 +169,19 @@
                       <button type="submit" class="btn btn-outline-success w-100"><i class="fa-solid fa-lock"></i> Change Password</button>
                     </form>
 
-
-                    <form id="change_user_account_form" method="POST" action="{% url 'admin-faculty-member-change-password' member_username %}" style="display: None;">
+                    <!-- Account Settings Form -->
+                    <form id="change_user_account_form" method="POST" action="{% url 'admin-faculty-member-change-user-account' member_username %}" style="display: None;">
                       {% csrf_token %}
 
                       <div class="form-group">
                         <label>User Account:</label>
                         <select class="custom-select" name="user_account_input" required>
-                          <option value="Default" selected>Choose User account here...</option>
+                          <option value="default" selected>Choose User account here...</option>
                           <option value="DIT Head">Department of Industrial Technology Head</option>
                           <option value="Faculty Member">Panel / Adviser / Subject Teacher</option>
                           <option value="Academic Affairs">Academic Affairs</option>
                           <option value="Library">Library</option>
-                          <option value="Research & Extesion">Research & Extesion</option>
+                          <option value="Research & Extension">Research & Extension</option>
                         </select>
                       </div>
 
@@ -191,6 +192,7 @@
 
                       <button type="submit" class="btn btn-outline-success w-100"><i class="fa-solid fa-check"></i> Save Changes</button>
                     </form>
+
                   </div>
                 </div>
               </div>
@@ -220,7 +222,7 @@
 
     {% include 'alert-validation.html' %}
 
-
+    <!-- Edit Switch Script -->
     <script>
       let edit_switch = document.querySelector("#edit_switch");
 
@@ -281,27 +283,32 @@
       });
     </script>
       
-
+    <!-- Account Settings Options Script -->
     <script>
       let account_settings_option = document.querySelector("#account_settings_option");
       let change_password_form= document.querySelector("#change_password_form");
       let change_user_account_form = document.querySelector("#change_user_account_form");
 
     
-      account_settings_option.addEventListener("change", function() {
+      account_settings_option.addEventListener("change", (event) => {
 
-        if (account_settings_option.value == "change password")
-          change_password_form.style.display = "block";
-          change_user_account_form.style.display = "none";
+        if (account_settings_option.value == "change user account") {
 
-          change_password_form.reset()
-          change_user_account_form.reset()
-        if (account_settings_option.value == "change user account")
           change_password_form.style.display = "none";
           change_user_account_form.style.display = "block";
 
           change_password_form.reset()
           change_user_account_form.reset()
+        }
+
+        if (account_settings_option.value == "change password"){
+          change_user_account_form.style.display = "none";
+          change_password_form.style.display = "block";
+
+          change_password_form.reset()
+          change_user_account_form.reset()
+        }
+        
       });
 
     </script>

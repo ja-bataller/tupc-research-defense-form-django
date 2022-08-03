@@ -22,6 +22,7 @@ urlpatterns = [
    path('admin-faculty-member-acc/', views.adminFacultyMemberAcc, name ="admin-faculty-member-acc"),
    path('admin-faculty-member-data/<str:id>', views.adminFacultyMemberData, name ="admin-faculty-member-data"),
    path('admin-faculty-member-change-password/<str:id>', views.adminFacultyMemberChangePassword, name ="admin-faculty-member-change-password"),
+   path('admin-faculty-member-change-user-account/<str:id>', views.adminFacultyMemberChangeUserAccount, name ="admin-faculty-member-change-user-account"),
 
    path('admin-student-course-major/', views.adminStudentAddCourseMajor, name ="admin-student-course-major"),  
 ]

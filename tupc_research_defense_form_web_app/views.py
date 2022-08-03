@@ -1328,7 +1328,7 @@ def adminFacultyMemberCreateAcc(request):
 
     if request.method == "POST": 
         honorific_list = ["Mr.", "Ms.", "Mrs.", "Engr.", "Dr.", "Dra."]
-        user_account_list = ["DIT Head", "Faculty Member", "Academic Affairs", 'Library', 'Research & Extesion']
+        user_account_list = ["DIT Head", "Faculty Member", "Academic Affairs", 'Library', 'Research & Extension']
         
         honorific_input = request.POST.get('honorific_input')
         first_name_input = request.POST.get('first_name_input')
@@ -1601,7 +1601,7 @@ def adminFacultyMemberCreateAcc(request):
 
                     return render(request, 'admin-faculty-member-account.html', context)
                 
-                if user_account_input == "Research & Extesion":
+                if user_account_input == "Research & Extension":
                     user_check = User.objects.get(username=user.username)
 
                     user_check.honorific = honorific_input
@@ -1740,7 +1740,7 @@ def adminFacultyMemberData(request, id):
     
     if request.method == 'POST':
         honorific_list = ["Mr.", "Ms.", "Mrs.", "Engr.", "Dr.", "Dra."]
-        user_account_list = ["DIT Head", "Faculty Member", "Academic Affairs", 'Library', 'Research & Extesion']
+        user_account_list = ["DIT Head", "Faculty Member", "Academic Affairs", 'Library', 'Research & Extension']
         
         username_input = request.POST.get('username_input')
         email_input = request.POST.get('email_input')
@@ -1962,7 +1962,7 @@ def adminFacultyMemberData(request, id):
     return render(request, 'admin-faculty-member-data.html', context)
 
 
-# Admin - Department Head Change Password Page
+# Admin - Faculty Member Change Password Process
 @login_required(login_url='index')
 def adminFacultyMemberChangePassword(request, id):
     current_user = (request.user)
@@ -2101,3 +2101,313 @@ def adminFacultyMemberChangePassword(request, id):
             return render(request, 'admin-faculty-member-account.html', context)
 
     return render(request, 'student-profile.html', context)
+
+
+# Admin - Faculty Member Change User Account Process
+@login_required(login_url='index')
+def adminFacultyMemberChangeUserAccount(request, id):
+    current_user = (request.user)
+    currentpassword = (request.user.password)
+
+    # Topbar Start
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
+
+    user_full_name = None
+    user_account = None
+
+    if user_middle_name == "":
+       user_full_name = current_user.first_name + " " + current_user.last_name
+
+    else:
+        user_middle_initial = user_middle_name[0]
+        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
+
+    if current_user.is_student == 1:
+        user_account = "Student"
+     
+    elif current_user.is_department_head == 1:
+        user_account = "DIT Head"
+    
+    elif current_user.is_panel == 1:
+        user_account = "Faculty Member"
+    
+    elif current_user.is_administrator == 1:
+        user_account = "Administrator"
+    # Topbar End
+
+    try:
+        member_check = User.objects.get(username=id)
+
+    except:
+        return redirect('admin-faculty-member-acc')
+
+    print(member_check.department)
+    
+    if request.method == 'POST':
+        user_account_list = ["DIT Head", "Faculty Member", "Academic Affairs", 'Library', 'Research & Extension']
+
+        user_account_input = request.POST.get('user_account_input')
+        current_password_input = request.POST.get('current_password_input')
+
+        if user_account_input == "default":
+            print("choose User Account") 
+
+            members = User.objects.all().filter(is_faculty_member=1)
+            
+            member_username = member_check.username
+            member_full_name = member_check.first_name + " " + member_check.last_name
+
+            context = {
+                'user_full_name': user_full_name,
+                'user_account': user_account,
+
+                'members' : members,
+
+                'member_username': member_username,
+                'member_full_name': member_full_name,
+
+                'response' : "sweet choose user account"
+                }
+
+            return render(request, 'admin-faculty-member-account.html', context)
+
+        if user_account_input not in user_account_list:
+            print("User Account not in list")
+
+            members = User.objects.all().filter(is_faculty_member=1)
+            
+            member_username = member_check.username
+            member_full_name = member_check.first_name + " " + member_check.last_name
+
+            context = {
+                'user_full_name': user_full_name,
+                'user_account': user_account,
+
+                'members' : members,
+
+                'member_username': member_username,
+                'member_full_name': member_full_name,
+
+                'response' : "sweet user account not in list"
+                }
+
+            return render(request, 'admin-faculty-member-account.html', context)
+
+        if member_check.password == current_password_input:
+            
+            if member_check.department == user_account_input:
+
+                members = User.objects.all().filter(is_faculty_member=1)
+
+                member_check = User.objects.get(username=id)
+                member_username = member_check.username
+                member_full_name = member_check.first_name + " " + member_check.last_name
+                member_department = member_check.department
+
+                context = {
+                    'user_full_name': user_full_name,
+                    'user_account': user_account,
+
+                    'members' : members,
+
+                    'member_username': member_username,
+                    'member_full_name': member_full_name,
+                    'member_department': member_department,
+
+                    'response' : 'sweet already',
+                    }
+
+                return render(request, 'admin-faculty-member-account.html', context)
+
+            else:
+
+                if user_account_input == "DIT Head":
+
+                    member_check = User.objects.get(username=id)
+                    member_username = member_check.username
+                    member_full_name = member_check.first_name + " " + member_check.last_name
+
+                    member_check.department = user_account_input
+
+                    member_check.is_department_head = 1
+                    member_check.is_panel = 1
+                    member_check.is_adviser = 1
+                    member_check.is_subject_teacher = 1
+                    member_check.is_academic_affairs = 0
+                    member_check.is_library = 0
+                    member_check.is_research_extension = 0
+                    member_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account': user_account,
+
+                        'members' : members,
+
+                        'member_username': member_username,
+                        'member_full_name': member_full_name,
+                        'member_department' : user_account_input,
+
+                        'response' : 'sweet success',
+                        }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+                if user_account_input == "Faculty Member":
+
+                    member_check = User.objects.get(username=id)
+                    member_username = member_check.username
+                    member_full_name = member_check.first_name + " " + member_check.last_name
+
+                    member_check.department = user_account_input
+
+                    member_check.is_department_head = 0
+                    member_check.is_panel = 1
+                    member_check.is_adviser = 1
+                    member_check.is_subject_teacher = 1
+                    member_check.is_academic_affairs = 0
+                    member_check.is_library = 0
+                    member_check.is_research_extension = 0
+                    member_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account': user_account,
+
+                        'members' : members,
+
+                        'member_username': member_username,
+                        'member_full_name': member_full_name,
+                        'member_department' : user_account_input,
+
+                        'response' : 'sweet success',
+                        }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+                if user_account_input == "Academic Affairs":
+
+                    member_check = User.objects.get(username=id)
+                    member_username = member_check.username
+                    member_full_name = member_check.first_name + " " + member_check.last_name
+
+                    member_check.department = user_account_input
+
+                    member_check.is_department_head = 0
+                    member_check.is_panel = 0
+                    member_check.is_adviser = 0
+                    member_check.is_subject_teacher = 0
+                    member_check.is_academic_affairs = 1
+                    member_check.is_library = 0
+                    member_check.is_research_extension = 0
+                    member_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account': user_account,
+
+                        'members' : members,
+
+                        'member_username': member_username,
+                        'member_full_name': member_full_name,
+                        'member_department' : user_account_input,
+
+                        'response' : 'sweet success',
+                        }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+                if user_account_input == "Library":
+
+                    member_check = User.objects.get(username=id)
+                    member_username = member_check.username
+                    member_full_name = member_check.first_name + " " + member_check.last_name
+
+                    member_check.department = user_account_input
+
+                    member_check.is_department_head = 0
+                    member_check.is_panel = 0
+                    member_check.is_adviser = 0
+                    member_check.is_subject_teacher = 0
+                    member_check.is_academic_affairs = 0
+                    member_check.is_library = 1
+                    member_check.is_research_extension = 0
+                    member_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account': user_account,
+
+                        'members' : members,
+
+                        'member_username': member_username,
+                        'member_full_name': member_full_name,
+                        'member_department' : user_account_input,
+
+                        'response' : 'sweet success',
+                        }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+
+                if user_account_input == "Research & Extension":
+
+                    member_check = User.objects.get(username=id)
+                    member_username = member_check.username
+                    member_full_name = member_check.first_name + " " + member_check.last_name
+
+                    member_check.department = user_account_input
+
+                    member_check.is_department_head = 0
+                    member_check.is_panel = 0
+                    member_check.is_adviser = 0
+                    member_check.is_subject_teacher = 0
+                    member_check.is_academic_affairs = 0
+                    member_check.is_library = 0
+                    member_check.is_research_extension = 1
+                    member_check.save()
+
+                    members = User.objects.all().filter(is_faculty_member=1)
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account': user_account,
+
+                        'members' : members,
+
+                        'member_username': member_username,
+                        'member_full_name': member_full_name,
+                        'member_department' : user_account_input,
+
+                        'response' : 'sweet success',
+                        }
+
+                    return render(request, 'admin-faculty-member-account.html', context)
+        else:
+            members = User.objects.all().filter(is_faculty_member=1)
+
+            member_check = User.objects.get(username=id)
+            member_username = member_check.username
+            member_full_name = member_check.first_name + " " + member_check.last_name
+
+            context = {
+                'user_full_name': user_full_name,
+                'user_account': user_account,
+
+                'members' : members,
+
+                'member_username': member_username,
+                'member_full_name': member_full_name,
+
+                'response' : 'sweet incorrect current password',
+                }
+
+            return render(request, 'admin-faculty-member-account.html', context)
