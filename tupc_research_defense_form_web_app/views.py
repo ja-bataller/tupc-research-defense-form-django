@@ -1,4 +1,5 @@
 import email
+from multiprocessing import context
 from django.shortcuts import render, redirect
 
 from django.contrib.auth import authenticate, login, logout
@@ -77,12 +78,49 @@ def signup(request):
     form = SignUpForm()
 
     course = StudentCourseMajor.objects.all()
+
+    course_list = []
+
+    if not course:
+        context = {
+            'response': "sweet no course"}
+        return render(request, 'signup.html', context)
+    
+    else:
+        for course_abbr in course:
+            course_list.append(course_abbr.course_major_abbr)
         
+        print(course_list)
+
     if request.method == "POST":
         form = SignUpForm(request.POST)
 
+        course_input = request.POST.get('course_input')
         confirm_password = request.POST.get('confirm_password_input')
+
         print(confirm_password)
+
+        if course_input == "default":
+
+            context = {
+                'form': form, 
+                "course" : course,
+
+                'response': "choose course"
+            }
+
+            return render(request, 'signup.html', context)
+
+        if course_input not in course_list:
+
+            context = {
+                'form': form, 
+                "course" : course,
+
+                'response': "sweet invalid course"
+            }
+
+            return render(request, 'signup.html', context)
 
         if form.is_valid():
             print("valid form")
@@ -135,7 +173,11 @@ def signup(request):
         context = {'form': form, 'response': "user exist"}
         return render(request, 'signup.html', context)
 
-    context = {'form': form, "course" : course}
+    context = {
+        'form': form, 
+        "course" : course
+        }
+    
     return render(request, 'signup.html', context)
 
 # Log out
@@ -232,6 +274,7 @@ def studentDashboard(request):
         }
 
     return render(request, 'student-dashboard.html', context)
+
 
 # Student - Profile Page
 @login_required(login_url='index')
@@ -378,11 +421,35 @@ def studentPanelConformeBet3(request):
     current_user = (request.user)
 
     try:
-        panel_conforme_bet3_check = PanelConformeBET3.objects.get(student_leader_username=current_user)
+        PanelConformeBET3.objects.get(student_leader_username=current_user)
         print("Panel Conforme - BET-3 Exist")
         return redirect('student-panel-conforme-bet3-form')
 
     except:
+        panel_members = User.objects.all().filter(is_panel=1)
+        
+        try:
+            dept_head_check = User.objects.get(is_department_head=1)
+            pass
+        except:
+            print("No DIT Head")
+            context = {
+                'response' : "sweet inc form"
+            }
+
+            return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+        if not panel_members or panel_members.count() < 5:
+            print("Incomplete Faculty Member")
+            context = {
+                'response' : "sweet inc form"
+            }
+
+            return render(request, 'student-panel-conforme-bet-3-create.html', context)
+        else:
+            pass
+
+
         print("Panel Conforme - BET-3 Create")
         return redirect('student-panel-conforme-bet3-create')
 
@@ -434,7 +501,21 @@ def studentPanelConformeBet3Create(request):
         leader_member_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
         leader_member_name_2 = current_user.last_name + ", " + current_user.first_name + " " + user_middle_initial + "."
 
+
+    panel_member_check_list = []
+    panel_members = User.objects.all().filter(is_panel=1)
+
+    for panel_member in panel_members:
+
+        if panel_member.middle_name == "":
+            panel_member_check_list.append(panel_member.honorific + " " + panel_member.first_name + " " + panel_member.last_name)
+        else:
+            panel_member_check_list.append(panel_member.honorific + " " + panel_member.first_name + " " + panel_member.middle_name[0] + ". " + panel_member.last_name)
+
+    print(panel_member_check_list)
+
     if request.method == "POST":
+
         # Get Text Month, Day Year - Today
         date_today = today.strftime("%B %d, %Y")
         print("Date Submitted =", date_today)
@@ -689,7 +770,51 @@ def studentPanelConformeBet3Create(request):
                 return render(request, 'student-panel-conforme-bet-3-create.html', context)
 
             except:
+                return redirect('student-dashboard')
 
+        # If Panel Name input is not in the Panel Member List
+        elif panel1_input not in panel_member_check_list or panel2_input not in panel_member_check_list or panel3_input not in panel_member_check_list or panel4_input not in panel_member_check_list or panel5_input not in panel_member_check_list: 
+            try:
+                dept_head_check = User.objects.get(is_department_head=1)
+                dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+
+                panel_check = User.objects.filter(is_panel=1)
+
+                panel_members_list = []
+
+                for panel in panel_check:
+
+                    if panel.middle_name == "":
+                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel.last_name)
+
+                    else:
+                        panel_middle_initial = panel.middle_name[0]
+                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel_middle_initial + ". " + panel.last_name)
+                
+                panel_members = sorted(panel_members_list)
+
+                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+                course_name = course_check.course
+                major_name = course_check.major
+
+                context = {
+                    'user_full_name': user_full_name,
+                    'user_account' : user_account,
+
+                    'dept_head_name': dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'leader_member_name' : leader_member_name_2,
+                    'course_name' : course_name,
+                    'major_name' : major_name,
+
+                    'response' : "sweet panel not in the list"
+                    }
+
+                return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+            except:
                 return redirect('student-dashboard')
 
         # Saving Data to MYSQL Database
@@ -719,7 +844,7 @@ def studentPanelConformeBet3Create(request):
             course = course_abbr,
             major = major_input,
 
-            research_title = research_title_input,
+            research_title = research_title_input.title(),
 
             date_submitted = date_today,
 
@@ -822,31 +947,34 @@ def studentPanelConformeBet3Form(request):
     elif current_user.is_administrator == 1:
         user_account = "Administrator"
 
-    # Panel Conforme - BET-3 - Data
-    panel_conforme_bet3_check = PanelConformeBET3.objects.get(student_leader_username=current_user)
+    try:
+        # Panel Conforme - BET-3 - Data
+        panel_conforme_bet3_check = PanelConformeBET3.objects.get(student_leader_username=current_user)
 
-    dept_head_name = panel_conforme_bet3_check.dept_head
+        dept_head_name = panel_conforme_bet3_check.dept_head
 
-    panel1 = panel_conforme_bet3_check.panel_member_1
-    panel2 = panel_conforme_bet3_check.panel_member_2
-    panel3 = panel_conforme_bet3_check.panel_member_3
-    panel4 = panel_conforme_bet3_check.panel_member_4
-    panel5 = panel_conforme_bet3_check.panel_member_5
+        panel1 = panel_conforme_bet3_check.panel_member_1
+        panel2 = panel_conforme_bet3_check.panel_member_2
+        panel3 = panel_conforme_bet3_check.panel_member_3
+        panel4 = panel_conforme_bet3_check.panel_member_4
+        panel5 = panel_conforme_bet3_check.panel_member_5
 
-    student1 = panel_conforme_bet3_check.student_member_1
-    student2 = panel_conforme_bet3_check.student_member_2
-    student3 = panel_conforme_bet3_check.student_member_3
-    student4 = panel_conforme_bet3_check.student_member_4
-    student5 = panel_conforme_bet3_check.student_member_5
+        student1 = panel_conforme_bet3_check.student_member_1
+        student2 = panel_conforme_bet3_check.student_member_2
+        student3 = panel_conforme_bet3_check.student_member_3
+        student4 = panel_conforme_bet3_check.student_member_4
+        student5 = panel_conforme_bet3_check.student_member_5
 
-    course = panel_conforme_bet3_check.course
-    major = panel_conforme_bet3_check.major
+        course = panel_conforme_bet3_check.course
+        major = panel_conforme_bet3_check.major
 
-    research_title = panel_conforme_bet3_check.research_title
+        research_title = panel_conforme_bet3_check.research_title
 
-    date_submitted = panel_conforme_bet3_check.date_submitted
+        date_submitted = panel_conforme_bet3_check.date_submitted
 
-    form_status = panel_conforme_bet3_check.form_status
+        form_status = panel_conforme_bet3_check.form_status
+    except:
+        return redirect('student-dashboard')
 
     # Generate PDF Form
     if request.method == "POST":
@@ -1193,7 +1321,7 @@ def adminStudentAddCourseMajor(request):
             
         else:
             print("save")
-            queryForm = StudentCourseMajor(course=course_input, major=major_input, course_major_abbr=course_abbr_input)
+            queryForm = StudentCourseMajor(course=course_input.title(), major=major_input.title(), course_major_abbr=course_abbr_input.upper())
             queryForm.save()
 
             context = {
@@ -2028,7 +2156,7 @@ def adminFacultyMemberChangePassword(request, id):
                         'member_username': member_username,
                         'member_full_name': member_full_name,
 
-                        'response' : 'password changed success',
+                        'response' : 'sweet password changed success',
                         }
 
                     return render(request, 'admin-faculty-member-account.html', context)
@@ -2050,7 +2178,7 @@ def adminFacultyMemberChangePassword(request, id):
                         'member_username': member_username,
                         'member_full_name': member_full_name,
 
-                        'response' : 'confirm change password mismatch',
+                        'response' : 'sweet confirm change password mismatch',
                     }
 
                     return render(request, 'admin-faculty-member-account.html', context)
@@ -2072,7 +2200,7 @@ def adminFacultyMemberChangePassword(request, id):
                 'member_username': member_username,
                 'member_full_name': member_full_name,
 
-                    'response' : 'same change password',
+                    'response' : 'sweet same change password',
                 }
 
                 return render(request, 'admin-faculty-member-account.html', context)
@@ -2095,7 +2223,7 @@ def adminFacultyMemberChangePassword(request, id):
                 'member_username': member_username,
                 'member_full_name': member_full_name,
 
-                'response' : 'incorrect change current password',
+                'response' : 'sweet incorrect change current password',
                 }
 
             return render(request, 'admin-faculty-member-account.html', context)

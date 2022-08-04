@@ -99,25 +99,25 @@
     {% include 'script-cdn.html' %}
     {% include 'alert-validation.html' %} 
      
-    {% if response == 'incorrect change current password' %}
+    {% if response == 'sweet incorrect change current password' %}
       <script>
-        Swal.fire("{{member_username}} \n {{member_full_name}}", "The Current Password you entered for this User is incorrect.", "warning");
+        Swal.fire("{{member_username}} \n {{member_full_name}}", "The Current Password you entered for this User is incorrect.", "error");
       </script>
     {% endif %}
 
-    {% if response == 'same change password' %}
+    {% if response == 'sweet same change password' %}
       <script>
         Swal.fire("{{member_username}} \n {{member_full_name}}", "The Current Password and New Password you entered for this User is the same.", "warning");
       </script>
     {% endif %}
 
-    {% if response == 'confirm change password mismatch' %}
+    {% if response == 'sweet confirm change password mismatch' %}
       <script>
         Swal.fire("{{member_username}} \n {{member_full_name}}", "The New Password and Confirm New Password you entered for this User mismatch.", "warning");
       </script>
     {% endif %}
 
-    {% if response == 'password changed success' %}
+    {% if response == 'sweet password changed success' %}
       <script>
         Swal.fire("{{member_username}} \n {{member_full_name}}", "The Password of this User has been changed successfully.", "success");
       </script>
@@ -135,15 +135,15 @@
       </script>
     {% endif %}
 
+    {% if response == 'sweet incorrect current password' %}
+    <script>
+      Swal.fire("{{member_username}} \n {{member_full_name}}", "The Current Password you entered for this user is incorrect.", "error");
+    </script>
+    {% endif %}
+
     {% if response == 'sweet already' %}
       <script>
         Swal.fire("{{member_username}} \n {{member_full_name}}", "This User is already a {{member_department}}.", "info");
-      </script>
-    {% endif %}
-
-    {% if response == 'sweet incorrect current password' %}
-      <script>
-        Swal.fire("{{member_username}} \n {{member_full_name}}", "The Current Password you entered for this user is incorrect.", "error");
       </script>
     {% endif %}
 

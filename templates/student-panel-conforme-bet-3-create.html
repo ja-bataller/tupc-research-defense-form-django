@@ -60,7 +60,7 @@
                         <input type="text" class="form-control" value="{{course_name}}" name="course_input" required disabled />
                       </div>
 
-                      <div class="form-group mb-5">
+                      <div class="form-group mb-4">
                         <h6 class="h6 mb-0 text-gray-800 mb-2">Major:</h6>
                         <input type="text" class="form-control" value="{{major_name}}" name="major_input" required disabled />
                       </div>
@@ -104,7 +104,7 @@
 
                        <!-- Department Head Start -->
                       <h6 class="h6 mb-0 text-gray-800 mb-2">Department of Industrial Technology - Head:</h6>
-                      <div class="form-group mb-5">
+                      <div class="form-group mb-3">
                         <input type="text" class="form-control" value="{{dept_head_name}}" name="dept_head_name_input" style="text-transform: capitalize" required disabled />
                       </div>
                        <!-- Department Head End -->
@@ -160,7 +160,7 @@
                         </select>
                       </div>
 
-                      <div class="input-group mb-3">
+                      <div class="input-group mb-4">
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-default">5</span>
                         </div>
@@ -172,15 +172,12 @@
                         </select>
                       </div>
                       <!-- Panel Members End -->
-                    
+                        <button type="submit" class="btn btn-outline-success w-100">Submit</button>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="float-right mb-5">
-                <button type="submit" class="btn btn-outline-success btn-lg">Submit</button>
-              </div>
 
             </form>
           </div>
@@ -206,6 +203,22 @@
     {% include 'script-cdn.html' %}
 
     {% include 'alert-validation.html' %}
+
+    {% if response == 'sweet inc form' %}
+    <script>
+      Swal.fire("Uh-oh", "Sorry, can't fill-up  form at the moment. \n Please try again later.", "warning");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-dashboard' %}");
+      }, 3000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet panel not in the list' %}
+    <script>
+      Swal.fire("Uh-oh", "You just entered a Panel Member which is not in the list. Please choose from the choices given.", "warning");
+    </script>
+    {% endif %}
     
   </body>
 </html>

@@ -352,3 +352,14 @@
 </script>
 {% endif %}
 
+{% if response == 'choose course' %}
+<script>
+  iziToast.error({
+    title: "Invalid",
+    message: "You didn't input any Course. Please choose one.",
+    position: "topCenter",
+    timeout: 5000,
+  });
+</script>
+{% endif %}
+
