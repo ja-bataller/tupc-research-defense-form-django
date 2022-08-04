@@ -118,8 +118,12 @@
                         </div>
                         <select class="custom-select" name="panel1_input" id="inputGroupSelect02" required>
                           <option value="default" selected>Choose panel member here...</option>
-                          {% for panel in panel_members %}
-                          <option value="{{panel}}">{{panel}}</option>
+                          {% for panel in panel_check %}
+                          {% if panel.middle_name == "" %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
+                          {% else %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
+                          {% endif %}
                           {% endfor %}
                         </select>
                       </div>
@@ -130,8 +134,12 @@
                         </div>
                         <select class="custom-select" name="panel2_input" id="inputGroupSelect02" required>
                           <option value="default" selected>Choose panel member here...</option>
-                          {% for panel in panel_members %}
-                          <option value="{{panel}}">{{panel}}</option>
+                          {% for panel in panel_check %}
+                          {% if panel.middle_name == "" %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
+                          {% else %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
+                          {% endif %}
                           {% endfor %}
                         </select>
                       </div>
@@ -142,8 +150,12 @@
                         </div>
                         <select class="custom-select" name="panel3_input" id="inputGroupSelect02" required>
                           <option value="default" selected>Choose panel member here...</option>
-                          {% for panel in panel_members %}
-                          <option value="{{panel}}">{{panel}}</option>
+                          {% for panel in panel_check %}
+                          {% if panel.middle_name == "" %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
+                          {% else %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
+                          {% endif %}
                           {% endfor %}
                         </select>
                       </div>
@@ -154,8 +166,12 @@
                         </div>
                         <select class="custom-select" name="panel4_input" id="inputGroupSelect02" required>
                           <option value="default" selected>Choose panel member here...</option>
-                          {% for panel in panel_members %}
-                          <option value="{{panel}}">{{panel}}</option>
+                          {% for panel in panel_check %}
+                          {% if panel.middle_name == "" %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
+                          {% else %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
+                          {% endif %}
                           {% endfor %}
                         </select>
                       </div>
@@ -166,8 +182,12 @@
                         </div>
                         <select class="custom-select" name="panel5_input" id="inputGroupSelect02" required>
                           <option value="default" selected>Choose panel member here...</option>
-                          {% for panel in panel_members %}
-                          <option value="{{panel}}">{{panel}}</option>
+                          {% for panel in panel_check %}
+                          {% if panel.middle_name == "" %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
+                          {% else %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
+                          {% endif %}
                           {% endfor %}
                         </select>
                       </div>

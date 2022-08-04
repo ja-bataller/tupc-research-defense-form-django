@@ -58,6 +58,12 @@ class PanelConformeBET3(models.Model):
     panel_member_4 = models.CharField(max_length=256)
     panel_member_5 = models.CharField(max_length=256)
 
+    panel_member_name_1 = models.CharField(max_length=256)
+    panel_member_name_2 = models.CharField(max_length=256)
+    panel_member_name_3 = models.CharField(max_length=256)
+    panel_member_name_4 = models.CharField(max_length=256)
+    panel_member_name_5 = models.CharField(max_length=256)
+
     panel_member_status_1 = models.CharField(max_length=256)
     panel_member_status_2 = models.CharField(max_length=256)
     panel_member_status_3 = models.CharField(max_length=256)
@@ -72,6 +78,7 @@ class PanelConformeBET3(models.Model):
 
     course = models.CharField(max_length=256)
     major = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256)
 
     research_title = models.CharField(max_length=256)
 
