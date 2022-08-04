@@ -252,6 +252,10 @@
 {% if response == 'changed password' %}
 <script>
   Swal.fire("Success!", "Your password has been updated. Please login again.", "success");
+
+  setTimeout(function () {
+        window.location.replace("{% url 'index' %}");
+      }, 2000);
 </script>
 {% endif %}
 

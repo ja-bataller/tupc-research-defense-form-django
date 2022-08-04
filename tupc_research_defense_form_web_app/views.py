@@ -1952,14 +1952,28 @@ def adminFacultyMemberData(request, id):
             if member_check.username == username_input and member_check.email == email_input:
 
                 members = User.objects.all().filter(is_faculty_member=1)
+
+                sweet_member_check = User.objects.get(username=id)
+                    
+                sweet_member_username = sweet_member_check.username
+                sweet_member_full_name = None
+
+                if sweet_member_check.middle_name == "":
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
                 
+                else:
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+
                 context = {
                     'user_full_name': user_full_name,
                     'user_account' : user_account,
 
                     'members' : members,
 
-                    'response' : "profile updated"
+                    'sweet_member_username' : sweet_member_username,
+                    'sweet_member_full_name' : sweet_member_full_name,
+
+                    'response' : "sweet profile updated"
                     }
 
                 return render(request, 'admin-faculty-member-account.html', context)
@@ -1969,6 +1983,17 @@ def adminFacultyMemberData(request, id):
                     User.objects.get(username=username_input)
 
                     members = User.objects.all().filter(is_faculty_member=1)
+
+                    sweet_member_check = User.objects.get(username=id)
+                    
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
+
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
                 
                     context = {
                         'user_full_name': user_full_name,
@@ -1976,7 +2001,10 @@ def adminFacultyMemberData(request, id):
 
                         'members' : members,
 
-                        'response' : "partial update username exist"
+                        'sweet_member_username' : sweet_member_username,
+                        'sweet_member_full_name' : sweet_member_full_name,
+
+                        'response' : "sweet partial update username exist"
                         }
 
                     return render(request, 'admin-faculty-member-account.html', context)
@@ -1986,13 +2014,28 @@ def adminFacultyMemberData(request, id):
                     member_check.save()
 
                     members = User.objects.all().filter(is_faculty_member=1)
+
+                    sweet_member_check = User.objects.get(username=username_input)
+
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
+
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
                     
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+                
                     context = {
                         'user_full_name': user_full_name,
-                        'user_account': user_account,
+                        'user_account' : user_account,
 
                         'members' : members,
-                        'response' : "profile updated"
+
+                        'sweet_member_username' : sweet_member_username,
+                        'sweet_member_full_name' : sweet_member_full_name,
+
+                        'response' : "sweet profile updated"
                         }
 
                     return render(request, 'admin-faculty-member-account.html', context)
@@ -2004,13 +2047,27 @@ def adminFacultyMemberData(request, id):
 
                     members = User.objects.all().filter(is_faculty_member=1)
                 
+                    sweet_member_check = User.objects.get(username=id)
+                    
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
+
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+                
                     context = {
                         'user_full_name': user_full_name,
                         'user_account' : user_account,
 
                         'members' : members,
 
-                        'response' : "partial update email exist"
+                        'sweet_member_username' : sweet_member_username,
+                        'sweet_member_full_name' : sweet_member_full_name,
+
+                        'response' : "sweet partial update email exist"
                     }
 
                     return render(request, 'admin-faculty-member-account.html', context)
@@ -2021,13 +2078,27 @@ def adminFacultyMemberData(request, id):
 
                     members = User.objects.all().filter(is_faculty_member=1)
                 
+                    sweet_member_check = User.objects.get(username=id)
+                    
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
+
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+                
                     context = {
                         'user_full_name': user_full_name,
                         'user_account' : user_account,
 
                         'members' : members,
 
-                        'response' : "profile updated"
+                        'sweet_member_username' : sweet_member_username,
+                        'sweet_member_full_name' : sweet_member_full_name,
+
+                        'response' : "sweet profile updated"
                         }
 
                     return render(request, 'admin-faculty-member-account.html', context)
@@ -2040,13 +2111,27 @@ def adminFacultyMemberData(request, id):
 
                     members = User.objects.all().filter(is_faculty_member=1)
                 
+                    sweet_member_check = User.objects.get(username=id)
+                    
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
+
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+                
                     context = {
                         'user_full_name': user_full_name,
                         'user_account' : user_account,
 
                         'members' : members,
 
-                        'response' : "partial update username and email exist"
+                        'sweet_member_username' : sweet_member_username,
+                        'sweet_member_full_name' : sweet_member_full_name,
+
+                        'response' : "sweet partial update username and email exist"
                     }
 
                     return render(request, 'admin-faculty-member-account.html', context)
@@ -2058,13 +2143,27 @@ def adminFacultyMemberData(request, id):
 
                     members = User.objects.all().filter(is_faculty_member=1)
                 
+                    sweet_member_check = User.objects.get(username=username_input)
+                    
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
+
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+                
                     context = {
                         'user_full_name': user_full_name,
                         'user_account' : user_account,
 
                         'members' : members,
 
-                        'response' : "profile updated"
+                        'sweet_member_username' : sweet_member_username,
+                        'sweet_member_full_name' : sweet_member_full_name,
+
+                        'response' : "sweet profile updated"
                         }
 
                     return render(request, 'admin-faculty-member-account.html', context)
@@ -2142,10 +2241,16 @@ def adminFacultyMemberChangePassword(request, id):
 
                     members = User.objects.all().filter(is_faculty_member=1)
 
-                    member_check = User.objects.get(username=id)
+                    sweet_member_check = User.objects.get(username=id)
                     
-                    member_username = member_check.username
-                    member_full_name = member_check.first_name + " " + member_check.last_name
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
+
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
                     context = {
                         'user_full_name': user_full_name,
@@ -2153,8 +2258,8 @@ def adminFacultyMemberChangePassword(request, id):
 
                         'members' : members,
 
-                        'member_username': member_username,
-                        'member_full_name': member_full_name,
+                        'sweet_member_username': sweet_member_username,
+                        'sweet_member_full_name': sweet_member_full_name,
 
                         'response' : 'sweet password changed success',
                         }
@@ -2164,10 +2269,16 @@ def adminFacultyMemberChangePassword(request, id):
                 else:
                     members = User.objects.all().filter(is_faculty_member=1)
 
-                    member_check = User.objects.get(username=id)
+                    sweet_member_check = User.objects.get(username=id)
                     
-                    member_username = member_check.username
-                    member_full_name = member_check.first_name + " " + member_check.last_name
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
+
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
                     context = {
                         'user_full_name': user_full_name,
@@ -2175,8 +2286,8 @@ def adminFacultyMemberChangePassword(request, id):
 
                         'members' : members,
 
-                        'member_username': member_username,
-                        'member_full_name': member_full_name,
+                        'sweet_member_username': sweet_member_username,
+                        'sweet_member_full_name': sweet_member_full_name,
 
                         'response' : 'sweet confirm change password mismatch',
                     }
@@ -2184,21 +2295,27 @@ def adminFacultyMemberChangePassword(request, id):
                     return render(request, 'admin-faculty-member-account.html', context)
 
             else:
-                member_check = User.objects.get(username=id)
-                
                 members = User.objects.all().filter(is_faculty_member=1)
+                
+                sweet_member_check = User.objects.get(username=id)
+                    
+                sweet_member_username = sweet_member_check.username
+                sweet_member_full_name = None
 
-                member_username = member_check.username
-                member_full_name = member_check.first_name + " " + member_check.last_name
+                if sweet_member_check.middle_name == "":
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                
+                else:
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
                 context = {
-                'user_full_name': user_full_name,
-                'user_account': user_account,
+                    'user_full_name': user_full_name,
+                    'user_account': user_account,
 
-                'members' : members,
+                    'members' : members,
 
-                'member_username': member_username,
-                'member_full_name': member_full_name,
+                    'sweet_member_username': sweet_member_username,
+                    'sweet_member_full_name': sweet_member_full_name,
 
                     'response' : 'sweet same change password',
                 }
@@ -2209,10 +2326,16 @@ def adminFacultyMemberChangePassword(request, id):
             print("incorrect current password")
             members = User.objects.all().filter(is_faculty_member=1)
 
-            member_check = User.objects.get(username=id)
+            sweet_member_check = User.objects.get(username=id)
+                    
+            sweet_member_username = sweet_member_check.username
+            sweet_member_full_name = None
 
-            member_username = member_check.username
-            member_full_name = member_check.first_name + " " + member_check.last_name
+            if sweet_member_check.middle_name == "":
+                sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+            
+            else:
+                sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
             context = {
                 'user_full_name': user_full_name,
@@ -2220,8 +2343,8 @@ def adminFacultyMemberChangePassword(request, id):
 
                 'members' : members,
 
-                'member_username': member_username,
-                'member_full_name': member_full_name,
+                'sweet_member_username': sweet_member_username,
+                'sweet_member_full_name': sweet_member_full_name,
 
                 'response' : 'sweet incorrect change current password',
                 }
@@ -2283,8 +2406,16 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
             members = User.objects.all().filter(is_faculty_member=1)
             
-            member_username = member_check.username
-            member_full_name = member_check.first_name + " " + member_check.last_name
+            sweet_member_check = User.objects.get(username=id)
+                    
+            sweet_member_username = sweet_member_check.username
+            sweet_member_full_name = None
+
+            if sweet_member_check.middle_name == "":
+                sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+            
+            else:
+                sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
             context = {
                 'user_full_name': user_full_name,
@@ -2292,8 +2423,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                 'members' : members,
 
-                'member_username': member_username,
-                'member_full_name': member_full_name,
+                'sweet_member_username': sweet_member_username,
+                'sweet_member_full_name': sweet_member_full_name,
 
                 'response' : "sweet choose user account"
                 }
@@ -2305,8 +2436,16 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
             members = User.objects.all().filter(is_faculty_member=1)
             
-            member_username = member_check.username
-            member_full_name = member_check.first_name + " " + member_check.last_name
+            sweet_member_check = User.objects.get(username=id)
+                    
+            sweet_member_username = sweet_member_check.username
+            sweet_member_full_name = None
+
+            if sweet_member_check.middle_name == "":
+                sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+            
+            else:
+                sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
             context = {
                 'user_full_name': user_full_name,
@@ -2314,8 +2453,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                 'members' : members,
 
-                'member_username': member_username,
-                'member_full_name': member_full_name,
+                'sweet_member_username': sweet_member_username,
+                'sweet_member_full_name': sweet_member_full_name,
 
                 'response' : "sweet user account not in list"
                 }
@@ -2328,10 +2467,17 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                 members = User.objects.all().filter(is_faculty_member=1)
 
-                member_check = User.objects.get(username=id)
-                member_username = member_check.username
-                member_full_name = member_check.first_name + " " + member_check.last_name
-                member_department = member_check.department
+                sweet_member_check = User.objects.get(username=id)
+                    
+                sweet_member_username = sweet_member_check.username
+                sweet_member_full_name = None
+                sweet_member_department = sweet_member_check.department
+
+                if sweet_member_check.middle_name == "":
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                
+                else:
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
                 context = {
                     'user_full_name': user_full_name,
@@ -2339,9 +2485,9 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                     'members' : members,
 
-                    'member_username': member_username,
-                    'member_full_name': member_full_name,
-                    'member_department': member_department,
+                    'sweet_member_username': sweet_member_username,
+                    'sweet_member_full_name': sweet_member_full_name,
+                    'sweet_member_department': sweet_member_department,
 
                     'response' : 'sweet already',
                     }
@@ -2352,20 +2498,26 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                 if user_account_input == "DIT Head":
 
-                    member_check = User.objects.get(username=id)
-                    member_username = member_check.username
-                    member_full_name = member_check.first_name + " " + member_check.last_name
+                    sweet_member_check = User.objects.get(username=id)
+                    
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
 
-                    member_check.department = user_account_input
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
-                    member_check.is_department_head = 1
-                    member_check.is_panel = 1
-                    member_check.is_adviser = 1
-                    member_check.is_subject_teacher = 1
-                    member_check.is_academic_affairs = 0
-                    member_check.is_library = 0
-                    member_check.is_research_extension = 0
-                    member_check.save()
+                    sweet_member_check.department = user_account_input
+                    sweet_member_check.is_department_head = 1
+                    sweet_member_check.is_panel = 1
+                    sweet_member_check.is_adviser = 1
+                    sweet_member_check.is_subject_teacher = 1
+                    sweet_member_check.is_academic_affairs = 0
+                    sweet_member_check.is_library = 0
+                    sweet_member_check.is_research_extension = 0
+                    sweet_member_check.save()
 
                     members = User.objects.all().filter(is_faculty_member=1)
 
@@ -2375,9 +2527,9 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                         'members' : members,
 
-                        'member_username': member_username,
-                        'member_full_name': member_full_name,
-                        'member_department' : user_account_input,
+                        'sweet_member_username': sweet_member_username,
+                        'sweet_member_full_name': sweet_member_full_name,
+                        'sweet_member_department' : user_account_input,
 
                         'response' : 'sweet success',
                         }
@@ -2386,20 +2538,26 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                 if user_account_input == "Faculty Member":
 
-                    member_check = User.objects.get(username=id)
-                    member_username = member_check.username
-                    member_full_name = member_check.first_name + " " + member_check.last_name
+                    sweet_member_check = User.objects.get(username=id)
+                    
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
 
-                    member_check.department = user_account_input
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
-                    member_check.is_department_head = 0
-                    member_check.is_panel = 1
-                    member_check.is_adviser = 1
-                    member_check.is_subject_teacher = 1
-                    member_check.is_academic_affairs = 0
-                    member_check.is_library = 0
-                    member_check.is_research_extension = 0
-                    member_check.save()
+                    sweet_member_check.department = user_account_input
+                    sweet_member_check.is_department_head = 0
+                    sweet_member_check.is_panel = 1
+                    sweet_member_check.is_adviser = 1
+                    sweet_member_check.is_subject_teacher = 1
+                    sweet_member_check.is_academic_affairs = 0
+                    sweet_member_check.is_library = 0
+                    sweet_member_check.is_research_extension = 0
+                    sweet_member_check.save()
 
                     members = User.objects.all().filter(is_faculty_member=1)
 
@@ -2409,9 +2567,9 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                         'members' : members,
 
-                        'member_username': member_username,
-                        'member_full_name': member_full_name,
-                        'member_department' : user_account_input,
+                        'sweet_member_username': sweet_member_username,
+                        'sweet_member_full_name': sweet_member_full_name,
+                        'sweet_member_department' : user_account_input,
 
                         'response' : 'sweet success',
                         }
@@ -2420,20 +2578,26 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                 if user_account_input == "Academic Affairs":
 
-                    member_check = User.objects.get(username=id)
-                    member_username = member_check.username
-                    member_full_name = member_check.first_name + " " + member_check.last_name
+                    sweet_member_check = User.objects.get(username=id)
+                    
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
 
-                    member_check.department = user_account_input
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
-                    member_check.is_department_head = 0
-                    member_check.is_panel = 0
-                    member_check.is_adviser = 0
-                    member_check.is_subject_teacher = 0
-                    member_check.is_academic_affairs = 1
-                    member_check.is_library = 0
-                    member_check.is_research_extension = 0
-                    member_check.save()
+                    sweet_member_check.department = user_account_input
+                    sweet_member_check.is_department_head = 0
+                    sweet_member_check.is_panel = 0
+                    sweet_member_check.is_adviser = 0
+                    sweet_member_check.is_subject_teacher = 0
+                    sweet_member_check.is_academic_affairs = 1
+                    sweet_member_check.is_library = 0
+                    sweet_member_check.is_research_extension = 0
+                    sweet_member_check.save()
 
                     members = User.objects.all().filter(is_faculty_member=1)
 
@@ -2443,9 +2607,9 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                         'members' : members,
 
-                        'member_username': member_username,
-                        'member_full_name': member_full_name,
-                        'member_department' : user_account_input,
+                        'sweet_member_username': sweet_member_username,
+                        'sweet_member_full_name': sweet_member_full_name,
+                        'sweet_member_department' : user_account_input,
 
                         'response' : 'sweet success',
                         }
@@ -2454,20 +2618,26 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                 if user_account_input == "Library":
 
-                    member_check = User.objects.get(username=id)
-                    member_username = member_check.username
-                    member_full_name = member_check.first_name + " " + member_check.last_name
+                    sweet_member_check = User.objects.get(username=id)
+                    
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
 
-                    member_check.department = user_account_input
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
-                    member_check.is_department_head = 0
-                    member_check.is_panel = 0
-                    member_check.is_adviser = 0
-                    member_check.is_subject_teacher = 0
-                    member_check.is_academic_affairs = 0
-                    member_check.is_library = 1
-                    member_check.is_research_extension = 0
-                    member_check.save()
+                    sweet_member_check.department = user_account_input
+                    sweet_member_check.is_department_head = 0
+                    sweet_member_check.is_panel = 0
+                    sweet_member_check.is_adviser = 0
+                    sweet_member_check.is_subject_teacher = 0
+                    sweet_member_check.is_academic_affairs = 0
+                    sweet_member_check.is_library = 1
+                    sweet_member_check.is_research_extension = 0
+                    sweet_member_check.save()
 
                     members = User.objects.all().filter(is_faculty_member=1)
 
@@ -2477,9 +2647,9 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                         'members' : members,
 
-                        'member_username': member_username,
-                        'member_full_name': member_full_name,
-                        'member_department' : user_account_input,
+                        'sweet_member_username': sweet_member_username,
+                        'sweet_member_full_name': sweet_member_full_name,
+                        'sweet_member_department' : user_account_input,
 
                         'response' : 'sweet success',
                         }
@@ -2488,20 +2658,26 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                 if user_account_input == "Research & Extension":
 
-                    member_check = User.objects.get(username=id)
-                    member_username = member_check.username
-                    member_full_name = member_check.first_name + " " + member_check.last_name
+                    sweet_member_check = User.objects.get(username=id)
+                    
+                    sweet_member_username = sweet_member_check.username
+                    sweet_member_full_name = None
 
-                    member_check.department = user_account_input
+                    if sweet_member_check.middle_name == "":
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+                    
+                    else:
+                        sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
-                    member_check.is_department_head = 0
-                    member_check.is_panel = 0
-                    member_check.is_adviser = 0
-                    member_check.is_subject_teacher = 0
-                    member_check.is_academic_affairs = 0
-                    member_check.is_library = 0
-                    member_check.is_research_extension = 1
-                    member_check.save()
+                    sweet_member_check.department = user_account_input
+                    sweet_member_check.is_department_head = 0
+                    sweet_member_check.is_panel = 0
+                    sweet_member_check.is_adviser = 0
+                    sweet_member_check.is_subject_teacher = 0
+                    sweet_member_check.is_academic_affairs = 0
+                    sweet_member_check.is_library = 0
+                    sweet_member_check.is_research_extension = 1
+                    sweet_member_check.save()
 
                     members = User.objects.all().filter(is_faculty_member=1)
 
@@ -2511,20 +2687,28 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                         'members' : members,
 
-                        'member_username': member_username,
-                        'member_full_name': member_full_name,
-                        'member_department' : user_account_input,
+                        'sweet_member_username': sweet_member_username,
+                        'sweet_member_full_name': sweet_member_full_name,
+                        'sweet_member_department' : user_account_input,
 
                         'response' : 'sweet success',
                         }
 
                     return render(request, 'admin-faculty-member-account.html', context)
+        
         else:
             members = User.objects.all().filter(is_faculty_member=1)
 
-            member_check = User.objects.get(username=id)
-            member_username = member_check.username
-            member_full_name = member_check.first_name + " " + member_check.last_name
+            sweet_member_check = User.objects.get(username=id)
+                    
+            sweet_member_username = sweet_member_check.username
+            sweet_member_full_name = None
+
+            if sweet_member_check.middle_name == "":
+                sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+            
+            else:
+                sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
             context = {
                 'user_full_name': user_full_name,
@@ -2532,8 +2716,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                 'members' : members,
 
-                'member_username': member_username,
-                'member_full_name': member_full_name,
+                'sweet_member_username': sweet_member_username,
+                'sweet_member_full_name': sweet_member_full_name,
 
                 'response' : 'sweet incorrect current password',
                 }

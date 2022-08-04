@@ -201,7 +201,7 @@
     {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% if response == 'current password is incorrect' %}
     <script>
       iziToast.error({
-        title: "Incorrect Password.",
+        title: "Invalid",
         message: "The Password you entered is incorrect.",
         position: "topCenter",
         timeout: 5000,
@@ -210,7 +210,7 @@
     {% endif %} {% if response == 'new password and confirm new password doesnt match' %}
     <script>
       iziToast.error({
-        title: "New Password and Confirm Password doesn't match.",
+        title: "Invalid.",
         message: "The New Password and Confirm Password you entered doesn't match.",
         position: "topCenter",
         timeout: 5000,
@@ -219,7 +219,7 @@
     {% endif %} {% if response == 'current password and new password is same' %}
     <script>
       iziToast.error({
-        title: "Current Password and New Password is the same.",
+        title: "Invalid.",
         message: "The Current Password and New Password you entered is the same.",
         position: "topCenter",
         timeout: 5000,

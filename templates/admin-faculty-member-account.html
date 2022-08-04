@@ -101,56 +101,80 @@
      
     {% if response == 'sweet incorrect change current password' %}
       <script>
-        Swal.fire("{{member_username}} \n {{member_full_name}}", "The Current Password you entered for this User is incorrect.", "error");
+        Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Current Password you entered for this User is incorrect.", "error");
       </script>
     {% endif %}
 
     {% if response == 'sweet same change password' %}
       <script>
-        Swal.fire("{{member_username}} \n {{member_full_name}}", "The Current Password and New Password you entered for this User is the same.", "warning");
+        Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Current Password and New Password you entered for this User is the same.", "warning");
       </script>
     {% endif %}
 
     {% if response == 'sweet confirm change password mismatch' %}
       <script>
-        Swal.fire("{{member_username}} \n {{member_full_name}}", "The New Password and Confirm New Password you entered for this User mismatch.", "warning");
+        Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The New Password and Confirm New Password you entered for this User mismatch.", "warning");
       </script>
     {% endif %}
 
     {% if response == 'sweet password changed success' %}
       <script>
-        Swal.fire("{{member_username}} \n {{member_full_name}}", "The Password of this User has been changed successfully.", "success");
+        Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Password of this User has been changed successfully.", "success");
       </script>
     {% endif %}
       
     {% if response == 'sweet choose user account' %}
       <script>
-        Swal.fire("{{member_username}} \n {{member_full_name}}", "You didn't enter any User Account for this User.", "error");
+        Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "You didn't enter any User Account for this User.", "error");
       </script>
     {% endif %}
 
     {% if response == 'sweet user account not in list' %}
       <script>
-        Swal.fire("{{member_username}} \n {{member_full_name}}", "The User Account you entered for this User is invalid.", "error");
+        Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The User Account you entered for this User is invalid.", "error");
       </script>
     {% endif %}
 
     {% if response == 'sweet incorrect current password' %}
     <script>
-      Swal.fire("{{member_username}} \n {{member_full_name}}", "The Current Password you entered for this user is incorrect.", "error");
+      Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Current Password you entered for this user is incorrect.", "error");
     </script>
     {% endif %}
 
     {% if response == 'sweet already' %}
       <script>
-        Swal.fire("{{member_username}} \n {{member_full_name}}", "This User is already a {{member_department}}.", "info");
+        Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "This User is already a {{sweet_member_department}} user.", "info");
       </script>
     {% endif %}
 
     {% if response == 'sweet success' %}
       <script>
-        Swal.fire("{{member_username}} \n {{member_full_name}}", "This User is now a {{member_department}}.", "success");
+        Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "This User is now a {{sweet_member_department}} user.", "success");
       </script>
+    {% endif %}
+
+    {% if response == 'sweet profile updated' %}
+      <script>
+        Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated successfully.", "success");
+      </script>
+    {% endif %}
+
+    {% if response == 'sweet partial update username exist' %}
+      <script>
+        Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Username, because it is already taken.", "info");
+      </script>
+    {% endif %}
+
+    {% if response == 'sweet partial update email exist' %}
+    <script>
+      Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Email, because it is already taken.", "info");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet partial update username and email exist' %}
+    <script>
+      Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Username and Email, because it is already taken.", "info");
+    </script>
     {% endif %}
 
   </body>
