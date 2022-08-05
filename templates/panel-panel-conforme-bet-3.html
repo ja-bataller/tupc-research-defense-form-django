@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>DIT Head - Panel Conforme BET-3</title>
+    <title>Panel- Panel Conforme BET-3</title>
 
     {% include 'css-main-cdn.html ' %}
   </head>
@@ -22,7 +22,7 @@
       <!-- Sidebar -->
       <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'dit-head-dashboard' %}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'panel-dashboard' %}">
           <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
         </a>
 
@@ -31,7 +31,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
+          <a class="nav-link" href="{% url 'panel-dashboard' %}">
             <i class="fa-solid fa-house"></i>
             <span>Home</span></a
           >
@@ -50,7 +50,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">BET-3</h6>
               <!-- <a class="collapse-item" href="">Panel Invitation</a> -->
-              <a class="collapse-item" href="{% url 'dit-head-panel-conforme-bet-3' %}">Panel Conforme</a>
+              <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a>
               <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
               <div class="collapse-divider"></div>
@@ -110,14 +110,14 @@
               <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br/>
-                    <div class="float-right">DIT Head</div>
+                    <div class="float-right">Panel</div>
                   </span>
                   <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                  
-                  <a class="dropdown-item" href="{% url 'dit-head-profile' %}">
+                  <a class="dropdown-item" href="{% url 'panel-profile' %}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                   </a>
@@ -169,19 +169,76 @@
                       </tr>
                     </tfoot>
                     <tbody>
-                      {% for panel_conforme_forms in panel_conforme_bet3_check %}
+                      {% for panel_conforme_forms_1 in panel_conforme_bet3_check_1 %}
                       <tr>
-                        <td>{{panel_conforme_forms.research_title}}</td>
-                        <td>{{panel_conforme_forms.student_leader_username}}</td>
-                        <td>{{panel_conforme_forms.student_member_1}}</td>
-                        <td>{{panel_conforme_forms.course_major_abbr}}</td>
-                        <td>{{panel_conforme_forms.dept_head_status}}</td>
+                        <td>{{panel_conforme_forms_1.research_title}}</td>
+                        <td>{{panel_conforme_forms_1.student_leader_username}}</td>
+                        <td>{{panel_conforme_forms_1.student_member_1}}</td>
+                        <td>{{panel_conforme_forms_1.course_major_abbr}}</td>
+                        <td>Pending</td>
                         <td class="text-center">
-                          <a class="btn btn-outline-success mr-2" type="button" href="{% url 'dit-head-panel-conforme-bet-3-accept' panel_conforme_forms.id %}"><i class="fa-solid fa-check"></i></a>
+                          <a class="btn btn-outline-success mr-2" type="button" href="#"><i class="fa-solid fa-check"></i></a>
                           <a class="btn btn-outline-danger" type="button" href="#"><i class="fa-solid fa-xmark"></i></a>
                         </td>
                       </tr>
                       {% endfor %}
+
+                      {% for panel_conforme_forms_2 in panel_conforme_bet3_check_2 %}
+                      <tr>
+                        <td>{{panel_conforme_forms_2.research_title}}</td>
+                        <td>{{panel_conforme_forms_2.student_leader_username}}</td>
+                        <td>{{panel_conforme_forms_2.student_member_2}}</td>
+                        <td>{{panel_conforme_forms_2.course_major_abbr}}</td>
+                        <td>Pending</td>
+                        <td class="text-center">
+                          <a class="btn btn-outline-success mr-2" type="button" href="#"><i class="fa-solid fa-check"></i></a>
+                          <a class="btn btn-outline-danger" type="button" href="#"><i class="fa-solid fa-xmark"></i></a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+
+                      {% for panel_conforme_forms_3 in panel_conforme_bet3_check_3 %}
+                      <tr>
+                        <td>{{panel_conforme_forms_3.research_title}}</td>
+                        <td>{{panel_conforme_forms_3.student_leader_username}}</td>
+                        <td>{{panel_conforme_forms_3.student_member_3}}</td>
+                        <td>{{panel_conforme_forms_3.course_major_abbr}}</td>
+                        <td>Pending</td>
+                        <td class="text-center">
+                          <a class="btn btn-outline-success mr-2" type="button" href="#"><i class="fa-solid fa-check"></i></a>
+                          <a class="btn btn-outline-danger" type="button" href="#"><i class="fa-solid fa-xmark"></i></a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+
+                      {% for panel_conforme_forms_4 in panel_conforme_bet3_check_4 %}
+                      <tr>
+                        <td>{{panel_conforme_forms_4.research_title}}</td>
+                        <td>{{panel_conforme_forms_4.student_leader_username}}</td>
+                        <td>{{panel_conforme_forms_4.student_member_4}}</td>
+                        <td>{{panel_conforme_forms_4.course_major_abbr}}</td>
+                        <td>Pending</td>
+                        <td class="text-center">
+                          <a class="btn btn-outline-success mr-2" type="button" href="#"><i class="fa-solid fa-check"></i></a>
+                          <a class="btn btn-outline-danger" type="button" href="#"><i class="fa-solid fa-xmark"></i></a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+
+                      {% for panel_conforme_forms_5 in panel_conforme_bet3_check_5 %}
+                      <tr>
+                        <td>{{panel_conforme_forms_5.research_title}}</td>
+                        <td>{{panel_conforme_forms_5.student_leader_username}}</td>
+                        <td>{{panel_conforme_forms_5.student_member_5}}</td>
+                        <td>{{panel_conforme_forms_5.course_major_abbr}}</td>
+                        <td>Pending</td>
+                        <td class="text-center">
+                          <a class="btn btn-outline-success mr-2" type="button" href="#"><i class="fa-solid fa-check"></i></a>
+                          <a class="btn btn-outline-danger" type="button" href="#"><i class="fa-solid fa-xmark"></i></a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      
                     </tbody>
                   </table>
                 </div>

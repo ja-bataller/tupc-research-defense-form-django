@@ -50,6 +50,11 @@ def index(request):
                     user = User.objects.get(username=username_input_index_form, password=password_input_index_form)
                     login(request, user)
                     return redirect('login-as')
+                
+                if user_check.is_panel == 1:
+                    user = User.objects.get(username=username_input_index_form, password=password_input_index_form)
+                    login(request, user)
+                    return redirect('login-as')
 
             else:
                 print("Incorrect Password")
@@ -121,6 +126,86 @@ def signup(request):
             user_username_inut = user.username
             user_email_inut = user.email
 
+            # Check Group Member 2
+            try:
+                student_member_check = PanelConformeBET3.objects.get(student_member_username_2=user_username_inut)
+
+                print("sweet user exist")
+                context = {
+                    'form': form, 
+                    "course" : course, 
+                    
+                    "student_member_check_username" : student_member_check.student_member_username_2,
+                    "student_member_check_name" : student_member_check.student_member_2,
+
+                    'response': "sweet user exist",
+
+                    }
+                return render(request, 'signup.html', context)
+
+            except:
+                pass
+
+            # Check Group Member 3
+            try:
+                student_member_check = PanelConformeBET3.objects.get(student_member_username_3=user_username_inut)
+
+                print("sweet user exist")
+                context = {
+                    'form': form, 
+                    "course" : course, 
+                    
+                    "student_member_check_username" : student_member_check.student_member_username_3,
+                    "student_member_check_name" : student_member_check.student_member_3,
+
+                    'response': "sweet user exist",
+
+                    }
+                return render(request, 'signup.html', context)
+
+            except:
+                pass
+
+            # Check Group Member 4
+            try:
+                student_member_check = PanelConformeBET3.objects.get(student_member_username_4=user_username_inut)
+
+                print("sweet user exist")
+                context = {
+                    'form': form, 
+                    "course" : course, 
+                    
+                    "student_member_check_username" : student_member_check.student_member_username_4,
+                    "student_member_check_name" : student_member_check.student_member_4,
+
+                    'response': "sweet user exist",
+
+                    }
+                return render(request, 'signup.html', context)
+
+            except:
+                pass
+
+            # Check Group Member 5
+            try:
+                student_member_check = PanelConformeBET3.objects.get(student_member_username_5=user_username_inut)
+
+                print("sweet user exist")
+                context = {
+                    'form': form, 
+                    "course" : course, 
+                    
+                    "student_member_check_username" : student_member_check.student_member_username_5,
+                    "student_member_check_name" : student_member_check.student_member_5,
+
+                    'response': "sweet user exist",
+
+                    }
+                return render(request, 'signup.html', context)
+
+            except:
+                pass
+
             if "TUPC" in user_username_inut:
                 pass
 
@@ -180,7 +265,17 @@ def logout_user(request):
 # Index / Log in Page
 @login_required(login_url='index')
 def login_as_user_accounts(request):
-    return render(request, 'login-as-user-accounts.html')
+    currently_loggedin_user = (request.user)
+    
+    if currently_loggedin_user.is_department_head == 1:
+
+        context = {
+            'is_department_head' : "1",
+        }
+        return render(request, 'login-as-user-accounts.html', context)
+    else:
+        return render(request, 'login-as-user-accounts.html')
+
 ##########################################################################################################################
 
 # Student - Dashboard Page
@@ -223,17 +318,49 @@ def studentDashboard(request):
         department_head = panel_conforme_bet3_check.dept_head
         department_head_status = panel_conforme_bet3_check.dept_head_status
 
-        panel_member_1 = panel_conforme_bet3_check.panel_member_1
-        panel_member_2 = panel_conforme_bet3_check.panel_member_2
-        panel_member_3 = panel_conforme_bet3_check.panel_member_3
-        panel_member_4 = panel_conforme_bet3_check.panel_member_4
-        panel_member_5 = panel_conforme_bet3_check.panel_member_5
-
         panel_member_status_1 = panel_conforme_bet3_check.panel_member_status_1
         panel_member_status_2 = panel_conforme_bet3_check.panel_member_status_2
         panel_member_status_3 = panel_conforme_bet3_check.panel_member_status_3
         panel_member_status_4 = panel_conforme_bet3_check.panel_member_status_4
         panel_member_status_5 = panel_conforme_bet3_check.panel_member_status_5
+
+        panel_check_1 = User.objects.get(username=panel_conforme_bet3_check.panel_member_1)
+        panel_check_2 = User.objects.get(username=panel_conforme_bet3_check.panel_member_2)
+        panel_check_3 = User.objects.get(username=panel_conforme_bet3_check.panel_member_3)
+        panel_check_4 = User.objects.get(username=panel_conforme_bet3_check.panel_member_4)
+        panel_check_5 = User.objects.get(username=panel_conforme_bet3_check.panel_member_5)
+
+        panel_member_full_name_1 = None
+        panel_member_full_name_2 = None
+        panel_member_full_name_3 = None
+        panel_member_full_name_4 = None
+        panel_member_full_name_5 = None
+
+        if panel_check_1.middle_name == "":
+            panel_member_full_name_1 = panel_check_1.first_name + " " + panel_check_1.last_name
+        else:
+            panel_member_full_name_1 = panel_check_1.first_name + " " + panel_check_1.middle_name[0] + ". " + panel_check_1.last_name
+
+        if panel_check_2.middle_name == "":
+            panel_member_full_name_2 = panel_check_2.first_name + " " + panel_check_2.last_name
+        else:
+            panel_member_full_name_2 = panel_check_2.first_name + " " + panel_check_2.middle_name[0] + ". " + panel_check_2.last_name
+
+        if panel_check_3.middle_name == "":
+            panel_member_full_name_3 = panel_check_3.first_name + " " + panel_check_3.last_name
+        else:
+            panel_member_full_name_3 = panel_check_3.first_name + " " + panel_check_3.middle_name[0] + ". " + panel_check_3.last_name
+
+        if panel_check_4.middle_name == "":
+            panel_member_full_name_4 = panel_check_4.first_name + " " + panel_check_4.last_name
+        else:
+            panel_member_full_name_4 = panel_check_4.first_name + " " + panel_check_4.middle_name[0] + ". " + panel_check_4.last_name
+        
+        if panel_check_5.middle_name == "":
+            panel_member_full_name_5 = panel_check_5.first_name + " " + panel_check_5.last_name
+        else:
+            panel_member_full_name_5 = panel_check_5.first_name + " " + panel_check_5.middle_name[0] + ". " + panel_check_5.last_name
+    
 
         context = {
         'user_full_name': user_full_name,
@@ -246,11 +373,11 @@ def studentDashboard(request):
         'department_head': department_head,
         'department_head_status' : department_head_status,
 
-        'panel_member_1':panel_member_1,
-        'panel_member_2':panel_member_2,
-        'panel_member_3':panel_member_3,
-        'panel_member_4':panel_member_4,
-        'panel_member_5':panel_member_5,
+        'panel_member_1':panel_member_full_name_1,
+        'panel_member_2':panel_member_full_name_2,
+        'panel_member_3':panel_member_full_name_3,
+        'panel_member_4':panel_member_full_name_4,
+        'panel_member_5':panel_member_full_name_5,
 
         'panel_member_status_1':panel_member_status_1,
         'panel_member_status_2':panel_member_status_2,
@@ -558,44 +685,51 @@ def studentPanelConformeBet3Create(request):
         student1_input = leader_member_name_2
         print("Student 1 =", student1_input)
 
+        # Get Student member 1 Username
+        student1_username_input = current_user.username
+        print("Student Username 1 =", student1_username_input)
+        
         # Get Student Member 2 Name
         student2_input = request.POST.get('student2_input')
         print("Student 2 =", student2_input)
 
-         # Get Student Member 3 Name
+        # Get Student member 2 Username
+        student2_username_input = request.POST.get('student2_username_input')
+        print("Student Username 2 =", student2_username_input)
+
+        # Get Student Member 3 Name
         student3_input = request.POST.get('student3_input')
         print("Student 3 =", student3_input)
 
-         # Get Student Member 4 Name
+        # Get Student member 3 Username
+        student3_username_input = request.POST.get('student3_username_input')
+        print("Student Username 3 =", student3_username_input)
+
+        # Get Student Member 4 Name
         student4_input = request.POST.get('student4_input')
         print("Student 4 =", student4_input)
 
-         # Get Student Member 5 Name
+        # Get Student member 4 Username
+        student4_username_input = request.POST.get('student4_username_input')
+        print("Student Useranme 4 =", student4_username_input)
+
+        # Get Student Member 5 Name
         student5_input = request.POST.get('student5_input')
         print("Student 5 =", student5_input)
 
-        # If the Student already has a Panel Conform BET-3
+        # Get Student member 5 Username
+        student5_username_input = request.POST.get('student5_username_input')
+        print("Student Username 5 =", student5_username_input)
+
+        # Check if Student Member 2 has an account
         try:
-            PanelConformeBET3.objects.get(student_leader_username=current_user.username)
+            student_username_check = User.objects.get(username=student2_username_input)
 
             try:
                 dept_head_check = User.objects.get(is_department_head=1)
                 dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
 
                 panel_check = User.objects.filter(is_panel=1)
-
-                panel_members_list = []
-
-                for panel in panel_check:
-
-                    if panel.middle_name == "":
-                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel.last_name)
-
-                    else:
-                        panel_middle_initial = panel.middle_name[0]
-                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel_middle_initial + ". " + panel.last_name)
-                
-                panel_members = sorted(panel_members_list)
 
                 course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
                 course_name = course_check.course
@@ -607,9 +741,313 @@ def studentPanelConformeBet3Create(request):
 
                     'dept_head_name': dept_head_name,
 
-                    'panel_members' : panel_members,
+                    'panel_check' : panel_check,
 
                     'leader_member_name' : leader_member_name_2,
+                    'leader_member_username' : current_user.username,
+
+                    'course_name' : course_name,
+                    'major_name' : major_name,
+
+                    'username_exist': student2_username_input,
+                    'response' : "sweet student member exist 2"
+                    }
+
+                return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+            except:
+                return redirect('student-dashboard')
+        except:
+            pass
+        
+        # Check if Student Member 3 has an account
+        try:
+            student_username_check = User.objects.get(username=student3_username_input)
+
+            try:
+                dept_head_check = User.objects.get(is_department_head=1)
+                dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+
+                panel_check = User.objects.filter(is_panel=1)
+
+                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+                course_name = course_check.course
+                major_name = course_check.major
+
+                context = {
+                    'user_full_name': user_full_name,
+                    'user_account' : user_account,
+
+                    'dept_head_name': dept_head_name,
+
+                    'panel_check' : panel_check,
+
+                    'leader_member_name' : leader_member_name_2,
+                    'leader_member_username' : current_user.username,
+
+                    'course_name' : course_name,
+                    'major_name' : major_name,
+
+                    'username_exist': student3_username_input,
+                    'response' : "sweet student member exist 3"
+                    }
+
+                return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+            except:
+                return redirect('student-dashboard')
+        except:
+            pass
+        
+        if not student4_username_input:
+            print("No Group Member 4")
+            pass
+
+        else:
+            #  If Student ID No. is invalid
+            if "TUPC" not in student4_username_input:
+                try:
+                    dept_head_check = User.objects.get(is_department_head=1)
+                    dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+
+                    panel_check = User.objects.filter(is_panel=1)
+
+                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+                    course_name = course_check.course
+                    major_name = course_check.major
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account' : user_account,
+
+                        'dept_head_name': dept_head_name,
+
+                        'panel_check' : panel_check,
+
+                        'leader_member_name' : leader_member_name_2,
+                        'leader_member_username' : current_user.username,
+
+                        'course_name' : course_name,
+                        'major_name' : major_name,
+
+                        'response' : "username invalid"
+                        }
+
+                    return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+                except:
+                    return redirect('student-dashboard')
+            
+            # If Student ID No. is the same with the others
+            if student1_username_input == student4_username_input or student2_username_input == student4_username_input or student3_username_input == student4_username_input or student4_username_input == student1_username_input or student4_username_input == student2_username_input or student4_username_input == student3_username_input:
+                try:
+                    dept_head_check = User.objects.get(is_department_head=1)
+                    dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+
+                    panel_check = User.objects.filter(is_panel=1)
+
+                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+                    course_name = course_check.course
+                    major_name = course_check.major
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account' : user_account,
+
+                        'dept_head_name': dept_head_name,
+
+                        'panel_check' : panel_check,
+
+                        'leader_member_name' : leader_member_name_2,
+                        'leader_member_username' : current_user.username,
+
+                        'course_name' : course_name,
+                        'major_name' : major_name,
+
+                        'response' : "username same"
+                        }
+
+                    return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+                except:
+                    return redirect('student-dashboard')
+
+            # Check if Student Member 4 has an account
+            try:
+                student_username_check = User.objects.get(username=student4_username_input)
+
+                try:
+                    dept_head_check = User.objects.get(is_department_head=1)
+                    dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+
+                    panel_check = User.objects.filter(is_panel=1)
+
+                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+                    course_name = course_check.course
+                    major_name = course_check.major
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account' : user_account,
+
+                        'dept_head_name': dept_head_name,
+
+                        'panel_check' : panel_check,
+
+                        'leader_member_name' : leader_member_name_2,
+                        'leader_member_username' : current_user.username,
+
+                        'course_name' : course_name,
+                        'major_name' : major_name,
+
+                        'username_exist': student4_username_input,
+                        'response' : "sweet student member exist 4"
+                        }
+
+                    return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+                except:
+                    return redirect('student-dashboard')
+            except:
+                pass
+
+        if not student5_username_input:
+            print("No Group Member 5")
+            pass
+
+        else:
+            # If Student ID No. is invalid.
+            if "TUPC" not in student5_username_input:
+                try:
+                    dept_head_check = User.objects.get(is_department_head=1)
+                    dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+
+                    panel_check = User.objects.filter(is_panel=1)
+
+                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+                    course_name = course_check.course
+                    major_name = course_check.major
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account' : user_account,
+
+                        'dept_head_name': dept_head_name,
+
+                        'panel_check' : panel_check,
+
+                        'leader_member_name' : leader_member_name_2,
+                        'leader_member_username' : current_user.username,
+
+                        'course_name' : course_name,
+                        'major_name' : major_name,
+
+                        'response' : "username invalid"
+                        }
+
+                    return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+                except:
+                    return redirect('student-dashboard')
+
+            # If Student ID No. is the same with the others
+            if student1_username_input == student5_username_input or student2_username_input == student5_username_input or student3_username_input == student5_username_input or student4_username_input == student5_username_input or student5_username_input == student1_username_input or student5_username_input == student2_username_input or student5_username_input == student3_username_input or student5_username_input == student4_username_input:
+                try:
+                    dept_head_check = User.objects.get(is_department_head=1)
+                    dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+
+                    panel_check = User.objects.filter(is_panel=1)
+
+                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+                    course_name = course_check.course
+                    major_name = course_check.major
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account' : user_account,
+
+                        'dept_head_name': dept_head_name,
+
+                        'panel_check' : panel_check,
+
+                        'leader_member_name' : leader_member_name_2,
+                        'leader_member_username' : current_user.username,
+
+                        'course_name' : course_name,
+                        'major_name' : major_name,
+
+                        'response' : "username same"
+                        }
+
+                    return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+                except:
+                    return redirect('student-dashboard')
+            
+            # Check if Student Member 5 has an account
+            try:
+                student_username_check = User.objects.get(username=student5_username_input)
+
+                try:
+                    dept_head_check = User.objects.get(is_department_head=1)
+                    dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+
+                    panel_check = User.objects.filter(is_panel=1)
+
+                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+                    course_name = course_check.course
+                    major_name = course_check.major
+
+                    context = {
+                        'user_full_name': user_full_name,
+                        'user_account' : user_account,
+
+                        'dept_head_name': dept_head_name,
+
+                        'panel_check' : panel_check,
+
+                        'leader_member_name' : leader_member_name_2,
+                        'leader_member_username' : current_user.username,
+
+                        'course_name' : course_name,
+                        'major_name' : major_name,
+
+                        'username_exist': student5_username_input,
+                        'response' : "sweet student member exist 5"
+                        }
+
+                    return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+                except:
+                    return redirect('student-dashboard')
+            except:
+                pass
+
+        # If the Student already has a Panel Conform BET-3
+        try:
+            PanelConformeBET3.objects.get(student_leader_username=current_user.username)
+
+            try:
+                dept_head_check = User.objects.get(is_department_head=1)
+                dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+
+                panel_check = User.objects.filter(is_panel=1)
+
+                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+                course_name = course_check.course
+                major_name = course_check.major
+
+                context = {
+                    'user_full_name': user_full_name,
+                    'user_account' : user_account,
+
+                    'dept_head_name': dept_head_name,
+
+                    'panel_check' : panel_check,
+
+                    'leader_member_name' : leader_member_name_2,
+                    'leader_member_username' : current_user.username,
+
                     'course_name' : course_name,
                     'major_name' : major_name,
 
@@ -634,19 +1072,6 @@ def studentPanelConformeBet3Create(request):
 
                 panel_check = User.objects.filter(is_panel=1)
 
-                panel_members_list = []
-
-                for panel in panel_check:
-
-                    if panel.middle_name == "":
-                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel.last_name)
-
-                    else:
-                        panel_middle_initial = panel.middle_name[0]
-                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel_middle_initial + ". " + panel.last_name)
-                
-                panel_members = sorted(panel_members_list)
-
                 course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
                 course_name = course_check.course
                 major_name = course_check.major
@@ -657,9 +1082,11 @@ def studentPanelConformeBet3Create(request):
 
                     'dept_head_name': dept_head_name,
 
-                    'panel_members' : panel_members,
+                    'panel_check' : panel_check,
 
                     'leader_member_name' : leader_member_name_2,
+                    'leader_member_username' : current_user.username,
+
                     'course_name' : course_name,
                     'major_name' : major_name,
 
@@ -682,19 +1109,6 @@ def studentPanelConformeBet3Create(request):
 
                 panel_check = User.objects.filter(is_panel=1)
 
-                panel_members_list = []
-
-                for panel in panel_check:
-
-                    if panel.middle_name == "":
-                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel.last_name)
-
-                    else:
-                        panel_middle_initial = panel.middle_name[0]
-                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel_middle_initial + ". " + panel.last_name)
-                
-                panel_members = sorted(panel_members_list)
-
                 course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
                 course_name = course_check.course
                 major_name = course_check.major
@@ -705,9 +1119,11 @@ def studentPanelConformeBet3Create(request):
 
                     'dept_head_name': dept_head_name,
 
-                    'panel_members' : panel_members,
+                    'panel_check' : panel_check,
 
                     'leader_member_name' : leader_member_name_2,
+                    'leader_member_username' : current_user.username,
+
                     'course_name' : course_name,
                     'major_name' : major_name,
 
@@ -720,25 +1136,12 @@ def studentPanelConformeBet3Create(request):
                 return redirect('student-dashboard')
 
         # If Panel Name input is the same with the other Panel Name Input
-        elif panel1_input == panel2_input or panel1_input == panel3_input or panel1_input == panel4_input or panel1_input == panel5_input or panel2_input == panel1_input or panel2_input == panel3_input or panel2_input == panel4_input or panel2_input == panel5_input or panel3_input == panel1_input or panel3_input == panel2_input or panel3_input == panel4_input or panel3_input == panel5_input or panel4_input == panel1_input or panel4_input == panel2_input or panel4_input == panel3_input or panel4_input == panel5_input or panel5_input == panel1_input or panel5_input == panel2_input or panel5_input == panel3_input or panel5_input == panel4_input: 
+        if panel1_input == panel2_input or panel1_input == panel3_input or panel1_input == panel4_input or panel1_input == panel5_input or panel2_input == panel1_input or panel2_input == panel3_input or panel2_input == panel4_input or panel2_input == panel5_input or panel3_input == panel1_input or panel3_input == panel2_input or panel3_input == panel4_input or panel3_input == panel5_input or panel4_input == panel1_input or panel4_input == panel2_input or panel4_input == panel3_input or panel4_input == panel5_input or panel5_input == panel1_input or panel5_input == panel2_input or panel5_input == panel3_input or panel5_input == panel4_input: 
             try:
                 dept_head_check = User.objects.get(is_department_head=1)
                 dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
 
                 panel_check = User.objects.filter(is_panel=1)
-
-                panel_members_list = []
-
-                for panel in panel_check:
-
-                    if panel.middle_name == "":
-                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel.last_name)
-
-                    else:
-                        panel_middle_initial = panel.middle_name[0]
-                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel_middle_initial + ". " + panel.last_name)
-                
-                panel_members = sorted(panel_members_list)
 
                 course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
                 course_name = course_check.course
@@ -750,9 +1153,11 @@ def studentPanelConformeBet3Create(request):
 
                     'dept_head_name': dept_head_name,
 
-                    'panel_members' : panel_members,
+                    'panel_check' : panel_check,
 
                     'leader_member_name' : leader_member_name_2,
+                    'leader_member_username' : current_user.username,
+
                     'course_name' : course_name,
                     'major_name' : major_name,
 
@@ -765,25 +1170,12 @@ def studentPanelConformeBet3Create(request):
                 return redirect('student-dashboard')
 
         # If Panel Name input is not in the Panel Member List
-        elif panel1_input not in panel_member_check_list or panel2_input not in panel_member_check_list or panel3_input not in panel_member_check_list or panel4_input not in panel_member_check_list or panel5_input not in panel_member_check_list: 
+        if panel1_input not in panel_member_check_list or panel2_input not in panel_member_check_list or panel3_input not in panel_member_check_list or panel4_input not in panel_member_check_list or panel5_input not in panel_member_check_list: 
             try:
                 dept_head_check = User.objects.get(is_department_head=1)
                 dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
 
                 panel_check = User.objects.filter(is_panel=1)
-
-                panel_members_list = []
-
-                for panel in panel_check:
-
-                    if panel.middle_name == "":
-                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel.last_name)
-
-                    else:
-                        panel_middle_initial = panel.middle_name[0]
-                        panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel_middle_initial + ". " + panel.last_name)
-                
-                panel_members = sorted(panel_members_list)
 
                 course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
                 course_name = course_check.course
@@ -795,13 +1187,83 @@ def studentPanelConformeBet3Create(request):
 
                     'dept_head_name': dept_head_name,
 
-                    'panel_members' : panel_members,
+                    'panel_check' : panel_check,
 
                     'leader_member_name' : leader_member_name_2,
+                    'leader_member_username' : current_user.username,
+
                     'course_name' : course_name,
                     'major_name' : major_name,
 
                     'response' : "sweet panel not in the list"
+                    }
+
+                return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+            except:
+                return redirect('student-dashboard')
+
+        # If Student ID No. is invalid
+        if "TUPC" not in student1_username_input or "TUPC" not in student2_username_input or "TUPC" not in student3_username_input:
+            try:
+                dept_head_check = User.objects.get(is_department_head=1)
+                dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+
+                panel_check = User.objects.filter(is_panel=1)
+
+                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+                course_name = course_check.course
+                major_name = course_check.major
+
+                context = {
+                    'user_full_name': user_full_name,
+                    'user_account' : user_account,
+
+                    'dept_head_name': dept_head_name,
+
+                    'panel_check' : panel_check,
+
+                    'leader_member_name' : leader_member_name_2,
+                    'leader_member_username' : current_user.username,
+
+                    'course_name' : course_name,
+                    'major_name' : major_name,
+
+                    'response' : "username invalid"
+                    }
+
+                return render(request, 'student-panel-conforme-bet-3-create.html', context)
+
+            except:
+                return redirect('student-dashboard')
+        
+        # If Student ID No. is the same with the others
+        if student1_username_input == student2_username_input or student1_username_input == student3_username_input or student2_username_input == student1_username_input or student2_username_input == student3_username_input or student3_username_input == student1_username_input or student3_username_input == student2_username_input:
+            try:
+                dept_head_check = User.objects.get(is_department_head=1)
+                dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
+
+                panel_check = User.objects.filter(is_panel=1)
+
+                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
+                course_name = course_check.course
+                major_name = course_check.major
+
+                context = {
+                    'user_full_name': user_full_name,
+                    'user_account' : user_account,
+
+                    'dept_head_name': dept_head_name,
+
+                    'panel_check' : panel_check,
+
+                    'leader_member_name' : leader_member_name_2,
+                    'leader_member_username' : current_user.username,
+
+                    'course_name' : course_name,
+                    'major_name' : major_name,
+
+                    'response' : "username same"
                     }
 
                 return render(request, 'student-panel-conforme-bet-3-create.html', context)
@@ -876,11 +1338,17 @@ def studentPanelConformeBet3Create(request):
             student_member_4 = student4_input,
             student_member_5 = student5_input,
 
+            student_member_username_1 = student1_username_input,
+            student_member_username_2 = student2_username_input,
+            student_member_username_3 = student3_username_input,
+            student_member_username_4 = student4_username_input,
+            student_member_username_5 = student5_username_input,
+
             course = course_abbr,
             major = major_input,
             course_major_abbr = user_course,
 
-            research_title = research_title_input,
+            research_title = research_title_input.title(),
 
             date_submitted = date_today,
 
@@ -891,14 +1359,66 @@ def studentPanelConformeBet3Create(request):
 
         research_title_form = ResearchTitle(
             research_title =  research_title_input.title(),
+            course_major_abbr = user_course,
             course = course_name,
             major = major_input,
             student_leader_username = current_user.username,
             student_leader_name = leader_member_name_2,
             status = "ongoing",
+            date_submitted = date_today,
             )
 
         research_title_form.save()
+
+        student_member_group_2 = StudentGroupMembers(
+            student_leader_username = current_user.username,
+            student_leader_name = leader_member_name_2,
+            student_member_username = student2_username_input,
+            student_member_name = student2_input,
+            course = course_name,
+            major = major_input,
+            course_major_abbr = user_course,
+            )
+
+        student_member_group_2.save()
+
+        student_member_group_3 = StudentGroupMembers(
+            student_leader_username = current_user.username,
+            student_leader_name = leader_member_name_2,
+            student_member_username = student3_username_input,
+            student_member_name = student3_input,
+            course = course_name,
+            major = major_input,
+            course_major_abbr = user_course,
+            )
+
+        student_member_group_3.save()
+
+        if student4_input:
+            student_member_group_4 = StudentGroupMembers(
+            student_leader_username = current_user.username,
+            student_leader_name = leader_member_name_2,
+            student_member_username = student4_username_input,
+            student_member_name = student4_input,
+            course = course_name,
+            major = major_input,
+            course_major_abbr = user_course,
+            )
+
+            student_member_group_4.save()
+        
+        if student5_input:
+            student_member_group_5 = StudentGroupMembers(
+            student_leader_username = current_user.username,
+            student_leader_name = leader_member_name_2,
+            student_member_username = student5_username_input,
+            student_member_name = student5_input,
+            course = course_name,
+            major = major_input,
+            course_major_abbr = user_course,
+            )
+
+            student_member_group_5.save()
 
         return redirect('student-dashboard')
 
@@ -908,8 +1428,7 @@ def studentPanelConformeBet3Create(request):
         dept_head_name = None
 
         panel_check = User.objects.filter(is_panel=1)
- 
-        panel_members_list = []
+
 
         if dept_head_check.middle_name == "":
             dept_head_name = dept_head_check.honorific + " "  + dept_head_check.first_name + " " + dept_head_check.last_name
@@ -918,16 +1437,6 @@ def studentPanelConformeBet3Create(request):
             dept_head_middle_initial = dept_head_check.middle_name[0]
             dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_middle_initial + ". " + dept_head_check.last_name
 
-        for panel in panel_check:
-
-            if panel.middle_name == "":
-                panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel.last_name)
-
-            else:
-                panel_middle_initial = panel.middle_name[0]
-                panel_members_list.append(panel.honorific + " " + panel.first_name + " " + panel_middle_initial + ". " + panel.last_name)
-        
-        panel_members = sorted(panel_members_list)
 
         course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
         course_name = course_check.course
@@ -944,6 +1453,9 @@ def studentPanelConformeBet3Create(request):
             'panel_check': panel_check,
 
             'leader_member_name' : leader_member_name_2,
+            'leader_member_username' : current_user.username,
+
+
             'course_name' : course_name,
             'major_name' : major_name,
             }
@@ -2790,6 +3302,112 @@ def ditHeadDashboard(request):
 
     return render(request, 'dit-head-dashboard.html', context)
 
+
+# DIT Head - Profile Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_department_head, login_url='index')
+def ditHeadProfile(request):
+    currently_loggedin_user = (request.user)
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        }
+    
+
+    context = {
+                'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                'currently_loggedin_user_department' : currently_loggedin_user.department,
+                'currently_loggedin_username':  currently_loggedin_user.username, 
+                'currently_loggedin_user_email': currently_loggedin_user.email,
+                }   
+
+    if request.method == 'POST':
+        current_password_input = request.POST.get('current_password_input')
+        new_password_input = request.POST.get('new_password_input')
+        confirm_new_password_input = request.POST.get('confirm_new_password_input')
+
+        if current_password_input == currently_loggedin_user.password:
+
+            if current_password_input != new_password_input:
+
+                if new_password_input == confirm_new_password_input:
+
+                    User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
+
+                    context = {                        
+                        "response": "changed password"
+                        }
+                    return render(request, 'index.html', context)
+
+                else:
+                    context = {
+                        'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                        'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                        'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                        'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                        'currently_loggedin_user_department' : currently_loggedin_user.department,
+                        'currently_loggedin_username':  currently_loggedin_user.username, 
+                        'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                        "response": "new password and confirm new password doesnt match"
+                        }
+
+                    return render(request, 'dit-head-profile.html', context)
+
+            else:
+                context = {
+                    'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                    'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                    'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                    'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                    'currently_loggedin_user_department' : currently_loggedin_user.department,
+                    'currently_loggedin_username':  currently_loggedin_user.username, 
+                    'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                    "response": "current password and new password is same"
+                    }
+
+                return render(request, 'dit-head-profile.html', context)
+
+        else:
+            context = {
+                'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                'currently_loggedin_user_department' : currently_loggedin_user.department,
+                'currently_loggedin_username':  currently_loggedin_user.username, 
+                'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                "response": "current password is incorrect"
+                }
+
+            return render(request, 'dit-head-profile.html', context)
+
+
+    return render(request, 'dit-head-profile.html', context)
+
+
+
 # DIT Head - Panel Conforme BET-3 Page
 @login_required(login_url='index')
 def ditHeadPanelConformeBet3(request):
@@ -2827,7 +3445,6 @@ def ditHeadPanelConformeBet3(request):
         return render(request, 'dit-head-panel-conforme-bet-3.html', context)
 
     
-
 # DIT Head - Panel Conforme BET-3 Accept Process
 @login_required(login_url='index')
 def ditHeadPanelConformeBet3Accept(request, id):
@@ -2879,3 +3496,194 @@ def ditHeadPanelConformeBet3Accept(request, id):
 @login_required(login_url='index')
 def ditHeadPanelConformeBet3Decline(request, id):
     pass
+
+##########################################################################################################################
+
+# Panel - Dashboard Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
+def panelDashboard(request):
+    currently_loggedin_user = (request.user)
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        }
+
+    return render(request, 'panel-dashboard.html', context)
+
+# Panel - Profile Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_department_head, login_url='index')
+def panelProfile(request):
+    currently_loggedin_user = (request.user)
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        }
+    
+
+    context = {
+                'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                'currently_loggedin_user_department' : currently_loggedin_user.department,
+                'currently_loggedin_username':  currently_loggedin_user.username, 
+                'currently_loggedin_user_email': currently_loggedin_user.email,
+                }   
+
+    if request.method == 'POST':
+        current_password_input = request.POST.get('current_password_input')
+        new_password_input = request.POST.get('new_password_input')
+        confirm_new_password_input = request.POST.get('confirm_new_password_input')
+
+        if current_password_input == currently_loggedin_user.password:
+
+            if current_password_input != new_password_input:
+
+                if new_password_input == confirm_new_password_input:
+
+                    User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
+
+                    context = {                        
+                        "response": "changed password"
+                        }
+                    return render(request, 'index.html', context)
+
+                else:
+                    context = {
+                        'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                        'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                        'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                        'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                        'currently_loggedin_user_department' : currently_loggedin_user.department,
+                        'currently_loggedin_username':  currently_loggedin_user.username, 
+                        'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                        "response": "new password and confirm new password doesnt match"
+                        }
+
+                    return render(request, 'panel-profile.html', context)
+
+            else:
+                context = {
+                    'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                    'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                    'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                    'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                    'currently_loggedin_user_department' : currently_loggedin_user.department,
+                    'currently_loggedin_username':  currently_loggedin_user.username, 
+                    'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                    "response": "current password and new password is same"
+                    }
+
+                return render(request, 'panel-profile.html', context)
+
+        else:
+            context = {
+                'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                'currently_loggedin_user_department' : currently_loggedin_user.department,
+                'currently_loggedin_username':  currently_loggedin_user.username, 
+                'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                "response": "current password is incorrect"
+                }
+
+            return render(request, 'panel-profile.html', context)
+
+
+    return render(request, 'panel-profile.html', context)
+
+
+# Panel - Panel Conforme BET-3 Page
+@login_required(login_url='index')
+def panelPanelConformeBet3(request):
+    currently_loggedin_user = (request.user)
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+
+     # PANEL CONFORME BET-3
+    try:
+        panel_conforme_bet3_check_1 = PanelConformeBET3.objects.all().filter(panel_member_1 = currently_loggedin_user.username, panel_member_status_1="pending")
+    except:
+        print("Not Panel 1")
+        pass
+
+    try:
+        panel_conforme_bet3_check_2 = PanelConformeBET3.objects.all().filter(panel_member_2 = currently_loggedin_user.username, panel_member_status_2="pending")
+    except:
+        print("Not Panel 2")
+        pass
+
+    try:
+        panel_conforme_bet3_check_3 = PanelConformeBET3.objects.all().filter(panel_member_3 = currently_loggedin_user.username, panel_member_status_3="pending")
+    except:
+        print("Not Panel 3")
+        pass
+
+    try:
+        panel_conforme_bet3_check_4 = PanelConformeBET3.objects.all().filter(panel_member_4 = currently_loggedin_user.username, panel_member_status_4="pending")
+    except:
+        print("Not Panel 4")
+        pass
+
+    try:
+        panel_conforme_bet3_check_5 = PanelConformeBET3.objects.all().filter(panel_member_5 = currently_loggedin_user.username, panel_member_status_5="pending")
+    except:
+        print("Not Panel 5")
+        pass
+
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+        'panel_conforme_bet3_check_1' : panel_conforme_bet3_check_1,
+        'panel_conforme_bet3_check_2' : panel_conforme_bet3_check_2,
+        'panel_conforme_bet3_check_3' : panel_conforme_bet3_check_3,
+        'panel_conforme_bet3_check_4' : panel_conforme_bet3_check_4,
+        'panel_conforme_bet3_check_5' : panel_conforme_bet3_check_5,
+        }
+
+    return render(request, 'panel-panel-conforme-bet-3.html', context)

@@ -76,6 +76,12 @@ class PanelConformeBET3(models.Model):
     student_member_4 = models.CharField(max_length=256)
     student_member_5 = models.CharField(max_length=256)
 
+    student_member_username_1 = models.CharField(max_length=256)
+    student_member_username_2 = models.CharField(max_length=256)
+    student_member_username_3 = models.CharField(max_length=256)
+    student_member_username_4 = models.CharField(max_length=256)
+    student_member_username_5 = models.CharField(max_length=256)
+
     course = models.CharField(max_length=256)
     major = models.CharField(max_length=256)
     course_major_abbr = models.CharField(max_length=256)
@@ -99,6 +105,23 @@ class ResearchTitle(models.Model):
     student_leader_username = models.CharField(max_length=256)
     student_leader_name = models.CharField(max_length=256)
     status = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256)
+    date_submitted = models.CharField(max_length=256)
 
     def __str__(self) -> str:
         return self.research_title
+
+####################################################################################################################
+
+# Student Group Members
+class StudentGroupMembers(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_name = models.CharField(max_length=256)
+    student_member_username = models.CharField(max_length=256)
+    student_member_name = models.CharField(max_length=256)
+    course = models.CharField(max_length=256)
+    major = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.student_leader_username

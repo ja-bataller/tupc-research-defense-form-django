@@ -9,13 +9,26 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>DIT Head - Panel Conforme BET-3</title>
+    <title>DIT Head - Profile</title>
 
-    {% include 'css-main-cdn.html ' %}
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+
+    <!-- Fontawesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Izitoast 1.4.0 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet" />
+
+    <!-- Custom styles for this page -->
+    <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
   </head>
 
   <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -30,7 +43,7 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
             <i class="fa-solid fa-house"></i>
             <span>Home</span></a
@@ -41,7 +54,7 @@
         <!-- <hr class="sidebar-divider"> -->
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
             <i class="fa-solid fa-folder-open"></i>
             <span>Forms</span>
@@ -95,10 +108,8 @@
       <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
-          
           <!-- Topbar -->
           <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-            
             <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
             <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
               <i class="fa fa-bars"></i>
@@ -109,15 +120,15 @@
               <!-- Nav Item - User Information -->
               <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br/>
+                  <span class="mr-2 d-none d-lg-inline text-gray-600 small"
+                    >{{currently_loggedin_user_full_name}} <br />
                     <div class="float-right">DIT Head</div>
                   </span>
                   <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                 
-                  <a class="dropdown-item" href="{% url 'dit-head-profile' %}">
+                  <a class="dropdown-item" href="{% url 'admin-profile' %}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                   </a>
@@ -137,63 +148,91 @@
           <div class="container-fluid">
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-gray-800">Panel Conforme - BET-3</h1>
+              <h1 class="h3 mb-0 text-gray-800">User Profile</h1>
             </div>
 
-            <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-              <!-- <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Pending Dashboard</h6>
-                </div> -->
+            <!-- User Profile Start -->
+            <div class="card border-left-info shadow h-100 py-2 mb-3">
               <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th>Research Title</th>
-                        <th>Student ID No.</th>
-                        <th>Student Name</th>
-                        <th>Course</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th>Research Title</th>
-                        <th>Student ID No.</th>
-                        <th>Student Name</th>
-                        <th>Course</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </tfoot>
-                    <tbody>
-                      {% for panel_conforme_forms in panel_conforme_bet3_check %}
-                      <tr>
-                        <td>{{panel_conforme_forms.research_title}}</td>
-                        <td>{{panel_conforme_forms.student_leader_username}}</td>
-                        <td>{{panel_conforme_forms.student_member_1}}</td>
-                        <td>{{panel_conforme_forms.course_major_abbr}}</td>
-                        <td>{{panel_conforme_forms.dept_head_status}}</td>
-                        <td class="text-center">
-                          <a class="btn btn-outline-success mr-2" type="button" href="{% url 'dit-head-panel-conforme-bet-3-accept' panel_conforme_forms.id %}"><i class="fa-solid fa-check"></i></a>
-                          <a class="btn btn-outline-danger" type="button" href="#"><i class="fa-solid fa-xmark"></i></a>
-                        </td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="form-group">
+                      <label>First Name</label>
+                      <input type="text" class="form-control" value="{{currently_loggedin_user_first_name}}" disabled />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Middle Name</label>
+                      <input type="text" class="form-control" value="{{currently_loggedin_user_middle_name}}" disabled />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Last Name:</label>
+                      <input type="text" class="form-control" value="{{currently_loggedin_user_last_name}}" disabled />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Department</label>
+                      <input type="text" class="form-control" value="{{currently_loggedin_user_department}}" disabled />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Username</label>
+                      <input type="text" class="form-control" value="{{currently_loggedin_username}}" disabled />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input type="text" class="form-control" value="{{currently_loggedin_user_email}}" disabled />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+            <!-- User Profile End -->
+
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-0 text-gray-800">Account Settings</h1>
+            </div>
+
+            <!-- User Profile Start -->
+            <div class="card border-left-warning shadow h-100 py-2 mb-3">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <form method="POST">
+                      {% csrf_token %}
+
+                      <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" class="form-control" name="current_password_input" required />
+                      </div>
+
+                      <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" class="form-control" name="new_password_input" required />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" class="form-control" name="confirm_new_password_input" required />
+                      </div>
+
+                      <button type="submit" class="btn btn-outline-success w-100"><i class="fa-solid fa-lock"></i> Change Password</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- User Profile End -->
           </div>
           <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        {% include 'footer.html' %}
+        {% include 'footer.html'%}
         <!-- End of Footer -->
       </div>
       <!-- End of Content Wrapper -->
@@ -205,19 +244,33 @@
       <i class="fas fa-angle-up"></i>
     </a>
 
-    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
-    <!-- Sweetalert 2 CDN -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    {% if response == 'sweet panel conforme bet-3 accepted' %}
+    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% if response == 'current password is incorrect' %}
     <script>
-      Swal.fire("Accepted", "{{accepted_research_title}} is accepted.", "success");
-
-      setTimeout(function () {
-        window.location.replace("{% url 'dit-head-panel-conforme-bet-3' %}");
-      }, 1500);
+      iziToast.error({
+        title: "Invalid.",
+        message: "The Password you entered is incorrect.",
+        position: "topCenter",
+        timeout: 5000,
+      });
+    </script>
+    {% endif %} {% if response == 'new password and confirm new password doesnt match' %}
+    <script>
+      iziToast.error({
+        title: "Invalid.",
+        message: "The New Password and Confirm Password you entered doesn't match.",
+        position: "topCenter",
+        timeout: 5000,
+      });
+    </script>
+    {% endif %} {% if response == 'current password and new password is same' %}
+    <script>
+      iziToast.error({
+        title: "Invalid.",
+        message: "The Current Password and New Password you entered is the same.",
+        position: "topCenter",
+        timeout: 5000,
+      });
     </script>
     {% endif %}
-
   </body>
 </html>

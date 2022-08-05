@@ -26,13 +26,14 @@
         <div class="col-sm-12 mb-5 mt-0 text-center">
          <h1>Log In as</h1>
         </div>
+        {% if is_department_head == "1" %}
         <div class="col-md-3 mb-3 text-center">
           <i class="fa-solid fa-user-tie fa-10x mb-3"></i>
           <a class="btn btn-outline-secondary w-100" type="button" href="{% url 'dit-head-dashboard' %}">DIT Head</a>
         </div>
         <div class="col-md-3 mb-3 text-center">
           <i class="fa-solid fa-user fa-10x mb-3"></i>
-          <a class="btn btn-outline-secondary w-100" type="button" href="#">Panel</a>
+          <a class="btn btn-outline-secondary w-100" type="button" href="{% url 'panel-dashboard' %}">Panel</a>
         </div>
         <div class="col-md-3 mb-3 text-center">
           <i class="fa-solid fa-person-circle-question fa-10x mb-3"></i>
@@ -42,6 +43,20 @@
           <i class="fa-solid fa-person-chalkboard fa-10x mb-3"></i>
           <a class="btn btn-outline-secondary w-100" type="button" href="#">Subject Teacher</a>
         </div>
+        {% else %}
+        <div class="col-md-4 mb-3 text-center">
+          <i class="fa-solid fa-user fa-10x mb-3"></i>
+          <a class="btn btn-outline-secondary w-100" type="button" href="{% url 'panel-dashboard' %}">Panel</a>
+        </div>
+        <div class="col-md-4 mb-3 text-center">
+          <i class="fa-solid fa-person-circle-question fa-10x mb-3"></i>
+          <a class="btn btn-outline-secondary w-100" type="button" href="#">Adviser</a>
+        </div>
+        <div class="col-md-4 mb-3 text-center">
+          <i class="fa-solid fa-person-chalkboard fa-10x mb-3"></i>
+          <a class="btn btn-outline-secondary w-100" type="button" href="#">Subject Teacher</a>
+        </div>
+        {% endif %}
       </div>
     </div>
 

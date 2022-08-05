@@ -30,7 +30,15 @@ urlpatterns = [
 
    # DIT Head Views
    path('dit-head-dashboard/', views.ditHeadDashboard, name ="dit-head-dashboard"),
+   path('dit-head-profile/', views.ditHeadProfile, name ="dit-head-profile"),
    path('dit-head-panel-conforme-bet-3/', views.ditHeadPanelConformeBet3, name ="dit-head-panel-conforme-bet-3"),
    path('dit-head-panel-conforme-bet-3-accept/<str:id>', views.ditHeadPanelConformeBet3Accept, name ="dit-head-panel-conforme-bet-3-accept"),  
    path('dit-head-panel-conforme-bet-3-decline/<str:id>', views.ditHeadPanelConformeBet3Decline, name ="dit-head-panel-conforme-bet-3-decline"),  
+
+   # Panel Views
+   path('panel-dashboard/', views.panelDashboard, name ="panel-dashboard"),
+   path('panel-profile/', views.panelProfile, name ="panel-profile"),
+   path('panel-panel-conforme-bet-3/', views.panelPanelConformeBet3, name ="panel-panel-conforme-bet-3"),
+   # path('panel-panel-conforme-bet-3-accept/<str:id>/', views.panelPanelConformeBet3Accept, name ="panel-panel-conforme-bet-3-accept"),
+   # path('panel-panel-conforme-bet-3-decline/<str:id>/', views.panelPanelConformeBet3Decline, name ="panel-panel-conforme-bet-3-decline"),
 ]

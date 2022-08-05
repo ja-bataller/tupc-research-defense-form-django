@@ -122,6 +122,12 @@
     </script>
     {% endif %}
 
+    {% if response == 'sweet user exist' %}
+    <script>
+      Swal.fire("{{student_member_check_username}} \n {{student_member_check_name}}", "You're already a part of a Group. One Account per group is allowed.", "error");
+    </script>
+    {% endif %}
+
 
 
   </body>

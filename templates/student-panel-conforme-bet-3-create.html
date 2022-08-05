@@ -52,7 +52,7 @@
                       <!-- Group Members Start -->
                       <div class="form-group mb-3">
                         <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title:</h6>
-                        <input type="text" class="form-control" name="research_title_input" style="text-transform: capitalize" required />
+                        <input type="text" class="form-control" name="research_title_input" required />
                       </div>
 
                       <div class="form-group mb-3">
@@ -73,11 +73,25 @@
                         <input type="text" class="form-control" value="{{leader_member_name}}" name="student1_input" style="text-transform: capitalize" placeholder="Surname, First Name M.I" placeholder="Surname, First Name M.I" required />
                       </div>
 
+                      <div class="input-group mb-5">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-default">1</span>
+                        </div>
+                        <input type="text" class="form-control" value="{{leader_member_username}}" name="student1_username_input" style="text-transform: capitalize" placeholder="TUPC-XX-XXXX" placeholder="Surname, First Name M.I" required />
+                      </div>
+
                       <div class="input-group mb-3">
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-default">2</span>
                         </div>
                         <input type="text" class="form-control" name="student2_input" placeholder="Surname, First Name M.I" style="text-transform: capitalize" required />
+                      </div>
+
+                      <div class="input-group mb-5">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-default">2</span>
+                        </div>
+                        <input type="text" class="form-control" name="student2_username_input" placeholder="TUPC-XX-XXXX" onkeyup="this.value = this.value.toUpperCase();" required />
                       </div>
 
                       <div class="input-group mb-3">
@@ -87,18 +101,39 @@
                         <input type="text" class="form-control" name="student3_input" placeholder="Surname, First Name M.I" style="text-transform: capitalize" required />
                       </div>
 
+                      <div class="input-group mb-5">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-default">3</span>
+                        </div>
+                        <input type="text" class="form-control" name="student3_username_input" placeholder="TUPC-XX-XXXX" onkeyup="this.value = this.value.toUpperCase();" required />
+                      </div>
+
                       <div class="input-group mb-3">
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-default">4</span>
                         </div>
-                        <input type="text" class="form-control" name="student4_input" placeholder="Surname, First Name M.I" style="text-transform: capitalize" required />
+                        <input type="text" class="form-control" name="student4_input" placeholder="Surname, First Name M.I" style="text-transform: capitalize" />
+                      </div>
+
+                      <div class="input-group mb-5">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-default">4</span>
+                        </div>
+                        <input type="text" class="form-control" name="student4_username_input" placeholder="TUPC-XX-XXXX" onkeyup="this.value = this.value.toUpperCase();" />
+                      </div>
+
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-default">5</span>
+                        </div>
+                        <input type="text" class="form-control" name="student5_input" placeholder="Surname, First Name M.I" style="text-transform: capitalize" />
                       </div>
 
                       <div class="input-group mb-5">
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-default">5</span>
                         </div>
-                        <input type="text" class="form-control" name="student5_input" placeholder="Surname, First Name M.I" style="text-transform: capitalize" required />
+                        <input type="text" class="form-control" name="student5_username_input" placeholder="TUPC-XX-XXXX" onkeyup="this.value = this.value.toUpperCase();" />
                       </div>
                        <!-- Group Members End -->
 
@@ -237,6 +272,30 @@
     {% if response == 'sweet panel not in the list' %}
     <script>
       Swal.fire("Uh-oh", "You just entered a Panel Member which is not in the list. Please choose from the choices given.", "warning");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet student member exist 2' %}
+    <script>
+      Swal.fire("Uh-oh", "Group Member #2 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet student member exist 3' %}
+    <script>
+      Swal.fire("Uh-oh", "Group Member #3 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet student member exist 4' %}
+    <script>
+      Swal.fire("Uh-oh", "Group Member #4 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet student member exist 5' %}
+    <script>
+      Swal.fire("Uh-oh", "Group Member #5 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
     </script>
     {% endif %}
     
