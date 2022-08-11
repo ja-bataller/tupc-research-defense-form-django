@@ -43,6 +43,21 @@
             </div>
 
             <div class="form-group">
+              <label>Suffix:</label>
+              <select class="custom-select" name="suffix_input" id="inputGroupSelect02">
+                <option value="" selected>None</option>
+                <option value="Sr.">Sr.</option>
+                <option value="Jr.">Jr.</option>
+                <option value="I">I</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+                <option value="V.">V.</option>
+
+              </select>
+            </div>
+
+            <div class="form-group">
               <label>Course:</label>
               <select class="custom-select" name="course_input" id="inputGroupSelect02" required>
                 <option value="default" selected>Choose your course here...</option>
@@ -106,13 +121,19 @@
 
     {% include 'alert-validation.html' %} 
     
-    {% if response == 'sweet no course' %}
+    {% if response == 'sweet incomplete form' %}
     <script>
       Swal.fire("Uh-oh", "Sorry, can't sign up at the moment. \n Please try again later.", "warning");
 
       setTimeout(function () {
         window.location.replace("{% url 'index' %}");
       }, 3000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet invalid suffix' %}
+    <script>
+      Swal.fire("Invalid", "You just entered a Suffix which is not in the list. Please choose one from the choices given.", "error");
     </script>
     {% endif %}
 
@@ -129,6 +150,9 @@
     {% endif %}
 
 
+    <script>
+      
+    </script>
 
   </body>
 </html>

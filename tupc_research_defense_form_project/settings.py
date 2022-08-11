@@ -24,9 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-5+w!z$k!ik+v8=$0lc#=l1awb)&!ko6g@b(f#8o13t7pvc9&5f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# Comment when deployed
 DEBUG = True
-
 ALLOWED_HOSTS = []
+
+# Uncomment when deployed
+# DEBUG = False
+# ALLOWED_HOSTS = ['http://johnanthonybataller.pythonanywhere.com/']
 
 
 # Application definition
@@ -63,6 +67,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'],
+        # 'DIRS':  [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,17 +82,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tupc_research_defense_form_project.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
+# Uncomment when Deployed
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'johnanthonybatal$tupc_research_defense_form_db',
+#         'HOST': 'johnanthonybataller.mysql.pythonanywhere-services.com',
+#         'USER': 'johnanthonybatal',
+#         'PASSWORD': 'tupcresearchdefenseform',
 #     }
 # }
 
+# Comment when Deployed
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -138,6 +144,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# STATIC_ROOT = '/home/johnanthonybataller/tupc-research-defense-form-django/static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

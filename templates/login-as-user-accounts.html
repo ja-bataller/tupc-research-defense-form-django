@@ -17,14 +17,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Custom CSS Stylesheet -->
-    <link rel="stylesheet" href="{% static '/css/login_signup.css' %}" />
+    <!-- <link rel="stylesheet" href="{% static '/css/login_signup.css' %}" /> -->
+    <link rel="stylesheet" href="{% static '/css/login-as.css' %}" />
   </head>
 
   <body>
-    <div class="container">
+    <!-- <div class="container">
       <div class="row content">
         <div class="col-sm-12 mb-5 mt-0 text-center">
-         <h1>Log In as</h1>
+          <h1>Log In as</h1>
         </div>
         {% if is_department_head == "1" %}
         <div class="col-md-3 mb-3 text-center">
@@ -58,7 +59,118 @@
         </div>
         {% endif %}
       </div>
+    </div> -->
+
+    <div class="container">
+      <div class="grid-wrapper grid-col-auto">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="top-text-wrapper text-center">
+              <h2>Log in as</h2>
+              <hr />
+            </div>
+          </div>
+
+          {% if is_department_head == "1" %}
+          <div class="col-sm-12 col-md-6 col-lg-3 text-center">
+            <label for="radio-card-2" class="radio-card">
+              <input type="radio" onclick="departmentHead()" name="radio-card" id="radio-card-2" />
+              <div class="card-content-wrapper">
+                <span class="check-icon"></span>
+                <div class="card-content">
+                  <img src="{% static 'img/department-head.png' %}" alt="" />
+                  <h4>Department Head</h4>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="col-sm-12 col-md-6 col-lg-3 text-center">
+            <label for="radio-card-3" class="radio-card">
+              <input type="radio" onclick="panel()" name="radio-card" id="radio-card-3" />
+              <div class="card-content-wrapper">
+                <span class="check-icon"></span>
+                <div class="card-content">
+                  <img src="{% static 'img/panel.png' %}" alt="" />
+                  <h4>Panel</h4>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="col-sm-12 col-md-6 col-lg-3 text-center">
+            <label for="radio-card-4" class="radio-card">
+              <input type="radio" name="radio-card" id="radio-card-4" />
+              <div class="card-content-wrapper">
+                <span class="check-icon"></span>
+                <div class="card-content">
+                  <img src="{% static 'img/adviser.png' %}" alt="" />
+                  <h4>Adviser</h4>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="col-sm-12 col-md-6 col-lg-3 text-center">
+            <label for="radio-card-5" class="radio-card">
+              <input type="radio" name="radio-card" id="radio-card-5" />
+              <div class="card-content-wrapper">
+                <span class="check-icon"></span>
+                <div class="card-content">
+                  <img src="{% static 'img/subject-teacher.png' %}" alt="" />
+                  <h4>Subject Teacher</h4>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          {% else %}
+
+          <div class="col-sm-12 col-md-6 col-lg-4 text-center">
+            <label for="radio-card-3" class="radio-card">
+              <input type="radio" onclick="panel()" name="radio-card" id="radio-card-3" />
+              <div class="card-content-wrapper">
+                <span class="check-icon"></span>
+                <div class="card-content">
+                  <img src="{% static 'img/panel.png' %}" alt="" />
+                  <h4>Panel</h4>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="col-sm-12 col-md-6 col-lg-4 text-center">
+            <label for="radio-card-4" class="radio-card">
+              <input type="radio" name="radio-card" id="radio-card-4" />
+              <div class="card-content-wrapper">
+                <span class="check-icon"></span>
+                <div class="card-content">
+                  <img src="{% static 'img/adviser.png' %}" alt="" />
+                  <h4>Adviser</h4>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="col-sm-12 col-md-6 col-lg-4 text-center">
+            <label for="radio-card-5" class="radio-card">
+              <input type="radio" name="radio-card" id="radio-card-5" />
+              <div class="card-content-wrapper">
+                <span class="check-icon"></span>
+                <div class="card-content">
+                  <img src="{% static 'img/subject-teacher.png' %}" alt="" />
+                  <h4>Subject Teacher</h4>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          {% endif %}
+        </div>
+      </div>
+      <!-- /.grid-wrapper -->
     </div>
+    <!-- /.container -->
 
     <!-- Bootstrap 4.6 Script CDN -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -67,11 +179,20 @@
 
     <!-- Izitoat 1.4.0 Script CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
+
     <!-- SweetAlert2 Script CDN -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     {% include 'alert-validation.html' %}
 
+    <script>
+      function departmentHead() {
+        window.location.replace("{% url 'dit-head-dashboard' %}");
+      }
+
+      function panel() {
+        window.location.replace("{% url 'panel-dashboard' %}");
+      }
+    </script>
   </body>
 </html>

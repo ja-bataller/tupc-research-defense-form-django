@@ -9,6 +9,7 @@ class User(AbstractUser):
 
     honorific = models.CharField(max_length=256, blank=True)
     middle_name = models.CharField(max_length=256, blank=True)
+    suffix = models.CharField(max_length=256, blank=True)
 
     is_user = models.BooleanField(default=True)
     is_administrator = models.BooleanField(default=False)

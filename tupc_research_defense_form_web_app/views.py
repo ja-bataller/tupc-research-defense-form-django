@@ -1,68 +1,80 @@
-import email
-from multiprocessing import context
 from django.shortcuts import render, redirect
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from pyparsing import empty
-
 from .forms import SignUpForm
 from .models import *
-
+# Import Date & Time
 from datetime import date
-
+# Import Docx and PDF Convert
 from docx import Document
 from docx2pdf import convert
-import os
 from docx.shared import Inches
+import os
 
 today = date.today()
-
-# User = get_user_model()
-
 ##########################################################################################################################
 
 # Index / Log in Page
 def index(request):
 
     if request.method == 'POST':
+        # Get data from Front-end
         username_input_index_form = request.POST.get('username_input')
         password_input_index_form = request.POST.get('password_input')
-
+        
+        # Check if the user exist
         try:
             user_check = User.objects.get(username=username_input_index_form)
-
+            
+            # Check the password of the user if correct
             if user_check.password == password_input_index_form:
+                print("The Password is correct")
 
                 if user_check.is_student == 1:
+                    print("User: Student")
+
                     user = User.objects.get(username=username_input_index_form, password=password_input_index_form)
                     login(request, user)
+
                     return redirect('student-dashboard')
                 
                 if user_check.is_administrator == 1:
+                    print("User: Admin")
+
                     user = User.objects.get(username=username_input_index_form, password=password_input_index_form)
                     login(request, user)
+
                     return redirect('admin-dashboard')
                 
                 if user_check.is_department_head == 1:
+                    print("User: DIT Head")
+
                     user = User.objects.get(username=username_input_index_form, password=password_input_index_form)
                     login(request, user)
+
                     return redirect('login-as')
                 
                 if user_check.is_panel == 1:
+                    print("User: Panel")
+
                     user = User.objects.get(username=username_input_index_form, password=password_input_index_form)
                     login(request, user)
+
                     return redirect('login-as')
 
             else:
-                print("Incorrect Password")
+                print("The Password is incorrect.")
+
                 context = {'response': "incorrect password"}
                 return render(request, 'index.html', context)
-
+        
+        # If the user doesn't exist
         except:
-            print("User does not exist")
+            print("The User doesn't exist.")
+
             context = {'response': "user does not exist"}
             return render(request, 'index.html', context)
 
@@ -73,28 +85,43 @@ def signup(request):
 
     form = SignUpForm()
 
+    suffix_list = ["", "Sr.", "Jr.","I","II","III","IV","V"]
+
     course = StudentCourseMajor.objects.all()
 
     course_list = []
 
     if not course:
+        print("No Course Available")
+
         context = {
-            'response': "sweet no course"}
+            'response': "sweet incomplete form"}
+
         return render(request, 'signup.html', context)
     
     else:
         for course_abbr in course:
             course_list.append(course_abbr.course_major_abbr)
         
-        print(course_list)
+        print("Available Course: ", course_list)
 
     if request.method == "POST":
         form = SignUpForm(request.POST)
 
+        suffix_input = request.POST.get('suffix_input')
         course_input = request.POST.get('course_input')
         confirm_password = request.POST.get('confirm_password_input')
 
-        print(confirm_password)
+        if suffix_input not in suffix_list:
+
+            context = {
+                'form': form, 
+                "course" : course,
+
+                'response': "sweet invalid suffix"
+            }
+
+            return render(request, 'signup.html', context)
 
         if course_input == "default":
 
@@ -119,18 +146,18 @@ def signup(request):
             return render(request, 'signup.html', context)
 
         if form.is_valid():
-            print("valid form")
+            print("Valid form")
 
             user = form.save(commit=False)
 
-            user_username_inut = user.username
-            user_email_inut = user.email
+            user_username_input = user.username
+            user_email_input = user.email
 
-            # Check Group Member 2
+            # Check if the Username is taken
             try:
-                student_member_check = PanelConformeBET3.objects.get(student_member_username_2=user_username_inut)
+                student_member_check = StudentGroupMembers.objects.get(student_member_username=user_username_input)
+                print("User exist")
 
-                print("sweet user exist")
                 context = {
                     'form': form, 
                     "course" : course, 
@@ -145,75 +172,16 @@ def signup(request):
 
             except:
                 pass
-
-            # Check Group Member 3
-            try:
-                student_member_check = PanelConformeBET3.objects.get(student_member_username_3=user_username_inut)
-
-                print("sweet user exist")
-                context = {
-                    'form': form, 
-                    "course" : course, 
-                    
-                    "student_member_check_username" : student_member_check.student_member_username_3,
-                    "student_member_check_name" : student_member_check.student_member_3,
-
-                    'response': "sweet user exist",
-
-                    }
-                return render(request, 'signup.html', context)
-
-            except:
-                pass
-
-            # Check Group Member 4
-            try:
-                student_member_check = PanelConformeBET3.objects.get(student_member_username_4=user_username_inut)
-
-                print("sweet user exist")
-                context = {
-                    'form': form, 
-                    "course" : course, 
-                    
-                    "student_member_check_username" : student_member_check.student_member_username_4,
-                    "student_member_check_name" : student_member_check.student_member_4,
-
-                    'response': "sweet user exist",
-
-                    }
-                return render(request, 'signup.html', context)
-
-            except:
-                pass
-
-            # Check Group Member 5
-            try:
-                student_member_check = PanelConformeBET3.objects.get(student_member_username_5=user_username_inut)
-
-                print("sweet user exist")
-                context = {
-                    'form': form, 
-                    "course" : course, 
-                    
-                    "student_member_check_username" : student_member_check.student_member_username_5,
-                    "student_member_check_name" : student_member_check.student_member_5,
-
-                    'response': "sweet user exist",
-
-                    }
-                return render(request, 'signup.html', context)
-
-            except:
-                pass
-
-            if "TUPC" in user_username_inut:
+            
+            # Check if the Username is valid
+            if "TUPC" in user_username_input:
                 pass
 
             else:
                 context = {'form': form,"course" : course, 'response': "invalid username"}
                 return render(request, 'signup.html', context)
             
-            if "gsfe.tupcavite.edu.ph" in user_email_inut:
+            if "gsfe.tupcavite.edu.ph" in user_email_input:
                 pass
 
             else:
@@ -221,13 +189,15 @@ def signup(request):
                 return render(request, 'signup.html', context)
 
             if user.password == confirm_password:
-                print("valid password")
+                print("Match password")
+
                 user.save()
 
                 user_check = User.objects.get(username=user.username)
                 user_check.first_name = request.POST.get('first_name_input').title()
                 user_check.middle_name = request.POST.get('middle_name_input').title()
                 user_check.last_name = request.POST.get('last_name_input').title()
+                user_check.suffix = request.POST.get('suffix_input')
                 user_check.course = request.POST.get('course_input')
                 user_check.is_student = 1
                 user_check.save()
@@ -236,22 +206,20 @@ def signup(request):
                 return redirect('student-dashboard')
 
             else:
-                print("invalid password")
+                print("Mismatch password")
+
                 context = {'form': form,"course" : course, 'response': "password mismatch"}
                 return render(request, 'signup.html', context)
 
         else:
-            print("user exist")
+            print("User exist")
+
             context = {'form': form, "course" : course, 'response': "user exist"}
             return render(request, 'signup.html', context)
 
-        print("user exist")
-        context = {'form': form, 'response': "user exist"}
-        return render(request, 'signup.html', context)
-
     context = {
         'form': form, 
-        "course" : course
+        'course' : course
         }
     
     return render(request, 'signup.html', context)
@@ -264,6 +232,7 @@ def logout_user(request):
 
 # Index / Log in Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
 def login_as_user_accounts(request):
     currently_loggedin_user = (request.user)
     
@@ -280,6 +249,7 @@ def login_as_user_accounts(request):
 
 # Student - Dashboard Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
 def studentDashboard(request):
     current_user = (request.user)
 
@@ -401,6 +371,7 @@ def studentDashboard(request):
 
 # Student - Profile Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
 def studentProfile(request):
     current_user = (request.user)
     currentpassword = (request.user.password)
@@ -437,6 +408,7 @@ def studentProfile(request):
     user_first_name = current_user.first_name
     user_middle_name = current_user.middle_name
     user_last_name = current_user.last_name
+    user_suffix = current_user.suffix
     user_email = current_user.email
 
     user_course = (request.user.course)
@@ -453,6 +425,7 @@ def studentProfile(request):
                 'user_first_name': user_first_name,
                 'user_middle_name' : user_middle_name,
                 'user_last_name' : user_last_name,
+                'user_suffix': user_suffix,
                 'user_course': user_course,  
                 'course_name' : course_name,
                 'major_name' : major_name,
@@ -540,6 +513,7 @@ def studentProfile(request):
 
 # Student - Panel Conforme BET-3 Process
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
 def studentPanelConformeBet3(request):
     current_user = (request.user)
 
@@ -579,6 +553,7 @@ def studentPanelConformeBet3(request):
 
 # Student - Panel Conforme BET-3 Create Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
 def studentPanelConformeBet3Create(request):
     current_user = (request.user)
 
@@ -1469,6 +1444,7 @@ def studentPanelConformeBet3Create(request):
 
 # Student - Panel Conforme BET-3 Form Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
 def studentPanelConformeBet3Form(request):
     current_user = (request.user)
     # Topbar
@@ -1584,9 +1560,9 @@ def studentPanelConformeBet3Form(request):
         # qr_code_run.alignment=WD_ALIGN_PARAGRAPH.CENTER
 
         
-        # doc.save('2-PANEL-CONFROME-BET-3-{}.docx'.format(current_user))
-        # convert('2-PANEL-CONFROME-BET-3-{}.docx'.format(current_user))
-        # os.startfile('2-PANEL-CONFROME-BET-3-{}.pdf'.format(current_user))
+        doc.save('2-PANEL-CONFROME-BET-3-{}.docx'.format(current_user))
+        convert('2-PANEL-CONFROME-BET-3-{}.docx'.format(current_user))
+        os.startfile('2-PANEL-CONFROME-BET-3-{}.pdf'.format(current_user))
 
         doc.save('2-PANEL-CONFORME-NEW.docx')
         convert("2-PANEL-CONFORME-NEW.docx")
@@ -1946,6 +1922,7 @@ def adminFacultyMemberAcc(request):
         }
 
     return render(request, 'admin-faculty-member-account.html', context)
+
 
 # Admin - Faculty Member Create Account Page
 @login_required(login_url='index')
@@ -3466,7 +3443,7 @@ def ditHeadPanelConformeBet3Accept(request, id):
     try:
         panel_conforme_bet3_check_form = PanelConformeBET3.objects.get(id=id)
         
-        panel_conforme_bet3_check_form.dept_head_status = "done"
+        panel_conforme_bet3_check_form.dept_head_status = "accepted"
         panel_conforme_bet3_check_form.panel_member_status_1 = "pending"
         panel_conforme_bet3_check_form.panel_member_status_2 = "pending"
         panel_conforme_bet3_check_form.panel_member_status_3 = "pending"
@@ -3491,6 +3468,7 @@ def ditHeadPanelConformeBet3Accept(request, id):
 
     except:
         return redirect('dit-head-panel-conforme-bet-3.html')
+
 
 # DIT Head - Panel Conforme BET-3 Decline Process
 @login_required(login_url='index')
@@ -3522,6 +3500,7 @@ def panelDashboard(request):
         }
 
     return render(request, 'panel-dashboard.html', context)
+
 
 # Panel - Profile Page
 @login_required(login_url='index')
@@ -3687,3 +3666,62 @@ def panelPanelConformeBet3(request):
         }
 
     return render(request, 'panel-panel-conforme-bet-3.html', context)
+
+# Panel - Panel Conforme BET-3 Accept Process
+@login_required(login_url='index')
+def panelPanelConformeBet3Accept(request, id):
+    currently_loggedin_user = (request.user)
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+    
+    # PANEL CONFORME BET-3
+    try:
+        panel_conforme_bet3_check_form = PanelConformeBET3.objects.get(id=id)
+
+        if panel_conforme_bet3_check.panel_member_1 == currently_loggedin_user.username:
+            panel_conforme_bet3_check_form.panel_member_status_1 = "accepted"
+            panel_conforme_bet3_check_form.save()
+        
+        elif panel_conforme_bet3_check.panel_member_2 == currently_loggedin_user.username:
+            panel_conforme_bet3_check_form.panel_member_status_2 = "accepted"
+            panel_conforme_bet3_check_form.save()
+        
+        elif panel_conforme_bet3_check.panel_member_3 == currently_loggedin_user.username:
+            panel_conforme_bet3_check_form.panel_member_status_3 = "accepted"
+            panel_conforme_bet3_check_form.save()
+
+        elif panel_conforme_bet3_check.panel_member_4 == currently_loggedin_user.username:
+            panel_conforme_bet3_check_form.panel_member_status_4 = "accepted"
+            panel_conforme_bet3_check_form.save()
+
+        elif panel_conforme_bet3_check.panel_member_5 == currently_loggedin_user.username:
+            panel_conforme_bet3_check_form.panel_member_status_5 = "accepted"
+            panel_conforme_bet3_check_form.save()
+
+
+        panel_conforme_bet3_check = PanelConformeBET3.objects.all().filter(dept_head_status="pending")
+   
+        context = {
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+            'panel_conforme_bet3_check' : panel_conforme_bet3_check,
+
+            'accepted_research_title' : panel_conforme_bet3_check_form.research_title,
+
+            'response' : 'sweet panel conforme bet-3 accepted',
+            }
+
+        return render(request, 'panel-panel-conforme-bet-3.html', context)
+
+    except:
+        return redirect('panel-panel-conforme-bet-3.html')

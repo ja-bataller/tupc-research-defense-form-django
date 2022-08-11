@@ -1,4 +1,3 @@
-<!-- INDEX VALIDATION START -->
 {% if response == 'user does not exist' %}
 <script>
   iziToast.error({
@@ -32,11 +31,6 @@
 </script>
 {% endif %} 
 
-
-<!-- INDEX VALIDATION END -->
-
-
-<!-- ADMIN - DEPARTMENT HEAD CREATE START-->
 
 {% if response == 'user exist' %}
 <script>
@@ -304,8 +298,8 @@
 {% if response == 'invalid username' %}
 <script>
   iziToast.error({
-    title: "Invalid Username",
-    message: "You entered TUP Cavite ID No. incorrectly.",
+    title: "Invalid",
+    message: "The Username you entered is invalid. (TUPC-XX-XXXX)",
     position: "topCenter",
     timeout: 5000,
   });
@@ -315,8 +309,8 @@
 {% if response == 'invalid email' %}
 <script>
   iziToast.error({
-    title: "Invalid GSFE Email",
-    message: "You entered TUP Cavite GSFE Email incorrectly.",
+    title: "Invalid",
+    message: "The GSFE Email you entered is invalid. (firstname.lastname@gsfe.tupcavite.edu.ph)",
     position: "topCenter",
     timeout: 5000,
   });
@@ -337,7 +331,7 @@
 {% if response == 'password mismatch' %}
 <script>
   iziToast.error({
-    title: "Invalid Confirm Password",
+    title: "Invalid",
     message: "The Password you entered doesn't match to the Confirm Password.",
     position: "topCenter",
     timeout: 5000,
