@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 # User Account
 class User(AbstractUser):
     email = models.EmailField(unique=True)
-    course = models.CharField(max_length=256, blank=True)
     department = models.CharField(max_length=256, blank=True)
 
     honorific = models.CharField(max_length=256, blank=True)
@@ -12,6 +11,7 @@ class User(AbstractUser):
     suffix = models.CharField(max_length=256, blank=True)
 
     is_user = models.BooleanField(default=True)
+
     is_administrator = models.BooleanField(default=False)
 
     is_department_head = models.BooleanField(default=False)
@@ -21,15 +21,15 @@ class User(AbstractUser):
     is_subject_teacher = models.BooleanField(default=False)
 
     is_academic_affairs = models.BooleanField(default=False)
+
     is_library = models.BooleanField(default=False)
+
     is_research_extension = models.BooleanField(default=False)
 
-    is_student = models.BooleanField(default=False)
-    is_faculty_member = models.BooleanField(default=False)
 
-    # is_superuser = models.BooleanField(default=True)
-    # is_staff = models.BooleanField(default=True)
-    # is_developer = models.BooleanField(default=True)
+    is_student = models.BooleanField(default=False)
+
+    is_faculty_member = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
 
@@ -44,6 +44,120 @@ class StudentCourseMajor(models.Model):
     def __str__(self) -> str:
         return self.course_major_abbr
     
+####################################################################################################################
+
+# Student Leaders
+class StudentLeader(models.Model):
+    username = models.EmailField(unique=True)
+    email = models.EmailField(unique=True)
+
+    first_name = models.CharField(max_length=256, blank=False)
+    middle_name = models.CharField(max_length=256, blank=True)
+    last_name = models.CharField(max_length=256, blank=False)
+    suffix = models.CharField(max_length=256, blank=True)
+
+    department = models.CharField(max_length=256, blank=False)
+    course = models.CharField(max_length=256, blank=False)
+    major = models.CharField(max_length=256, blank=False)
+    course_major_abbr = models.CharField(max_length=256, blank=False)
+
+    bet3_subject_teacher_username = models.CharField(max_length=256, blank=False)
+    bet3_subject_teacher_name = models.CharField(max_length=256, blank=False)
+    bet3_status = models.CharField(max_length=256, blank=False)
+
+    bet5_subject_teacher_username = models.CharField(max_length=256, blank=True)
+    bet5_subject_teacher_name = models.CharField(max_length=256, blank=True)
+    bet5_status = models.CharField(max_length=256, blank=True)
+
+    current_subject = models.CharField(max_length=256, blank=False)
+    def __str__(self) -> str:
+        return self.username
+
+####################################################################################################################
+
+# Student Group Member
+class StudentGroupMember(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_name = models.CharField(max_length=256)
+    student_member_username = models.CharField(max_length=256)
+    student_member_name = models.CharField(max_length=256)
+    course = models.CharField(max_length=256)
+    major = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
+####################################################################################################################
+
+# Panel Invitation - BET-3
+class PanelInvitation(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+
+    dit_head_name = models.CharField(max_length=256)
+    dit_head_response = models.CharField(max_length=256)
+    dit_head_response_date = models.CharField(max_length=256)
+
+    panel_member_username_1 = models.CharField(max_length=256)
+    panel_member_name_1 = models.CharField(max_length=256)
+    panel_member_response_1 = models.CharField(max_length=256)
+    panel_member_response_date_1 = models.CharField(max_length=256)
+
+    panel_member_username_2 = models.CharField(max_length=256)
+    panel_member_name_2 = models.CharField(max_length=256)
+    panel_member_response_2 = models.CharField(max_length=256)
+    panel_member_response_date_2 = models.CharField(max_length=256)
+    
+    panel_member_username_3 = models.CharField(max_length=256)
+    panel_member_name_3 = models.CharField(max_length=256)
+    panel_member_response_3 = models.CharField(max_length=256)
+    panel_member_response_date_3 = models.CharField(max_length=256)
+
+    panel_member_username_4 = models.CharField(max_length=256)
+    panel_member_name_4 = models.CharField(max_length=256)
+    panel_member_response_4 = models.CharField(max_length=256)
+    panel_member_response_date_4 = models.CharField(max_length=256)
+
+    panel_member_username_5 = models.CharField(max_length=256)
+    panel_member_name_5 = models.CharField(max_length=256)
+    panel_member_response_5 = models.CharField(max_length=256)
+    panel_member_response_date_5 = models.CharField(max_length=256)
+
+    student_member_username_1 = models.CharField(max_length=256)
+    student_member_name_1 = models.CharField(max_length=256)
+    
+    student_member_username_2 = models.CharField(max_length=256)
+    student_member_name_2 = models.CharField(max_length=256)
+
+    student_member_username_3 = models.CharField(max_length=256)
+    student_member_name_3 = models.CharField(max_length=256)
+
+    student_member_username_4 = models.CharField(max_length=256)
+    student_member_name_4 = models.CharField(max_length=256)
+
+    student_member_username_5 = models.CharField(max_length=256)
+    student_member_name_5 = models.CharField(max_length=256)
+
+    course = models.CharField(max_length=256)
+    major = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256)
+
+    research_title_1 = models.CharField(max_length=256)
+    research_title_2 = models.CharField(max_length=256)
+    research_title_3 = models.CharField(max_length=256)
+    research_title_4 = models.CharField(max_length=256)
+    research_title_5 = models.CharField(max_length=256)
+
+    form_date_submitted = models.CharField(max_length=256)
+    defense_date = models.CharField(max_length=256)
+    defense_start_time = models.CharField(max_length=256)
+    defense_end_time = models.CharField(max_length=256)
+
+    form_status = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
 ####################################################################################################################
 
 # Panel Conforme - BET-3
@@ -98,6 +212,23 @@ class PanelConformeBET3(models.Model):
 
 ####################################################################################################################
 
+# Defense Schedule
+class DefenseSchedule(models.Model):
+    username = models.CharField(max_length=256)
+    name = models.CharField(max_length=256)
+    course = models.CharField(max_length=256)
+    form = models.CharField(max_length=256)
+    date = models.CharField(max_length=256)
+    start_time = models.CharField(max_length=256)
+    end_time = models.CharField(max_length=256)
+    status = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.username
+        
+####################################################################################################################
+
+
 # Research Title
 class ResearchTitle(models.Model):
     research_title = models.CharField(max_length=256)
@@ -113,16 +244,3 @@ class ResearchTitle(models.Model):
         return self.research_title
 
 ####################################################################################################################
-
-# Student Group Members
-class StudentGroupMembers(models.Model):
-    student_leader_username = models.CharField(max_length=256)
-    student_leader_name = models.CharField(max_length=256)
-    student_member_username = models.CharField(max_length=256)
-    student_member_name = models.CharField(max_length=256)
-    course = models.CharField(max_length=256)
-    major = models.CharField(max_length=256)
-    course_major_abbr = models.CharField(max_length=256)
-
-    def __str__(self) -> str:
-        return self.student_leader_username

@@ -12,8 +12,11 @@ urlpatterns = [
    path('student-profile/', views.studentProfile, name ="student-profile"), 
    path('student-dashboard/', views.studentDashboard, name ="student-dashboard"), 
 
+   path('student-panel-invitation-bet3/', views.studentPanelInvitationBet3, name ="student-panel-invitation-bet3"), 
+   path('student-panel-invitation-bet3-create/', views.studentPanelInvitationBet3Create, name ="student-panel-invitation-bet3-create"),
+
    path('student-panel-conforme-bet3/', views.studentPanelConformeBet3, name ="student-panel-conforme-bet3"), 
-   path('student-panel-conforme-bet3-create/', views.studentPanelConformeBet3Create, name ="student-panel-conforme-bet3-create"), 
+   path('student-panel-conforme-bet3-create/', views.studentPanelConformeBet3Create, name ="student-panel-conforme-bet3-create"),
    path('student-panel-conforme-bet3-form/', views.studentPanelConformeBet3Form, name ="student-panel-conforme-bet3-form"), 
 
     # Administrator Views
@@ -41,4 +44,11 @@ urlpatterns = [
    path('panel-panel-conforme-bet-3/', views.panelPanelConformeBet3, name ="panel-panel-conforme-bet-3"),
    # path('panel-panel-conforme-bet-3-accept/<str:id>/', views.panelPanelConformeBet3Accept, name ="panel-panel-conforme-bet-3-accept"),
    # path('panel-panel-conforme-bet-3-decline/<str:id>/', views.panelPanelConformeBet3Decline, name ="panel-panel-conforme-bet-3-decline"),
+
+   # Subject Teacher Views
+   path('subject-teacher-dashboard/', views.subjectTeacherDashboard, name ="subject-teacher-dashboard"),
+   path('subject-teacher-research-title-defense-dashboard/', views.subjectTeacherResearchTitleDefenseDashboard, name ="subject-teacher-research-title-defense-dashboard"),
+   path('subject-teacher-set-research-title-defense-schedule/', views.subjectTeacherSetResearchTitleDefenseSchedule, name ="subject-teacher-set-research-title-defense-schedule"),
+   path('subject-teacher-save-research-title-defense-schedule/', views.subjectTeacherSaveResearchTitleDefenseSchedule, name ="subject-teacher-save-research-title-defense-schedule"),
+   path('subject-teacher-delete-research-title-defense-schedule/<str:id>', views.subjectTeacherDeleteResearchTitleDefenseSchedule, name ="subject-teacher-delete-research-title-defense-schedule"),
 ]

@@ -154,7 +154,7 @@
 
           <div class="col-sm-12 col-md-6 col-lg-4 text-center">
             <label for="radio-card-5" class="radio-card">
-              <input type="radio" name="radio-card" id="radio-card-5" />
+              <input type="radio" onclick="subjectTeacher()" name="radio-card" id="radio-card-5" />
               <div class="card-content-wrapper">
                 <span class="check-icon"></span>
                 <div class="card-content">
@@ -192,6 +192,10 @@
 
       function panel() {
         window.location.replace("{% url 'panel-dashboard' %}");
+      }
+
+      function subjectTeacher() {
+        window.location.replace("{% url 'subject-teacher-dashboard' %}");
       }
     </script>
   </body>

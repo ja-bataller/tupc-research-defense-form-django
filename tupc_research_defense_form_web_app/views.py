@@ -88,13 +88,17 @@ def signup(request):
     suffix_list = ["", "Sr.", "Jr.","I","II","III","IV","V"]
 
     course = StudentCourseMajor.objects.all()
+    subject_teachers = User.objects.all().filter(is_subject_teacher=1)
 
     course_list = []
+
+    subject_teacher_list = []
 
     if not course:
         print("No Course Available")
 
         context = {
+            'form': form,
             'response': "sweet incomplete form"}
 
         return render(request, 'signup.html', context)
@@ -102,14 +106,40 @@ def signup(request):
     else:
         for course_abbr in course:
             course_list.append(course_abbr.course_major_abbr)
-        
+
+
+    if not subject_teachers:
+        print("No Subject Teachers Available")
+
+        context = {
+            'form': form,
+            'response': "sweet incomplete form"}
+
+        return render(request, 'signup.html', context)
+    
+    else:
+        for subject_teacher in subject_teachers:
+
+            subject_teacher_full_name = None
+
+            if subject_teacher.middle_name == "":
+                subject_teacher_full_name =  subject_teacher.honorific + " " + subject_teacher.first_name + " " + subject_teacher.last_name +  " " + subject_teacher.suffix
+                subject_teacher_list.append(subject_teacher_full_name)
+            else:
+                subject_teacher_full_name =  subject_teacher.honorific + " " + subject_teacher.first_name + " " + subject_teacher.middle_name[0] + ". " + subject_teacher.last_name +   " " + subject_teacher.suffix
+                subject_teacher_list.append(subject_teacher_full_name)
+    
         print("Available Course: ", course_list)
+        print("Available Subject Teachers: ", subject_teacher_list)
+
+        subject_teacher_list.sort()
 
     if request.method == "POST":
         form = SignUpForm(request.POST)
 
         suffix_input = request.POST.get('suffix_input')
         course_input = request.POST.get('course_input')
+        subject_teacher_input = request.POST.get('subject_teacher_input')
         confirm_password = request.POST.get('confirm_password_input')
 
         if suffix_input not in suffix_list:
@@ -117,6 +147,7 @@ def signup(request):
             context = {
                 'form': form, 
                 "course" : course,
+                'subject_teachers' : subject_teachers,
 
                 'response': "sweet invalid suffix"
             }
@@ -128,6 +159,7 @@ def signup(request):
             context = {
                 'form': form, 
                 "course" : course,
+                'subject_teachers' : subject_teachers,
 
                 'response': "choose course"
             }
@@ -139,11 +171,34 @@ def signup(request):
             context = {
                 'form': form, 
                 "course" : course,
+                'subject_teachers' : subject_teachers,
 
                 'response': "sweet invalid course"
             }
 
             return render(request, 'signup.html', context)
+
+        if subject_teacher_input == "default":
+
+            context = {
+                'form': form, 
+                "course" : course,
+                'subject_teachers' : subject_teachers,
+
+                'response': "choose subject teacher"
+            }
+
+            return render(request, 'signup.html', context)
+
+        if subject_teacher_input not in course_list:
+
+            context = {
+                'form': form, 
+                "course" : course,
+                'subject_teachers' : subject_teachers,
+
+                'response': "sweet invalid subject teacher"
+            }
 
         if form.is_valid():
             print("Valid form")
@@ -153,17 +208,19 @@ def signup(request):
             user_username_input = user.username
             user_email_input = user.email
 
-            # Check if the Username is taken
+            # Check if the Username is already part of a group
             try:
-                student_member_check = StudentGroupMembers.objects.get(student_member_username=user_username_input)
+                student_member_check = StudentGroupMember.objects.get(student_member_username=user_username_input)
                 print("User exist")
 
                 context = {
                     'form': form, 
                     "course" : course, 
+
+                    'subject_teachers' : subject_teachers,
                     
-                    "student_member_check_username" : student_member_check.student_member_username_2,
-                    "student_member_check_name" : student_member_check.student_member_2,
+                    "student_member_check_username" : student_member_check.student_member_username,
+                    "student_member_check_name" : student_member_check.student_member_name,
 
                     'response': "sweet user exist",
 
@@ -178,14 +235,22 @@ def signup(request):
                 pass
 
             else:
-                context = {'form': form,"course" : course, 'response': "invalid username"}
+                context = {
+                    'form': form,
+                    "course" : course, 
+                    'subject_teachers' : subject_teachers,
+                    'response': "invalid username"}
                 return render(request, 'signup.html', context)
             
             if "gsfe.tupcavite.edu.ph" in user_email_input:
                 pass
 
             else:
-                context = {'form': form,"course" : course, 'response': "invalid email"}
+                context = {
+                    'form': form,
+                    "course" : course, 
+                    'subject_teachers' : subject_teachers,
+                    'response': "invalid email"}
                 return render(request, 'signup.html', context)
 
             if user.password == confirm_password:
@@ -198,9 +263,45 @@ def signup(request):
                 user_check.middle_name = request.POST.get('middle_name_input').title()
                 user_check.last_name = request.POST.get('last_name_input').title()
                 user_check.suffix = request.POST.get('suffix_input')
-                user_check.course = request.POST.get('course_input')
+                user_check.department = "Industrial Technology"
                 user_check.is_student = 1
                 user_check.save()
+
+                course_data = StudentCourseMajor.objects.get(course_major_abbr=request.POST.get('course_input'))
+                
+                print(subject_teacher_input)
+                subject_teacher_data = User.objects.get(username=subject_teacher_input)
+
+                subject_teacher_full_name = None
+
+                if subject_teacher_data.middle_name == "":
+                    subject_teacher_full_name = subject_teacher_data.honorific + " " + subject_teacher_data.first_name + " " + subject_teacher_data.last_name + " " + subject_teacher_data.suffix
+                
+                else:
+                    subject_teacher_full_name = subject_teacher_data.honorific + " " + subject_teacher_data.first_name + subject_teacher_data.middle_name[0] + ". " + subject_teacher_data.last_name + " " + subject_teacher_data.suffix
+
+                student_leader = StudentLeader(
+                    username = user_check.username,
+                    email = user_check.email,
+
+                    first_name = request.POST.get('first_name_input').title(),
+                    middle_name = request.POST.get('middle_name_input').title(),
+                    last_name = request.POST.get('last_name_input').title(),
+                    suffix = suffix_input,
+
+                    department = "Industrial Technology",
+                    course = course_data.course,
+                    major = course_data.major,
+                    course_major_abbr = course_data.course_major_abbr,
+
+                    bet3_subject_teacher_username = subject_teacher_data.username,
+                    bet3_subject_teacher_name = subject_teacher_full_name,
+                    bet3_status = "Ongoing",
+
+                    current_subject = "BET-3"
+                    )
+
+                student_leader.save()
 
                 login(request, user)
                 return redirect('student-dashboard')
@@ -208,18 +309,26 @@ def signup(request):
             else:
                 print("Mismatch password")
 
-                context = {'form': form,"course" : course, 'response': "password mismatch"}
+                context = {'form': form,
+                "course" : course, 
+                'subject_teachers' : subject_teachers,
+                'response': "password mismatch"}
                 return render(request, 'signup.html', context)
 
         else:
-            print("User exist")
+            print("Invalid form")
 
-            context = {'form': form, "course" : course, 'response': "user exist"}
+            context = {
+                'form': form, 
+                "course" : course, 
+                'subject_teachers' : subject_teachers,
+                'response': "invalid form"}
             return render(request, 'signup.html', context)
 
     context = {
         'form': form, 
-        'course' : course
+        'course' : course,
+        'subject_teachers' : subject_teachers,
         }
     
     return render(request, 'signup.html', context)
@@ -252,32 +361,11 @@ def login_as_user_accounts(request):
 @user_passes_test(lambda u: u.is_student, login_url='index')
 def studentDashboard(request):
     current_user = (request.user)
+    current_password = current_user.password
 
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
-    
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
-    
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
     # PANEL CONFORME BET-3
     try:
@@ -333,8 +421,8 @@ def studentDashboard(request):
     
 
         context = {
-        'user_full_name': user_full_name,
-        'user_account': user_account,
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
         'research_title' : research_title,
 
@@ -362,8 +450,8 @@ def studentDashboard(request):
         pass
     
     context = {
-        'user_full_name': user_full_name,
-        'user_account': user_account
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
         }
 
     return render(request, 'student-dashboard.html', context)
@@ -374,53 +462,29 @@ def studentDashboard(request):
 @user_passes_test(lambda u: u.is_student, login_url='index')
 def studentProfile(request):
     current_user = (request.user)
-    currentpassword = (request.user.password)
+    current_password = current_user.password
 
-    # Topbar
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
-    
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
     # Student Profile
-    current_username = (request.user.username)
+    student = StudentLeader.objects.get(username=current_user)
 
-    user_first_name = current_user.first_name
-    user_middle_name = current_user.middle_name
-    user_last_name = current_user.last_name
-    user_suffix = current_user.suffix
-    user_email = current_user.email
-
-    user_course = (request.user.course)
-
-    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-    course_name = course_check.course
-    major_name = course_check.major
+    user_username = student.username
+    user_first_name = student.first_name
+    user_middle_name = student.middle_name
+    user_last_name = student.last_name
+    user_suffix = student.suffix
+    user_email = student.email
+    user_course = student.course_major_abbr
+    course_name = student.course
+    major_name = student.major
 
 
     context = {
-                'user_full_name': user_full_name,
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 'user_first_name': user_first_name,
                 'user_middle_name' : user_middle_name,
@@ -429,7 +493,7 @@ def studentProfile(request):
                 'user_course': user_course,  
                 'course_name' : course_name,
                 'major_name' : major_name,
-                'username': current_username, 
+                'username': user_username, 
                 'user_email':user_email,
                 }   
 
@@ -438,7 +502,7 @@ def studentProfile(request):
         new_password_input = request.POST.get('new_password_input')
         confirm_new_password_input = request.POST.get('confirm_new_password_input')
 
-        if current_password_input == currentpassword:
+        if current_password_input == current_password:
 
             if current_password_input != new_password_input:
 
@@ -453,8 +517,8 @@ def studentProfile(request):
 
                 else:
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'user_first_name': user_first_name,
                         'user_middle_name' : user_middle_name,
@@ -472,8 +536,8 @@ def studentProfile(request):
 
             else:
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'user_first_name': user_first_name,
                     'user_middle_name' : user_middle_name,
@@ -491,8 +555,8 @@ def studentProfile(request):
 
         else:
             context = {
-                'user_full_name': user_full_name,
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 'user_first_name': user_first_name,
                 'user_middle_name' : user_middle_name,
@@ -509,6 +573,976 @@ def studentProfile(request):
             return render(request, 'student-profile.html', context)
 
     return render(request, 'student-profile.html', context)
+
+
+# Student - Panel Invitation BET-3 Process
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentPanelInvitationBet3(request):
+    current_user = (request.user)
+
+    student_data = StudentLeader.objects.get(username=current_user.username)
+    defense_dates = DefenseSchedule.objects.all().filter(username = student_data.bet3_subject_teacher_username , course = student_data.course_major_abbr)
+    
+    panel_members = User.objects.all().filter(is_panel=1)
+
+    try:
+        PanelInvitation.objects.get(student_leader_username=current_user)
+        print("Panel Invitation - BET-3 Exist")
+        return redirect('student-dashboard')
+
+    except:
+        pass
+
+    try:
+        dept_head_check = User.objects.get(is_department_head=1)
+        pass
+
+    except:
+        print("No DIT Head")
+
+        context = {
+            'response' : "sweet no DIT Head"
+        }
+
+        return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+    if not panel_members or panel_members.count() < 5:
+            print("Incomplete Faculty Member")
+            context = {
+                'response' : "sweet inc panel"
+            }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+    else:
+        pass
+
+
+    if not defense_dates:
+            print("No Defense Schedule")
+            context = {
+                'response' : "sweet no defense schedule"
+            }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+    else:
+        pass
+
+    print("Panel Conforme - BET-3 Create")
+    return redirect('student-panel-invitation-bet3-create')
+
+
+# Student - Panel Invitation Create Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentPanelInvitationBet3Create(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    student = StudentLeader.objects.get(username=current_user.username)
+
+    defense_dates = DefenseSchedule.objects.all().filter(course=student.course_major_abbr, username = student.bet3_subject_teacher_username, status = "Available")
+
+    defense_date_list = []
+
+    suffix_list = ["", "Sr.", "Jr.","I","II","III","IV","V"]
+
+    panel_members = User.objects.all().filter(is_panel=1)
+
+    panel_list = []
+
+    dept_head_name = None
+
+    print(panel_members)
+
+    # Check if there is DIT Head assigned.
+    try:
+        dept_head = User.objects.get(is_department_head=1)
+
+        if dept_head.middle_name == "":
+            dept_head_name = dept_head.honorific + " " + dept_head.first_name + " " + dept_head.last_name + " " + dept_head.suffix
+        else:
+            dept_head_name = dept_head.honorific + " " + dept_head.first_name + " " + dept_head.middle_name[0] + " " + dept_head.last_name + " " + dept_head.suffix
+
+    except:
+        print("No DIT Head")
+
+        context = {
+            'response' : "sweet no DIT Head"
+        }
+
+        return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+    # Check if there is a Panel assigned.
+    if not panel_members or panel_members.count() < 5:
+            print("Incomplete Faculty Member")
+            context = {
+                'response' : "sweet inc panel"
+            }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+    else:
+        for panel in panel_members:
+            panel_list.append(panel.username)
+    
+    for defense_date_id in defense_dates:
+        defense_date_list.append(defense_date_id.id)
+
+
+    if request.method == 'POST':
+        student_username_1 = current_user.username
+        student_first_name_1 = current_user.first_name
+        student_middle_name_1 = current_user.middle_name
+        student_last_name_1 = current_user.last_name
+        student_suffix_1 = current_user.suffix
+
+        student_username_2 = request.POST.get('student_username_2')
+        student_first_name_2 = request.POST.get('student_first_name_2')
+        student_middle_name_2 = request.POST.get('student_middle_name_2')
+        student_last_name_2 = request.POST.get('student_last_name_2')
+        student_suffix_2 = request.POST.get('student_suffix_2')
+
+        student_username_3 = request.POST.get('student_username_3')
+        student_first_name_3 = request.POST.get('student_first_name_3')
+        student_middle_name_3 = request.POST.get('student_middle_name_3')
+        student_last_name_3 = request.POST.get('student_last_name_3')
+        student_suffix_3 = request.POST.get('student_suffix_3')
+
+        student_username_4 = request.POST.get('student_username_4')
+        student_first_name_4 = request.POST.get('student_first_name_4')
+        student_middle_name_4 = request.POST.get('student_middle_name_4')
+        student_last_name_4 = request.POST.get('student_last_name_4')
+        student_suffix_4 = request.POST.get('student_suffix_4')
+
+        student_username_5 = request.POST.get('student_username_5')
+        student_first_name_5 = request.POST.get('student_first_name_5')
+        student_middle_name_5 = request.POST.get('student_middle_name_5')
+        student_last_name_5 = request.POST.get('student_last_name_5')
+        student_suffix_5 = request.POST.get('student_suffix_5')
+
+        research_title_1_input = request.POST.get('research_title_1_input').title()
+        research_title_2_input = request.POST.get('research_title_2_input').title()
+        research_title_3_input = request.POST.get('research_title_3_input').title()
+        research_title_4_input = request.POST.get('research_title_4_input').title()
+        research_title_5_input = request.POST.get('research_title_5_input').title()
+
+        defense_schedule_input = int(request.POST.get('defense_schedule_input'))
+
+        panel1_input = request.POST.get('panel1_input')
+        panel2_input = request.POST.get('panel2_input')
+        panel3_input = request.POST.get('panel3_input')
+        panel4_input = request.POST.get('panel4_input')
+        panel5_input = request.POST.get('panel5_input')
+
+        if student_username_1 in (student_username_2, student_username_3, student_username_4, student_username_5):
+            
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                'current_user':student,
+
+                'dept_head_name' : dept_head_name,
+
+                'panel_members' : panel_members,
+
+                'defense_dates': defense_dates,
+
+                'response' : 'sweet same username'
+                }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+        
+        # Check if the Student Member #1 exist
+        try:
+            group_member_check = StudentGroupMember.objects.get(student_member_username = student_username_1)
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                'current_user':student,
+
+                'dept_head_name' : dept_head_name,
+
+                'panel_members' : panel_members,
+
+                'defense_dates': defense_dates,
+
+                'existing_member' : group_member_check,
+
+                'response' : 'sweet group member exist'
+                }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+        except:
+            pass
+
+        # If Student Member #2 is not none
+        if student_username_2 != "":
+
+            if student_username_2 in (student_username_1, student_username_3, student_username_4, student_username_5):
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'response' : 'sweet same username'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            # Check if Group Member exists
+            try:
+                group_member_check = StudentGroupMember.objects.get(student_member_username = student_username_2)
+
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'existing_member' : group_member_check,
+
+                    'response' : 'sweet group member exist'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            except:
+                pass
+
+        # If Student Member #3 is not none
+        if student_username_3 != "":
+
+            if student_username_3 in (student_username_1, student_username_2, student_username_4, student_username_5):
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'response' : 'sweet same username'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            # Check if the Student Member #3 exist
+            try:
+                group_member_check = StudentGroupMember.objects.get(student_member_username = student_username_3)
+
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'existing_member' : group_member_check,
+
+                    'response' : 'sweet group member exist'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            except:
+                pass
+
+        # If Student Member #4 is not none
+        if student_username_4 != "":
+            
+            if student_username_4 in (student_username_1, student_username_2, student_username_3, student_username_5):
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'response' : 'sweet same username'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            # Check if the Student Member #4 exist
+            try:
+                group_member_check = StudentGroupMember.objects.get(student_member_username = student_username_4)
+
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'existing_member' : group_member_check,
+
+                    'response' : 'sweet group member exist'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            except:
+                pass
+
+        # If Student Member #5 is not none
+        if student_username_5 != "":
+            
+            if student_username_5 in (student_username_1, student_username_2, student_username_3, student_username_4):
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'response' : 'sweet same username'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            
+            # Check if the Student Member #5 exist
+            try:
+                group_member_check = StudentGroupMember.objects.get(student_member_username = student_username_5)
+
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'existing_member' : group_member_check,
+
+                    'response' : 'sweet group member exist'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            except:
+                pass
+
+        if student_suffix_1 in suffix_list or \
+            student_suffix_2 in suffix_list or \
+                student_suffix_3 in suffix_list or \
+                    student_suffix_4 in suffix_list or \
+                        student_suffix_5 in suffix_list:
+            pass
+
+        else:
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                'current_user':student,
+
+                'dept_head_name' : dept_head_name,
+
+                'panel_members' : panel_members,
+
+                'defense_dates': defense_dates,
+
+                'response' : 'sweet invalid suffix'
+                }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+        
+        if research_title_1_input in (research_title_2_input, research_title_3_input, research_title_4_input, research_title_5_input):
+            
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                'current_user':student,
+
+                'dept_head_name' : dept_head_name,
+
+                'panel_members' : panel_members,
+
+                'defense_dates': defense_dates,
+
+                'response' : 'sweet same research title'
+                }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+        
+        # Check if the Research Title #1 exist
+        try:
+            research_title_check = ResearchTitle.objects.get(research_title = research_title_1_input)
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                'current_user':student,
+
+                'dept_head_name' : dept_head_name,
+
+                'panel_members' : panel_members,
+
+                'defense_dates': defense_dates,
+
+                'existing_research_title' : research_title_check,
+
+                'response' : 'sweet research title exist'
+                }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+        except:
+            pass
+
+        if research_title_2_input != "":
+
+            if research_title_2_input in (research_title_1_input, research_title_3_input, research_title_4_input, research_title_5_input):
+            
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'response' : 'sweet same research title'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            # Check if the Research Title #2 exist
+            try:
+                research_title_check = ResearchTitle.objects.get(research_title = research_title_2_input)
+
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'existing_research_title' : research_title_check,
+
+                    'response' : 'sweet research title exist'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            except:
+                pass
+        
+        if research_title_3_input != "":
+
+            if research_title_3_input in (research_title_1_input, research_title_2_input, research_title_4_input, research_title_5_input):
+            
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'response' : 'sweet same research title'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            # Check if the Research Title #3 exist
+            try:
+                research_title_check = ResearchTitle.objects.get(research_title = research_title_3_input)
+
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'existing_research_title' : research_title_check,
+
+                    'response' : 'sweet research title exist'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            except:
+                pass
+
+        if research_title_4_input != "":
+
+            if research_title_4_input in (research_title_1_input, research_title_2_input, research_title_3_input, research_title_5_input):
+            
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'response' : 'sweet same research title'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            # Check if the Research Title #4 exist
+            try:
+                research_title_check = ResearchTitle.objects.get(research_title = research_title_4_input)
+
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'existing_research_title' : research_title_check,
+
+                    'response' : 'sweet research title exist'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            except:
+                pass
+
+        if research_title_5_input != "":
+            if research_title_5_input in (research_title_1_input, research_title_2_input, research_title_3_input, research_title_4_input):
+            
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'response' : 'sweet same research title'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            # Check if the Research Title #5 exist
+            try:
+                research_title_check = ResearchTitle.objects.get(research_title = research_title_5_input)
+
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'current_user':student,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'existing_research_title' : research_title_check,
+
+                    'response' : 'sweet research title exist'
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+            except:
+                pass
+
+        # Check if the Defense Schedule entered is valid.
+        if defense_schedule_input not in defense_date_list:
+            print("invalid date")
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                'current_user':student,
+
+                'dept_head_name' : dept_head_name,
+
+                'panel_members' : panel_members,
+
+                'defense_dates': defense_dates,
+
+                'response' : 'sweet defense schedule doesnt exist'
+                }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+        
+        # If entered panel member is not the same with other input field
+        if panel1_input in (panel2_input, panel3_input, panel4_input, panel5_input) or \
+            panel2_input in (panel1_input, panel3_input, panel4_input, panel5_input) or \
+                 panel3_input in (panel1_input, panel2_input, panel4_input, panel5_input) or \
+                     panel4_input in (panel1_input, panel2_input, panel3_input, panel5_input) or \
+                         panel5_input in (panel1_input, panel2_input, panel3_input, panel4_input):
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                'current_user':student,
+
+                'dept_head_name' : dept_head_name,
+
+                'panel_members' : panel_members,
+
+                'defense_dates': defense_dates,
+
+                'response' : 'sweet same panel'
+                }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+        
+        # Check if the Panel Member entered is valid.
+        if panel1_input in panel_list or \
+            panel2_input in panel_list or \
+                panel3_input in panel_list or \
+                    panel4_input in panel_list or \
+                        panel5_input in panel_list:
+            pass
+
+        else:
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                'current_user':student,
+
+                'dept_head_name' : dept_head_name,
+
+                'panel_members' : panel_members,
+
+                'defense_dates': defense_dates,
+
+                'response' : 'sweet invalid panel'
+                }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+        ############## PANEL DATA ##############
+        panel_data_1 = User.objects.get(username = panel1_input)
+        panel_data_2 = User.objects.get(username = panel2_input)
+        panel_data_3 = User.objects.get(username = panel3_input)
+        panel_data_4 = User.objects.get(username = panel4_input)
+        panel_data_5 = User.objects.get(username = panel5_input)
+
+        panel_full_name_1 = None
+        panel_full_name_2 = None
+        panel_full_name_3 = None
+        panel_full_name_4 = None
+        panel_full_name_5 = None
+
+        if panel_data_1.middle_name == "":
+            panel_full_name_1 = panel_data_1.honorific + " " + panel_data_1.first_name + " " +  panel_data_1.last_name + " " + panel_data_1.suffix
+        else:
+            panel_full_name_1 = panel_data_1.honorific + " " + panel_data_1.first_name + " " +  panel_data_1.middle_name[0] + ". " +  panel_data_1.last_name + " " + panel_data_1.suffix
+
+
+        if panel_data_2.middle_name == "":
+            panel_full_name_2 = panel_data_2.honorific + " " + panel_data_2.first_name + " " +  panel_data_2.last_name + " " + panel_data_2.suffix
+        else:
+            panel_full_name_2 = panel_data_2.honorific + " " + panel_data_2.first_name + " " +  panel_data_2.middle_name[0] + ". " +  panel_data_2.last_name + " " + panel_data_2.suffix
+
+
+        if panel_data_3.middle_name == "":
+            panel_full_name_3 = panel_data_3.honorific + " " + panel_data_3.first_name + " " +  panel_data_3.last_name + " " + panel_data_3.suffix
+        else:
+            panel_full_name_3 = panel_data_3.honorific + " " + panel_data_3.first_name + " " +  panel_data_3.middle_name[0] + ". " +  panel_data_3.last_name + " " + panel_data_3.suffix
+        
+
+        if panel_data_4.middle_name == "":
+            panel_full_name_4 = panel_data_4.honorific + " " + panel_data_4.first_name + " " +  panel_data_4.last_name + " " + panel_data_4.suffix
+        else:
+            panel_full_name_4 = panel_data_4.honorific + " " + panel_data_4.first_name + " " +  panel_data_4.middle_name[0] + ". " +  panel_data_4.last_name + " " + panel_data_4.suffix
+
+
+        if panel_data_5.middle_name == "":
+            panel_full_name_5 = panel_data_5.honorific + " " + panel_data_5.first_name + " " +  panel_data_5.last_name + " " + panel_data_5.suffix
+        else:
+            panel_full_name_5 = panel_data_5.honorific + " " + panel_data_5.first_name + " " +  panel_data_5.middle_name[0] + ". " +  panel_data_5.last_name + " " + panel_data_5.suffix
+        ############## PANEL DATA ##############
+
+
+        ############## STUDENT DATA ##############
+        student_leader_data = StudentLeader.objects.get(username = current_user.username)
+
+        student_full_name_1 = None
+        student_full_name_2 = None
+        student_full_name_3 = None
+        student_full_name_4 = None
+        student_full_name_5 = None
+
+        course_short = student_leader_data.course.replace("Engineering", "Eng.")
+
+        if student_middle_name_1 == "":
+            student_full_name_1 = current_user.first_name + " " +  current_user.last_name + " " + current_user.suffix
+        else:
+            student_full_name_1 = current_user.first_name + " " +  current_user.middle_name[0] + ". " +  current_user.last_name + " " + current_user.suffix
+
+        if student_middle_name_2 == "":
+            student_full_name_2 = student_first_name_2 + " " +  student_last_name_2 + " " + student_suffix_2
+        else:
+            student_full_name_2 = student_first_name_2 + " " +  student_middle_name_2[0] + ". " +  student_last_name_2 + " " + student_suffix_2
+
+        if student_middle_name_3 == "":
+            student_full_name_3 = student_first_name_3 + " " +  student_last_name_3 + " " + student_suffix_3
+        else:
+            student_full_name_3 = student_first_name_3 + " " +  student_middle_name_3[0] + ". " +  student_last_name_3 + " " + student_suffix_3
+        
+        if student_middle_name_4 == "":
+            student_full_name_4 = student_first_name_4 + " " +  student_last_name_4 + " " + student_suffix_4
+        else:
+            student_full_name_4 = student_first_name_4 + " " +  student_middle_name_4[0] + ". " +  student_last_name_4 + " " + student_suffix_4
+
+        if student_middle_name_5 == "":
+            student_full_name_5 = student_first_name_5 + " " +  student_last_name_5 + " " + student_suffix_5
+        else:
+            student_full_name_5 = student_first_name_5 + " " +  student_middle_name_5[0] + ". " +  student_last_name_5 + " " + student_suffix_5
+        ############## STUDENT DATA ##############
+
+        ############## DEFENSE SCHEDULE DATA ##############
+        defense_schedule_data = DefenseSchedule.objects.get(id=defense_schedule_input)
+        ############## DEFENSE SCHEDULE DATA ##############
+
+        ############## PANEL INVITATION ##############
+        student_leader_username = current_user.username
+
+        dit_head_name = dept_head_name.title()
+        dit_head_response = "Pending"
+        dit_head_response_date = None
+
+        panel_member_username_1 = panel_data_1.username
+        panel_member_name_1 = panel_full_name_1.title()
+        panel_member_response_1 = "On Hold"
+        panel_member_response_date_1 = None
+
+        panel_member_username_2 = panel_data_2.username
+        panel_member_name_2 = panel_full_name_2.title()
+        panel_member_response_2 = "On Hold"
+        panel_member_response_date_2 = None
+
+        panel_member_username_3 = panel_data_3.username
+        panel_member_name_3 = panel_full_name_3.title()
+        panel_member_response_3 = "On Hold"
+        panel_member_response_date_3 = None
+
+        panel_member_username_4 = panel_data_4.username
+        panel_member_name_4 = panel_full_name_4.title()
+        panel_member_response_4 = "On Hold"
+        panel_member_response_date_4 = None
+
+        panel_member_username_5 = panel_data_5.username
+        panel_member_name_5 = panel_full_name_5.title()
+        panel_member_response_5 = "On Hold"
+        panel_member_response_date_5 = None
+
+        student_member_username_1 = current_user.username
+        student_member_name_1 = student_full_name_1.title()
+
+        student_member_username_2 = student_username_2
+        student_member_name_2 = student_full_name_2.title()
+
+        student_member_username_3 = student_username_3
+        student_member_name_3 = student_full_name_3.title()
+
+        student_member_username_4 = student_username_4
+        student_member_name_4 = student_full_name_4.title()
+
+        student_member_username_5 = student_username_5
+        student_member_name_5 = student_full_name_5.title()
+
+        course = course_short
+        major = student_leader_data.major
+        course_major_abbr = student_leader_data.course_major_abbr
+
+        research_title_1 = research_title_1_input.title()
+        research_title_2 = research_title_2_input.title()
+        research_title_3 = research_title_3_input.title()
+        research_title_4 = research_title_4_input.title()
+        research_title_5 = research_title_5_input.title()
+
+        form_date_submitted = today.strftime("%B %d, %Y")
+
+        defense_date = defense_schedule_data.date
+        defense_start_time = defense_schedule_data.start_time
+        defense_end_time =  defense_schedule_data.end_time
+        form_status = "Incomplete"
+
+        ############## PANEL INVITATION ##############
+
+        print(student_leader_username)
+
+        print(dit_head_name)
+        print(dit_head_response)
+        print(dit_head_response_date)
+
+        print(panel_member_username_1)
+        print(panel_member_name_1)
+        print(panel_member_response_1)
+        print(panel_member_response_date_1)
+
+        print(panel_member_username_2)
+        print(panel_member_name_2)
+        print(panel_member_response_2)
+        print(panel_member_response_date_2)
+
+        print(panel_member_username_3)
+        print(panel_member_name_3)
+        print(panel_member_response_3)
+        print(panel_member_response_date_3)
+
+        print(panel_member_username_4)
+        print(panel_member_name_4)
+        print(panel_member_response_4)
+        print(panel_member_response_date_4)
+
+        print(panel_member_username_5)
+        print(panel_member_name_5)
+        print(panel_member_response_5)
+        print(panel_member_response_date_5)
+
+        print(student_member_username_1)
+        print(student_member_name_1)
+
+        print(student_member_username_2)
+        print(student_member_name_2)
+
+        print(student_member_username_3)
+        print(student_member_name_3)
+
+        print(student_member_username_4)
+        print(student_member_name_4)
+
+        print(student_member_username_5)
+        print(student_member_name_5)
+
+        print(course)
+        print(major)
+        print(course_major_abbr)
+
+        print(research_title_1)
+        print(research_title_2)
+        print(research_title_3)
+        print(research_title_4)
+        print(research_title_5)
+
+        print(form_date_submitted)
+
+        print(defense_date)
+        print(defense_start_time)
+        print(defense_end_time)
+        print(form_status)
+
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'current_user':student,
+
+        'dept_head_name' : dept_head_name,
+
+        'panel_members' : panel_members,
+
+        'defense_dates': defense_dates,
+        }
+        return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'current_user':student,
+
+        'dept_head_name' : dept_head_name,
+
+        'panel_members' : panel_members,
+
+        'defense_dates': defense_dates,
+        }
+
+    return render(request, 'student-panel-invitation-bet-3-create.html', context)
 
 
 # Student - Panel Conforme BET-3 Process
@@ -556,50 +1590,16 @@ def studentPanelConformeBet3(request):
 @user_passes_test(lambda u: u.is_student, login_url='index')
 def studentPanelConformeBet3Create(request):
     current_user = (request.user)
+    current_password = current_user.password
 
-    # Topbar Start
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
     user_middle_name = current_user.middle_name
     user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
-    
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
-
-    # Topbar End
-
-    leader_member_name = None
-    leader_member_name_2 = None
-
     user_course = current_user.course
     
-    if user_middle_name == "":
-        leader_member_name = current_user.first_name + " " + current_user.last_name
-        leader_member_name_2 = current_user.last_name + ", " + current_user.first_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        leader_member_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-        leader_member_name_2 = current_user.last_name + ", " + current_user.first_name + " " + user_middle_initial + "."
-
-
     panel_member_check_list = []
     panel_members = User.objects.all().filter(is_panel=1)
 
@@ -711,8 +1711,8 @@ def studentPanelConformeBet3Create(request):
                 major_name = course_check.major
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'dept_head_name': dept_head_name,
 
@@ -750,8 +1750,8 @@ def studentPanelConformeBet3Create(request):
                 major_name = course_check.major
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'dept_head_name': dept_head_name,
 
@@ -792,8 +1792,8 @@ def studentPanelConformeBet3Create(request):
                     major_name = course_check.major
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'dept_head_name': dept_head_name,
 
@@ -826,8 +1826,8 @@ def studentPanelConformeBet3Create(request):
                     major_name = course_check.major
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'dept_head_name': dept_head_name,
 
@@ -862,8 +1862,8 @@ def studentPanelConformeBet3Create(request):
                     major_name = course_check.major
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'dept_head_name': dept_head_name,
 
@@ -904,8 +1904,8 @@ def studentPanelConformeBet3Create(request):
                     major_name = course_check.major
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'dept_head_name': dept_head_name,
 
@@ -938,8 +1938,8 @@ def studentPanelConformeBet3Create(request):
                     major_name = course_check.major
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'dept_head_name': dept_head_name,
 
@@ -974,8 +1974,8 @@ def studentPanelConformeBet3Create(request):
                     major_name = course_check.major
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'dept_head_name': dept_head_name,
 
@@ -1013,8 +2013,8 @@ def studentPanelConformeBet3Create(request):
                 major_name = course_check.major
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'dept_head_name': dept_head_name,
 
@@ -1052,8 +2052,8 @@ def studentPanelConformeBet3Create(request):
                 major_name = course_check.major
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'dept_head_name': dept_head_name,
 
@@ -1089,8 +2089,8 @@ def studentPanelConformeBet3Create(request):
                 major_name = course_check.major
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'dept_head_name': dept_head_name,
 
@@ -1123,8 +2123,8 @@ def studentPanelConformeBet3Create(request):
                 major_name = course_check.major
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'dept_head_name': dept_head_name,
 
@@ -1157,8 +2157,8 @@ def studentPanelConformeBet3Create(request):
                 major_name = course_check.major
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'dept_head_name': dept_head_name,
 
@@ -1191,8 +2191,8 @@ def studentPanelConformeBet3Create(request):
                 major_name = course_check.major
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'dept_head_name': dept_head_name,
 
@@ -1225,8 +2225,8 @@ def studentPanelConformeBet3Create(request):
                 major_name = course_check.major
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'dept_head_name': dept_head_name,
 
@@ -1345,7 +2345,7 @@ def studentPanelConformeBet3Create(request):
 
         research_title_form.save()
 
-        student_member_group_2 = StudentGroupMembers(
+        student_member_group_2 = StudentGroupMember(
             student_leader_username = current_user.username,
             student_leader_name = leader_member_name_2,
             student_member_username = student2_username_input,
@@ -1357,7 +2357,7 @@ def studentPanelConformeBet3Create(request):
 
         student_member_group_2.save()
 
-        student_member_group_3 = StudentGroupMembers(
+        student_member_group_3 = StudentGroupMember(
             student_leader_username = current_user.username,
             student_leader_name = leader_member_name_2,
             student_member_username = student3_username_input,
@@ -1370,7 +2370,7 @@ def studentPanelConformeBet3Create(request):
         student_member_group_3.save()
 
         if student4_input:
-            student_member_group_4 = StudentGroupMembers(
+            student_member_group_4 = StudentGroupMember(
             student_leader_username = current_user.username,
             student_leader_name = leader_member_name_2,
             student_member_username = student4_username_input,
@@ -1383,7 +2383,7 @@ def studentPanelConformeBet3Create(request):
             student_member_group_4.save()
         
         if student5_input:
-            student_member_group_5 = StudentGroupMembers(
+            student_member_group_5 = StudentGroupMember(
             student_leader_username = current_user.username,
             student_leader_name = leader_member_name_2,
             student_member_username = student5_username_input,
@@ -1418,8 +2418,8 @@ def studentPanelConformeBet3Create(request):
         major_name = course_check.major
 
         context = {
-            'user_full_name': user_full_name,
-            'user_account' : user_account,
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+            'currently_loggedin_user_account' : currently_loggedin_user_account,
 
             'dept_head_name': dept_head_name,
 
@@ -1447,31 +2447,11 @@ def studentPanelConformeBet3Create(request):
 @user_passes_test(lambda u: u.is_student, login_url='index')
 def studentPanelConformeBet3Form(request):
     current_user = (request.user)
-    # Topbar
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
+    current_password = current_user.password
     
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
     try:
         # Panel Conforme - BET-3 - Data
@@ -1569,7 +2549,7 @@ def studentPanelConformeBet3Form(request):
         os.startfile('2-PANEL-CONFORME-NEW.pdf')
 
         context = {
-        'user_full_name': user_full_name,
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
 
         'dept_head_name' : dept_head_name,
 
@@ -1596,8 +2576,8 @@ def studentPanelConformeBet3Form(request):
 
 
     context = {
-        'user_full_name': user_full_name,
-        'user_account' : user_account,
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
         'dept_head_name' : dept_head_name,
 
@@ -1629,35 +2609,15 @@ def studentPanelConformeBet3Form(request):
 @login_required(login_url='index')
 def adminDashboard(request):
     current_user = (request.user)
-
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
+    current_password = current_user.password
     
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
     context = {
-        'user_full_name': user_full_name,
-        'user_account': user_account
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account': currently_loggedin_user_account
         }
 
     return render(request, 'admin-dashboard.html', context)
@@ -1667,33 +2627,11 @@ def adminDashboard(request):
 @login_required(login_url='index')
 def adminProfile(request):
     current_user = (request.user)
-    currentpassword = (request.user.password)
+    current_password = (request.user.password)
 
-    # Topbar
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
-    
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
     # Admin Profile
     current_username = (request.user.username)
@@ -1705,8 +2643,9 @@ def adminProfile(request):
 
 
     context = {
-                'user_full_name': user_full_name,
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
                 'user_first_name': user_first_name,
                 'user_middle_name' : user_middle_name,
                 'user_last_name' : user_last_name,
@@ -1719,7 +2658,7 @@ def adminProfile(request):
         new_password_input = request.POST.get('new_password_input')
         confirm_new_password_input = request.POST.get('confirm_new_password_input')
 
-        if current_password_input == currentpassword:
+        if current_password_input == current_password:
 
             if current_password_input != new_password_input:
 
@@ -1734,8 +2673,8 @@ def adminProfile(request):
 
                 else:
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'user_first_name': user_first_name,
                         'user_middle_name' : user_middle_name,
@@ -1751,8 +2690,8 @@ def adminProfile(request):
 
             else:
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'user_first_name': user_first_name,
                     'user_middle_name' : user_middle_name,
@@ -1767,8 +2706,8 @@ def adminProfile(request):
 
         else:
             context = {
-                'user_full_name': user_full_name,
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 'user_first_name': user_first_name,
                 'user_middle_name' : user_middle_name,
@@ -1788,33 +2727,11 @@ def adminProfile(request):
 @login_required(login_url='index')
 def adminStudentAddCourseMajor(request):
     current_user = (request.user)
+    current_password = current_user.password
     
-    # Topbar Start
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
-    
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
-    # Topbar end
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
     if request.method == "POST":
         course_input = request.POST.get('course_input')
@@ -1827,7 +2744,7 @@ def adminStudentAddCourseMajor(request):
             print("Major doesn't exist")
 
             context = {
-            'user_full_name': user_full_name, 
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
             'response': "major exist",
             }
 
@@ -1837,8 +2754,8 @@ def adminStudentAddCourseMajor(request):
             print("Course Abbreviation doesn't exist")
 
             context = {
-            'user_full_name': user_full_name, 
-            'user_account' : user_account,
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+            'currently_loggedin_user_account' : currently_loggedin_user_account,
 
             'response': "course abbr exist",
             }
@@ -1851,8 +2768,8 @@ def adminStudentAddCourseMajor(request):
             queryForm.save()
 
             context = {
-            'user_full_name': user_full_name,
-            'user_account' : user_account,
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+            'currently_loggedin_user_account' : currently_loggedin_user_account,
              
             'response': "added successfully",
             }
@@ -1860,8 +2777,8 @@ def adminStudentAddCourseMajor(request):
             return render(request, 'admin-student-add-course-major.html', context)
 
     context = {
-        'user_full_name': user_full_name, 
-        'user_account' : user_account,
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
         }
 
     return render(request, 'admin-student-add-course-major.html', context)
@@ -1871,33 +2788,14 @@ def adminStudentAddCourseMajor(request):
 @login_required(login_url='index')
 def adminFacultyMemberAcc(request):
     current_user = (request.user)
+    current_password = current_user.password
+    
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
-    # Topbar Start
     user_middle_name = current_user.middle_name
     user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
-    
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
-    # Topbar end
 
     members = User.objects.all().filter(is_faculty_member=1)
 
@@ -1911,8 +2809,8 @@ def adminFacultyMemberAcc(request):
     # dept_head_department = dept_head_check.department
 
     context = {
-        'user_full_name': user_full_name,
-        'user_account': user_account,
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
         'members' : members,
         # 'dept_head_username': dept_head_username,
         # 'dept_head_email': dept_head_email,
@@ -1928,6 +2826,13 @@ def adminFacultyMemberAcc(request):
 @login_required(login_url='index')
 def adminFacultyMemberCreateAcc(request):
     current_user = (request.user)
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+
     form = SignUpForm()
 
     dit_head_exist = None
@@ -1938,49 +2843,6 @@ def adminFacultyMemberCreateAcc(request):
     except:
         pass
     
-    # Topbar Start
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-    
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
-    
-    elif current_user.is_panel == 1:
-        user_account = "Panel"
-    
-    elif current_user.is_adviser == 1:
-        user_account = "Adviser"
-    
-    elif current_user.is_subject_teacher == 1:
-        user_account = "Subject Teacher"
-    
-    elif current_user.is_academic_affairs == 1:
-        user_account = "Academic Affairs"
-    
-    elif current_user.is_library == 1:
-        user_account = "Library"
-    
-    elif current_user.is_research_extension == 1:
-        user_account = "Research & Extension"
-
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
-    # Topbar end
-
     if request.method == "POST": 
         honorific_list = ["Mr.", "Ms.", "Mrs.", "Engr.", "Dr.", "Dra."]
         user_account_list = ["DIT Head", "Faculty Member", "Academic Affairs", 'Library', 'Research & Extension']
@@ -2010,8 +2872,8 @@ def adminFacultyMemberCreateAcc(request):
 
             context = {
                 # Topbar Start
-                'user_full_name': user_full_name, 
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 # Form
                 'form': form,
@@ -2029,8 +2891,8 @@ def adminFacultyMemberCreateAcc(request):
 
             context = {
                 # Topbar Start
-                'user_full_name': user_full_name, 
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 # Form
                 'form': form,
@@ -2048,8 +2910,8 @@ def adminFacultyMemberCreateAcc(request):
 
             context = {
                 # Topbar Start
-                'user_full_name': user_full_name, 
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 # Form
                 'form': form,
@@ -2067,8 +2929,8 @@ def adminFacultyMemberCreateAcc(request):
 
             context = {
                 # Topbar Start
-                'user_full_name': user_full_name, 
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 # Form
                 'form': form,
@@ -2088,8 +2950,8 @@ def adminFacultyMemberCreateAcc(request):
 
                 context = {
                     # Topbar Start
-                    'user_full_name': user_full_name, 
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     # Form
                     'form': form,
@@ -2111,8 +2973,8 @@ def adminFacultyMemberCreateAcc(request):
 
                 context = {
                     # Topbar Start
-                    'user_full_name': user_full_name, 
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     # Form
                     'form': form,
@@ -2130,8 +2992,8 @@ def adminFacultyMemberCreateAcc(request):
 
                 context = {
                     # Topbar Start
-                    'user_full_name': user_full_name, 
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     # Form
                     'form': form,
@@ -2166,8 +3028,8 @@ def adminFacultyMemberCreateAcc(request):
 
                     context = {
                         # Topbar Start
-                        'user_full_name': user_full_name, 
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members': members,
                         # Response
@@ -2194,8 +3056,8 @@ def adminFacultyMemberCreateAcc(request):
 
                     context = {
                         # Topbar Start
-                        'user_full_name': user_full_name, 
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members': members,
                         # Response
@@ -2220,8 +3082,8 @@ def adminFacultyMemberCreateAcc(request):
 
                     context = {
                         # Topbar Start
-                        'user_full_name': user_full_name, 
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members': members,
                         # Response
@@ -2246,8 +3108,8 @@ def adminFacultyMemberCreateAcc(request):
 
                     context = {
                         # Topbar Start
-                        'user_full_name': user_full_name, 
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members': members,
                         # Response
@@ -2272,8 +3134,8 @@ def adminFacultyMemberCreateAcc(request):
 
                     context = {
                         # Topbar Start
-                        'user_full_name': user_full_name, 
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members': members,
                         # Response
@@ -2288,8 +3150,8 @@ def adminFacultyMemberCreateAcc(request):
 
                 context = {
                     # Topbar Start
-                    'user_full_name': user_full_name, 
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     # Form
                     'form': form,
@@ -2307,8 +3169,8 @@ def adminFacultyMemberCreateAcc(request):
 
             context = {
                 # Topbar Start
-                'user_full_name': user_full_name, 
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 # Form
                 'form': form,
@@ -2322,8 +3184,8 @@ def adminFacultyMemberCreateAcc(request):
 
     context = {
         # Topbar Start
-        'user_full_name': user_full_name, 
-        'user_account' : user_account,
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
         # Form
         'form': form,
@@ -2337,33 +3199,11 @@ def adminFacultyMemberCreateAcc(request):
 @login_required(login_url='index')
 def adminFacultyMemberData(request, id):
     current_user = (request.user)
-    currentpassword = (request.user.password)
+    current_password = current_user.password
 
-    # Topbar Start
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
-    
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
     try:
         member_check = User.objects.get(username=id)
@@ -2381,8 +3221,8 @@ def adminFacultyMemberData(request, id):
     member_department = member_check.department
 
     context = {
-        'user_full_name': user_full_name,
-        'user_account' : user_account,
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
         'member_honorific': member_honorific,
         'member_username': member_username,
@@ -2410,8 +3250,8 @@ def adminFacultyMemberData(request, id):
 
         else:
             context = {
-                'user_full_name': user_full_name,
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 'member_honorific': member_honorific,
                 'member_username': member_username,
@@ -2431,8 +3271,8 @@ def adminFacultyMemberData(request, id):
 
         else:
             context = {
-                'user_full_name': user_full_name,
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 'member_honorific': member_honorific,
                 'member_username': member_username,
@@ -2452,8 +3292,8 @@ def adminFacultyMemberData(request, id):
 
         else:
             context = {
-                'user_full_name': user_full_name,
-                'user_account': user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 'member_honorific': member_honorific,
                 'member_username': member_username,
@@ -2492,8 +3332,8 @@ def adminFacultyMemberData(request, id):
                     sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account' : user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'members' : members,
 
@@ -2523,8 +3363,8 @@ def adminFacultyMemberData(request, id):
                         sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
                 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -2554,8 +3394,8 @@ def adminFacultyMemberData(request, id):
                         sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
                 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -2586,8 +3426,8 @@ def adminFacultyMemberData(request, id):
                         sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
                 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -2617,8 +3457,8 @@ def adminFacultyMemberData(request, id):
                         sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
                 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -2650,8 +3490,8 @@ def adminFacultyMemberData(request, id):
                         sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
                 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -2682,8 +3522,8 @@ def adminFacultyMemberData(request, id):
                         sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
                 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account' : user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -2697,8 +3537,8 @@ def adminFacultyMemberData(request, id):
 
         else:
             context = {
-                'user_full_name': user_full_name,
-                'user_account' : user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 'member_honorific': member_honorific,
                 'member_username': member_username,
@@ -2720,45 +3560,21 @@ def adminFacultyMemberData(request, id):
 @login_required(login_url='index')
 def adminFacultyMemberChangePassword(request, id):
     current_user = (request.user)
-    currentpassword = (request.user.password)
-
-   # Topbar Start
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
+    current_password = current_user.password
     
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
-
-    # Topbar End
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
     faculty_member_check = User.objects.get(username=id)
-    currentpassword = faculty_member_check.password
+    current_password = faculty_member_check.password
 
     if request.method == 'POST':
         current_password_input = request.POST.get('current_password_input')
         new_password_input = request.POST.get('new_password_input')
         confirm_new_password_input = request.POST.get('confirm_new_password_input')
 
-        if current_password_input == currentpassword:
+        if current_password_input == current_password:
 
             if current_password_input != new_password_input:
 
@@ -2780,8 +3596,8 @@ def adminFacultyMemberChangePassword(request, id):
                         sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account': user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -2808,8 +3624,8 @@ def adminFacultyMemberChangePassword(request, id):
                         sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account': user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -2836,8 +3652,8 @@ def adminFacultyMemberChangePassword(request, id):
                     sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account': user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'members' : members,
 
@@ -2865,8 +3681,8 @@ def adminFacultyMemberChangePassword(request, id):
                 sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
             context = {
-                'user_full_name': user_full_name,
-                'user_account': user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 'members' : members,
 
@@ -2885,34 +3701,11 @@ def adminFacultyMemberChangePassword(request, id):
 @login_required(login_url='index')
 def adminFacultyMemberChangeUserAccount(request, id):
     current_user = (request.user)
-    currentpassword = (request.user.password)
-
-    # Topbar Start
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-
-    user_full_name = None
-    user_account = None
-
-    if user_middle_name == "":
-       user_full_name = current_user.first_name + " " + current_user.last_name
-
-    else:
-        user_middle_initial = user_middle_name[0]
-        user_full_name = current_user.first_name + " " + user_middle_initial + ". " + current_user.last_name
-
-    if current_user.is_student == 1:
-        user_account = "Student"
-     
-    elif current_user.is_department_head == 1:
-        user_account = "DIT Head"
+    current_password = current_user.password
     
-    elif current_user.is_panel == 1:
-        user_account = "Faculty Member"
-    
-    elif current_user.is_administrator == 1:
-        user_account = "Administrator"
-    # Topbar End
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
     try:
         member_check = User.objects.get(username=id)
@@ -2945,8 +3738,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
                 sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
             context = {
-                'user_full_name': user_full_name,
-                'user_account': user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 'members' : members,
 
@@ -2975,8 +3768,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
                 sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
             context = {
-                'user_full_name': user_full_name,
-                'user_account': user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 'members' : members,
 
@@ -3007,8 +3800,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
                     sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
                 context = {
-                    'user_full_name': user_full_name,
-                    'user_account': user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                     'members' : members,
 
@@ -3049,8 +3842,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
                     members = User.objects.all().filter(is_faculty_member=1)
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account': user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -3089,8 +3882,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
                     members = User.objects.all().filter(is_faculty_member=1)
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account': user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -3129,8 +3922,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
                     members = User.objects.all().filter(is_faculty_member=1)
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account': user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -3169,8 +3962,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
                     members = User.objects.all().filter(is_faculty_member=1)
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account': user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -3209,8 +4002,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
                     members = User.objects.all().filter(is_faculty_member=1)
 
                     context = {
-                        'user_full_name': user_full_name,
-                        'user_account': user_account,
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'members' : members,
 
@@ -3238,8 +4031,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
                 sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
 
             context = {
-                'user_full_name': user_full_name,
-                'user_account': user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                 'members' : members,
 
@@ -3483,18 +4276,10 @@ def ditHeadPanelConformeBet3Decline(request, id):
 def panelDashboard(request):
     currently_loggedin_user = (request.user)
 
-    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
-    currently_loggedin_user_middle_initial = None
-
-    currently_loggedin_user_full_name = None
-
-    if currently_loggedin_user_middle_name == "":
-       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
-
-    else:
-        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
-        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
-
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
         }
@@ -3725,3 +4510,245 @@ def panelPanelConformeBet3Accept(request, id):
 
     except:
         return redirect('panel-panel-conforme-bet-3.html')
+
+
+##########################################################################################################################
+
+# Subject Teacher - Dashboard Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherDashboard(request):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        }
+
+    return render(request, 'subject-teacher-dashboard.html', context)
+
+# Subject Teacher - Research Title Defense Dashboard Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherResearchTitleDefenseDashboard(request):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        }
+
+    return render(request, 'subject-teacher-research-title-defense-dashboard.html', context)
+
+# Subject Teacher - Set Research Title Defense Schedule Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherSetResearchTitleDefenseSchedule(request):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    course_handled_list_unfiltered = []
+
+    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username = currently_loggedin_user.username)
+
+    for course in course_handled:
+        course_handled_list_unfiltered.append(course.course_major_abbr)
+
+    course_handled_list = list(dict.fromkeys(course_handled_list_unfiltered))
+    print(course_handled_list)
+
+    if request.method == 'POST':
+        course_input = request.POST.get('course_input')
+        print(course_input)
+
+        try:
+            course_defense_schedules = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, course = course_input)
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'course_handled_list': course_handled_list,
+
+                'course_defense_schedules' : course_defense_schedules,
+                }
+
+            return render(request, 'subject-teacher-set-research-title-defense.html', context)
+
+        except:
+            pass
+    
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'course_handled_list': course_handled_list,
+        }
+
+    return render(request, 'subject-teacher-set-research-title-defense.html', context)
+
+# Subject Teacher - Save Research Title Defense Schedule
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherSaveResearchTitleDefenseSchedule(request):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    course_handled_list_unfiltered = []
+    defense_time_list = ['8:00 AM-9:00 AM', '9:00 AM-10:00 AM', '10:00 AM-11:00 AM', '1:00 PM-2:00 PM', '2:00 PM-3:00 PM', '3:00 PM-4:00 PM', '4:00 PM-5:00 PM']
+
+    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username = currently_loggedin_user.username)
+
+    for course in course_handled:
+        course_handled_list_unfiltered.append(course.course_major_abbr)
+
+    course_handled_list = list(dict.fromkeys(course_handled_list_unfiltered))    
+
+    if request.method == 'POST':
+        course_input = request.POST.get('course_input')
+        date_input = request.POST.get('date_input')
+        time_input = request.POST.get('time_input')
+
+        if course_input not in course_handled_list:
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'course_handled_list' : course_handled_list,
+                'response' : 'sweet invalid course'
+                }
+
+            return render(request, 'subject-teacher-set-research-title-defense.html', context)
+
+        if time_input not in defense_time_list:
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'course_handled_list' : course_handled_list,
+                'response' : 'sweet invalid defense time'
+                }
+
+            return render(request, 'subject-teacher-set-research-title-defense.html', context)
+
+        js_month = date_input.split("-")[1]
+        js_date = date_input.split("-")[2]
+        js_year = date_input.split("-")[0]
+
+        start_time = time_input.split("-")[0]
+        end_time = time_input.split("-")[1]
+
+        py_date = date(day= int(js_date), month=int(js_month), year=int(js_year)).strftime('%B %d, %Y')
+
+        print(course_input)
+        print(py_date)
+        print(start_time)
+        print(end_time)
+
+        try:
+            DefenseSchedule.objects.get(username = currently_loggedin_user.username, course = course_input, form = 'Research Title Defense', date = py_date, start_time = start_time, end_time = end_time)
+        
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'course_handled_list' : course_handled_list,
+                'response' : 'scheduled date exist'
+                }
+
+            return render(request, 'subject-teacher-set-research-title-defense.html', context)
+
+        except:
+            print("do not exist")
+            pass
+
+        defense_schedule = DefenseSchedule(
+            username = currently_loggedin_user.username,
+            name = currently_loggedin_user_full_name,
+            course = course_input,
+            form = "Research Title Defense",
+            date = py_date,
+            start_time = start_time,
+            end_time = end_time,
+            status = "Available"
+        )
+        defense_schedule.save()
+
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'course_handled_list' : course_handled_list,
+
+        'response' : 'schedule saved'
+        }
+
+        return render(request, 'subject-teacher-set-research-title-defense.html', context)
+
+
+
+    context = {
+    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+    'course_handled_list' : course_handled_list,
+    }
+
+    return render(request, 'subject-teacher-set-research-title-defense.html', context)
+
+# Subject Teacher - Delete Research Title Defense Schedule
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherDeleteResearchTitleDefenseSchedule(request, id):
+    currently_loggedin_user = (request.user)
+
+    delete_date = DefenseSchedule.objects.filter(username=currently_loggedin_user.username, id=id, status = "Available")
+    print(delete_date)
+
+    if not delete_date:
+            context = {
+            'response' : 'sweet schedule not found'
+            }
+            
+            return render(request, 'subject-teacher-set-research-title-defense.html', context)
+        
+    else:
+        delete_date.delete()
+
+        context = {
+                'response' : 'schedule deleted'
+                }
+
+        return render(request, 'subject-teacher-set-research-title-defense.html', context)
+
+@login_required(login_url='index')
+def topbarProcess(request):
+
+    currently_loggedin_user = (request.user)
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+    currently_loggedin_user_account = None
+
+    if currently_loggedin_user_middle_name == "":
+       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name + " " + currently_loggedin_user.suffix
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name + " " + currently_loggedin_user.suffix
+
+    if currently_loggedin_user.is_student == 1:
+        currently_loggedin_user_account = 'Student'
+    
+    elif currently_loggedin_user.is_administrator == 1:
+        currently_loggedin_user_account = 'Administrator'
+    
+    elif currently_loggedin_user.is_academic_affairs == 1:
+        currently_loggedin_user_account = 'Academic Affairs'
+    
+    elif currently_loggedin_user.is_library == 1:
+        currently_loggedin_user_account = 'Library'
+
+    elif currently_loggedin_user.is_research_extension == 1:
+        currently_loggedin_user_account = 'Research & Extension'
+
+    return (currently_loggedin_user_full_name, currently_loggedin_user_account)

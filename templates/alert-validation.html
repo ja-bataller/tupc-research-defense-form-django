@@ -128,16 +128,20 @@
     timeout: 5000,
   });
 </script>
-{% endif %} {% if response == 'invalid form' %}
+{% endif %} 
+
+{% if response == 'invalid form' %}
 <script>
   iziToast.error({
-    title: "Invalid Form",
-    message: "Please fill-up the forms correctly.",
+    title: "Invalid",
+    message: "You entered some invalid data to the sign up form.",
     position: "topCenter",
     timeout: 5000,
   });
 </script>
-{% endif %} {% if response == 'error occured' %}
+{% endif %} 
+
+{% if response == 'error occured' %}
 <script>
   iziToast.error({
     title: "404",
@@ -360,4 +364,16 @@
   });
 </script>
 {% endif %}
+
+{% if response == 'choose subject teacher' %}
+<script>
+  iziToast.error({
+    title: "Invalid",
+    message: "You didn't input any Subject Teacher. Please choose one.",
+    position: "topCenter",
+    timeout: 5000,
+  });
+</script>
+{% endif %}
+
 
