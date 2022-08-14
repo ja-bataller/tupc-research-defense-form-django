@@ -1386,7 +1386,7 @@ def studentPanelInvitationBet3Create(request):
         defense_schedule_data = DefenseSchedule.objects.get(id=defense_schedule_input)
         ############## DEFENSE SCHEDULE DATA ##############
 
-        ############## PANEL INVITATION ##############
+       
         student_leader_username = current_user.username
 
         dit_head_name = dept_head_name.title()
@@ -1449,8 +1449,6 @@ def studentPanelInvitationBet3Create(request):
         defense_start_time = defense_schedule_data.start_time
         defense_end_time =  defense_schedule_data.end_time
         form_status = "Incomplete"
-
-        ############## PANEL INVITATION ##############
 
         print(student_leader_username)
 
@@ -1515,19 +1513,196 @@ def studentPanelInvitationBet3Create(request):
         print(defense_end_time)
         print(form_status)
 
+        ############## PANEL INVITATION ##############
+        panel_invitation = PanelInvitation(
+            student_leader_username = student_leader_username,
+
+            dit_head_name = dit_head_name,
+            dit_head_response = dit_head_response,
+
+            panel_member_username_1 = panel_member_username_1,
+            panel_member_name_1 = panel_member_name_1,
+            panel_member_response_1 = panel_member_response_1,
+
+            panel_member_username_2 = panel_member_username_2,
+            panel_member_name_2 = panel_member_name_2,
+            panel_member_response_2 = panel_member_response_2,
+
+            panel_member_username_3 = panel_member_username_3,
+            panel_member_name_3 = panel_member_name_3,
+            panel_member_response_3 = panel_member_response_3,
+
+            panel_member_username_4  = panel_member_username_4,
+            panel_member_name_4 = panel_member_name_4,
+            panel_member_response_4 = panel_member_response_4,
+
+            panel_member_username_5 = panel_member_username_5,
+            panel_member_name_5 = panel_member_name_5,
+            panel_member_response_5 = panel_member_response_5,
+
+            student_member_username_1 = student_member_username_1, 
+            student_member_name_1 = student_member_name_1,
+
+            student_member_username_2 = student_member_username_2, 
+            student_member_name_2 = student_member_name_2,
+
+            student_member_username_3 = student_member_username_3, 
+            student_member_name_3 = student_member_name_3,
+
+            student_member_username_4 = student_member_username_4, 
+            student_member_name_4 = student_member_name_4,
+
+            student_member_username_5 = student_member_username_5, 
+            student_member_name_5 = student_member_name_5,
+
+            course = course_short,
+            major = major,
+            course_major_abbr = course_major_abbr,
+
+            research_title_1 = research_title_1,
+            research_title_2 = research_title_2,
+            research_title_3 = research_title_3,
+            research_title_4 = research_title_4,
+            research_title_5 = research_title_5,
+
+            form_date_submitted = form_date_submitted,
+
+            defense_date = defense_date,
+            defense_start_time = defense_start_time,
+            defense_end_time = defense_end_time,
+
+            form_status = form_status,
+        )
+
+        panel_invitation.save()
+        print("Saved")
+        ############## PANEL INVITATION ##############
+
+        ############## Defense Schedule ##############
+        defense_schedule = DefenseSchedule.objects.get(id=defense_schedule_input)
+        defense_schedule.status = "Reserved"
+        defense_schedule.save()
+        ############## Defense Schedule ##############
+
+        ############## Research Title ##############
+        research_title_1 = ResearchTitle(
+            research_title = research_title_1,
+            course = student_leader_data.course,
+            major = student_leader_data.major,
+            student_leader_username = student_leader_data.username,
+            student_leader_name = student_full_name_1,
+            course_major_abbr = course_major_abbr,
+            date_submitted = form_date_submitted
+        )
+        research_title_1.save()
+
+        research_title_2 = ResearchTitle(
+            research_title = research_title_2,
+            course = student_leader_data.course,
+            major = student_leader_data.major,
+            student_leader_username = student_leader_data.username,
+            student_leader_name = student_full_name_1,
+            course_major_abbr = course_major_abbr,
+            date_submitted = form_date_submitted
+        )
+        research_title_2.save()
+
+        research_title_3 = ResearchTitle(
+            research_title = research_title_3,
+            course = student_leader_data.course,
+            major = student_leader_data.major,
+            student_leader_username = student_leader_data.username,
+            student_leader_name = student_full_name_1,
+            course_major_abbr = course_major_abbr,
+            date_submitted = form_date_submitted
+        )
+        research_title_3.save()
+
+        research_title_4 = ResearchTitle(
+            research_title = research_title_4,
+            course = student_leader_data.course,
+            major = student_leader_data.major,
+            student_leader_username = student_leader_data.username,
+            student_leader_name = student_full_name_1,
+            course_major_abbr = course_major_abbr,
+            date_submitted = form_date_submitted
+        )
+        research_title_4.save()
+
+        research_title_5 = ResearchTitle(
+            research_title = research_title_5,
+            course = student_leader_data.course,
+            major = student_leader_data.major,
+            student_leader_username = student_leader_data.username,
+            student_leader_name = student_full_name_1,
+            course_major_abbr = course_major_abbr,
+            date_submitted = form_date_submitted
+        )
+        research_title_5.save()
+        ############## Research Title ##############
+
+        ############## Group Members ##############
+        group_member_2 = StudentGroupMember(
+            student_leader_name = student_member_name_1,
+            student_leader_username = student_leader_data.username,
+            
+            student_member_username = student_member_username_2,
+            student_member_name = student_member_name_2,
+
+            course = student_leader_data.course,
+            major = student_leader_data.major,
+            course_major_abbr = course_major_abbr,
+        )
+        group_member_2.save()
+
+        group_member_3 = StudentGroupMember(
+            student_leader_name = student_member_name_1,
+            student_leader_username = student_leader_data.username,
+            
+            student_member_username = student_member_username_3,
+            student_member_name = student_member_name_3,
+
+            course = student_leader_data.course,
+            major = student_leader_data.major,
+            course_major_abbr = course_major_abbr,
+        )
+        group_member_3.save()
+
+        group_member_4 = StudentGroupMember(
+            student_leader_name = student_member_name_1,
+            student_leader_username = student_leader_data.username,
+            
+            student_member_username = student_member_username_4,
+            student_member_name = student_member_name_4,
+
+            course = student_leader_data.course,
+            major = student_leader_data.major,
+            course_major_abbr = course_major_abbr,
+        )
+        group_member_4.save()
+
+        group_member_5 = StudentGroupMember(
+            student_leader_name = student_member_name_1,
+            student_leader_username = student_leader_data.username,
+            
+            student_member_username = student_member_username_5,
+            student_member_name = student_member_name_5,
+
+            course = student_leader_data.course,
+            major = student_leader_data.major,
+            course_major_abbr = course_major_abbr,
+        )
+        group_member_5.save()
+        ############## Group Members ##############
+
+
         context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
         'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-        'current_user':student,
-
-        'dept_head_name' : dept_head_name,
-
-        'panel_members' : panel_members,
-
-        'defense_dates': defense_dates,
+        'response': "sweet panel invitation bet-3 success",
         }
-        return render(request, 'student-panel-invitation-bet-3-create.html', context)
+        return render(request, 'student-dashboard.html', context)
 
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
