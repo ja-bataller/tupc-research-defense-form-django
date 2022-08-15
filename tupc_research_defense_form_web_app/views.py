@@ -12,6 +12,7 @@ from datetime import date
 from docx import Document
 from docx2pdf import convert
 from docx.shared import Inches
+import qrcode
 import os
 
 today = date.today()
@@ -589,7 +590,7 @@ def studentPanelInvitationBet3(request):
     try:
         PanelInvitation.objects.get(student_leader_username=current_user)
         print("Panel Invitation - BET-3 Exist")
-        return redirect('student-dashboard')
+        return redirect('student-panel-invitation-bet3-form')
 
     except:
         pass
@@ -630,7 +631,6 @@ def studentPanelInvitationBet3(request):
 
     print("Panel Conforme - BET-3 Create")
     return redirect('student-panel-invitation-bet3-create')
-
 
 # Student - Panel Invitation Create Page
 @login_required(login_url='index')
@@ -1573,9 +1573,7 @@ def studentPanelInvitationBet3Create(request):
 
             form_status = form_status,
         )
-
         panel_invitation.save()
-        print("Saved")
         ############## PANEL INVITATION ##############
 
         ############## Defense Schedule ##############
@@ -1719,6 +1717,187 @@ def studentPanelInvitationBet3Create(request):
 
     return render(request, 'student-panel-invitation-bet-3-create.html', context)
 
+# Student - Panel Invitation Form Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentPanelInvitationBet3Form(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    try:
+        user_panel_invitation = PanelInvitation.objects.get(student_leader_username = current_user.username)
+    
+    except:
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+        }
+
+        return render(request, 'student-dashboard.html', context)
+    
+    panel_list = []
+    panel_date_response = []
+
+    if user_panel_invitation.panel_member_name_1 != "" and user_panel_invitation.panel_member_response_date_1:
+        panel_list.append(user_panel_invitation.panel_member_name_1)
+        panel_date_response.append(user_panel_invitation.panel_member_response_date_1)
+    
+    if user_panel_invitation.panel_member_name_2 != "" and user_panel_invitation.panel_member_response_date_2:
+        panel_list.append(user_panel_invitation.panel_member_name_2)
+        panel_date_response.append(user_panel_invitation.panel_member_response_date_2)
+
+    if user_panel_invitation.panel_member_name_3 != "" and user_panel_invitation.panel_member_response_date_3:
+        panel_list.append(user_panel_invitation.panel_member_name_3)
+        panel_date_response.append(user_panel_invitation.panel_member_response_date_3)
+
+    if user_panel_invitation.panel_member_name_4 != "" and user_panel_invitation.panel_member_response_date_4:
+        panel_list.append(user_panel_invitation.panel_member_name_4)
+        panel_date_response.append(user_panel_invitation.panel_member_response_date_4)
+
+    if user_panel_invitation.panel_member_name_5 != "" and user_panel_invitation.panel_member_response_date_5:
+        panel_list.append(user_panel_invitation.panel_member_name_5)
+        panel_date_response.append(user_panel_invitation.panel_member_response_date_5)
+
+    print(panel_list)
+    print(panel_date_response)
+
+    # Generate PDF Form
+    if request.method == "POST":
+        file_count = 1
+        for i in range(len(panel_list)):
+
+            doc = Document('static/forms/1-PANEL-INVITATION.docx')
+
+            student_table = doc.tables[1]
+            qr_code_box = doc.tables[2]
+
+            student_table.cell(1, 0).paragraphs[0].runs[0].text = user_panel_invitation.student_member_name_1
+            student_table.cell(2, 0).paragraphs[0].runs[0].text = user_panel_invitation.student_member_name_2
+            student_table.cell(3, 0).paragraphs[0].runs[0].text = user_panel_invitation.student_member_name_3
+            student_table.cell(4, 0).paragraphs[0].runs[0].text = user_panel_invitation.student_member_name_4
+            student_table.cell(5, 0).paragraphs[0].runs[0].text = user_panel_invitation.student_member_name_5
+
+            student_table.cell(1, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
+            student_table.cell(2, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
+            student_table.cell(3, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
+            student_table.cell(4, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
+            student_table.cell(5, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
+
+            student_table.cell(1, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
+            student_table.cell(2, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
+            student_table.cell(3, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
+            student_table.cell(4, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
+            student_table.cell(5, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
+
+            doc.paragraphs[1].runs[1].text = user_panel_invitation.form_date_submitted
+            doc.paragraphs[2].runs[0].text = panel_list[i]
+            doc.paragraphs[5].runs[1].text = panel_list[i]
+
+            doc.paragraphs[11].runs[1].text = user_panel_invitation.research_title_1
+            doc.paragraphs[12].runs[1].text = user_panel_invitation.research_title_2
+            doc.paragraphs[13].runs[1].text = user_panel_invitation.research_title_3
+            doc.paragraphs[14].runs[1].text = user_panel_invitation.research_title_4
+            doc.paragraphs[15].runs[1].text = user_panel_invitation.research_title_5
+
+            doc.paragraphs[17].runs[1].text =  user_panel_invitation.defense_date
+            doc.paragraphs[17].runs[3].text =  user_panel_invitation.defense_start_time
+            doc.paragraphs[17].runs[5].text =  user_panel_invitation.defense_end_time
+            doc.paragraphs[22].runs[0].text =  user_panel_invitation.dit_head_name
+            doc.paragraphs[25].runs[10].text = panel_date_response[i]
+
+            print(student_table.cell(1, 0).text)
+            print(student_table.cell(2, 0).text)
+            print(student_table.cell(3, 0).text)
+            print(student_table.cell(4, 0).text)
+            print(student_table.cell(5, 0).text)
+
+            print(student_table.cell(1, 2).text)
+            print(student_table.cell(2, 2).text)
+            print(student_table.cell(3, 2).text)
+            print(student_table.cell(4, 2).text)
+            print(student_table.cell(5, 2).text)
+
+            print(student_table.cell(1, 4).text)
+            print(student_table.cell(2, 4).text)
+            print(student_table.cell(3, 4).text)
+            print(student_table.cell(4, 4).text)
+            print(student_table.cell(5, 4).text)
+
+
+            print(doc.paragraphs[1].runs[1].text) # Date Submitted
+            print(doc.paragraphs[2].runs[0].text) # Receiver 1
+            print(doc.paragraphs[5].runs[1].text) # Receiver 2
+
+            print(doc.paragraphs[11].runs[1].text) # Research Title 1
+            print(doc.paragraphs[12].runs[1].text) # Research Title 2
+            print(doc.paragraphs[13].runs[1].text) # Research Title 3
+            print(doc.paragraphs[14].runs[1].text) # Research Title 4
+            print(doc.paragraphs[15].runs[1].text) # Research Title 5
+
+            print(doc.paragraphs[17].runs[1].text) # Defense Date
+            print(doc.paragraphs[17].runs[3].text) # Defense Time Start
+            print(doc.paragraphs[17].runs[5].text) # Defense Time End
+            print(doc.paragraphs[22].runs[0].text) # DIT Head Name
+            print(doc.paragraphs[25].runs[10].text) # Panel Date Response
+
+            img = qrcode.make('some data to insert')
+            type(img) 
+            img.save(str(file_count) + '-' + current_user.username + '-PANEL-CONFORME-BET-3.png')
+
+            # INSERT IMAGE
+            qr_code = qr_code_box.cell(0, 0).add_paragraph()
+            qr_code_run = qr_code.add_run()
+            qr_code_run.add_picture(str(file_count) + '-' + current_user.username + '-PANEL-CONFORME-BET-3.png',width=Inches(1), height=Inches(1))
+            # qr_code_run.alignment=WD_ALIGN_PARAGRAPH.CENTER
+
+            doc.save(str(file_count) + '-' + current_user.username + '-PANEL-CONFORME-BET3-NEW.docx')
+            convert(str(file_count) + '-' + current_user.username + '-PANEL-CONFORME-BET3-NEW.docx')
+            os.startfile(str(file_count) + '-' + current_user.username + '-PANEL-CONFORME-BET3-NEW.pdf')
+
+            qr_code_path = (str(file_count) + '-' + current_user.username + '-PANEL-CONFORME-BET-3.png')
+            if os.path.isfile(qr_code_path):
+                os.remove(qr_code_path)
+                print("QR Code has been deleted")
+            else:
+                print("QR Code does not exist")
+
+
+            panel_invitation_bet_3_path = (str(file_count) + '-' + current_user.username + '-PANEL-CONFORME-BET3-NEW.docx')
+
+            if os.path.isfile(panel_invitation_bet_3_path):
+                os.remove(panel_invitation_bet_3_path)
+                print("Panel Invitation BET-3 has been deleted")
+            else:
+                print("Panel Invitation BET-3 does not exist")
+            
+            i + 1
+            file_count = file_count + 1
+        
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'user_panel_invitation' : user_panel_invitation,
+
+        'response' : "sweet downloaded"
+        }
+
+        return render(request, 'student-panel-invitation-bet-3-form.html', context)
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'user_panel_invitation' : user_panel_invitation,
+        }
+
+    return render(request, 'student-panel-invitation-bet-3-form.html', context)
 
 # Student - Panel Conforme BET-3 Process
 @login_required(login_url='index')
@@ -4229,17 +4408,9 @@ def adminFacultyMemberChangeUserAccount(request, id):
 def ditHeadDashboard(request):
     currently_loggedin_user = (request.user)
 
-    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
-    currently_loggedin_user_middle_initial = None
-
-    currently_loggedin_user_full_name = None
-
-    if currently_loggedin_user_middle_name == "":
-       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
-
-    else:
-        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
-        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
@@ -4352,6 +4523,80 @@ def ditHeadProfile(request):
     return render(request, 'dit-head-profile.html', context)
 
 
+# DIT Head - Panel Invitation  BET-3 Page
+@login_required(login_url='index')
+def ditHeadPanelInvitationBet3(request):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+     # PANEL INVITATION BET-3
+    try:
+        panel_invitation_bet3_check = PanelInvitation.objects.all().filter(dit_head_response="pending")
+   
+        context = {
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+            'panel_invitation_bet3_check' : panel_invitation_bet3_check,
+            }
+
+        return render(request, 'dit-head-panel-invitation-bet-3.html', context)
+
+    except:
+        context = {
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        }
+
+        return render(request, 'dit-head-panel-invitation-bet-3.html', context)
+
+# DIT Head - Panel Invitation BET-3 Accept Process
+@login_required(login_url='index')
+def ditHeadPanelInvitationBet3Accept(request, id):
+    currently_loggedin_user = (request.user)
+    
+    print(id, type(id))
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    dit_head_response_date = today.strftime("%B %d, %Y")
+
+    # PANEL INVITATION BET-3
+    try:
+        panel_invitation_bet3_check_form = PanelInvitation.objects.get(id = id)
+   
+        panel_invitation_bet3_check_form.dit_head_response = "accepted"
+        panel_invitation_bet3_check_form.dit_head_response_date = dit_head_response_date
+
+        panel_invitation_bet3_check_form.panel_member_response_1 = "pending"
+        panel_invitation_bet3_check_form.panel_member_response_2 = "pending"
+        panel_invitation_bet3_check_form.panel_member_response_3 = "pending"
+        panel_invitation_bet3_check_form.panel_member_response_4 = "pending"
+        panel_invitation_bet3_check_form.panel_member_response_5 = "pending"
+        panel_invitation_bet3_check_form.save()
+
+        panel_invitation_bet3_check = PanelInvitation.objects.all().filter(dit_head_response="pending")
+   
+        context = {
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+            'panel_invitation_bet3_check' : panel_invitation_bet3_check,
+
+            'accepted_student_member_name' : panel_invitation_bet3_check_form.student_member_name_1,
+            'accepted_student_member_username' : panel_invitation_bet3_check_form.student_member_username_1,
+
+            'response' : 'sweet panel invitation bet-3 accepted',
+            }
+
+        return render(request, 'dit-head-panel-invitation-bet-3.html', context)
+
+    except:
+        print("NO FOUND")
+        return redirect('dit-head-panel-invitation-bet-3')
+
 
 # DIT Head - Panel Conforme BET-3 Page
 @login_required(login_url='index')
@@ -4389,7 +4634,6 @@ def ditHeadPanelConformeBet3(request):
 
         return render(request, 'dit-head-panel-conforme-bet-3.html', context)
 
-    
 # DIT Head - Panel Conforme BET-3 Accept Process
 @login_required(login_url='index')
 def ditHeadPanelConformeBet3Accept(request, id):
@@ -4436,7 +4680,6 @@ def ditHeadPanelConformeBet3Accept(request, id):
 
     except:
         return redirect('dit-head-panel-conforme-bet-3.html')
-
 
 # DIT Head - Panel Conforme BET-3 Decline Process
 @login_required(login_url='index')
@@ -4565,6 +4808,311 @@ def panelProfile(request):
 
     return render(request, 'panel-profile.html', context)
 
+
+# Panel - Panel Invitation  BET-3 Page
+@login_required(login_url='index')
+def panelPanelInvitationBet3(request):
+    currently_loggedin_user = (request.user)
+    print("Current User:", currently_loggedin_user.username)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # PANEL INVITATION BET-3
+    panel_invitation_bet3_check_1 = PanelInvitation.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
+    panel_invitation_bet3_check_2 = PanelInvitation.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
+    panel_invitation_bet3_check_3 = PanelInvitation.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
+    panel_invitation_bet3_check_4 = PanelInvitation.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
+    panel_invitation_bet3_check_5 = PanelInvitation.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
+    
+    print(panel_invitation_bet3_check_1)
+    print(panel_invitation_bet3_check_2)
+    print(panel_invitation_bet3_check_3)
+    print(panel_invitation_bet3_check_4)
+    print(panel_invitation_bet3_check_5)
+
+    context = {
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+            "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1,
+            "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2,
+            "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3,
+            "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4,
+            "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5,
+            
+            }
+
+    return render(request, 'panel-panel-invitation-bet-3.html', context)
+
+# Panel - Panel Invitation BET-3 Accept Process
+@login_required(login_url='index')
+def panelPanelInvitationBet3Accept(request, id):
+    currently_loggedin_user = (request.user)
+    
+    print(id, type(id))
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    response_date = today.strftime("%B %d, %Y")
+
+    # PANEL INVITATION BET-3
+    try:
+        panel_invitation_bet3_check_1 = PanelInvitation.objects.get(id = id, panel_member_username_1 = currently_loggedin_user.username)
+   
+        panel_invitation_bet3_check_1.panel_member_response_1 = "accepted"
+        panel_invitation_bet3_check_1.panel_member_response_date_1 = response_date
+
+        panel_invitation_bet3_check_1.save()
+
+        panel_invitation_bet_3_check_all = PanelInvitation.objects.get(id = id)
+
+        if panel_invitation_bet_3_check_all.panel_member_response_1 == "accepted" and \
+                panel_invitation_bet_3_check_all.panel_member_response_2 == "accepted" and \
+                    panel_invitation_bet_3_check_all.panel_member_response_3 == "accepted" and \
+                        panel_invitation_bet_3_check_all.panel_member_response_4 == "accepted" and \
+                            panel_invitation_bet_3_check_all.panel_member_response_5 == "accepted":
+
+            panel_invitation_bet_3_check_all.form_status = "Complete"
+            panel_invitation_bet_3_check_all.save() 
+            
+
+        panel_invitation_bet3_check_1_new = PanelInvitation.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
+        panel_invitation_bet3_check_2_new = PanelInvitation.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
+        panel_invitation_bet3_check_3_new = PanelInvitation.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
+        panel_invitation_bet3_check_4_new = PanelInvitation.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
+        panel_invitation_bet3_check_5_new = PanelInvitation.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
+
+        context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
+                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
+                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
+                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
+                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
+
+                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
+                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
+
+                'response' : 'sweet panel invitation bet-3 accepted',
+                
+                }
+        print("pass all")
+        return render(request, 'panel-panel-invitation-bet-3.html', context)
+        
+    except:
+        pass
+    
+    try:
+        panel_invitation_bet3_check_2 = PanelInvitation.objects.get(id = id, panel_member_username_2 = currently_loggedin_user.username)
+   
+        panel_invitation_bet3_check_2.panel_member_response_2 = "accepted"
+        panel_invitation_bet3_check_2.panel_member_response_date_2 = response_date
+
+        panel_invitation_bet3_check_2.save()
+
+        panel_invitation_bet_3_check_all = PanelInvitation.objects.get(id = id)
+
+        if panel_invitation_bet_3_check_all.panel_member_response_1 == "accepted" and \
+                panel_invitation_bet_3_check_all.panel_member_response_2 == "accepted" and \
+                    panel_invitation_bet_3_check_all.panel_member_response_3 == "accepted" and \
+                        panel_invitation_bet_3_check_all.panel_member_response_4 == "accepted" and \
+                            panel_invitation_bet_3_check_all.panel_member_response_5 == "accepted":
+
+            panel_invitation_bet_3_check_all.form_status = "Complete"
+            panel_invitation_bet_3_check_all.save() 
+
+
+        panel_invitation_bet3_check_1_new = PanelInvitation.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
+        panel_invitation_bet3_check_2_new = PanelInvitation.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
+        panel_invitation_bet3_check_3_new = PanelInvitation.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
+        panel_invitation_bet3_check_4_new = PanelInvitation.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
+        panel_invitation_bet3_check_5_new = PanelInvitation.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
+
+        context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
+                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
+                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
+                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
+                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
+
+                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
+                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
+
+                'response' : 'sweet panel invitation bet-3 accepted',
+                
+                }
+        print("pass all")
+        return render(request, 'panel-panel-invitation-bet-3.html', context)
+        
+    except:
+        pass
+
+    try:
+        panel_invitation_bet3_check_3 = PanelInvitation.objects.get(id = id, panel_member_username_3 = currently_loggedin_user.username)
+   
+        panel_invitation_bet3_check_3.panel_member_response_3 = "accepted"
+        panel_invitation_bet3_check_3.panel_member_response_date_3 = response_date
+
+        panel_invitation_bet3_check_3.save()
+
+        panel_invitation_bet_3_check_all = PanelInvitation.objects.get(id = id)
+        
+        if panel_invitation_bet_3_check_all.panel_member_response_1 == "accepted" and \
+                panel_invitation_bet_3_check_all.panel_member_response_2 == "accepted" and \
+                    panel_invitation_bet_3_check_all.panel_member_response_3 == "accepted" and \
+                        panel_invitation_bet_3_check_all.panel_member_response_4 == "accepted" and \
+                            panel_invitation_bet_3_check_all.panel_member_response_5 == "accepted":
+
+            panel_invitation_bet_3_check_all.form_status = "Complete"
+            panel_invitation_bet_3_check_all.save() 
+
+
+        panel_invitation_bet3_check_1_new = PanelInvitation.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
+        panel_invitation_bet3_check_2_new = PanelInvitation.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
+        panel_invitation_bet3_check_3_new = PanelInvitation.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
+        panel_invitation_bet3_check_4_new = PanelInvitation.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
+        panel_invitation_bet3_check_5_new = PanelInvitation.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
+
+        context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
+                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
+                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
+                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
+                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
+
+                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
+                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
+
+                'response' : 'sweet panel invitation bet-3 accepted',
+                
+                }
+        print("pass all")
+        return render(request, 'panel-panel-invitation-bet-3.html', context)
+        
+    except:
+        pass
+
+    try:
+        panel_invitation_bet3_check_4 = PanelInvitation.objects.get(id = id, panel_member_username_4 = currently_loggedin_user.username)
+   
+        panel_invitation_bet3_check_4.panel_member_response_4 = "accepted"
+        panel_invitation_bet3_check_4.panel_member_response_date_4 = response_date
+
+        panel_invitation_bet3_check_4.save()
+
+        panel_invitation_bet_3_check_all = PanelInvitation.objects.get(id = id)
+        
+        if panel_invitation_bet_3_check_all.panel_member_response_1 == "accepted" and \
+                panel_invitation_bet_3_check_all.panel_member_response_2 == "accepted" and \
+                    panel_invitation_bet_3_check_all.panel_member_response_3 == "accepted" and \
+                        panel_invitation_bet_3_check_all.panel_member_response_4 == "accepted" and \
+                            panel_invitation_bet_3_check_all.panel_member_response_5 == "accepted":
+
+            panel_invitation_bet_3_check_all.form_status = "Complete"
+            panel_invitation_bet_3_check_all.save() 
+
+
+        panel_invitation_bet3_check_1_new = PanelInvitation.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
+        panel_invitation_bet3_check_2_new = PanelInvitation.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
+        panel_invitation_bet3_check_3_new = PanelInvitation.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
+        panel_invitation_bet3_check_4_new = PanelInvitation.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
+        panel_invitation_bet3_check_5_new = PanelInvitation.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
+
+        context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
+                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
+                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
+                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
+                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
+
+                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
+                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
+
+                'response' : 'sweet panel invitation bet-3 accepted',
+                
+                }
+        print("pass all")
+        return render(request, 'panel-panel-invitation-bet-3.html', context)
+        
+    except:
+        pass
+
+    try:
+        panel_invitation_bet3_check_5 = PanelInvitation.objects.get(id = id, panel_member_username_5 = currently_loggedin_user.username)
+   
+        panel_invitation_bet3_check_5.panel_member_response_5 = "accepted"
+        panel_invitation_bet3_check_5.panel_member_response_date_5 = response_date
+
+        panel_invitation_bet3_check_5.save()
+
+        panel_invitation_bet_3_check_all = PanelInvitation.objects.get(id = id)
+        
+        if panel_invitation_bet_3_check_all.panel_member_response_1 == "accepted" and \
+                panel_invitation_bet_3_check_all.panel_member_response_2 == "accepted" and \
+                    panel_invitation_bet_3_check_all.panel_member_response_3 == "accepted" and \
+                        panel_invitation_bet_3_check_all.panel_member_response_4 == "accepted" and \
+                            panel_invitation_bet_3_check_all.panel_member_response_5 == "accepted":
+
+            panel_invitation_bet_3_check_all.form_status = "Complete"
+            panel_invitation_bet_3_check_all.save() 
+
+
+        panel_invitation_bet3_check_1_new = PanelInvitation.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
+        panel_invitation_bet3_check_2_new = PanelInvitation.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
+        panel_invitation_bet3_check_3_new = PanelInvitation.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
+        panel_invitation_bet3_check_4_new = PanelInvitation.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
+        panel_invitation_bet3_check_5_new = PanelInvitation.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
+
+        context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
+                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
+                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
+                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
+                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
+
+                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
+                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
+
+                'response' : 'sweet panel invitation bet-3 accepted',
+                
+                }
+        print("pass all")
+        return render(request, 'panel-panel-invitation-bet-3.html', context)
+        
+    except:
+        pass
+
+    print("PASS ALL")
+    panel_invitation_bet3_check_1 = PanelInvitation.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
+    panel_invitation_bet3_check_2 = PanelInvitation.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
+    panel_invitation_bet3_check_3 = PanelInvitation.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
+    panel_invitation_bet3_check_4 = PanelInvitation.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
+    panel_invitation_bet3_check_5 = PanelInvitation.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
+
+    context = {
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+            "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1,
+            "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2,
+            "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3,
+            "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4,
+            "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5,
+            
+            }
+
+    return render(request, 'panel-panel-invitation-bet-3.html', context)
 
 # Panel - Panel Conforme BET-3 Page
 @login_required(login_url='index')

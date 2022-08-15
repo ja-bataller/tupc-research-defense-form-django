@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>DIT Head - Dashboard</title>
+    <title>DIT Head - Panel Invitation BET-3</title>
 
     {% include 'css-main-cdn.html' %}
   </head>
@@ -17,11 +17,10 @@
   <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-
       <!-- Sidebar -->
       <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'panel-dashboard' %}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'dit-head-dashboard' %}">
           <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
         </a>
 
@@ -29,8 +28,8 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <a class="nav-link" href="{% url 'panel-dashboard' %}">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
             <i class="fa-solid fa-house"></i>
             <span>Home</span></a
           >
@@ -40,7 +39,7 @@
         <!-- <hr class="sidebar-divider"> -->
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
             <i class="fa-solid fa-folder-open"></i>
             <span>Forms</span>
@@ -48,8 +47,8 @@
           <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">BET-3</h6>
-              <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
-              <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
+              <a class="collapse-item" href="#">Panel Invitation</a>
+              <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
               <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
               <div class="collapse-divider"></div>
@@ -109,13 +108,13 @@
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="mr-2 d-none d-lg-inline text-gray-600 small"
                     >{{currently_loggedin_user_full_name}} <br />
-                    <div class="float-right">Panel</div>
+                    <div class="float-right">DIT Head</div>
                   </span>
                   <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="{% url 'panel-profile' %}">
+                  <a class="dropdown-item" href="{% url 'dit-head-profile' %}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                   </a>
@@ -133,10 +132,56 @@
 
           <!-- Begin Page Content -->
           <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-0 text-gray-800">Panel Invitation - BET-3</h1>
+            </div>
 
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+              <!-- <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Pending Dashboard</h6>
+                </div> -->
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Research Title</th>
+                        <th>Student ID No.</th>
+                        <th>Student Name</th>
+                        <th>Course</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Research Title</th>
+                        <th>Student ID No.</th>
+                        <th>Student Name</th>
+                        <th>Course</th>
+                        <th>Action</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      {% for panel_invitation in panel_invitation_bet3_check %}
+                      <tr>
+                        <td>{{panel_invitation.research_title_1}}</td>
+                        <td>{{panel_invitation.student_leader_username}}</td>
+                        <td>{{panel_invitation.student_member_username_1}}</td>
+                        <td>{{panel_invitation.course_major_abbr}}</td>
+                        <td class="text-center">
+                          <a class="btn btn-outline-success mb-2" type="button" href="{% url 'dit-head-panel-invitation-bet-3-accept' panel_invitation.id %}"><i class="fa-solid fa-check"></i></a>
+                          <a class="btn btn-outline-danger mb-2" type="button" href="#"><i class="fa-solid fa-xmark"></i></a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
-
-          
           <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
@@ -155,5 +200,25 @@
     </a>
 
     {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+    <!-- Sweetalert 2 CDN -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {% if response == 'sweet panel invitation bet-3 accepted' %}
+    <script>
+      Swal.fire("Accepted", "The Panel Invitation request of {{accepted_student_member_username}} {{accepted_student_member_name}} is accepted.", "success");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'dit-head-panel-invitation-bet-3' %}");
+      }, 1500);
+    </script>
+    {% endif %} {% if response == 'sweet panel conforme bet-3 accepted' %}
+    <script>
+      Swal.fire("Accepted", "{{accepted_research_title}} is accepted.", "success");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'dit-head-panel-conforme-bet-3' %}");
+      }, 1500);
+    </script>
+    {% endif %}
   </body>
 </html>
