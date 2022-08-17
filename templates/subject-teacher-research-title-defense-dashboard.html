@@ -48,7 +48,7 @@
           <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <a class="collapse-item" href="{% url 'subject-teacher-research-title-defense-dashboard' %}">Schedule Dashboard</a>
-              <a class="collapse-item" href="">Set Schedule</a>
+              <a class="collapse-item" href="{% url 'subject-teacher-set-research-title-defense-schedule' %}">Set Schedule</a>
             </div>
           </div>
         </li>
@@ -65,7 +65,7 @@
 
         <!-- Nav Item - The Developers -->
         <li class="nav-item">
-          <a class="nav-link" href="the-devs.html">
+          <a class="nav-link" href="#">
             <i class="fa-solid fa-code"></i>
             <span>The Devs</span></a
           >
@@ -128,15 +128,21 @@
               <h1 class="h3 mb-0 text-gray-800">Title Defense Schedule</h1>
             </div>
 
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelect01">Course</label>
+            <form  id="course_available_sched" method="POST">
+              {% csrf_token %}
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Course:</label>
+                </div>
+                <select id="course_list" class="custom-select" name="course_input" required>
+                  <option selected>---</option>
+                  {% for course in course_handled_list %}
+                  <option value="{{course}}">{{course}}</option>
+                  {% endfor %}
+                </select>
               </div>
-              <select id="course_list" class="custom-select">
-                <option value="Default" selected>---</option>
-                <option value="">One</option>
-              </select>
-            </div>
+            </form>
 
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
@@ -148,6 +154,7 @@
                   <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                       <tr>
+                        <th>Ref No.</th>
                         <th>Student Leader ID</th>
                         <th>Student Leader Name</th>
                         <th>Course</th>
@@ -158,6 +165,7 @@
                     </thead>
                     <tfoot>
                       <tr>
+                        <th>Ref No.</th>
                         <th>Student Leader ID</th>
                         <th>Student Leader Name</th>
                         <th>Course</th>
@@ -167,7 +175,35 @@
                       </tr>
                     </tfoot>
                     <tbody>
-                      {% include 'student_dashboard_panel_conforme_bet3.html' %}
+                      {% for student_scheduled in student_defense_scheduled %}
+                      {% if student_scheduled.status == "Reserved" %}
+                      <tr>
+                        <td>{{student_scheduled.id}}</td>
+                        <td>{{student_scheduled.student_leader_username}}</td>
+                        <td>{{student_scheduled.student_leader_name}}</td>
+                        <td>{{student_scheduled.course}}</td>
+                        <td>{{student_scheduled.date}}</td>
+                        <td>{{student_scheduled.start_time}} to {{student_scheduled.end_time}}</td>
+                        <td class="text-success">Scheduled</td>
+                      </tr>
+                      {% endif %}
+                      {% endfor %}
+
+                      {% for student_unscheduled in student_defense_unscheduled %}
+                      <tr>
+                        <td>None</td>
+                        <td>{{student_unscheduled.username}}</td>
+                        {% if student_unscheduled.middle_name == "" %}
+                        <td>{{student_unscheduled.first_name}} {{student_unscheduled.last_name}} {{student_unscheduled.suffix}}</td>
+                        {% else %}
+                        <td>{{student_unscheduled.first_name}} {{student_unscheduled.middle_name}} {{student_unscheduled.last_name}} {{student_unscheduled.suffix}}</td>
+                        {% endif %}
+                        <td>{{student_unscheduled.course_major_abbr}} </td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td class="text-danger">No Schedule</td>
+                      </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -198,10 +234,11 @@
       let course_list = document.querySelector("#course_list");
 
       course_list.addEventListener("change", (event) => {
-        if (course_list.value == "Default") {
-          window.location.replace("{% url 'subject-teacher-research-title-defense-dashboard' %}");
+        if (course_list.value == "---") {
+          console.log("1");
+          window.location.replace("{% url 'subject-teacher-set-research-title-defense-schedule' %}");
         } else {
-          pass;
+          document.getElementById("course_available_sched").submit();
         }
       });
     </script>

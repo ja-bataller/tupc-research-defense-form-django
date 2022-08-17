@@ -70,6 +70,8 @@ class StudentLeader(models.Model):
     bet5_status = models.CharField(max_length=256, blank=True)
 
     current_subject = models.CharField(max_length=256, blank=False)
+
+    defense_status = models.CharField(max_length=256, blank=True)
     def __str__(self) -> str:
         return self.username
 
@@ -216,6 +218,8 @@ class PanelConformeBET3(models.Model):
 class DefenseSchedule(models.Model):
     username = models.CharField(max_length=256)
     name = models.CharField(max_length=256)
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_name = models.CharField(max_length=256)
     course = models.CharField(max_length=256)
     form = models.CharField(max_length=256)
     date = models.CharField(max_length=256)

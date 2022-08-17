@@ -336,6 +336,47 @@ def signup(request):
 
 # Log out
 def logout_user(request):
+    currently_loggedin_user = (request.user)
+
+    if currently_loggedin_user.is_student == 1:
+        panel_invitation_bet_3_path_1 = ('1-' + currently_loggedin_user.username + '-PANEL-CONFORME-BET3-NEW.pdf')
+        panel_invitation_bet_3_path_2 = ('2-' + currently_loggedin_user.username + '-PANEL-CONFORME-BET3-NEW.pdf')
+        panel_invitation_bet_3_path_3 = ('3-' + currently_loggedin_user.username + '-PANEL-CONFORME-BET3-NEW.pdf')
+        panel_invitation_bet_3_path_4 = ('4-' + currently_loggedin_user.username + '-PANEL-CONFORME-BET3-NEW.pdf')
+        panel_invitation_bet_3_path_5 = ('5-' + currently_loggedin_user.username + '-PANEL-CONFORME-BET3-NEW.pdf')
+
+        if os.path.isfile(panel_invitation_bet_3_path_1):
+            os.remove(panel_invitation_bet_3_path_1)
+            print("Panel Invitation BET-3 1 has been deleted")
+        else:
+            print("Panel Invitation BET-3 1 does not exist")
+        
+        if os.path.isfile(panel_invitation_bet_3_path_2):
+            os.remove(panel_invitation_bet_3_path_2)
+            print("Panel Invitation BET-3 2 has been deleted")
+        else:
+            print("Panel Invitation BET-3 2 does not exist")
+
+        if os.path.isfile(panel_invitation_bet_3_path_3):
+            os.remove(panel_invitation_bet_3_path_3)
+            print("Panel Invitation BET-3 3 has been deleted")
+        else:
+            print("Panel Invitation BET-3 3 does not exist")
+
+        
+        if os.path.isfile(panel_invitation_bet_3_path_4):
+            os.remove(panel_invitation_bet_3_path_4)
+            print("Panel Invitation BET-3 4 has been deleted")
+        else:
+            print("Panel Invitation BET-3 4 does not exist")
+
+        
+        if os.path.isfile(panel_invitation_bet_3_path_5):
+            os.remove(panel_invitation_bet_3_path_5)
+            print("Panel Invitation BET-3 5 has been deleted")
+        else:
+            print("Panel Invitation BET-3 5 does not exist")
+
     logout(request)
     return redirect('index')
 
@@ -368,85 +409,19 @@ def studentDashboard(request):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
-    # PANEL CONFORME BET-3
+    # Panel Invitation BET-3
     try:
-        panel_conforme_bet3_check = PanelConformeBET3.objects.get(student_leader_username=current_user)
+        panel_invitation_bet3_check = PanelInvitation.objects.get(student_leader_username=current_user.username)
 
-        research_title = panel_conforme_bet3_check.research_title
-
-        department_head = panel_conforme_bet3_check.dept_head
-        department_head_status = panel_conforme_bet3_check.dept_head_status
-
-        panel_member_status_1 = panel_conforme_bet3_check.panel_member_status_1
-        panel_member_status_2 = panel_conforme_bet3_check.panel_member_status_2
-        panel_member_status_3 = panel_conforme_bet3_check.panel_member_status_3
-        panel_member_status_4 = panel_conforme_bet3_check.panel_member_status_4
-        panel_member_status_5 = panel_conforme_bet3_check.panel_member_status_5
-
-        panel_check_1 = User.objects.get(username=panel_conforme_bet3_check.panel_member_1)
-        panel_check_2 = User.objects.get(username=panel_conforme_bet3_check.panel_member_2)
-        panel_check_3 = User.objects.get(username=panel_conforme_bet3_check.panel_member_3)
-        panel_check_4 = User.objects.get(username=panel_conforme_bet3_check.panel_member_4)
-        panel_check_5 = User.objects.get(username=panel_conforme_bet3_check.panel_member_5)
-
-        panel_member_full_name_1 = None
-        panel_member_full_name_2 = None
-        panel_member_full_name_3 = None
-        panel_member_full_name_4 = None
-        panel_member_full_name_5 = None
-
-        if panel_check_1.middle_name == "":
-            panel_member_full_name_1 = panel_check_1.first_name + " " + panel_check_1.last_name
-        else:
-            panel_member_full_name_1 = panel_check_1.first_name + " " + panel_check_1.middle_name[0] + ". " + panel_check_1.last_name
-
-        if panel_check_2.middle_name == "":
-            panel_member_full_name_2 = panel_check_2.first_name + " " + panel_check_2.last_name
-        else:
-            panel_member_full_name_2 = panel_check_2.first_name + " " + panel_check_2.middle_name[0] + ". " + panel_check_2.last_name
-
-        if panel_check_3.middle_name == "":
-            panel_member_full_name_3 = panel_check_3.first_name + " " + panel_check_3.last_name
-        else:
-            panel_member_full_name_3 = panel_check_3.first_name + " " + panel_check_3.middle_name[0] + ". " + panel_check_3.last_name
-
-        if panel_check_4.middle_name == "":
-            panel_member_full_name_4 = panel_check_4.first_name + " " + panel_check_4.last_name
-        else:
-            panel_member_full_name_4 = panel_check_4.first_name + " " + panel_check_4.middle_name[0] + ". " + panel_check_4.last_name
-        
-        if panel_check_5.middle_name == "":
-            panel_member_full_name_5 = panel_check_5.first_name + " " + panel_check_5.last_name
-        else:
-            panel_member_full_name_5 = panel_check_5.first_name + " " + panel_check_5.middle_name[0] + ". " + panel_check_5.last_name
-    
 
         context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
         'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-        'research_title' : research_title,
-
-        'form': "Panel Conforme (BET-3)",
-
-        'department_head': department_head,
-        'department_head_status' : department_head_status,
-
-        'panel_member_1':panel_member_full_name_1,
-        'panel_member_2':panel_member_full_name_2,
-        'panel_member_3':panel_member_full_name_3,
-        'panel_member_4':panel_member_full_name_4,
-        'panel_member_5':panel_member_full_name_5,
-
-        'panel_member_status_1':panel_member_status_1,
-        'panel_member_status_2':panel_member_status_2,
-        'panel_member_status_3':panel_member_status_3,
-        'panel_member_status_4':panel_member_status_4,
-        'panel_member_status_5':panel_member_status_5,
+        "panel_invitation_bet3" : panel_invitation_bet3_check,
         }
-
+        print("pass")
         return render(request, 'student-dashboard.html', context)
-    
     except:
         pass
     
@@ -527,7 +502,7 @@ def studentProfile(request):
                         'user_course': user_course,  
                         'course_name' : course_name,
                         'major_name' : major_name,
-                        'username': current_username, 
+                        'username': user_username, 
                         'user_email':user_email,
 
                         "response": "new password and confirm new password doesnt match"
@@ -546,7 +521,7 @@ def studentProfile(request):
                     'user_course': user_course,  
                     'course_name' : course_name,
                     'major_name' : major_name,
-                    'username': current_username, 
+                    'username': user_username, 
                     'user_email':user_email,
 
                     "response": "current password and new password is same"
@@ -565,7 +540,7 @@ def studentProfile(request):
                 'user_course': user_course,  
                 'course_name' : course_name,
                 'major_name' : major_name,
-                'username': current_username, 
+                'username': user_username, 
                 'user_email':user_email, 
 
                 "response": "current password is incorrect"
@@ -1357,29 +1332,29 @@ def studentPanelInvitationBet3Create(request):
         course_short = student_leader_data.course.replace("Engineering", "Eng.")
 
         if student_middle_name_1 == "":
-            student_full_name_1 = current_user.first_name + " " +  current_user.last_name + " " + current_user.suffix
+            student_full_name_1 = current_user.last_name + " " + current_user.suffix + ', ' + current_user.first_name 
         else:
-            student_full_name_1 = current_user.first_name + " " +  current_user.middle_name[0] + ". " +  current_user.last_name + " " + current_user.suffix
+            student_full_name_1 =  current_user.last_name + " " + current_user.suffix + ', ' + current_user.first_name + " " +  current_user.middle_name[0] + "." 
 
         if student_middle_name_2 == "":
-            student_full_name_2 = student_first_name_2 + " " +  student_last_name_2 + " " + student_suffix_2
+            student_full_name_2 = student_last_name_2 + " " + student_suffix_2 + ', ' + student_first_name_2 + " "
         else:
-            student_full_name_2 = student_first_name_2 + " " +  student_middle_name_2[0] + ". " +  student_last_name_2 + " " + student_suffix_2
+            student_full_name_2 = student_last_name_2 + " " +  student_suffix_2 + ", " +  student_first_name_2 + " " + student_middle_name_2[0] + "."
 
         if student_middle_name_3 == "":
-            student_full_name_3 = student_first_name_3 + " " +  student_last_name_3 + " " + student_suffix_3
+            student_full_name_3 = student_last_name_3 + " " + student_suffix_3 + ', ' + student_first_name_3 + " "
         else:
-            student_full_name_3 = student_first_name_3 + " " +  student_middle_name_3[0] + ". " +  student_last_name_3 + " " + student_suffix_3
+            student_full_name_3 = student_last_name_3 + " " +  student_suffix_3 + ", " +  student_first_name_3 + " " + student_middle_name_3[0] + "."
         
         if student_middle_name_4 == "":
-            student_full_name_4 = student_first_name_4 + " " +  student_last_name_4 + " " + student_suffix_4
+            student_full_name_4 = student_last_name_4 + " " + student_suffix_4 + ', ' + student_first_name_4 + " "
         else:
-            student_full_name_4 = student_first_name_4 + " " +  student_middle_name_4[0] + ". " +  student_last_name_4 + " " + student_suffix_4
+            student_full_name_4 = student_last_name_4 + " " +  student_suffix_4 + ", " +  student_first_name_4 + " " + student_middle_name_4[0] + "."
 
         if student_middle_name_5 == "":
-            student_full_name_5 = student_first_name_5 + " " +  student_last_name_5 + " " + student_suffix_5
+            student_full_name_5 = student_last_name_5 + " " + student_suffix_5 + ', ' + student_first_name_5 + " "
         else:
-            student_full_name_5 = student_first_name_5 + " " +  student_middle_name_5[0] + ". " +  student_last_name_5 + " " + student_suffix_5
+            student_full_name_5 = student_last_name_5 + " " +  student_suffix_5 + ", " +  student_first_name_5 + " " + student_middle_name_5[0] + "."
         ############## STUDENT DATA ##############
 
         ############## DEFENSE SCHEDULE DATA ##############
@@ -1513,6 +1488,12 @@ def studentPanelInvitationBet3Create(request):
         print(defense_end_time)
         print(form_status)
 
+        ############## Student Leader ##############
+        student_leader_status = StudentLeader.objects.get(username=current_user.username)
+        student_leader_status.defense_status = "Title Defense"
+        student_leader_status.save()
+        ############## Student Leader ##############
+
         ############## PANEL INVITATION ##############
         panel_invitation = PanelInvitation(
             student_leader_username = student_leader_username,
@@ -1578,6 +1559,8 @@ def studentPanelInvitationBet3Create(request):
 
         ############## Defense Schedule ##############
         defense_schedule = DefenseSchedule.objects.get(id=defense_schedule_input)
+        defense_schedule.student_leader_username = current_user.username
+        defense_schedule.student_leader_name = student_full_name_1
         defense_schedule.status = "Reserved"
         defense_schedule.save()
         ############## Defense Schedule ##############
@@ -1594,29 +1577,32 @@ def studentPanelInvitationBet3Create(request):
         )
         research_title_1.save()
 
-        research_title_2 = ResearchTitle(
-            research_title = research_title_2,
-            course = student_leader_data.course,
-            major = student_leader_data.major,
-            student_leader_username = student_leader_data.username,
-            student_leader_name = student_full_name_1,
-            course_major_abbr = course_major_abbr,
-            date_submitted = form_date_submitted
-        )
-        research_title_2.save()
+        if research_title_2 != "":
+            research_title_2 = ResearchTitle(
+                research_title = research_title_2,
+                course = student_leader_data.course,
+                major = student_leader_data.major,
+                student_leader_username = student_leader_data.username,
+                student_leader_name = student_full_name_1,
+                course_major_abbr = course_major_abbr,
+                date_submitted = form_date_submitted
+            )
+            research_title_2.save()
 
-        research_title_3 = ResearchTitle(
-            research_title = research_title_3,
-            course = student_leader_data.course,
-            major = student_leader_data.major,
-            student_leader_username = student_leader_data.username,
-            student_leader_name = student_full_name_1,
-            course_major_abbr = course_major_abbr,
-            date_submitted = form_date_submitted
-        )
-        research_title_3.save()
+        if research_title_3 != "":
+            research_title_3 = ResearchTitle(
+                research_title = research_title_3,
+                course = student_leader_data.course,
+                major = student_leader_data.major,
+                student_leader_username = student_leader_data.username,
+                student_leader_name = student_full_name_1,
+                course_major_abbr = course_major_abbr,
+                date_submitted = form_date_submitted
+            )
+            research_title_3.save()
 
-        research_title_4 = ResearchTitle(
+        if research_title_4 != "":
+            research_title_4 = ResearchTitle(
             research_title = research_title_4,
             course = student_leader_data.course,
             major = student_leader_data.major,
@@ -1625,72 +1611,77 @@ def studentPanelInvitationBet3Create(request):
             course_major_abbr = course_major_abbr,
             date_submitted = form_date_submitted
         )
-        research_title_4.save()
+            research_title_4.save()
 
-        research_title_5 = ResearchTitle(
-            research_title = research_title_5,
-            course = student_leader_data.course,
-            major = student_leader_data.major,
-            student_leader_username = student_leader_data.username,
-            student_leader_name = student_full_name_1,
-            course_major_abbr = course_major_abbr,
-            date_submitted = form_date_submitted
-        )
-        research_title_5.save()
+        if research_title_5 != "":
+            research_title_5 = ResearchTitle(
+                research_title = research_title_5,
+                course = student_leader_data.course,
+                major = student_leader_data.major,
+                student_leader_username = student_leader_data.username,
+                student_leader_name = student_full_name_1,
+                course_major_abbr = course_major_abbr,
+                date_submitted = form_date_submitted
+            )
+            research_title_5.save()
         ############## Research Title ##############
 
         ############## Group Members ##############
-        group_member_2 = StudentGroupMember(
-            student_leader_name = student_member_name_1,
-            student_leader_username = student_leader_data.username,
-            
-            student_member_username = student_member_username_2,
-            student_member_name = student_member_name_2,
+        if student_member_username_2 != "":
+            group_member_2 = StudentGroupMember(
+                student_leader_name = student_member_name_1,
+                student_leader_username = student_leader_data.username,
+                
+                student_member_username = student_member_username_2,
+                student_member_name = student_member_name_2,
 
-            course = student_leader_data.course,
-            major = student_leader_data.major,
-            course_major_abbr = course_major_abbr,
-        )
-        group_member_2.save()
+                course = student_leader_data.course,
+                major = student_leader_data.major,
+                course_major_abbr = course_major_abbr,
+            )
+            group_member_2.save()
 
-        group_member_3 = StudentGroupMember(
-            student_leader_name = student_member_name_1,
-            student_leader_username = student_leader_data.username,
-            
-            student_member_username = student_member_username_3,
-            student_member_name = student_member_name_3,
+        if student_member_username_3 != "":
+            group_member_3 = StudentGroupMember(
+                student_leader_name = student_member_name_1,
+                student_leader_username = student_leader_data.username,
+                
+                student_member_username = student_member_username_3,
+                student_member_name = student_member_name_3,
 
-            course = student_leader_data.course,
-            major = student_leader_data.major,
-            course_major_abbr = course_major_abbr,
-        )
-        group_member_3.save()
+                course = student_leader_data.course,
+                major = student_leader_data.major,
+                course_major_abbr = course_major_abbr,
+            )
+            group_member_3.save()
 
-        group_member_4 = StudentGroupMember(
-            student_leader_name = student_member_name_1,
-            student_leader_username = student_leader_data.username,
-            
-            student_member_username = student_member_username_4,
-            student_member_name = student_member_name_4,
+        if student_member_username_4 != "":
+            group_member_4 = StudentGroupMember(
+                student_leader_name = student_member_name_1,
+                student_leader_username = student_leader_data.username,
+                
+                student_member_username = student_member_username_4,
+                student_member_name = student_member_name_4,
 
-            course = student_leader_data.course,
-            major = student_leader_data.major,
-            course_major_abbr = course_major_abbr,
-        )
-        group_member_4.save()
+                course = student_leader_data.course,
+                major = student_leader_data.major,
+                course_major_abbr = course_major_abbr,
+            )
+            group_member_4.save()
 
-        group_member_5 = StudentGroupMember(
-            student_leader_name = student_member_name_1,
-            student_leader_username = student_leader_data.username,
-            
-            student_member_username = student_member_username_5,
-            student_member_name = student_member_name_5,
+        if student_member_username_5 != "":
+            group_member_5 = StudentGroupMember(
+                student_leader_name = student_member_name_1,
+                student_leader_username = student_leader_data.username,
+                
+                student_member_username = student_member_username_5,
+                student_member_name = student_member_name_5,
 
-            course = student_leader_data.course,
-            major = student_leader_data.major,
-            course_major_abbr = course_major_abbr,
-        )
-        group_member_5.save()
+                course = student_leader_data.course,
+                major = student_leader_data.major,
+                course_major_abbr = course_major_abbr,
+            )
+            group_member_5.save()
         ############## Group Members ##############
 
 
@@ -1742,30 +1733,39 @@ def studentPanelInvitationBet3Form(request):
         return render(request, 'student-dashboard.html', context)
     
     panel_list = []
+    panel_response = []
     panel_date_response = []
 
     if user_panel_invitation.panel_member_name_1 != "" and user_panel_invitation.panel_member_response_date_1:
         panel_list.append(user_panel_invitation.panel_member_name_1)
+        panel_response.append(user_panel_invitation.panel_member_response_1)
         panel_date_response.append(user_panel_invitation.panel_member_response_date_1)
     
     if user_panel_invitation.panel_member_name_2 != "" and user_panel_invitation.panel_member_response_date_2:
         panel_list.append(user_panel_invitation.panel_member_name_2)
+        panel_response.append(user_panel_invitation.panel_member_response_2)
         panel_date_response.append(user_panel_invitation.panel_member_response_date_2)
 
     if user_panel_invitation.panel_member_name_3 != "" and user_panel_invitation.panel_member_response_date_3:
         panel_list.append(user_panel_invitation.panel_member_name_3)
+        panel_response.append(user_panel_invitation.panel_member_response_3)
         panel_date_response.append(user_panel_invitation.panel_member_response_date_3)
 
     if user_panel_invitation.panel_member_name_4 != "" and user_panel_invitation.panel_member_response_date_4:
         panel_list.append(user_panel_invitation.panel_member_name_4)
+        panel_response.append(user_panel_invitation.panel_member_response_4)
         panel_date_response.append(user_panel_invitation.panel_member_response_date_4)
 
     if user_panel_invitation.panel_member_name_5 != "" and user_panel_invitation.panel_member_response_date_5:
         panel_list.append(user_panel_invitation.panel_member_name_5)
+        panel_response.append(user_panel_invitation.panel_member_response_5)
         panel_date_response.append(user_panel_invitation.panel_member_response_date_5)
 
     print(panel_list)
     print(panel_date_response)
+
+    student_member_list = [user_panel_invitation.student_member_name_1, user_panel_invitation.student_member_name_2, user_panel_invitation.student_member_name_3, user_panel_invitation.student_member_name_4, user_panel_invitation.student_member_name_5]
+    student_member_list.sort()
 
     # Generate PDF Form
     if request.method == "POST":
@@ -1776,25 +1776,49 @@ def studentPanelInvitationBet3Form(request):
 
             student_table = doc.tables[1]
             qr_code_box = doc.tables[2]
+            response_table = doc.tables[3]
 
-            student_table.cell(1, 0).paragraphs[0].runs[0].text = user_panel_invitation.student_member_name_1
-            student_table.cell(2, 0).paragraphs[0].runs[0].text = user_panel_invitation.student_member_name_2
-            student_table.cell(3, 0).paragraphs[0].runs[0].text = user_panel_invitation.student_member_name_3
-            student_table.cell(4, 0).paragraphs[0].runs[0].text = user_panel_invitation.student_member_name_4
-            student_table.cell(5, 0).paragraphs[0].runs[0].text = user_panel_invitation.student_member_name_5
+            student_table.cell(1, 0).paragraphs[0].runs[0].text = student_member_list[0]
+            student_table.cell(2, 0).paragraphs[0].runs[0].text = student_member_list[1]
+            student_table.cell(3, 0).paragraphs[0].runs[0].text = student_member_list[2]
+            student_table.cell(4, 0).paragraphs[0].runs[0].text = student_member_list[3]
+            student_table.cell(5, 0).paragraphs[0].runs[0].text = student_member_list[4]
 
             student_table.cell(1, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
-            student_table.cell(2, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
-            student_table.cell(3, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
-            student_table.cell(4, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
-            student_table.cell(5, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
-
             student_table.cell(1, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
-            student_table.cell(2, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
-            student_table.cell(3, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
-            student_table.cell(4, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
-            student_table.cell(5, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
 
+            if user_panel_invitation.student_member_username_2 == "":
+                student_table.cell(2, 2).paragraphs[0].runs[0].text = ""
+                student_table.cell(2, 4).paragraphs[0].runs[0].text = ""
+            else:
+                student_table.cell(2, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
+                student_table.cell(2, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
+                
+                
+            if user_panel_invitation.student_member_username_3 == "":
+                student_table.cell(3, 2).paragraphs[0].runs[0].text = ""
+                student_table.cell(3, 4).paragraphs[0].runs[0].text = ""
+    
+            else:
+                student_table.cell(3, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
+                student_table.cell(3, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
+                
+                
+            if  user_panel_invitation.student_member_username_4 == "":
+                student_table.cell(4, 2).paragraphs[0].runs[0].text = ""
+                student_table.cell(4, 4).paragraphs[0].runs[0].text = ""
+            else:
+                student_table.cell(4, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
+                student_table.cell(4, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
+                
+                
+            if  user_panel_invitation.student_member_username_5 == "":
+                student_table.cell(5, 2).paragraphs[0].runs[0].text = ""
+                student_table.cell(5, 4).paragraphs[0].runs[0].text = ""
+            else:
+                student_table.cell(5, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
+                student_table.cell(5, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
+                
             doc.paragraphs[1].runs[1].text = user_panel_invitation.form_date_submitted
             doc.paragraphs[2].runs[0].text = panel_list[i]
             doc.paragraphs[5].runs[1].text = panel_list[i]
@@ -1809,7 +1833,16 @@ def studentPanelInvitationBet3Form(request):
             doc.paragraphs[17].runs[3].text =  user_panel_invitation.defense_start_time
             doc.paragraphs[17].runs[5].text =  user_panel_invitation.defense_end_time
             doc.paragraphs[22].runs[0].text =  user_panel_invitation.dit_head_name
-            doc.paragraphs[25].runs[10].text = panel_date_response[i]
+
+            response_table.cell(0, 9).paragraphs[0].runs[0].text = panel_date_response[i]
+
+            if panel_response[i] == "accepted":
+                response_table.cell(0, 2).paragraphs[0].runs[0].text = '✓'
+                response_table.cell(0, 5).paragraphs[0].runs[0].text = ''
+
+            else:
+                response_table.cell(0, 2).paragraphs[0].runs[0].text = ''
+                response_table.cell(0, 5).paragraphs[0].runs[0].text = '✓'
 
             print(student_table.cell(1, 0).text)
             print(student_table.cell(2, 0).text)
@@ -1844,9 +1877,9 @@ def studentPanelInvitationBet3Form(request):
             print(doc.paragraphs[17].runs[3].text) # Defense Time Start
             print(doc.paragraphs[17].runs[5].text) # Defense Time End
             print(doc.paragraphs[22].runs[0].text) # DIT Head Name
-            print(doc.paragraphs[25].runs[10].text) # Panel Date Response
+            print(response_table.cell(0, 9).text) # Panel Date Response
 
-            img = qrcode.make('some data to insert')
+            img = qrcode.make('DIT Head: ' + user_panel_invitation.dit_head_name + '\n DIT Head Date Response: ' + user_panel_invitation.dit_head_response_date + "\n Panel Member Name: " + panel_list[i] + "\n Panel Member Date Response: " + panel_date_response[i] + "\n Form Date Submitted: " + user_panel_invitation.form_date_submitted)
             type(img) 
             img.save(str(file_count) + '-' + current_user.username + '-PANEL-CONFORME-BET-3.png')
 
@@ -2009,10 +2042,6 @@ def studentPanelConformeBet3Create(request):
         # Get Panel Member 5 Name
         panel5_input = request.POST.get('panel5_input')
         print("Panel 5 =", panel5_input)
-
-        # Get Student Leader or Member 1 Name
-        student1_input = leader_member_name_2
-        print("Student 1 =", student1_input)
 
         # Get Student member 1 Username
         student1_username_input = current_user.username
@@ -4597,7 +4626,6 @@ def ditHeadPanelInvitationBet3Accept(request, id):
         print("NO FOUND")
         return redirect('dit-head-panel-invitation-bet-3')
 
-
 # DIT Head - Panel Conforme BET-3 Page
 @login_required(login_url='index')
 def ditHeadPanelConformeBet3(request):
@@ -4707,7 +4735,7 @@ def panelDashboard(request):
 
 # Panel - Profile Page
 @login_required(login_url='index')
-@user_passes_test(lambda u: u.is_department_head, login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
 def panelProfile(request):
     currently_loggedin_user = (request.user)
 
@@ -5114,6 +5142,8 @@ def panelPanelInvitationBet3Accept(request, id):
 
     return render(request, 'panel-panel-invitation-bet-3.html', context)
 
+
+
 # Panel - Panel Conforme BET-3 Page
 @login_required(login_url='index')
 def panelPanelConformeBet3(request):
@@ -5262,9 +5292,48 @@ def subjectTeacherResearchTitleDefenseDashboard(request):
     topbar_data = topbarProcess(request);
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
+
+    course_handled_list_unfiltered = []
+
+    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username = currently_loggedin_user.username)
+
+    for course in course_handled:
+        course_handled_list_unfiltered.append(course.course_major_abbr)
+
+    course_handled_list = list(dict.fromkeys(course_handled_list_unfiltered))
+    print(course_handled_list)
+    
+    if request.method == 'POST':
+        course_input = request.POST.get('course_input')
+        print(course_input)
+
+        try:
+            student_defense_scheduled = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, course = course_input)
+            student_defense_unscheduled = StudentLeader.objects.all().filter(bet3_subject_teacher_username = currently_loggedin_user.username, course_major_abbr = course_input, defense_status = "")
+            
+            print(student_defense_unscheduled)
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'course_handled_list': course_handled_list,
+
+                'student_defense_scheduled' : student_defense_scheduled,
+                'student_defense_unscheduled' : student_defense_unscheduled,
+                }
+
+            return render(request, 'subject-teacher-research-title-defense-dashboard.html', context)
+
+        except:
+            pass
     
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'course_handled_list': course_handled_list,
+        }
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+        'course_handled_list': course_handled_list,
         }
 
     return render(request, 'subject-teacher-research-title-defense-dashboard.html', context)
@@ -5314,7 +5383,7 @@ def subjectTeacherSetResearchTitleDefenseSchedule(request):
 
     return render(request, 'subject-teacher-set-research-title-defense.html', context)
 
-# Subject Teacher - Save Research Title Defense Schedule
+# Subject Teacher - Save Research Title Defense Schedule Process
 @login_required(login_url='index')
 @user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
 def subjectTeacherSaveResearchTitleDefenseSchedule(request):
@@ -5417,7 +5486,7 @@ def subjectTeacherSaveResearchTitleDefenseSchedule(request):
 
     return render(request, 'subject-teacher-set-research-title-defense.html', context)
 
-# Subject Teacher - Delete Research Title Defense Schedule
+# Subject Teacher - Delete Research Title Defense Schedule Process
 @login_required(login_url='index')
 @user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
 def subjectTeacherDeleteResearchTitleDefenseSchedule(request, id):

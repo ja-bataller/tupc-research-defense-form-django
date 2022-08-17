@@ -16,6 +16,7 @@
 
   <body id="page-top">
     <div id="wrapper">
+      
       {% include 'student-form-sidebar.html' %}
 
       <div id="content-wrapper" class="d-flex flex-column">
@@ -257,6 +258,20 @@
           <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
+        <!-- Button trigger modal -->
+
+        <!-- Modal -->
+        <!-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              
+              <div class="modal-body">
+                <h6 class="h4 mb-0 text-gray-800 mb-3 text-center">DOWNLOADING... \n Please wait...</h6>
+              </div>
+              
+            </div>
+          </div>
+        </div> -->
 
         <!-- Footer -->
         {% include 'footer.html' %}
@@ -351,12 +366,16 @@
     <script>
       Swal.fire("{{existing_research_title.research_title}}", "The Research Title you entered already exist.", "warning");
     </script>
-    {% endif %}
-
-    {% if response == 'sweet downloaded' %}
+    {% endif %} {% if response == 'sweet downloaded' %}
     <script>
       Swal.fire("Downloaded", "The PDF File has been downloaded successfully..", "success");
     </script>
     {% endif %}
+
+    <!-- <script>
+      $(document).ready(function () {
+        $("#staticBackdrop").modal("show");
+      });
+    </script> -->
   </body>
 </html>

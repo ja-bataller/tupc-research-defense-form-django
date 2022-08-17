@@ -266,7 +266,7 @@
                       <h6 class="h6 mb-0 text-gray-800 mt-5 mb-2">Date & Time of Defense:</h6>
                       <div class="form-group mb-5">
                         <select class="custom-select" name="defense_schedule_input" required>
-                          <option selected>What is your preferred date for Defense?</option>
+                          <option value="0" selected>What is your preferred date for Defense?</option>
                           {% for date in defense_dates %}
                           <option value="{{date.id}}">{{date.date}} -  {{date.start_time}} to {{date.end_time}}</option>
                           {% endfor %}

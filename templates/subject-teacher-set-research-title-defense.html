@@ -15,8 +15,10 @@
   </head>
 
   <body id="page-top">
+
     <!-- Page Wrapper -->
     <div id="wrapper">
+
       <!-- Sidebar -->
       <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
         <!-- Sidebar - Brand -->
@@ -47,7 +49,7 @@
           <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <a class="collapse-item" href="{% url 'subject-teacher-research-title-defense-dashboard' %}">Schedule Dashboard</a>
-              <a class="collapse-item" href="">Set Schedule</a>
+              <a class="collapse-item" href="{% url 'subject-teacher-set-research-title-defense-schedule' %}">Set Schedule</a>
             </div>
           </div>
         </li>
@@ -64,7 +66,7 @@
 
         <!-- Nav Item - The Developers -->
         <li class="nav-item">
-          <a class="nav-link" href="the-devs.html">
+          <a class="nav-link" href="#">
             <i class="fa-solid fa-code"></i>
             <span>The Devs</span></a
           >
@@ -82,8 +84,10 @@
 
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
+
         <!-- Main Content -->
         <div id="content">
+
           <!-- Topbar -->
           <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
             <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
@@ -104,7 +108,7 @@
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="{% url 'panel-profile' %}">
+                  <a class="dropdown-item" href="#">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                   </a>
@@ -174,8 +178,14 @@
                         <td>{{course_schedule.id}}</td>
                         <td>{{course_schedule.course}}</td>
                         <td>{{course_schedule.date}} - {{course_schedule.start_time}} to {{course_schedule.end_time}}</td>
-                        <td>{{course_schedule.status}}</td>
+                        {% if course_schedule.status == "Available" %}
+                        <td class="text-success">{{course_schedule.status}}</td>
                         <td class="text-center"><a type="button" class="btn btn-outline-danger"  href="{% url 'subject-teacher-delete-research-title-defense-schedule' course_schedule.id %}"><i class="fa-solid fa-trash-can"></i></a></td>
+                        {% else %}
+                        <td class="text-danger">{{course_schedule.status}}</td>
+                        <td class="text-center"></td>
+                        {% endif %}
+                        
                       </tr>
                       {% endfor %}
                     </tbody>
