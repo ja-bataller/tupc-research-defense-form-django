@@ -25,221 +25,219 @@
 
           <div class="container-fluid">
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              {% if user_panel_invitation.form_status == 'Incomplete' %}
+              <h1 class="h3 mb-0 text-gray-800">Panel Invitation (BET-3) - <span class="text-danger">Incomplete</span></h1>
+              {% elif user_panel_invitation.form_status == 'Complete'%}
+              <h1 class="h3 mb-0 text-gray-800">Panel Invitation (BET-3) - <span class="text-success">Complete</span></h1>
+              {% else %}
               <h1 class="h3 mb-0 text-gray-800">Panel Invitation (BET-3)</h1>
+              {% endif %}
               <!-- <div class="float-right">
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-file-pdf"></i> Download
                                 Form</button>
                         </div> -->
             </div>
 
-            <form method="POST">
-              {% csrf_token %}
+            <div class="card border-left-info shadow h-100 py-2 mb-3">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <h6 class="h4 mb-0 text-gray-800 mb-4">Group Members:</h6>
 
-              <div class="card border-left-info shadow h-100 py-2 mb-3">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <h6 class="h4 mb-0 text-gray-800 mb-4">Group Members:</h6>
+                    <div class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - TUPC ID No. :</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.student_member_username_1}}" disabled />
+                    </div>
 
+                    <div class="form-group mb-5">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Name:</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.student_member_name_1}}" disabled />
+                    </div>
+
+                    {% if user_panel_invitation.student_member_username_2 != "" %}
+                    <div class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - TUPC ID No. :</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.student_member_username_2}}" disabled />
+                    </div>
+
+                    <div class="form-group mb-5">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - Name:</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.student_member_name_2}}" disabled />
+                    </div>
+                    {% endif %} {% if user_panel_invitation.student_member_username_3 != "" %}
+                    <div class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - TUPC ID No. :</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.student_member_username_3}}" disabled />
+                    </div>
+
+                    <div class="form-group mb-5">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - Name:</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.student_member_name_3}}" disabled />
+                    </div>
+                    {% endif %} {% if user_panel_invitation.student_member_username_4 != "" %}
+                    <div class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - TUPC ID No. :</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.student_member_username_4}}" disabled />
+                    </div>
+
+                    <div class="form-group mb-5">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - Name:</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.student_member_name_4}}" disabled />
+                    </div>
+                    {% endif %} {% if user_panel_invitation.student_member_username_5 != "" %}
+                    <div class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - TUPC ID No. :</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.student_member_username_5}}" disabled />
+                    </div>
+
+                    <div class="form-group mb-5">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - Name:</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.student_member_name_5}}" disabled />
+                    </div>
+                    {% endif %}
+
+                    <div id="research_title_1" class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Course</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.course}}" disabled />
+                    </div>
+
+                    <div id="research_title_1" class="form-group mb-5">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Major</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.major}}" disabled />
+                    </div>
+
+                    <h6 class="h4 mb-0 text-gray-800 mb-2">Research Title:</h6>
+
+                    <div id="research_title_1" class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #1</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.research_title_1}}" disabled />
+                    </div>
+
+                    {% if user_panel_invitation.research_title_2 != "" %}
+                    <div id="research_title_1" class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #2</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.research_title_2}}" disabled />
+                    </div>
+                    {% endif %} {% if user_panel_invitation.research_title_3 != "" %}
+                    <div id="research_title_1" class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #3</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.research_title_3}}" disabled />
+                    </div>
+                    {% endif %} {% if user_panel_invitation.research_title_4 != "" %}
+                    <div id="research_title_1" class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #4</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.research_title_4}}" disabled />
+                    </div>
+                    {% endif %} {% if user_panel_invitation.research_title_5 != "" %}
+                    <div id="research_title_1" class="form-group mb-5">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #5</h6>
+                      <input type="text" class="form-control" value="{{user_panel_invitation.research_title_5}}" disabled />
+                    </div>
+                    {% endif %}
+
+                    <h6 class="h6 mb-0 text-gray-800 mt-5 mb-2">Date & Time of Defense:</h6>
+                    <div id="research_title_1" class="form-group mb-4">
+                      <input type="text" class="form-control" value="{{user_panel_invitation.defense_date}} - {{user_panel_invitation.defense_start_time}} to {{user_panel_invitation.defense_end_time}}" disabled />
+                    </div>
+
+                    <!-- Department Head Start -->
+                    <h6 class="h6 mb-0 text-gray-800 mb-2">Department of Industrial Technology - Head:</h6>
+                    <div class="form-group mb-5">
+                      <input type="text" class="form-control" value="{{user_panel_invitation.dit_head_name}}" disabled />
+                    </div>
+                    <!-- Department Head End -->
+
+                    <!-- Panel Members Start -->
+                    {% if user_panel_invitation.form_status == 'Incomplete' %}
+                    <h6 class="h4 mb-0 text-gray-800 mb-3">Panel Members - <span class="text-danger">Incomplete</span>:</h6>
+                    {% else %}
+                    <h6 class="h4 mb-0 text-gray-800 mb-3">Panel Members:</h6>
+                    {% endif %} {% if user_panel_invitation.panel_member_name_1 != "" %}
+                    <div id="research_title_1" class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
+                      <div class="row">
+                        <div id="panel_1_name" class="col-sm-12 mb-2">
+                          <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_1}}" disabled />
+                        </div>
+                        <div id="panel_1_download" class="col-sm-12 col-md-6" style="display: None">
+                          <a href="{{panel_1_download}}" class="btn btn-outline-success w-100">Download</a>
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %} {% if user_panel_invitation.panel_member_name_2 != "" %}
+                    <div id="research_title_1" class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
+                      <div class="row">
+                        <div id="panel_2_name" class="col-sm-12 mb-2">
+                          <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_2}}" disabled />
+                        </div>
+                        <div id="panel_2_download" class="col-sm-12 col-md-6" style="display: None">
+                          <a href="{{panel_2_download}}" class="btn btn-outline-success w-100">Download</a>
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %} {% if user_panel_invitation.panel_member_name_3 != "" %}
+                    <div id="research_title_1" class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
+                      <div class="row">
+                        <div id="panel_3_name" class="col-sm-12 mb-2">
+                          <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_3}}" disabled />
+                        </div>
+                        <div id="panel_3_download" class="col-sm-12 col-md-6" style="display: None">
+                          <a href="{{panel_3_download}}" class="btn btn-outline-success w-100">Download</a>
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %} {% if user_panel_invitation.panel_member_name_4 != "" %}
+                    <div id="research_title_1" class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
+                      <div class="row">
+                        <div id="panel_4_name" class="col-sm-12 mb-2">
+                          <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_4}}" disabled />
+                        </div>
+                        <div id="panel_4_download" class="col-sm-12 col-md-6" style="display: None">
+                          <a href="{{panel_4_download}}" class="btn btn-outline-success w-100">Download</a>
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %} {% if user_panel_invitation.panel_member_name_5 != "" %}
+                    <div id="research_title_1" class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
+                      <div class="row">
+                        <div id="panel_5_name" class="col-sm-12 mb-2">
+                          <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_5}}" disabled />
+                        </div>
+                        <div id="panel_5_download" class="col-sm-12 col-md-6" style="display: None">
+                          <a href="{{panel_5_download}}" class="btn btn-outline-success w-100">Download</a>
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %} 
+                    
+                    {% if user_panel_invitation.form_status == 'Complete' %}
+                    <form method="POST">
+                      {% csrf_token %}
+                      <button type="submit" id="generate_form_button" class="btn btn-outline-success w-100">GENERATE FORM</button>
+                    </form>
+                    {% endif %} 
+                    
+                    {% if user_panel_invitation.form_status == 'Incomplete' %}
+                    <form method="POST" action="{% url 'student-panel-invitation-bet3-add-panel' %}">
+                      {% csrf_token %}
+                      <h6 class="h4 mb-0 text-gray-800 mb-3">Choose Panel Members:</h6>
+                      {% if user_panel_invitation.panel_member_name_1 == "" %}
                       <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - TUPC ID No. :</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.student_member_username_1}}" disabled />
-                      </div>
-
-                      <div class="form-group mb-5">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Name:</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.student_member_name_1}}" disabled />
-                      </div>
-
-                      <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - TUPC ID No. :</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.student_member_username_2}}" disabled />
-                      </div>
-
-                      <div class="form-group mb-5">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - Name:</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.student_member_name_2}}" disabled />
-                      </div>
-
-                      <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - TUPC ID No. :</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.student_member_username_3}}" disabled />
-                      </div>
-
-                      <div class="form-group mb-5">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - Name:</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.student_member_name_3}}" disabled />
-                      </div>
-
-                      <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - TUPC ID No. :</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.student_member_username_4}}" disabled />
-                      </div>
-
-                      <div class="form-group mb-5">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - Name:</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.student_member_name_4}}" disabled />
-                      </div>
-
-                      <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - TUPC ID No. :</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.student_member_username_5}}" disabled />
-                      </div>
-
-                      <div class="form-group mb-5">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - Name:</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.student_member_name_5}}" disabled />
-                      </div>
-
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Course</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.course}}" disabled />
-                      </div>
-
-                      <div id="research_title_1" class="form-group mb-5">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Major</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.major}}" disabled />
-                      </div>
-
-                      <h6 class="h4 mb-0 text-gray-800 mb-2">Research Title:</h6>
-
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #1</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.research_title_1}}" disabled />
-                      </div>
-
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #2</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.research_title_2}}" disabled />
-                      </div>
-
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #3</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.research_title_3}}" disabled />
-                      </div>
-
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #4</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.research_title_4}}" disabled />
-                      </div>
-
-                      <div id="research_title_1" class="form-group mb-5">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #5</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.research_title_5}}" disabled />
-                      </div>
-
-                      <h6 class="h6 mb-0 text-gray-800 mt-5 mb-2">Date & Time of Defense:</h6>
-                      <div id="research_title_1" class="form-group mb-4">
-                        <input type="text" class="form-control" value="{{user_panel_invitation.defense_date}} - {{user_panel_invitation.defense_start_time}} to {{user_panel_invitation.defense_end_time}}" disabled />
-                      </div>
-
-                      <!-- Department Head Start -->
-                      <h6 class="h6 mb-0 text-gray-800 mb-2">Department of Industrial Technology - Head:</h6>
-                      <div class="form-group mb-5">
-                        <input type="text" class="form-control" value="{{user_panel_invitation.dit_head_name}}" disabled />
-                      </div>
-                      <!-- Department Head End -->
-
-                      <!-- Panel Members Start -->
-                      <h6 class="h4 mb-0 text-gray-800 mb-3">Panel Members:</h6>
-
-                      {% if user_panel_invitation.panel_member_name_1 != "" %}
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
-                        <div class="row">
-                          <div id="panel_1_name" class="col-sm-12 mb-2">
-                            <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_1}}" disabled />
-                          </div>
-                          <div id="panel_1_download" class="col-sm-12 col-md-6" style="display: None">
-                            <a href="{{panel_1_download}}" class="btn btn-outline-success w-100">Download</a>
-                          </div>
-                        </div>
-                      </div>
-                      {% endif %}
-                      
-                      {% if user_panel_invitation.panel_member_name_2 != "" %}
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
-                        <div class="row">
-                          <div id="panel_2_name" class="col-sm-12 mb-2">
-                            <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_2}}" disabled />
-                          </div>
-                          <div id="panel_2_download" class="col-sm-12 col-md-6" style="display: None">
-                            <a href="{{panel_2_download}}" class="btn btn-outline-success w-100">Download</a>
-                          </div>
-                        </div>
-                      </div>
-                      {% endif %}
-                      
-                      {% if user_panel_invitation.panel_member_name_3 != "" %}
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
-                        <div class="row">
-                          <div id="panel_3_name" class="col-sm-12 mb-2">
-                            <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_3}}" disabled />
-                          </div>
-                          <div id="panel_3_download" class="col-sm-12 col-md-6" style="display: None">
-                            <a href="{{panel_3_download}}" class="btn btn-outline-success w-100">Download</a>
-                          </div>
-                        </div>
-                      </div>
-                      {% endif %}
-                      
-                      {% if user_panel_invitation.panel_member_name_4 != "" %}
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
-                        <div class="row">
-                          <div id="panel_4_name" class="col-sm-12 mb-2">
-                            <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_4}}" disabled />
-                          </div>
-                          <div id="panel_4_download" class="col-sm-12 col-md-6" style="display: None">
-                            <a href="{{panel_4_download}}" class="btn btn-outline-success w-100">Download</a>
-                          </div>
-                        </div>
-                      </div>
-                      {% endif %}
-                      
-                      {% if user_panel_invitation.panel_member_name_5 != "" %}
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
-                        <div class="row">
-                          <div id="panel_5_name" class="col-sm-12 mb-2">
-                            <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_5}}" disabled />
-                          </div>
-                          <div id="panel_5_download" class="col-sm-12 col-md-6" style="display: None">
-                            <a href="{{panel_5_download}}" class="btn btn-outline-success w-100">Download</a>
-                          </div>
-                        </div>
-                      </div>
-                      {% endif %}
-
-                      {% if user_panel_invitation.form_status == 'Complete' %}
-                      <form method="POST">
-                        {% csrf_token %}
-                        <button type="submit" id="generate_form_button" class="btn btn-outline-success w-100">GENERATE FORM</button>
-                      </form>
-                      {% endif %}
-
-                      <!-- <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">1</span>
-                        </div>
                         <select class="custom-select" name="panel1_input" required>
                           <option selected>Choose panel member here...</option>
-                          {% for panel in panel_members %} 
-                          {% if panel.middle_name == "" %}
+                          {% for panel in panel_members %} {% if panel.middle_name == "" %}
                           <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
                           {% else %}
                           <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
-                          {% endif %} 
-                          {% endfor %}
+                          {% endif %} {% endfor %}
                         </select>
                       </div>
-
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">2</span>
-                        </div>
+                      {% endif %} {% if user_panel_invitation.panel_member_name_2 == "" %}
+                      <div class="form-group mb-3">
                         <select class="custom-select" name="panel2_input" required>
                           <option selected>Choose panel member here...</option>
                           {% for panel in panel_members %} {% if panel.middle_name == "" %}
@@ -249,11 +247,8 @@
                           {% endif %} {% endfor %}
                         </select>
                       </div>
-
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">3</span>
-                        </div>
+                      {% endif %} {% if user_panel_invitation.panel_member_name_3 == "" %}
+                      <div class="form-group mb-3">
                         <select class="custom-select" name="panel3_input" required>
                           <option selected>Choose panel member here...</option>
                           {% for panel in panel_members %} {% if panel.middle_name == "" %}
@@ -263,11 +258,8 @@
                           {% endif %} {% endfor %}
                         </select>
                       </div>
-
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">4</span>
-                        </div>
+                      {% endif %} {% if user_panel_invitation.panel_member_name_4 == "" %}
+                      <div class="form-group mb-3">
                         <select class="custom-select" name="panel4_input" required>
                           <option selected>Choose panel member here...</option>
                           {% for panel in panel_members %} {% if panel.middle_name == "" %}
@@ -277,11 +269,8 @@
                           {% endif %} {% endfor %}
                         </select>
                       </div>
-
-                      <div class="input-group mb-4">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">5</span>
-                        </div>
+                      {% endif %} {% if user_panel_invitation.panel_member_name_5 == "" %}
+                      <div class="form-group mb-4">
                         <select class="custom-select" name="panel5_input" required>
                           <option selected>Choose panel member here...</option>
                           {% for panel in panel_members %} {% if panel.middle_name == "" %}
@@ -290,14 +279,17 @@
                           <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
                           {% endif %} {% endfor %}
                         </select>
-                      </div> -->
+                      </div>
+                      {% endif %}
+
                       <!-- Panel Members End -->
-                      <!-- <button type="submit" class="btn btn-outline-success w-100">Submit</button> -->
-                    </div>
+                      <button type="submit" class="btn btn-outline-success w-100">Submit</button>
+                    </form>
+                    {% endif %}
                   </div>
                 </div>
               </div>
-            </form>
+            </div>
           </div>
           <!-- /.container-fluid -->
         </div>
@@ -400,13 +392,16 @@
         window.location.replace("{% url 'student-dashboard' %}");
       }, 3000);
     </script>
-    {% endif %} {% if response == 'sweet no defense schedule' %}
+    {% endif %} 
+    
+    {% if response == 'sweet no defense schedule' %}
     <script>
       Swal.fire("Uh-oh", "Can't fill up at the moment. There is no Defense Schedule available. Please try again later.", "warning");
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
       }, 3000);
     </script>
+
     {% endif %} {% if response == 'sweet same username' %}
     <script>
       Swal.fire("Invalid", "You entered the same Username with the other Group Members.", "error");
@@ -426,10 +421,27 @@
     {% endif %} {% if response == 'sweet same panel' %}
     <script>
       Swal.fire("Invalid", "You entered the same Panel Member with the other input field.", "error");
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3-form' %}");
+      }, 1500);
     </script>
-    {% endif %} {% if response == 'sweet invalid panel' %}
+    {% endif %} 
+
+    {% if response == 'sweet already a panel' %}
+    <script>
+      Swal.fire("Invalid", "The Panel Member you entered is already recorded.", "error");
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3-form' %}");
+      }, 1500);
+    </script>
+    {% endif %}
+    
+    {% if response == 'sweet invalid panel' %}
     <script>
       Swal.fire("Invalid", "You entered a Panel Member that is not in the list. Please one from the choices given.", "error");
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3-form' %}");
+      }, 1500);
     </script>
     {% endif %} {% if response == 'sweet group member exist' %}
     <script>
@@ -439,7 +451,19 @@
     <script>
       Swal.fire("{{existing_research_title.research_title}}", "The Research Title you entered already exist.", "warning");
     </script>
-    {% endif %} {% if response == 'sweet downloaded' %}
+    {% endif %} 
+    
+    {% if response == 'sweet added new panel' %}
+    <script>
+      Swal.fire("Submitted", "Panel Invitation BET-3 submitted.", "success");
+      setTimeout(function () {
+        window.location.replace("{% url 'student-dashboard' %}");
+      }, 2000);
+    </script>
+    {% endif %} 
+    
+    
+    {% if response == 'sweet downloaded' %}
     <script>
       Swal.fire("Success", "The Panel Invitation Form has been generated successfully. You can now download the file.", "success");
 
@@ -459,23 +483,34 @@
 
       generate_form_button.setAttribute("type", "button");
       generate_form_button.style.display = "none";
+    </script>
 
+    {% if user_panel_invitation.panel_member_name_1 != "" %}
+    <script>
       panel_1_name.classList.add("col-md-6");
       panel_1_download.style.display = "block";
-
+    </script>
+    {% endif %} {% if user_panel_invitation.panel_member_name_2 != "" %}
+    <script>
       panel_2_name.classList.add("col-md-6");
       panel_2_download.style.display = "block";
-
+    </script>
+    {% endif %} {% if user_panel_invitation.panel_member_name_3 != "" %}
+    <script>
       panel_3_name.classList.add("col-md-6");
       panel_3_download.style.display = "block";
-
+    </script>
+    {% endif %} {% if user_panel_invitation.panel_member_name_4 != "" %}
+    <script>
       panel_4_name.classList.add("col-md-6");
       panel_4_download.style.display = "block";
-
+    </script>
+    {% endif %} {% if user_panel_invitation.panel_member_name_5 != "" %}
+    <script>
       panel_5_name.classList.add("col-md-6");
       panel_5_download.style.display = "block";
     </script>
-    {% endif %}
+    {% endif %} {% endif %}
 
     <script>
       generate_form_button.addEventListener("click", function () {

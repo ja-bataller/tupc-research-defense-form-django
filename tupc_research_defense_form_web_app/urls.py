@@ -15,6 +15,7 @@ urlpatterns = [
    path('student-panel-invitation-bet3/', views.studentPanelInvitationBet3, name ="student-panel-invitation-bet3"), 
    path('student-panel-invitation-bet3-create/', views.studentPanelInvitationBet3Create, name ="student-panel-invitation-bet3-create"),
    path('student-panel-invitation-bet3-form/', views.studentPanelInvitationBet3Form, name ="student-panel-invitation-bet3-form"),
+   path('student-panel-invitation-bet3-add-panel/', views.studentPanelInvitationBet3AddPanel, name ="student-panel-invitation-bet3-add-panel"),
 
    path('student-panel-conforme-bet3/', views.studentPanelConformeBet3, name ="student-panel-conforme-bet3"), 
    path('student-panel-conforme-bet3-create/', views.studentPanelConformeBet3Create, name ="student-panel-conforme-bet3-create"),

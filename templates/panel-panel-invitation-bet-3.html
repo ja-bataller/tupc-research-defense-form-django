@@ -409,7 +409,7 @@
         let data_id_3 = accept_btn_3.getAttribute('data-id');
 
         document.getElementById("decline_form").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id_3);
-        $("#adeclineFormModal").modal()
+        $("#declineFormModal").modal()
       });
     }
 
