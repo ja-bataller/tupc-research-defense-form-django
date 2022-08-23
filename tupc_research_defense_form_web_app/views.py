@@ -1325,11 +1325,11 @@ def studentPanelInvitationBet3Create(request):
         ############## STUDENT DATA ##############
         student_leader_data = StudentLeader.objects.get(username = current_user.username)
 
-        student_full_name_1 = None
-        student_full_name_2 = None
-        student_full_name_3 = None
-        student_full_name_4 = None
-        student_full_name_5 = None
+        student_full_name_1 = ""
+        student_full_name_2 = ""
+        student_full_name_3 = ""
+        student_full_name_4 = ""
+        student_full_name_5 = ""
 
         course_short = student_leader_data.course.replace("Engineering", "Eng.")
 
@@ -1338,25 +1338,29 @@ def studentPanelInvitationBet3Create(request):
         else:
             student_full_name_1 =  current_user.last_name + " " + current_user.suffix + ', ' + current_user.first_name + " " +  current_user.middle_name[0] + "." 
 
-        if student_middle_name_2 == "":
-            student_full_name_2 = student_last_name_2 + " " + student_suffix_2 + ', ' + student_first_name_2 + " "
-        else:
-            student_full_name_2 = student_last_name_2 + " " +  student_suffix_2 + ", " +  student_first_name_2 + " " + student_middle_name_2[0] + "."
+        if student_username_2 != "":
+            if student_middle_name_2 == "":
+                student_full_name_2 = student_last_name_2 + " " + student_suffix_2 + ', ' + student_first_name_2 + " "
+            else:
+                student_full_name_2 = student_last_name_2 + " " +  student_suffix_2 + ", " +  student_first_name_2 + " " + student_middle_name_2[0] + "."
 
-        if student_middle_name_3 == "":
-            student_full_name_3 = student_last_name_3 + " " + student_suffix_3 + ', ' + student_first_name_3 + " "
-        else:
-            student_full_name_3 = student_last_name_3 + " " +  student_suffix_3 + ", " +  student_first_name_3 + " " + student_middle_name_3[0] + "."
+        if student_username_3 != "":
+            if student_middle_name_3 == "":
+                student_full_name_3 = student_last_name_3 + " " + student_suffix_3 + ', ' + student_first_name_3 + " "
+            else:
+                student_full_name_3 = student_last_name_3 + " " +  student_suffix_3 + ", " +  student_first_name_3 + " " + student_middle_name_3[0] + "."
         
-        if student_middle_name_4 == "":
-            student_full_name_4 = student_last_name_4 + " " + student_suffix_4 + ', ' + student_first_name_4 + " "
-        else:
-            student_full_name_4 = student_last_name_4 + " " +  student_suffix_4 + ", " +  student_first_name_4 + " " + student_middle_name_4[0] + "."
+        if student_username_4 != "":
+            if student_middle_name_4 == "":
+                student_full_name_4 = student_last_name_4 + " " + student_suffix_4 + ', ' + student_first_name_4 + " "
+            else:
+                student_full_name_4 = student_last_name_4 + " " +  student_suffix_4 + ", " +  student_first_name_4 + " " + student_middle_name_4[0] + "."
 
-        if student_middle_name_5 == "":
-            student_full_name_5 = student_last_name_5 + " " + student_suffix_5 + ', ' + student_first_name_5 + " "
-        else:
-            student_full_name_5 = student_last_name_5 + " " +  student_suffix_5 + ", " +  student_first_name_5 + " " + student_middle_name_5[0] + "."
+        if student_username_5 != "":
+            if student_middle_name_5 == "":
+                student_full_name_5 = student_last_name_5 + " " + student_suffix_5 + ', ' + student_first_name_5 + " "
+            else:
+                student_full_name_5 = student_last_name_5 + " " +  student_suffix_5 + ", " +  student_first_name_5 + " " + student_middle_name_5[0] + "."
         ############## STUDENT DATA ##############
 
         ############## DEFENSE SCHEDULE DATA ##############

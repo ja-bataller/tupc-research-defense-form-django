@@ -73,5 +73,15 @@
 
     {% include 'alert-validation.html' %}
 
+    <script>
+      let login_btn = document.querySelector("#login_btn");
+      let login_spinner = document.querySelector("#login_spinner");
+
+      function loginBtnSpinner() {
+        login_btn.style.display = "none";
+        login_spinner.style.display = "block";
+      }
+    </script>
+
   </body>
 </html>
