@@ -93,7 +93,7 @@ class StudentGroupMember(models.Model):
 ####################################################################################################################
 
 # Panel Invitation - BET-3
-class PanelInvitation(models.Model):
+class PanelInvitationBET3(models.Model):
     student_leader_username = models.CharField(max_length=256)
 
     dit_head_name = models.CharField(max_length=256)
@@ -155,11 +155,60 @@ class PanelInvitation(models.Model):
     defense_start_time = models.CharField(max_length=256)
     defense_end_time = models.CharField(max_length=256)
 
+    accept_count = models.IntegerField(max_length=256)
+
     form_status = models.CharField(max_length=256)
+    form = models.CharField(max_length=256)
 
     def __str__(self) -> str:
         return self.student_leader_username
 
+class PanelInvitationBET3Declined(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+
+    dit_head_name = models.CharField(max_length=256)
+    dit_head_response = models.CharField(max_length=256)
+    dit_head_response_date = models.CharField(max_length=256)
+
+    panel_member_username = models.CharField(max_length=256)
+    panel_member_name = models.CharField(max_length=256)
+    panel_member_response = models.CharField(max_length=256)
+    panel_member_response_date = models.CharField(max_length=256)
+
+    student_member_username_1 = models.CharField(max_length=256)
+    student_member_name_1 = models.CharField(max_length=256)
+    
+    student_member_username_2 = models.CharField(max_length=256)
+    student_member_name_2 = models.CharField(max_length=256)
+
+    student_member_username_3 = models.CharField(max_length=256)
+    student_member_name_3 = models.CharField(max_length=256)
+
+    student_member_username_4 = models.CharField(max_length=256)
+    student_member_name_4 = models.CharField(max_length=256)
+
+    student_member_username_5 = models.CharField(max_length=256)
+    student_member_name_5 = models.CharField(max_length=256)
+
+    course = models.CharField(max_length=256)
+    major = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256)
+
+    research_title_1 = models.CharField(max_length=256)
+    research_title_2 = models.CharField(max_length=256)
+    research_title_3 = models.CharField(max_length=256)
+    research_title_4 = models.CharField(max_length=256)
+    research_title_5 = models.CharField(max_length=256)
+
+    form_date_submitted = models.CharField(max_length=256)
+    defense_date = models.CharField(max_length=256)
+    defense_start_time = models.CharField(max_length=256)
+    defense_end_time = models.CharField(max_length=256)
+
+    form = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
 ####################################################################################################################
 
 # Panel Conforme - BET-3

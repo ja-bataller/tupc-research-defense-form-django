@@ -2,285 +2,465 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
 
-    <title>Panel - Panel Invitation BET-3</title>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
 
-    {% include 'css-main-cdn.html' %}
-  </head>
+  <title>Panel - Panel Invitation BET-3</title>
 
-  <body id="page-top">
-    <!-- Page Wrapper -->
-    <div id="wrapper">
+  {% include 'css-main-cdn.html' %}
+</head>
 
-      <!-- Sidebar -->
-      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-        <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'panel-dashboard' %}">
-          <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'panel-dashboard' %}">
+        <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0" />
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'panel-dashboard' %}">
+          <i class="fa-solid fa-house"></i>
+          <span>Home</span></a>
+      </li>
+
+      <!-- Divider -->
+      <!-- <hr class="sidebar-divider"> -->
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item active">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+          aria-controls="collapsePages">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Forms</span>
         </a>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
-
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'panel-dashboard' %}">
-            <i class="fa-solid fa-house"></i>
-            <span>Home</span></a
-          >
-        </li>
-
-        <!-- Divider -->
-        <!-- <hr class="sidebar-divider"> -->
-
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item active">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fa-solid fa-folder-open"></i>
-            <span>Forms</span>
-          </a>
-          <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">BET-3</h6>
-              <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
-              <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
-              <!-- <a class="collapse-item" href="">Research Title Defense</a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">BET-3</h6>
+            <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
+            <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
+            <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
-              <div class="collapse-divider"></div>
-              <h6 class="collapse-header">BET-5</h6>
-              <!-- <a class="collapse-item" href="#">New Form</a>
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">BET-5</h6>
+            <!-- <a class="collapse-item" href="#">New Form</a>
                         <a class="collapse-item" href="#">New Form</a>
                         <a class="collapse-item" href="#">New Form</a>
                         <a class="collapse-item" href="#">New Form</a> -->
-            </div>
           </div>
-        </li>
+        </div>
+      </li>
 
-        <!-- Nav Item - Tables -->
-        <!-- <li class="nav-item">
+      <!-- Nav Item - Tables -->
+      <!-- <li class="nav-item">
         <a class="nav-link" href="tables.html">
             <i class="fa-solid fa-clock-rotate-left"></i>
             <span>History</span></a>
     </li> -->
 
-        <!-- Divider -->
-        <hr class="sidebar-divider" />
+      <!-- Divider -->
+      <hr class="sidebar-divider" />
 
-        <!-- Nav Item - The Developers -->
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fa-solid fa-code"></i>
-            <span>The Devs</span></a
-          >
-        </li>
+      <!-- Nav Item - The Developers -->
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fa-solid fa-code"></i>
+          <span>The Devs</span></a>
+      </li>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block" />
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block" />
 
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-          <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
-      </ul>
-      <!-- End of Sidebar -->
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+    </ul>
+    <!-- End of Sidebar -->
 
-      <!-- Content Wrapper -->
-      <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+          <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
 
-          <!-- Topbar -->
-          <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-            <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
-            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-              <i class="fa fa-bars"></i>
-            </button>
-
-            <!-- Topbar Navbar -->
-            <ul class="navbar-nav ml-auto">
-              <!-- Nav Item - User Information -->
-              <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-                    >{{currently_loggedin_user_full_name}} <br />
-                    <div class="float-right">Panel</div>
-                  </span>
-                  <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
+                  <div class="float-right">Panel</div>
+                </span>
+                <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="{% url 'panel-profile' %}">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
                 </a>
-                <!-- Dropdown - User Information -->
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="{% url 'panel-profile' %}">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
-                  </a>
 
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logout
-                  </a>
-                </div>
-              </li>
-            </ul>
-          </nav>
-          <!-- End of Topbar -->
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <!-- End of Topbar -->
 
-          <!-- Begin Page Content -->
-          <div class="container-fluid">
-            <!-- Page Heading -->
-            <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-gray-800">Panel Invitation - BET-3</h1>
-            </div>
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-3">
+            <h1 class="h3 mb-0 text-gray-800">Panel Invitation - BET-3</h1>
+          </div>
 
-            <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-              <!-- <div class="card-header py-3">
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <!-- <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Pending Dashboard</h6>
                 </div> -->
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th>Panel</th>
-                        <th>Student ID No.</th>
-                        <th>Student Name</th>
-                        <th>Course</th>
-                        <th>Date & Time of Defense</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th>Panel</th>
-                        <th>Student ID No.</th>
-                        <th>Student Name</th>
-                        <th>Course</th>
-                        <th>Date & Time of Defense</th>
-                        <th>Action</th>
-                      </tr>
-                    </tfoot>
-                    <tbody>
-                      {% for panel_invitation in panel_invitation_bet3_check_1 %}
-                      <tr>
-                        <td>{{panel_invitation.panel_member_name_1}}</td>
-                        <td>{{panel_invitation.student_leader_username}}</td>
-                        <td>{{panel_invitation.student_member_name_1}}</td>
-                        <td>{{panel_invitation.course_major_abbr}}</td>
-                        <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to {{panel_invitation.defense_end_time}}</td>
-                        <td class="text-center">
-                          <a class="btn btn-outline-success mb-2" type="button" href="{% url 'panel-panel-invitation-bet-3-accept' panel_invitation.id %}">Accept</a>
-                          <a class="btn btn-outline-danger mb-2" type="button" href="#">Decline</a>
-                        </td>
-                      </tr>
-                      {% endfor %}
-
-                      {% for panel_invitation in panel_invitation_bet3_check_2 %}
-                      <tr>
-                        <td>{{panel_invitation.panel_member_name_2}}</td>
-                        <td>{{panel_invitation.student_leader_username}}</td>
-                        <td>{{panel_invitation.student_member_name_1}}</td>
-                        <td>{{panel_invitation.course_major_abbr}}</td>
-                        <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to {{panel_invitation.defense_end_time}}</td>
-                        <td class="text-center">
-                          <a class="btn btn-outline-success mb-2" type="button" href="{% url 'panel-panel-invitation-bet-3-accept' panel_invitation.id %}">Accept</a>
-                          <a class="btn btn-outline-danger mb-2" type="button" href="#">Decline</a>
-                        </td>
-                      </tr>
-                      {% endfor %}
-
-                      {% for panel_invitation in panel_invitation_bet3_check_3 %}
-                      <tr>
-                        <td>{{panel_invitation.panel_member_name_3}}</td>
-                        <td>{{panel_invitation.student_leader_username}}</td>
-                        <td>{{panel_invitation.student_member_name_1}}</td>
-                        <td>{{panel_invitation.course_major_abbr}}</td>
-                        <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to {{panel_invitation.defense_end_time}}</td>
-                        <td class="text-center">
-                          <a class="btn btn-outline-success mb-2" type="button" href="{% url 'panel-panel-invitation-bet-3-accept' panel_invitation.id %}">Accept</a>
-                          <a class="btn btn-outline-danger mb-2" type="button" href="#">Decline</a>
-                        </td>
-                      </tr>
-                      {% endfor %}
-
-                      {% for panel_invitation in panel_invitation_bet3_check_4 %}
-                      <tr>
-                        <td>{{panel_invitation.panel_member_name_4}}</td>
-                        <td>{{panel_invitation.student_leader_username}}</td>
-                        <td>{{panel_invitation.student_member_name_1}}</td>
-                        <td>{{panel_invitation.course_major_abbr}}</td>
-                        <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to {{panel_invitation.defense_end_time}}</td>
-                        <td class="text-center">
-                          <a class="btn btn-outline-success mb-2" type="button" href="{% url 'panel-panel-invitation-bet-3-accept' panel_invitation.id %}">Accept</a>
-                          <a class="btn btn-outline-danger mb-2" type="button" href="#">Decline</a>
-                        </td>
-                      </tr>
-                      {% endfor %}
-
-                      {% for panel_invitation in panel_invitation_bet3_check_5 %}
-                      <tr>
-                        <td>{{panel_invitation.panel_member_name_5}}</td>
-                        <td>{{panel_invitation.student_leader_username}}</td>
-                        <td>{{panel_invitation.student_member_name_1}}</td>
-                        <td>{{panel_invitation.course_major_abbr}}</td>
-                        <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to {{panel_invitation.defense_end_time}}</td>
-                        <td class="text-center">
-                          <a class="btn btn-outline-success mb-2" type="button" href="{% url 'panel-panel-invitation-bet-3-accept' panel_invitation.id %}">Accept</a>
-                          <a class="btn btn-outline-danger mb-2" type="button" href="#">Decline</a>
-                        </td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Panel</th>
+                      <th>Student ID No.</th>
+                      <th>Student Name</th>
+                      <th>Course</th>
+                      <th>Date & Time of Defense</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Panel</th>
+                      <th>Student ID No.</th>
+                      <th>Student Name</th>
+                      <th>Course</th>
+                      <th>Date & Time of Defense</th>
+                      <th>Action</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    {% for panel_invitation in panel_invitation_bet3_check_1 %}
+                    <tr>
+                      <td>{{panel_invitation.panel_member_name_1}}</td>
+                      <td>{{panel_invitation.student_leader_username}}</td>
+                      <td>{{panel_invitation.student_member_name_1}}</td>
+                      <td>{{panel_invitation.course_major_abbr}}</td>
+                      <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to
+                        {{panel_invitation.defense_end_time}}</td>
+                      <td class="text-center">
+                        <button id="accept_btn_1" type="button" class="btn btn-outline-success mb-2"
+                          data-id="{{panel_invitation.id}}">Accept</button>
+                        <button id="decline_btn_1" type="button" class="btn btn-outline-danger mb-2"
+                          data-id="{{panel_invitation.id}}">Decline</button>
+                      </td>
+                    </tr>
+                    {% endfor %} {% for panel_invitation in panel_invitation_bet3_check_2 %}
+                    <tr>
+                      <td>{{panel_invitation.panel_member_name_2}}</td>
+                      <td>{{panel_invitation.student_leader_username}}</td>
+                      <td>{{panel_invitation.student_member_name_1}}</td>
+                      <td>{{panel_invitation.course_major_abbr}}</td>
+                      <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to
+                        {{panel_invitation.defense_end_time}}</td>
+                      <td class="text-center">
+                        <button id="accept_btn_2" type="button" class="btn btn-outline-success mb-2"
+                          data-id="{{panel_invitation.id}}">Accept</button>
+                        <button id="decline_btn_2" type="button" class="btn btn-outline-danger mb-2"
+                          data-id="{{panel_invitation.id}}">Decline</button>
+                      </td>
+                    </tr>
+                    {% endfor %} {% for panel_invitation in panel_invitation_bet3_check_3 %}
+                    <tr>
+                      <td>{{panel_invitation.panel_member_name_3}}</td>
+                      <td>{{panel_invitation.student_leader_username}}</td>
+                      <td>{{panel_invitation.student_member_name_1}}</td>
+                      <td>{{panel_invitation.course_major_abbr}}</td>
+                      <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to
+                        {{panel_invitation.defense_end_time}}</td>
+                      <td class="text-center">
+                        <button id="accept_btn_3" type="button" class="btn btn-outline-success mb-2"
+                          data-id="{{panel_invitation.id}}">Accept</button>
+                        <button id="decline_btn_3" type="button" class="btn btn-outline-danger mb-2"
+                          data-id="{{panel_invitation.id}}">Decline</button>
+                      </td>
+                    </tr>
+                    {% endfor %} {% for panel_invitation in panel_invitation_bet3_check_4 %}
+                    <tr>
+                      <td>{{panel_invitation.panel_member_name_4}}</td>
+                      <td>{{panel_invitation.student_leader_username}}</td>
+                      <td>{{panel_invitation.student_member_name_1}}</td>
+                      <td>{{panel_invitation.course_major_abbr}}</td>
+                      <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to
+                        {{panel_invitation.defense_end_time}}</td>
+                      <td class="text-center">
+                        <button id="accept_btn_4" type="button" class="btn btn-outline-success mb-2"
+                          data-id="{{panel_invitation.id}}">Accept</button>
+                        <button id="decline_btn_4" type="button" class="btn btn-outline-danger mb-2"
+                          data-id="{{panel_invitation.id}}">Decline</button>
+                      </td>
+                    </tr>
+                    {% endfor %} {% for panel_invitation in panel_invitation_bet3_check_5 %}
+                    <tr>
+                      <td>{{panel_invitation.panel_member_name_5}}</td>
+                      <td>{{panel_invitation.student_leader_username}}</td>
+                      <td>{{panel_invitation.student_member_name_1}}</td>
+                      <td>{{panel_invitation.course_major_abbr}}</td>
+                      <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to
+                        {{panel_invitation.defense_end_time}}</td>
+                      <td class="text-center">
+                        <button id="accept_btn_5" type="button" class="btn btn-outline-success mb-2"
+                          data-id="{{panel_invitation.id}}">Accept</button>
+                        <button id="decline_btn_5" type="button" class="btn btn-outline-danger mb-2"
+                          data-id="{{panel_invitation.id}}">Decline</button>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
-          <!-- /.container-fluid -->
         </div>
-        <!-- End of Main Content -->
-
-        <!-- Footer -->
-        {% include 'footer.html' %}
-        <!-- End of Footer -->
+        <!-- /.container-fluid -->
       </div>
-      <!-- End of Content Wrapper -->
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
+
+      <!-- Accept Modal -->
+      <div class="modal fade" id="acceptFormModal" tabindex="-1" aria-labelledby="acceptFormModal" aria-hidden="true"
+        data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
+              </button>
+            </div>
+            <div class="modal-body">Are you sure you want to accept the Panel Invitation?</div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+              <a id="accept_form" class="btn btn-outline-success" type="button" href="#">Accept</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decline Modal -->
+      <div class="modal fade" id="declineFormModal" tabindex="-1" aria-labelledby="declineFormModal" aria-hidden="true"
+        data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Decline request?</h5>
+              </button>
+            </div>
+            <div class="modal-body">Are you sure you want to decline the Panel Invitation?</div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+              <a id="decline_form" class="btn btn-outline-danger" type="button" href="#">Decline</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fas fa-angle-up"></i>
-    </a>
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
-    {% include 'logout-modal.html' %} 
-    {% include 'script-cdn.html' %}
+  {% include 'logout-modal.html' %}
+  {% include 'script-cdn.html' %}
 
-    <!-- Sweetalert 2 CDN -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Sweetalert 2 CDN -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    {% if response == 'sweet panel invitation bet-3 accepted' %}
-    <script>
-      Swal.fire("Accepted", "The Panel Invitation request of {{accepted_student_member_username}} \n {{accepted_student_member_name}} is accepted.", "success");
+  {% if response == 'sweet panel invitation bet-3 accepted' %}
+  <script>
+    Swal.fire("Accepted", "The Panel Invitation request of {{accepted_student_member_username}} is accepted.", "success");
 
-      setTimeout(function () {
-        window.location.replace("{% url 'panel-panel-invitation-bet-3' %}");
-      }, 2000);
-    </script>
-    {% endif %} {% if response == 'sweet panel conforme bet-3 accepted' %}
-    <script>
-      Swal.fire("Accepted", "{{accepted_research_title}} is accepted.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-panel-invitation-bet-3' %}");
+    }, 2000);
+  </script>
+  {% endif %}
 
-      setTimeout(function () {
-        window.location.replace("{% url 'panel-panel-conforme-bet-3' %}");
-      }, 2000);
-    </script>
-    {% endif %}
-  </body>
+  {% if response == 'sweet panel invitation bet-3 declined' %}
+  <script>
+    Swal.fire("Declined", "The Panel Invitation request of {{accepted_student_member_username}} is declined.", "info");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-panel-invitation-bet-3' %}");
+    }, 2000);
+  </script>
+  {% endif %} 
+  
+  {% if response == 'sweet panel conforme bet-3 accepted' %}
+  <script>
+    Swal.fire("Accepted", "{{accepted_research_title}} is accepted.", "success");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-panel-conforme-bet-3' %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  
+
+  <script>
+    let accept_btn_1 = document.querySelector("#accept_btn_1");
+    let accept_btn_2 = document.querySelector("#accept_btn_2");
+    let accept_btn_3 = document.querySelector("#accept_btn_3");
+    let accept_btn_4 = document.querySelector("#accept_btn_4");
+    let accept_btn_5 = document.querySelector("#accept_btn_5");
+
+
+    let decline_btn_1 = document.querySelector("#decline_btn_1");
+    let decline_btn_2 = document.querySelector("#decline_btn_2");
+    let decline_btn_3 = document.querySelector("#decline_btn_3");
+    let decline_btn_4 = document.querySelector("#decline_btn_4");
+    let decline_btn_5 = document.querySelector("#decline_btn_5");;
+
+    let accept_form = document.querySelector("#accept_form");
+    let decline_form = document.querySelector("#decline_form");
+
+    try {
+      accept_btn_1.addEventListener("click", function () {
+        let data_id_1 = accept_btn_1.getAttribute('data-id');
+
+        document.getElementById("accept_form").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id_1);
+        $("#acceptFormModal").modal()
+      });
+
+      decline_btn_1.addEventListener("click", function () {
+        let data_id_1 = accept_btn_1.getAttribute('data-id');
+
+        document.getElementById("decline_form").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id_1);
+        $("#declineFormModal").modal()
+      });
+    }
+
+    catch {
+      //pass
+    }
+
+    try {
+      accept_btn_2.addEventListener("click", function () {
+        let data_id_2 = accept_btn_2.getAttribute('data-id');
+
+        document.getElementById("accept_form").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id_2);
+        $("#acceptFormModal").modal()
+      });
+
+      decline_btn_2.addEventListener("click", function () {
+        let data_id_2 = accept_btn_2.getAttribute('data-id');
+
+        document.getElementById("decline_form").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id_2);
+        $("#declineFormModal").modal()
+      });
+    }
+
+    catch {
+      //pass
+    }
+
+
+    try {
+      accept_btn_3.addEventListener("click", function () {
+        let data_id_3 = accept_btn_3.getAttribute('data-id');
+
+        document.getElementById("accept_form").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id_3);
+        $("#acceptFormModal").modal()
+      });
+
+      decline_btn_3.addEventListener("click", function () {
+        let data_id_3 = accept_btn_3.getAttribute('data-id');
+
+        document.getElementById("decline_form").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id_3);
+        $("#adeclineFormModal").modal()
+      });
+    }
+
+    catch {
+      //pass
+    }
+
+
+
+    try {
+      accept_btn_4.addEventListener("click", function () {
+        let data_id_4 = accept_btn_4.getAttribute('data-id');
+
+        document.getElementById("accept_form").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id_4);
+        $("#acceptFormModal").modal()
+      });
+
+      decline_btn_4.addEventListener("click", function () {
+        let data_id_4 = accept_btn_4.getAttribute('data-id');
+
+        document.getElementById("decline_form").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id_4);
+        $("#declineFormModal").modal()
+      });
+    }
+
+
+    catch {
+      //pass
+    }
+
+    try {
+      accept_btn_5.addEventListener("click", function () {
+        let data_id_5 = accept_btn_5.getAttribute('data-id');
+
+        document.getElementById("accept_form").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id_5);
+        $("#acceptFormModal").modal()
+      });
+
+      decline_btn_5.addEventListener("click", function () {
+        let data_id_5 = accept_btn_5.getAttribute('data-id');
+
+        document.getElementById("decline_form").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id_5);
+        $("#declineFormModal").modal()
+      });
+    }
+
+    catch {
+      //pass
+    }
+
+  </script>
+</body>
+
 </html>

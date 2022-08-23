@@ -173,8 +173,10 @@
                         <td>{{panel_invitation.course_major_abbr}}</td>
                         <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to {{panel_invitation.defense_end_time}}</td>
                         <td class="text-center">
-                          <a class="btn btn-outline-success mb-2" type="button" href="{% url 'dit-head-panel-invitation-bet-3-accept' panel_invitation.id %}">Accept</a>
-                          <a class="btn btn-outline-danger mb-2" type="button" href="#">Decline</a>
+                          <button id="accept_btn" type="button" class="btn btn-outline-success mb-2"
+                          data-id="{{panel_invitation.id}}">Accept</button>
+                          <button id="decline_btn" type="button" class="btn btn-outline-danger mb-2"
+                          data-id="{{panel_invitation.id}}">Decline</button>
                         </td>
                       </tr>
                       {% endfor %}
@@ -187,6 +189,42 @@
           <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
+
+        <!-- Accept Modal -->
+      <div class="modal fade" id="acceptFormModal" tabindex="-1" aria-labelledby="acceptFormModal" aria-hidden="true"
+      data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
+            </button>
+          </div>
+          <div class="modal-body">Are you sure you want to accept the Panel Invitation?</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            <a id="accept_form" class="btn btn-outline-success" type="button" href="#">Accept</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decline Modal -->
+    <div class="modal fade" id="declineFormModal" tabindex="-1" aria-labelledby="declineFormModal" aria-hidden="true"
+      data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Decline request?</h5>
+            </button>
+          </div>
+          <div class="modal-body">Are you sure you want to decline the Panel Invitation?</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            <a id="decline_form" class="btn btn-outline-danger" type="button" href="#">Decline</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
         <!-- Footer -->
         {% include 'footer.html' %}
@@ -201,19 +239,32 @@
       <i class="fas fa-angle-up"></i>
     </a>
 
-    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+    {% include 'logout-modal.html' %}
+    {% include 'script-cdn.html' %}
     <!-- Sweetalert 2 CDN -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     {% if response == 'sweet panel invitation bet-3 accepted' %}
     <script>
-      Swal.fire("Accepted", "The Panel Invitation request of {{accepted_student_member_username}} {{accepted_student_member_name}} is accepted.", "success");
+      Swal.fire("Accepted", "The Panel Invitation request of {{accepted_student_member_username}} is accepted.", "success");
 
       setTimeout(function () {
         window.location.replace("{% url 'dit-head-panel-invitation-bet-3' %}");
       }, 1500);
     </script>
-    {% endif %} {% if response == 'sweet panel conforme bet-3 accepted' %}
+    {% endif %} 
+
+    {% if response == 'sweet panel invitation bet-3 declined' %}
+    <script>
+      Swal.fire("Declined", "The Panel Invitation request of {{accepted_student_member_username}} is declined.", "info");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'dit-head-panel-invitation-bet-3' %}");
+      }, 1500);
+    </script>
+    {% endif %}
+    
+    {% if response == 'sweet panel conforme bet-3 accepted' %}
     <script>
       Swal.fire("Accepted", "{{accepted_research_title}} is accepted.", "success");
 
@@ -222,5 +273,32 @@
       }, 1500);
     </script>
     {% endif %}
+
+    <script>
+    let accept_btn = document.querySelector("#accept_btn");
+    let decline_btn = document.querySelector("#decline_btn");
+    let accept_form = document.querySelector("#accept_form");
+    let decline_form = document.querySelector("#decline_form");
+
+    try {
+      accept_btn.addEventListener("click", function () {
+        let data_id = accept_btn.getAttribute('data-id');
+
+        document.getElementById("accept_form").href = "{% url 'dit-head-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id);
+        $("#acceptFormModal").modal()
+      });
+
+      decline_btn.addEventListener("click", function () {
+        let data_id = accept_btn.getAttribute('data-id');
+        document.getElementById("decline_form").href = "{% url 'dit-head-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id);
+        $("#declineFormModal").modal()
+      });
+    }
+
+    catch {
+      //pass
+    }
+
+    </script>
   </body>
 </html>

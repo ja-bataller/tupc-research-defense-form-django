@@ -38,6 +38,7 @@ urlpatterns = [
 
    path('dit-head-panel-invitation-bet-3/', views.ditHeadPanelInvitationBet3, name ="dit-head-panel-invitation-bet-3"),
    path('dit-head-panel-invitation-bet-3-accept/<str:id>', views.ditHeadPanelInvitationBet3Accept, name ="dit-head-panel-invitation-bet-3-accept"),
+   path('dit-head-panel-invitation-bet-3-decline/<str:id>', views.ditHeadPanelInvitationBet3Decline, name ="dit-head-panel-invitation-bet-3-decline"),
 
    path('dit-head-panel-conforme-bet-3/', views.ditHeadPanelConformeBet3, name ="dit-head-panel-conforme-bet-3"),
    path('dit-head-panel-conforme-bet-3-accept/<str:id>', views.ditHeadPanelConformeBet3Accept, name ="dit-head-panel-conforme-bet-3-accept"),  
@@ -49,6 +50,7 @@ urlpatterns = [
 
    path('panel-panel-invitation-bet-3/', views.panelPanelInvitationBet3, name ="panel-panel-invitation-bet-3"),
    path('panel-panel-invitation-bet-3-accept/<str:id>', views.panelPanelInvitationBet3Accept, name ="panel-panel-invitation-bet-3-accept"),
+   path('panel-panel-invitation-bet-3-decline/<str:id>', views.panelPanelInvitationBet3Decline, name ="panel-panel-invitation-bet-3-decline"),
    
    path('panel-panel-conforme-bet-3/', views.panelPanelConformeBet3, name ="panel-panel-conforme-bet-3"),
    # path('panel-panel-conforme-bet-3-accept/<str:id>/', views.panelPanelConformeBet3Accept, name ="panel-panel-conforme-bet-3-accept"),

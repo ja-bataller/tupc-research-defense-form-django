@@ -12,11 +12,11 @@
     <title>Student - Panel Invitation</title>
 
     {% include 'css-main-cdn.html' %}
+    <link href="{% static 'css/file-loader.css' %}" rel="stylesheet" />
   </head>
 
   <body id="page-top">
     <div id="wrapper">
-      
       {% include 'student-form-sidebar.html' %}
 
       <div id="content-wrapper" class="d-flex flex-column">
@@ -143,37 +143,81 @@
                       <!-- Panel Members Start -->
                       <h6 class="h4 mb-0 text-gray-800 mb-3">Panel Members:</h6>
 
+                      {% if user_panel_invitation.panel_member_name_1 != "" %}
                       <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member #1</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_1}}" disabled />
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
+                        <div class="row">
+                          <div id="panel_1_name" class="col-sm-12 mb-2">
+                            <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_1}}" disabled />
+                          </div>
+                          <div id="panel_1_download" class="col-sm-12 col-md-6" style="display: None">
+                            <a href="{{panel_1_download}}" class="btn btn-outline-success w-100">Download</a>
+                          </div>
+                        </div>
                       </div>
-
+                      {% endif %}
+                      
+                      {% if user_panel_invitation.panel_member_name_2 != "" %}
                       <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member #2</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_2}}" disabled />
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
+                        <div class="row">
+                          <div id="panel_2_name" class="col-sm-12 mb-2">
+                            <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_2}}" disabled />
+                          </div>
+                          <div id="panel_2_download" class="col-sm-12 col-md-6" style="display: None">
+                            <a href="{{panel_2_download}}" class="btn btn-outline-success w-100">Download</a>
+                          </div>
+                        </div>
                       </div>
-
+                      {% endif %}
+                      
+                      {% if user_panel_invitation.panel_member_name_3 != "" %}
                       <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member #3</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_3}}" disabled />
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
+                        <div class="row">
+                          <div id="panel_3_name" class="col-sm-12 mb-2">
+                            <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_3}}" disabled />
+                          </div>
+                          <div id="panel_3_download" class="col-sm-12 col-md-6" style="display: None">
+                            <a href="{{panel_3_download}}" class="btn btn-outline-success w-100">Download</a>
+                          </div>
+                        </div>
                       </div>
-
+                      {% endif %}
+                      
+                      {% if user_panel_invitation.panel_member_name_4 != "" %}
                       <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member #4</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_4}}" disabled />
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
+                        <div class="row">
+                          <div id="panel_4_name" class="col-sm-12 mb-2">
+                            <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_4}}" disabled />
+                          </div>
+                          <div id="panel_4_download" class="col-sm-12 col-md-6" style="display: None">
+                            <a href="{{panel_4_download}}" class="btn btn-outline-success w-100">Download</a>
+                          </div>
+                        </div>
                       </div>
-
+                      {% endif %}
+                      
+                      {% if user_panel_invitation.panel_member_name_5 != "" %}
                       <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member #5</h6>
-                        <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_5}}" disabled />
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
+                        <div class="row">
+                          <div id="panel_5_name" class="col-sm-12 mb-2">
+                            <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_5}}" disabled />
+                          </div>
+                          <div id="panel_5_download" class="col-sm-12 col-md-6" style="display: None">
+                            <a href="{{panel_5_download}}" class="btn btn-outline-success w-100">Download</a>
+                          </div>
+                        </div>
                       </div>
+                      {% endif %}
 
                       {% if user_panel_invitation.form_status == 'Complete' %}
                       <form method="POST">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-success w-100">DOWNLOAD FORM</button>
+                        <button type="submit" id="generate_form_button" class="btn btn-outline-success w-100">GENERATE FORM</button>
                       </form>
-
                       {% endif %}
 
                       <!-- <div class="input-group mb-3">
@@ -261,17 +305,43 @@
         <!-- Button trigger modal -->
 
         <!-- Modal -->
-        <!-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              
-              <div class="modal-body">
-                <h6 class="h4 mb-0 text-gray-800 mb-3 text-center">DOWNLOADING... \n Please wait...</h6>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content img-fluid">
+              <div class="modal-body text-center">
+                <div class="spinner-border file-spinner mt-5 mb-3" style="width: 6rem; height: 6rem" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+
+                <div class="container move mt-5 mb-5 file-show" style="display: none">
+                  <svg class="file fadein" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                    <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                    <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                  </svg>
+
+                  <svg class="file zoomin" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                    <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                    <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                  </svg>
+
+                  <svg class="file zoomout" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                    <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                    <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                    <path class="file-check done" d="M26.8,20.6L14.9,32.5l-5.7-5.7l2.1-2.1l3.6,3.6l9.8-9.9L26.8,20.6z" />
+                    <circle class="file-loading load" cx="13" cy="21" r="7.7"></circle>
+                  </svg>
+
+                  <svg class="file fadeout" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                    <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                    <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                    <path class="file-check" d="M26.8,20.6L14.9,32.5l-5.7-5.7l2.1-2.1l3.6,3.6l9.8-9.9L26.8,20.6z" />
+                  </svg>
+                </div>
+                <h3 id="simpleUsage" class="mb-5"></h3>
               </div>
-              
             </div>
           </div>
-        </div> -->
+        </div>
 
         <!-- Footer -->
         {% include 'footer.html' %}
@@ -285,10 +355,13 @@
       <i class="fas fa-angle-up"></i>
     </a>
 
-    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% include 'alert-validation.html' %} {% if response == 'sweet inc form' %}
+    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% include 'alert-validation.html' %}
+
+    <script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+    {% if response == 'sweet inc form' %}
     <script>
       Swal.fire("Uh-oh", "Sorry, can't fill-up  form at the moment. \n Please try again later.", "warning");
-
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
       }, 3000);
@@ -368,14 +441,62 @@
     </script>
     {% endif %} {% if response == 'sweet downloaded' %}
     <script>
-      Swal.fire("Downloaded", "The PDF File has been downloaded successfully..", "success");
+      Swal.fire("Success", "The Panel Invitation Form has been generated successfully. You can now download the file.", "success");
+
+      let panel_1_name = document.querySelector("#panel_1_name");
+      let panel_2_name = document.querySelector("#panel_2_name");
+      let panel_3_name = document.querySelector("#panel_3_name");
+      let panel_4_name = document.querySelector("#panel_4_name");
+      let panel_5_name = document.querySelector("#panel_5_name");
+
+      let panel_1_download = document.querySelector("#panel_1_download");
+      let panel_2_download = document.querySelector("#panel_2_download");
+      let panel_3_download = document.querySelector("#panel_3_download");
+      let panel_4_download = document.querySelector("#panel_4_download");
+      let panel_5_download = document.querySelector("#panel_5_download");
+
+      let generate_form_button = document.querySelector("#generate_form_button");
+
+      generate_form_button.setAttribute("type", "button");
+      generate_form_button.style.display = "none";
+
+      panel_1_name.classList.add("col-md-6");
+      panel_1_download.style.display = "block";
+
+      panel_2_name.classList.add("col-md-6");
+      panel_2_download.style.display = "block";
+
+      panel_3_name.classList.add("col-md-6");
+      panel_3_download.style.display = "block";
+
+      panel_4_name.classList.add("col-md-6");
+      panel_4_download.style.display = "block";
+
+      panel_5_name.classList.add("col-md-6");
+      panel_5_download.style.display = "block";
     </script>
     {% endif %}
 
-    <!-- <script>
-      $(document).ready(function () {
-        $("#staticBackdrop").modal("show");
+    <script>
+      generate_form_button.addEventListener("click", function () {
+        $(document).ready(function () {
+          generate_form_button.style.display = "none";
+
+          $("#myModal").modal();
+
+          new TypeIt("#simpleUsage", {
+            speed: 100,
+            waitUntilVisible: true,
+            loop: true,
+          })
+            .type("Loading...", { delay: 2000 })
+            .delete(10)
+            .type("Extracting data...", { delay: 3000 })
+            .delete(18)
+            .type("Generating PDF...", { delay: 3000 })
+            .go();
+        });
       });
-    </script> -->
+    </script>
   </body>
 </html>
