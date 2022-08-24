@@ -31,7 +31,10 @@ urlpatterns = [
    path('admin-faculty-member-change-password/<str:id>', views.adminFacultyMemberChangePassword, name ="admin-faculty-member-change-password"),
    path('admin-faculty-member-change-user-account/<str:id>', views.adminFacultyMemberChangeUserAccount, name ="admin-faculty-member-change-user-account"),
 
-   path('admin-student-course-major/', views.adminStudentAddCourseMajor, name ="admin-student-course-major"),  
+   path('admin-student-course-major/', views.adminStudentCourseMajor, name ="admin-student-course-major"),  
+   path('admin-student-add-course-major/', views.adminStudentAddCourseMajor, name ="admin-student-add-course-major"),
+   path('admin-student-edit-course-major/<str:id>', views.adminStudentEditCourseMajor, name ="admin-student-edit-course-major"), 
+   path('admin-student-delete-course-major/<str:id>', views.adminStudentDeleteCourseMajor, name ="admin-student-delete-course-major"),
 
    # DIT Head Views
    path('dit-head-dashboard/', views.ditHeadDashboard, name ="dit-head-dashboard"),
@@ -59,6 +62,7 @@ urlpatterns = [
 
    # Subject Teacher Views
    path('subject-teacher-dashboard/', views.subjectTeacherDashboard, name ="subject-teacher-dashboard"),
+   path('subject-teacher-profile/', views.subjectTeacherProfile, name ="subject-teacher-profile"),
    path('subject-teacher-research-title-defense-dashboard/', views.subjectTeacherResearchTitleDefenseDashboard, name ="subject-teacher-research-title-defense-dashboard"),
    path('subject-teacher-set-research-title-defense-schedule/', views.subjectTeacherSetResearchTitleDefenseSchedule, name ="subject-teacher-set-research-title-defense-schedule"),
    path('subject-teacher-save-research-title-defense-schedule/', views.subjectTeacherSaveResearchTitleDefenseSchedule, name ="subject-teacher-save-research-title-defense-schedule"),

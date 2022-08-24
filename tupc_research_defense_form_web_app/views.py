@@ -342,18 +342,18 @@ def logout_user(request):
     currently_loggedin_user = (request.user)
 
     if currently_loggedin_user.is_student == 1:
-        panel_invitation_bet_3_path_1 = ('1-' + currently_loggedin_user.username + '-PANEL-CONFORME-BET3-NEW.pdf')
-        panel_invitation_bet_3_path_2 = ('2-' + currently_loggedin_user.username + '-PANEL-CONFORME-BET3-NEW.pdf')
-        panel_invitation_bet_3_path_3 = ('3-' + currently_loggedin_user.username + '-PANEL-CONFORME-BET3-NEW.pdf')
-        panel_invitation_bet_3_path_4 = ('4-' + currently_loggedin_user.username + '-PANEL-CONFORME-BET3-NEW.pdf')
-        panel_invitation_bet_3_path_5 = ('5-' + currently_loggedin_user.username + '-PANEL-CONFORME-BET3-NEW.pdf')
+        panel_invitation_bet_3_path_1 = ('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+'1-' + currently_loggedin_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
+        panel_invitation_bet_3_path_2 = ('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+'2-' + currently_loggedin_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
+        panel_invitation_bet_3_path_3 = ('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+'3-' + currently_loggedin_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
+        panel_invitation_bet_3_path_4 = ('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+'4-' + currently_loggedin_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
+        panel_invitation_bet_3_path_5 = ('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+'5-' + currently_loggedin_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
 
         if os.path.isfile(panel_invitation_bet_3_path_1):
             os.remove(panel_invitation_bet_3_path_1)
             print("Panel Invitation BET-3 1 has been deleted")
         else:
             print("Panel Invitation BET-3 1 does not exist")
-        
+
         if os.path.isfile(panel_invitation_bet_3_path_2):
             os.remove(panel_invitation_bet_3_path_2)
             print("Panel Invitation BET-3 2 has been deleted")
@@ -366,14 +366,14 @@ def logout_user(request):
         else:
             print("Panel Invitation BET-3 3 does not exist")
 
-        
+
         if os.path.isfile(panel_invitation_bet_3_path_4):
             os.remove(panel_invitation_bet_3_path_4)
             print("Panel Invitation BET-3 4 has been deleted")
         else:
             print("Panel Invitation BET-3 4 does not exist")
 
-        
+
         if os.path.isfile(panel_invitation_bet_3_path_5):
             os.remove(panel_invitation_bet_3_path_5)
             print("Panel Invitation BET-3 5 has been deleted")
@@ -560,7 +560,7 @@ def studentPanelInvitationBet3(request):
     current_user = (request.user)
 
     student_data = StudentLeader.objects.get(username=current_user.username)
-    defense_dates = DefenseSchedule.objects.all().filter(username = student_data.bet3_subject_teacher_username , course = student_data.course_major_abbr)
+    defense_dates = DefenseSchedule.objects.all().filter(username = student_data.bet3_subject_teacher_username , course = student_data.course_major_abbr, status = "Available")
     
     panel_members = User.objects.all().filter(is_panel=1)
 
@@ -2263,31 +2263,37 @@ def studentPanelInvitationBet3Form(request):
 
         return render(request, 'student-dashboard.html', context)
     
+    panel_username = []
     panel_list = []
     panel_response = []
     panel_date_response = []
 
-    if user_panel_invitation.panel_member_name_1 != "" and user_panel_invitation.panel_member_response_date_1:
+    if user_panel_invitation.panel_member_name_1 != "" and user_panel_invitation.panel_member_response_date_1 != "":
+        panel_username.append(user_panel_invitation.panel_member_username_1)
         panel_list.append(user_panel_invitation.panel_member_name_1)
         panel_response.append(user_panel_invitation.panel_member_response_1)
         panel_date_response.append(user_panel_invitation.panel_member_response_date_1)
-    
-    if user_panel_invitation.panel_member_name_2 != "" and user_panel_invitation.panel_member_response_date_2:
+
+    if user_panel_invitation.panel_member_name_2 != "" and user_panel_invitation.panel_member_response_date_2 != "":
+        panel_username.append(user_panel_invitation.panel_member_username_2)
         panel_list.append(user_panel_invitation.panel_member_name_2)
         panel_response.append(user_panel_invitation.panel_member_response_2)
         panel_date_response.append(user_panel_invitation.panel_member_response_date_2)
 
-    if user_panel_invitation.panel_member_name_3 != "" and user_panel_invitation.panel_member_response_date_3:
+    if user_panel_invitation.panel_member_name_3 != "" and user_panel_invitation.panel_member_response_date_3 != "":
+        panel_username.append(user_panel_invitation.panel_member_username_3)
         panel_list.append(user_panel_invitation.panel_member_name_3)
         panel_response.append(user_panel_invitation.panel_member_response_3)
         panel_date_response.append(user_panel_invitation.panel_member_response_date_3)
 
-    if user_panel_invitation.panel_member_name_4 != "" and user_panel_invitation.panel_member_response_date_4:
+    if user_panel_invitation.panel_member_name_4 != "" and user_panel_invitation.panel_member_response_date_4 != "":
+        panel_username.append(user_panel_invitation.panel_member_username_4)
         panel_list.append(user_panel_invitation.panel_member_name_4)
         panel_response.append(user_panel_invitation.panel_member_response_4)
         panel_date_response.append(user_panel_invitation.panel_member_response_date_4)
 
-    if user_panel_invitation.panel_member_name_5 != "" and user_panel_invitation.panel_member_response_date_5:
+    if user_panel_invitation.panel_member_name_5 != "" and user_panel_invitation.panel_member_response_date_5 != "":
+        panel_username.append(user_panel_invitation.panel_member_username_5)
         panel_list.append(user_panel_invitation.panel_member_name_5)
         panel_response.append(user_panel_invitation.panel_member_response_5)
         panel_date_response.append(user_panel_invitation.panel_member_response_date_5)
@@ -2298,7 +2304,11 @@ def studentPanelInvitationBet3Form(request):
     student_member_list = [user_panel_invitation.student_member_name_1, user_panel_invitation.student_member_name_2, user_panel_invitation.student_member_name_3, user_panel_invitation.student_member_name_4, user_panel_invitation.student_member_name_5]
     student_member_list.sort()
 
-    pdf_download_links = []
+    panel_1_download = None
+    panel_2_download = None
+    panel_3_download = None
+    panel_4_download = None
+    panel_5_download = None
 
     # Generate PDF Form
     if request.method == "POST":
@@ -2306,6 +2316,7 @@ def studentPanelInvitationBet3Form(request):
         for i in range(len(panel_list)):
 
             doc = Document('static/forms/1-PANEL-INVITATION.docx')
+            # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/1-PANEL-INVITATION.docx')
 
             student_table = doc.tables[1]
             qr_code_box = doc.tables[2]
@@ -2426,10 +2437,23 @@ def studentPanelInvitationBet3Form(request):
             convert(str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.docx')
             # os.startfile(str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
 
-            # UNCOMMENT WHEN DEPLOYED
+             # UNCOMMENT WHEN DEPLOYED
             # doc.save("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.docx')
             # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/" + str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
-            # pdf_download_links.append("http://johnanthonybataller.pythonanywhere.com/static/" + str(file_count) + '-' + current_user.username + "-PANEL-INVITATION-BET3-NEW.pdf")
+            # if panel_username[i] == user_panel_invitation.panel_member_username_1:
+            #     panel_1_download = "http://johnanthonybataller.pythonanywhere.com/static/" + str(file_count) + '-' + current_user.username + "-PANEL-INVITATION-BET3-NEW.pdf"
+
+            # if panel_username[i] == user_panel_invitation.panel_member_username_2:
+            #     panel_2_download = "http://johnanthonybataller.pythonanywhere.com/static/" + str(file_count) + '-' + current_user.username + "-PANEL-INVITATION-BET3-NEW.pdf"
+
+            # if panel_username[i] == user_panel_invitation.panel_member_username_3:
+            #     panel_3_download = "http://johnanthonybataller.pythonanywhere.com/static/" + str(file_count) + '-' + current_user.username + "-PANEL-INVITATION-BET3-NEW.pdf"
+
+            # if panel_username[i] == user_panel_invitation.panel_member_username_4:
+            #     panel_4_download = "http://johnanthonybataller.pythonanywhere.com/static/" + str(file_count) + '-' + current_user.username + "-PANEL-INVITATION-BET3-NEW.pdf"
+
+            # if panel_username[i] == user_panel_invitation.panel_member_username_5:
+            #     panel_5_download = "http://johnanthonybataller.pythonanywhere.com/static/" + str(file_count) + '-' + current_user.username + "-PANEL-INVITATION-BET3-NEW.pdf"
             # UNCOMMENT WHEN DEPLOYED
 
             qr_code_path = (str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET-3.png')
@@ -2452,11 +2476,18 @@ def studentPanelInvitationBet3Form(request):
             i + 1
             file_count = file_count + 1
         
+
         context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
         'currently_loggedin_user_account' : currently_loggedin_user_account,
 
         'user_panel_invitation' : user_panel_invitation,
+
+        # 'panel_1_download': panel_1_download,
+        # 'panel_2_download': panel_2_download,
+        # 'panel_3_download': panel_3_download,
+        # 'panel_4_download': panel_4_download,
+        # 'panel_5_download': panel_5_download,
 
         'response' : "sweet downloaded"
         }
@@ -2471,6 +2502,38 @@ def studentPanelInvitationBet3Form(request):
         }
 
     return render(request, 'student-panel-invitation-bet-3-form.html', context)
+
+
+# Student - Panel Invitation Generate Declined Form
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentPanelInvitationBet3DeclinedForm(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    panel_members = User.objects.all().filter(is_panel=1)
+
+    try:
+        user_panel_invitation = PanelInvitationBET3.objects.get(student_leader_username = current_user.username)
+    
+    except:
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+        }
+
+        return render(request, 'student-dashboard.html', context)
+    
+    panel_list = []
+    panel_response = []
+    panel_date_response = []
+    pass
 
 # Student - Panel Conforme BET-3 Process
 @login_required(login_url='index')
@@ -3529,6 +3592,7 @@ def studentPanelConformeBet3Form(request):
 
 # Admin - Dashboard Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_administrator, login_url='index')
 def adminDashboard(request):
     current_user = (request.user)
     current_password = current_user.password
@@ -3547,6 +3611,7 @@ def adminDashboard(request):
 
 # Admin - Profile Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_administrator, login_url='index')
 def adminProfile(request):
     current_user = (request.user)
     current_password = (request.user.password)
@@ -3645,8 +3710,31 @@ def adminProfile(request):
     return render(request, 'admin-profile.html', context)
 
 
+# Admin - Student Course and Major Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_administrator, login_url='index')
+def adminStudentCourseMajor(request):
+    current_user = (request.user)
+    current_password = current_user.password
+    
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    all_course_major = StudentCourseMajor.objects.all()
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'all_course_major': all_course_major,
+        }
+
+    return render(request, 'admin-student-course-major.html', context)
+
 # Admin - Student Add Course and Major Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_administrator, login_url='index')
 def adminStudentAddCourseMajor(request):
     current_user = (request.user)
     current_password = current_user.password
@@ -3689,14 +3777,18 @@ def adminStudentAddCourseMajor(request):
             queryForm = StudentCourseMajor(course=course_input.title(), major=major_input.title(), course_major_abbr=course_abbr_input.upper())
             queryForm.save()
 
+            all_course_major = StudentCourseMajor.objects.all()
+
             context = {
             'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
             'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+            'all_course_major':all_course_major,
              
-            'response': "added successfully",
+            'response': "sweet course added",
             }
 
-            return render(request, 'admin-student-add-course-major.html', context)
+            return render(request, 'admin-student-course-major.html', context)
 
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
@@ -3705,9 +3797,124 @@ def adminStudentAddCourseMajor(request):
 
     return render(request, 'admin-student-add-course-major.html', context)
 
+# Admin - Student Edit Course and Major Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_administrator, login_url='index')
+def adminStudentEditCourseMajor(request, id):
+    current_user = (request.user)
+    current_password = current_user.password
+    
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        course_major_check = StudentCourseMajor.objects.get(id = id)
+    except:
+        return redirect("admin-student-course-major")
+
+    if request.method == "POST":
+        course_input = request.POST.get('course_input')
+        major_input = request.POST.get('major_input')
+        course_abbr_input = request.POST.get('course_abbr_input')
+
+        print(course_input)
+
+        if major_input == course_major_check.major:
+            print("Major - Pass")
+            pass
+
+        else:
+            if StudentCourseMajor.objects.filter(major=major_input).exists():
+                print("Major - Exist")
+
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                'course_major_check': course_major_check,
+
+                'response': "sweet major exist",
+                }
+
+                return render(request, 'admin-student-course-major.html', context)
+        
+        if course_abbr_input == course_major_check.course_major_abbr:
+            print("Abbr - Pass")
+            pass
+
+        else:
+
+            if StudentCourseMajor.objects.filter(course_major_abbr=course_abbr_input).exists():
+                print("Abbr - Exist")
+
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+                'course_major_check': course_major_check,
+
+                'response': "sweet course abbr exist",
+                }
+
+                return render(request, 'admin-student-course-major.html', context)
+            
+        print("save")
+
+
+        course_major_check.course = course_input.title()
+        course_major_check.major = major_input.title()
+        course_major_check.course_major_abbr = course_abbr_input.upper()
+
+
+        course_major_check.save()
+
+        course_major_check_new = StudentCourseMajor.objects.get(id = id)
+
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'course_major_check' : course_major_check_new,
+            
+        'response': "sweet course updated",
+        }
+
+        return render(request, 'admin-student-course-major.html', context)
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'course_major_check' : course_major_check
+        }
+
+    return render(request, 'admin-student-edit-course-major.html', context)
+
+# Admin - Student Delete Course and Major Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_administrator, login_url='index')
+def adminStudentDeleteCourseMajor(request, id):
+
+    delete_course = StudentCourseMajor.objects.filter(id=id)
+    print(delete_course)
+
+    if not delete_course:
+            context = {
+            'response' : 'sweet course not found'
+            }
+            
+            return render(request, 'admin-student-course-major.html', context)
+        
+    else:
+        delete_course.delete()
+
+        context = {
+                'response' : 'sweet course deleted'
+                }
+
+        return render(request, 'admin-student-course-major.html', context)
 
 # Admin - Department Head Account Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_administrator, login_url='index')
 def adminFacultyMemberAcc(request):
     current_user = (request.user)
     current_password = current_user.password
@@ -3746,6 +3953,7 @@ def adminFacultyMemberAcc(request):
 
 # Admin - Faculty Member Create Account Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_administrator, login_url='index')
 def adminFacultyMemberCreateAcc(request):
     current_user = (request.user)
     current_password = current_user.password
@@ -4119,6 +4327,7 @@ def adminFacultyMemberCreateAcc(request):
 
 # Admin - Faculty Member Individual Account Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_administrator, login_url='index')
 def adminFacultyMemberData(request, id):
     current_user = (request.user)
     current_password = current_user.password
@@ -4480,6 +4689,7 @@ def adminFacultyMemberData(request, id):
 
 # Admin - Faculty Member Change Password Process
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_administrator, login_url='index')
 def adminFacultyMemberChangePassword(request, id):
     current_user = (request.user)
     current_password = current_user.password
@@ -4621,6 +4831,7 @@ def adminFacultyMemberChangePassword(request, id):
 
 # Admin - Faculty Member Change User Account Process
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_administrator, login_url='index')
 def adminFacultyMemberChangeUserAccount(request, id):
     current_user = (request.user)
     current_password = current_user.password
@@ -5218,6 +5429,7 @@ def ditHeadPanelInvitationBet3Decline(request, id):
 
 # DIT Head - Panel Conforme BET-3 Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_department_head, login_url='index')
 def ditHeadPanelConformeBet3(request):
     currently_loggedin_user = (request.user)
 
@@ -5254,6 +5466,7 @@ def ditHeadPanelConformeBet3(request):
 
 # DIT Head - Panel Conforme BET-3 Accept Process
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_department_head, login_url='index')
 def ditHeadPanelConformeBet3Accept(request, id):
     currently_loggedin_user = (request.user)
 
@@ -5301,6 +5514,7 @@ def ditHeadPanelConformeBet3Accept(request, id):
 
 # DIT Head - Panel Conforme BET-3 Decline Process
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_department_head, login_url='index')
 def ditHeadPanelConformeBet3Decline(request, id):
     pass
 
@@ -5429,6 +5643,7 @@ def panelProfile(request):
 
 # Panel - Panel Invitation  BET-3 Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
 def panelPanelInvitationBet3(request):
     currently_loggedin_user = (request.user)
     print("Current User:", currently_loggedin_user.username)
@@ -5465,6 +5680,7 @@ def panelPanelInvitationBet3(request):
 
 # Panel - Panel Invitation BET-3 Accept Process
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
 def panelPanelInvitationBet3Accept(request, id):
     currently_loggedin_user = (request.user)
     
@@ -8532,6 +8748,7 @@ def panelPanelInvitationBet3Accept(request, id):
 
 # Panel - Panel Invitation BET-3 Decline Process
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
 def panelPanelInvitationBet3Decline(request, id):
     currently_loggedin_user = (request.user)
     
@@ -11591,6 +11808,7 @@ def panelPanelInvitationBet3Decline(request, id):
 
 # Panel - Panel Conforme BET-3 Page
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
 def panelPanelConformeBet3(request):
     currently_loggedin_user = (request.user)
 
@@ -11652,6 +11870,7 @@ def panelPanelConformeBet3(request):
 
 # Panel - Panel Conforme BET-3 Accept Process
 @login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
 def panelPanelConformeBet3Accept(request, id):
     currently_loggedin_user = (request.user)
 
@@ -11727,6 +11946,110 @@ def subjectTeacherDashboard(request):
         }
 
     return render(request, 'subject-teacher-dashboard.html', context)
+
+
+# Subject Teacher - Profile Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherProfile(request):
+    currently_loggedin_user = (request.user)
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        }
+    
+
+    context = {
+                'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                'currently_loggedin_user_department' : currently_loggedin_user.department,
+                'currently_loggedin_username':  currently_loggedin_user.username, 
+                'currently_loggedin_user_email': currently_loggedin_user.email,
+                }   
+
+    if request.method == 'POST':
+        current_password_input = request.POST.get('current_password_input')
+        new_password_input = request.POST.get('new_password_input')
+        confirm_new_password_input = request.POST.get('confirm_new_password_input')
+
+        if current_password_input == currently_loggedin_user.password:
+
+            if current_password_input != new_password_input:
+
+                if new_password_input == confirm_new_password_input:
+
+                    User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
+
+                    context = {                        
+                        "response": "changed password"
+                        }
+                    return render(request, 'index.html', context)
+
+                else:
+                    context = {
+                        'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                        'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                        'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                        'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                        'currently_loggedin_user_department' : currently_loggedin_user.department,
+                        'currently_loggedin_username':  currently_loggedin_user.username, 
+                        'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                        "response": "new password and confirm new password doesnt match"
+                        }
+
+                    return render(request, 'subject-teacher-profile.html', context)
+
+            else:
+                context = {
+                    'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                    'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                    'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                    'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                    'currently_loggedin_user_department' : currently_loggedin_user.department,
+                    'currently_loggedin_username':  currently_loggedin_user.username, 
+                    'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                    "response": "current password and new password is same"
+                    }
+
+                return render(request, 'subject-teacher-profile.html', context)
+
+        else:
+            context = {
+                'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                'currently_loggedin_user_department' : currently_loggedin_user.department,
+                'currently_loggedin_username':  currently_loggedin_user.username, 
+                'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                "response": "current password is incorrect"
+                }
+
+            return render(request, 'subject-teacher-profile.html', context)
+
+
+    return render(request, 'subject-teacher-profile.html', context)
 
 # Subject Teacher - Research Title Defense Dashboard Page
 @login_required(login_url='index')

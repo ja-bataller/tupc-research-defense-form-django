@@ -1,0 +1,173 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Admin - Student Course and Major</title>
+
+    {% include 'css-main-cdn.html' %}
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        {% include "admin-account-sidebar.html" %}
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                {% include 'topbar.html' %}
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="row">
+                        <div class="col-md-9 col-sm-12 mb-3">
+                          <h1 class="h3 mb-0 text-gray-800">Student - Course & Major</h1>
+                        </div>
+                        <div class="col-md-3 col-sm-12 mb-3">
+                          <a href="{% url 'admin-student-add-course-major' %}" type="button" class="btn btn-outline-success w-100"><i class="fa-solid fa-plus"></i> New</a>
+                        </div>
+                      </div>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <!-- <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Pending Dashboard</h6>
+                        </div> -->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Course</th>
+                                            <th>Major</th>
+                                            <th>Course Abbr</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Course</th>
+                                            <th>Major</th>
+                                            <th>Course Abbr</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for course in all_course_major %}
+                                        <tr>                                       
+                                            <td>{{course.course}}</td>
+                                            <td>{{course.major}}</td>
+                                            <td>{{course.course_major_abbr}}</td>
+                                            <td class="text-center"> <a class="btn btn-outline-info" type="button" href="{% url 'admin-student-edit-course-major' course.id %}"> <i class="fa-solid fa-pen-to-square"></i></a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            {% include 'footer.html' %}
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    {% include 'logout-modal.html' %}
+
+    {% include 'script-cdn.html' %}
+
+    {% if response == 'sweet course not found' %}
+    <script>
+        Swal.fire("Uh-oh", "The Course you want to delete doesn't exist.", "warning");
+
+        setTimeout(function () {
+        window.location.replace("{% url 'admin-student-course-major' %}");
+        }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet course deleted' %}
+    <script>
+        Swal.fire("Deleted", "The Course has been deleted.", "info");
+
+        setTimeout(function () {
+        window.location.replace("{% url 'admin-student-course-major' %}");
+        }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet course added' %}
+    <script>
+        Swal.fire("Added", "The Course has been added.", "success");
+
+        setTimeout(function () {
+        window.location.replace("{% url 'admin-student-course-major' %}");
+        }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet course updated' %}
+    <script>
+        Swal.fire("Updated", "The Course has been updated.", "success");
+
+        setTimeout(function () {
+        window.location.replace("{% url 'admin-student-course-major' %}");
+        }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet major exist' %}
+    <script>
+        Swal.fire("Exist", "The Major you entered already exist.", "error");
+
+        setTimeout(function () {
+        window.location.replace("{% url 'admin-student-course-major' %}");
+        }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet course abbr exist' %}
+    <script>
+        Swal.fire("Exist", "The Course Abbreviation you entered already exist.", "error");
+
+        setTimeout(function () {
+        window.location.replace("{% url 'admin-student-course-major' %}");
+        }, 2000);
+    </script>
+    {% endif %}
+
+</body>
+
+</html>

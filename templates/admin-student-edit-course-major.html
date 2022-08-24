@@ -36,9 +36,14 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-3">
-                        <h1 class="h3 mb-0 text-gray-800">Student - Add Course & Major</h1>
-                    </div>
+                    <div class="row">
+                        <div class="col-lg-10 col-md-12 mb-3">
+                          <h1 class="h3 mb-0 text-gray-800">Student - Edit Course & Major</h1>
+                        </div>
+                        <div class="col-lg-2 col-md-12 mb-3">
+                          <a href="{% url 'admin-student-delete-course-major' course_major_check.id %}" type="button" class="btn btn-outline-danger w-100"><i class="fa-solid fa-trash"></i></a>
+                        </div>
+                      </div>
 
                     <div class="card border-left-info shadow h-100 py-2 mb-3">
                         <div class="card-body">
@@ -50,18 +55,18 @@
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Course:</label>
-                                            <input type="text" class="form-control" name="course_input" style="text-transform: capitalize;" required>
+                                            <input type="text" class="form-control" value="{{course_major_check.course}}"  name="course_input" style="text-transform: capitalize;" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Major:</label>
-                                            <input type="text" class="form-control" name="major_input" style="text-transform: capitalize;" required>
+                                            <input type="text" class="form-control" value="{{course_major_check.major}}" name="major_input" style="text-transform: capitalize;" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Course Abbreviation:</label>
                                             <input type="text" class="form-control"
-                                                name="course_abbr_input" style="text-transform: uppercase;" required>
+                                                name="course_abbr_input" value="{{course_major_check.course_major_abbr}}" style="text-transform: uppercase;" required>
                                         </div>
 
                                         <button type="submit" class="btn btn-outline-success w-100">
@@ -100,6 +105,8 @@
     {% include 'script-cdn.html' %}
 
     {% include 'alert-validation.html' %}
+
+    
 
 </body>
 

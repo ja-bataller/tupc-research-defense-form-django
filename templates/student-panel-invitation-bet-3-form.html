@@ -152,7 +152,9 @@
                     <h6 class="h4 mb-0 text-gray-800 mb-3">Panel Members - <span class="text-danger">Incomplete</span>:</h6>
                     {% else %}
                     <h6 class="h4 mb-0 text-gray-800 mb-3">Panel Members:</h6>
-                    {% endif %} {% if user_panel_invitation.panel_member_name_1 != "" %}
+                    {% endif %} 
+                    
+                    {% if user_panel_invitation.panel_member_name_1 != "" %}
                     <div id="research_title_1" class="form-group mb-3">
                       <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
                       <div class="row">
@@ -160,11 +162,13 @@
                           <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_1}}" disabled />
                         </div>
                         <div id="panel_1_download" class="col-sm-12 col-md-6" style="display: None">
-                          <a href="{{panel_1_download}}" class="btn btn-outline-success w-100">Download</a>
+                          <a href="{{panel_1_download}}" target=”_blank”  class="btn btn-outline-success w-100">Download</a>
                         </div>
                       </div>
                     </div>
-                    {% endif %} {% if user_panel_invitation.panel_member_name_2 != "" %}
+                    {% endif %} 
+                    
+                    {% if user_panel_invitation.panel_member_name_2 != "" %}
                     <div id="research_title_1" class="form-group mb-3">
                       <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
                       <div class="row">
@@ -172,11 +176,13 @@
                           <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_2}}" disabled />
                         </div>
                         <div id="panel_2_download" class="col-sm-12 col-md-6" style="display: None">
-                          <a href="{{panel_2_download}}" class="btn btn-outline-success w-100">Download</a>
+                          <a href="{{panel_2_download}}" target=”_blank”  class="btn btn-outline-success w-100">Download</a>
                         </div>
                       </div>
                     </div>
-                    {% endif %} {% if user_panel_invitation.panel_member_name_3 != "" %}
+                    {% endif %} 
+                    
+                    {% if user_panel_invitation.panel_member_name_3 != "" %}
                     <div id="research_title_1" class="form-group mb-3">
                       <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
                       <div class="row">
@@ -184,11 +190,13 @@
                           <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_3}}" disabled />
                         </div>
                         <div id="panel_3_download" class="col-sm-12 col-md-6" style="display: None">
-                          <a href="{{panel_3_download}}" class="btn btn-outline-success w-100">Download</a>
+                          <a href="{{panel_3_download}}" target=”_blank”  class="btn btn-outline-success w-100">Download</a>
                         </div>
                       </div>
                     </div>
-                    {% endif %} {% if user_panel_invitation.panel_member_name_4 != "" %}
+                    {% endif %} 
+                    
+                    {% if user_panel_invitation.panel_member_name_4 != "" %}
                     <div id="research_title_1" class="form-group mb-3">
                       <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
                       <div class="row">
@@ -196,11 +204,13 @@
                           <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_4}}" disabled />
                         </div>
                         <div id="panel_4_download" class="col-sm-12 col-md-6" style="display: None">
-                          <a href="{{panel_4_download}}" class="btn btn-outline-success w-100">Download</a>
+                          <a href="{{panel_4_download}}" target=”_blank”  class="btn btn-outline-success w-100">Download</a>
                         </div>
                       </div>
                     </div>
-                    {% endif %} {% if user_panel_invitation.panel_member_name_5 != "" %}
+                    {% endif %} 
+                    
+                    {% if user_panel_invitation.panel_member_name_5 != "" %}
                     <div id="research_title_1" class="form-group mb-3">
                       <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Member</h6>
                       <div class="row">
@@ -208,16 +218,21 @@
                           <input type="text" class="form-control" value="{{user_panel_invitation.panel_member_name_5}}" disabled />
                         </div>
                         <div id="panel_5_download" class="col-sm-12 col-md-6" style="display: None">
-                          <a href="{{panel_5_download}}" class="btn btn-outline-success w-100">Download</a>
+                          <a href="{{panel_5_download}}" target=”_blank”  class="btn btn-outline-success w-100">Download</a>
                         </div>
                       </div>
                     </div>
                     {% endif %} 
                     
                     {% if user_panel_invitation.form_status == 'Complete' %}
+                    <form class="mb-2" method="POST">
+                      {% csrf_token %}
+                      <button type="submit" id="generate_form_button" class="btn btn-outline-success w-100">GENERATE ACCEPTED FORM</button>
+                    </form>
+
                     <form method="POST">
                       {% csrf_token %}
-                      <button type="submit" id="generate_form_button" class="btn btn-outline-success w-100">GENERATE FORM</button>
+                      <button type="submit" id="generate_form_button" class="btn btn-outline-secondary w-100">GENERATE DECLINED FORM</button>
                     </form>
                     {% endif %} 
                     

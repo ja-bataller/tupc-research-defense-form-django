@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Uncomment when deployed
 # DEBUG = False
-# ALLOWED_HOSTS = ['http://johnanthonybataller.pythonanywhere.com/']
+# ALLOWED_HOSTS = ['johnanthonybataller.pythonanywhere.com']
 
 
 # Application definition

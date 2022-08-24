@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>DIT Head - Profile</title>
+    <title>Subject Teacher - Profile</title>
 
     <!-- Custom fonts for this template-->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css" />
@@ -35,7 +35,7 @@
       <!-- Sidebar -->
       <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'dit-head-dashboard' %}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'subject-teacher-dashboard' %}">
           <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
         </a>
 
@@ -43,8 +43,8 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
             <i class="fa-solid fa-house"></i>
             <span>Home</span></a
           >
@@ -57,21 +57,12 @@
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
             <i class="fa-solid fa-folder-open"></i>
-            <span>Forms</span>
+            <span>Research Title Defense</span>
           </a>
           <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">BET-3</h6>
-              <a class="collapse-item" href="{% url 'dit-head-panel-invitation-bet-3' %}">Panel Invitation</a>
-              <!-- <a class="collapse-item" href="{% url 'dit-head-panel-conforme-bet-3' %}">Panel Conforme</a> -->
-              <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
-              <div class="collapse-divider"></div>
-              <h6 class="collapse-header">BET-5</h6>
-              <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
+              <a class="collapse-item" href="{% url 'subject-teacher-research-title-defense-dashboard' %}">Schedule Dashboard</a>
+              <a class="collapse-item" href="{% url 'subject-teacher-set-research-title-defense-schedule' %}">Set Schedule</a>
             </div>
           </div>
         </li>
@@ -108,6 +99,7 @@
       <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
+
           <!-- Topbar -->
           <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
             <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
@@ -122,13 +114,13 @@
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="mr-2 d-lg-inline text-gray-600 small"
                     >{{currently_loggedin_user_full_name}} <br />
-                    <div class="float-right">DIT Head</div>
+                    <div class="float-right">Subject Teacher</div>
                   </span>
                   <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="{% url 'dit-head-profile' %}">
+                  <a class="dropdown-item" href="{% url 'subject-teacher-profile' %}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                   </a>
