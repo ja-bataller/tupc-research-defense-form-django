@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 # User Account
 class User(AbstractUser):
     email = models.EmailField(unique=True)
+    user_account = models.CharField(max_length=256, blank=True)
     department = models.CharField(max_length=256, blank=True)
 
     honorific = models.CharField(max_length=256, blank=True)
@@ -26,14 +27,12 @@ class User(AbstractUser):
 
     is_research_extension = models.BooleanField(default=False)
 
-
     is_student = models.BooleanField(default=False)
 
     is_faculty_member = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
 
-####################################################################################################################
 
 # Course - Major - Course Major Abbreviation
 class StudentCourseMajor(models.Model):
@@ -43,8 +42,6 @@ class StudentCourseMajor(models.Model):
 
     def __str__(self) -> str:
         return self.course_major_abbr
-    
-####################################################################################################################
 
 # Student Leaders
 class StudentLeader(models.Model):
@@ -61,28 +58,37 @@ class StudentLeader(models.Model):
     major = models.CharField(max_length=256, blank=False)
     course_major_abbr = models.CharField(max_length=256, blank=False)
 
-    bet3_subject_teacher_username = models.CharField(max_length=256, blank=False)
+    group_count = models.IntegerField()
+
+    bet3_subject_teacher_username = models.CharField(
+        max_length=256, blank=False)
     bet3_subject_teacher_name = models.CharField(max_length=256, blank=False)
     bet3_status = models.CharField(max_length=256, blank=False)
 
-    bet5_subject_teacher_username = models.CharField(max_length=256, blank=True)
+    bet5_subject_teacher_username = models.CharField(
+        max_length=256, blank=True)
     bet5_subject_teacher_name = models.CharField(max_length=256, blank=True)
     bet5_status = models.CharField(max_length=256, blank=True)
 
     current_subject = models.CharField(max_length=256, blank=False)
 
     defense_status = models.CharField(max_length=256, blank=True)
+
+    defense_status = models.CharField(max_length=256, blank=True)
+
+    research_title_defense_date = models.CharField(max_length=256, blank=True)
+    research_title_defense_start_time = models.CharField(max_length=256, blank=True)
+    research_title_defense_start_end = models.CharField(max_length=256, blank=True)
+
     def __str__(self) -> str:
         return self.username
-
-####################################################################################################################
 
 # Student Group Member
 class StudentGroupMember(models.Model):
     student_leader_username = models.CharField(max_length=256)
-    student_leader_name = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
     student_member_username = models.CharField(max_length=256)
-    student_member_name = models.CharField(max_length=256)
+    student_member_full_name = models.CharField(max_length=256)
     course = models.CharField(max_length=256)
     major = models.CharField(max_length=256)
     course_major_abbr = models.CharField(max_length=256)
@@ -90,178 +96,19 @@ class StudentGroupMember(models.Model):
     def __str__(self) -> str:
         return self.student_leader_username
 
-####################################################################################################################
-
-# Panel Invitation - BET-3
-class PanelInvitationBET3(models.Model):
-    student_leader_username = models.CharField(max_length=256)
-
-    dit_head_name = models.CharField(max_length=256)
-    dit_head_response = models.CharField(max_length=256)
-    dit_head_response_date = models.CharField(max_length=256)
-
-    panel_member_username_1 = models.CharField(max_length=256)
-    panel_member_name_1 = models.CharField(max_length=256)
-    panel_member_response_1 = models.CharField(max_length=256)
-    panel_member_response_date_1 = models.CharField(max_length=256)
-
-    panel_member_username_2 = models.CharField(max_length=256)
-    panel_member_name_2 = models.CharField(max_length=256)
-    panel_member_response_2 = models.CharField(max_length=256)
-    panel_member_response_date_2 = models.CharField(max_length=256)
-    
-    panel_member_username_3 = models.CharField(max_length=256)
-    panel_member_name_3 = models.CharField(max_length=256)
-    panel_member_response_3 = models.CharField(max_length=256)
-    panel_member_response_date_3 = models.CharField(max_length=256)
-
-    panel_member_username_4 = models.CharField(max_length=256)
-    panel_member_name_4 = models.CharField(max_length=256)
-    panel_member_response_4 = models.CharField(max_length=256)
-    panel_member_response_date_4 = models.CharField(max_length=256)
-
-    panel_member_username_5 = models.CharField(max_length=256)
-    panel_member_name_5 = models.CharField(max_length=256)
-    panel_member_response_5 = models.CharField(max_length=256)
-    panel_member_response_date_5 = models.CharField(max_length=256)
-
-    student_member_username_1 = models.CharField(max_length=256)
-    student_member_name_1 = models.CharField(max_length=256)
-    
-    student_member_username_2 = models.CharField(max_length=256)
-    student_member_name_2 = models.CharField(max_length=256)
-
-    student_member_username_3 = models.CharField(max_length=256)
-    student_member_name_3 = models.CharField(max_length=256)
-
-    student_member_username_4 = models.CharField(max_length=256)
-    student_member_name_4 = models.CharField(max_length=256)
-
-    student_member_username_5 = models.CharField(max_length=256)
-    student_member_name_5 = models.CharField(max_length=256)
-
-    course = models.CharField(max_length=256)
-    major = models.CharField(max_length=256)
-    course_major_abbr = models.CharField(max_length=256)
-
-    research_title_1 = models.CharField(max_length=256)
-    research_title_2 = models.CharField(max_length=256)
-    research_title_3 = models.CharField(max_length=256)
-    research_title_4 = models.CharField(max_length=256)
-    research_title_5 = models.CharField(max_length=256)
-
-    form_date_submitted = models.CharField(max_length=256)
-    defense_date = models.CharField(max_length=256)
-    defense_start_time = models.CharField(max_length=256)
-    defense_end_time = models.CharField(max_length=256)
-
-    accept_count = models.IntegerField(max_length=256)
-
-    form_status = models.CharField(max_length=256)
-    form = models.CharField(max_length=256)
-
-    def __str__(self) -> str:
-        return self.student_leader_username
-
-class PanelInvitationBET3Declined(models.Model):
-    student_leader_username = models.CharField(max_length=256)
-
-    dit_head_name = models.CharField(max_length=256)
-    dit_head_response = models.CharField(max_length=256)
-    dit_head_response_date = models.CharField(max_length=256)
-
-    panel_member_username = models.CharField(max_length=256)
-    panel_member_name = models.CharField(max_length=256)
-    panel_member_response = models.CharField(max_length=256)
-    panel_member_response_date = models.CharField(max_length=256)
-
-    student_member_username_1 = models.CharField(max_length=256)
-    student_member_name_1 = models.CharField(max_length=256)
-    
-    student_member_username_2 = models.CharField(max_length=256)
-    student_member_name_2 = models.CharField(max_length=256)
-
-    student_member_username_3 = models.CharField(max_length=256)
-    student_member_name_3 = models.CharField(max_length=256)
-
-    student_member_username_4 = models.CharField(max_length=256)
-    student_member_name_4 = models.CharField(max_length=256)
-
-    student_member_username_5 = models.CharField(max_length=256)
-    student_member_name_5 = models.CharField(max_length=256)
-
-    course = models.CharField(max_length=256)
-    major = models.CharField(max_length=256)
-    course_major_abbr = models.CharField(max_length=256)
-
-    research_title_1 = models.CharField(max_length=256)
-    research_title_2 = models.CharField(max_length=256)
-    research_title_3 = models.CharField(max_length=256)
-    research_title_4 = models.CharField(max_length=256)
-    research_title_5 = models.CharField(max_length=256)
-
-    form_date_submitted = models.CharField(max_length=256)
-    defense_date = models.CharField(max_length=256)
-    defense_start_time = models.CharField(max_length=256)
-    defense_end_time = models.CharField(max_length=256)
-
-    form = models.CharField(max_length=256)
-
-    def __str__(self) -> str:
-        return self.student_leader_username
-####################################################################################################################
-
-# Panel Conforme - BET-3
-class PanelConformeBET3(models.Model):
-    student_leader_username = models.CharField(max_length=256)
-
-    dept_head = models.CharField(max_length=256)
-    dept_head_status = models.CharField(max_length=256)
-
-    panel_member_1 = models.CharField(max_length=256)
-    panel_member_2 = models.CharField(max_length=256)
-    panel_member_3 = models.CharField(max_length=256)
-    panel_member_4 = models.CharField(max_length=256)
-    panel_member_5 = models.CharField(max_length=256)
-
-    panel_member_name_1 = models.CharField(max_length=256)
-    panel_member_name_2 = models.CharField(max_length=256)
-    panel_member_name_3 = models.CharField(max_length=256)
-    panel_member_name_4 = models.CharField(max_length=256)
-    panel_member_name_5 = models.CharField(max_length=256)
-
-    panel_member_status_1 = models.CharField(max_length=256)
-    panel_member_status_2 = models.CharField(max_length=256)
-    panel_member_status_3 = models.CharField(max_length=256)
-    panel_member_status_4 = models.CharField(max_length=256)
-    panel_member_status_5 = models.CharField(max_length=256)
-
-    student_member_1 = models.CharField(max_length=256)
-    student_member_2 = models.CharField(max_length=256)
-    student_member_3 = models.CharField(max_length=256)
-    student_member_4 = models.CharField(max_length=256)
-    student_member_5 = models.CharField(max_length=256)
-
-    student_member_username_1 = models.CharField(max_length=256)
-    student_member_username_2 = models.CharField(max_length=256)
-    student_member_username_3 = models.CharField(max_length=256)
-    student_member_username_4 = models.CharField(max_length=256)
-    student_member_username_5 = models.CharField(max_length=256)
-
-    course = models.CharField(max_length=256)
-    major = models.CharField(max_length=256)
-    course_major_abbr = models.CharField(max_length=256)
-
+# Research Title
+class ResearchTitle(models.Model):
     research_title = models.CharField(max_length=256)
-
+    course = models.CharField(max_length=256)
+    major = models.CharField(max_length=256)
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_name = models.CharField(max_length=256)
+    status = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256)
     date_submitted = models.CharField(max_length=256)
 
-    form_status = models.CharField(max_length=256)
-
     def __str__(self) -> str:
-        return self.student_leader_username
-
-####################################################################################################################
+        return self.research_title
 
 # Defense Schedule
 class DefenseSchedule(models.Model):
@@ -278,22 +125,129 @@ class DefenseSchedule(models.Model):
 
     def __str__(self) -> str:
         return self.username
-        
-####################################################################################################################
 
 
-# Research Title
-class ResearchTitle(models.Model):
-    research_title = models.CharField(max_length=256)
-    course = models.CharField(max_length=256)
-    major = models.CharField(max_length=256)
+# Panel Invitation - BET-3
+class PanelInvitationBET3(models.Model):
     student_leader_username = models.CharField(max_length=256)
-    student_leader_name = models.CharField(max_length=256)
-    status = models.CharField(max_length=256)
-    course_major_abbr = models.CharField(max_length=256)
-    date_submitted = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    
+    dit_head_name = models.CharField(max_length=256)
+    dit_head_response = models.CharField(max_length=256)
+    dit_head_response_date = models.CharField(max_length=256)
+
+    panel_member_username= models.CharField(max_length=256)
+    panel_member_full_name= models.CharField(max_length=256)
+    panel_member_response= models.CharField(max_length=256)
+    panel_member_response_date= models.CharField(max_length=256)
+
+    form_date_submitted = models.CharField(max_length=256)
+
+    form_status = models.CharField(max_length=256)
+    form = models.CharField(max_length=256)
 
     def __str__(self) -> str:
-        return self.research_title
+        return self.student_leader_username
 
-####################################################################################################################
+# class PanelInvitationBET3Declined(models.Model):
+#     student_leader_username = models.CharField(max_length=256)
+
+#     dit_head_name = models.CharField(max_length=256)
+#     dit_head_response = models.CharField(max_length=256)
+#     dit_head_response_date = models.CharField(max_length=256)
+
+#     panel_member_username = models.CharField(max_length=256)
+#     panel_member_name = models.CharField(max_length=256)
+#     panel_member_response = models.CharField(max_length=256)
+#     panel_member_response_date = models.CharField(max_length=256)
+
+#     student_member_username_1 = models.CharField(max_length=256)
+#     student_member_name_1 = models.CharField(max_length=256)
+
+#     student_member_username_2 = models.CharField(max_length=256)
+#     student_member_name_2 = models.CharField(max_length=256)
+
+#     student_member_username_3 = models.CharField(max_length=256)
+#     student_member_name_3 = models.CharField(max_length=256)
+
+#     student_member_username_4 = models.CharField(max_length=256)
+#     student_member_name_4 = models.CharField(max_length=256)
+
+#     student_member_username_5 = models.CharField(max_length=256)
+#     student_member_name_5 = models.CharField(max_length=256)
+
+#     course = models.CharField(max_length=256)
+#     major = models.CharField(max_length=256)
+#     course_major_abbr = models.CharField(max_length=256)
+
+#     research_title_1 = models.CharField(max_length=256)
+#     research_title_2 = models.CharField(max_length=256)
+#     research_title_3 = models.CharField(max_length=256)
+#     research_title_4 = models.CharField(max_length=256)
+#     research_title_5 = models.CharField(max_length=256)
+
+#     form_date_submitted = models.CharField(max_length=256)
+#     defense_date = models.CharField(max_length=256)
+#     defense_start_time = models.CharField(max_length=256)
+#     defense_end_time = models.CharField(max_length=256)
+
+#     form = models.CharField(max_length=256)
+
+#     def __str__(self) -> str:
+#         return self.student_leader_username
+
+
+# Panel Conforme - BET-3
+# class PanelConformeBET3(models.Model):
+#     student_leader_username = models.CharField(max_length=256)
+
+#     dept_head = models.CharField(max_length=256)
+#     dept_head_status = models.CharField(max_length=256)
+
+#     panel_member_1 = models.CharField(max_length=256)
+#     panel_member_2 = models.CharField(max_length=256)
+#     panel_member_3 = models.CharField(max_length=256)
+#     panel_member_4 = models.CharField(max_length=256)
+#     panel_member_5 = models.CharField(max_length=256)
+
+#     panel_member_name_1 = models.CharField(max_length=256)
+#     panel_member_name_2 = models.CharField(max_length=256)
+#     panel_member_name_3 = models.CharField(max_length=256)
+#     panel_member_name_4 = models.CharField(max_length=256)
+#     panel_member_name_5 = models.CharField(max_length=256)
+
+#     panel_member_status_1 = models.CharField(max_length=256)
+#     panel_member_status_2 = models.CharField(max_length=256)
+#     panel_member_status_3 = models.CharField(max_length=256)
+#     panel_member_status_4 = models.CharField(max_length=256)
+#     panel_member_status_5 = models.CharField(max_length=256)
+
+#     student_member_1 = models.CharField(max_length=256)
+#     student_member_2 = models.CharField(max_length=256)
+#     student_member_3 = models.CharField(max_length=256)
+#     student_member_4 = models.CharField(max_length=256)
+#     student_member_5 = models.CharField(max_length=256)
+
+#     student_member_username_1 = models.CharField(max_length=256)
+#     student_member_username_2 = models.CharField(max_length=256)
+#     student_member_username_3 = models.CharField(max_length=256)
+#     student_member_username_4 = models.CharField(max_length=256)
+#     student_member_username_5 = models.CharField(max_length=256)
+
+#     course = models.CharField(max_length=256)
+#     major = models.CharField(max_length=256)
+#     course_major_abbr = models.CharField(max_length=256)
+
+#     research_title = models.CharField(max_length=256)
+
+#     date_submitted = models.CharField(max_length=256)
+
+#     form_status = models.CharField(max_length=256)
+
+#     def __str__(self) -> str:
+#         return self.student_leader_username
+
+
+
+
+

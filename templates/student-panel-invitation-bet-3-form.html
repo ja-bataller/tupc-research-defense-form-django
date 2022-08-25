@@ -17,7 +17,7 @@
 
   <body id="page-top">
     <div id="wrapper">
-      {% include 'student-form-sidebar.html' %}
+      {% include 'student-forms-sidebar.html' %}
 
       <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
@@ -230,9 +230,9 @@
                       <button type="submit" id="generate_form_button" class="btn btn-outline-success w-100">GENERATE ACCEPTED FORM</button>
                     </form>
 
-                    <form method="POST">
+                    <form method="POST" action="{% url 'student-panel-invitation-bet3-declined-form' %}">
                       {% csrf_token %}
-                      <button type="submit" id="generate_form_button" class="btn btn-outline-secondary w-100">GENERATE DECLINED FORM</button>
+                      <button type="submit" id="generate_decline_form_button" class="btn btn-outline-secondary w-100">GENERATE DECLINED FORM</button>
                     </form>
                     {% endif %} 
                     
@@ -495,9 +495,11 @@
       let panel_5_download = document.querySelector("#panel_5_download");
 
       let generate_form_button = document.querySelector("#generate_form_button");
+      let generate_decline_form_button = document.querySelector("#generate_decline_form_button");
 
       generate_form_button.setAttribute("type", "button");
       generate_form_button.style.display = "none";
+      generate_decline_form_button.style.display = "none";
     </script>
 
     {% if user_panel_invitation.panel_member_name_1 != "" %}
@@ -531,6 +533,7 @@
       generate_form_button.addEventListener("click", function () {
         $(document).ready(function () {
           generate_form_button.style.display = "none";
+          generate_decline_form_button.style.display = "none";
 
           $("#myModal").modal();
 
@@ -548,5 +551,28 @@
         });
       });
     </script>
+
+<script>
+  generate_decline_form_button.addEventListener("click", function () {
+    $(document).ready(function () {
+      generate_form_button.style.display = "none";
+      generate_decline_form_button.style.display = "none";
+
+      $("#myModal").modal();
+
+      new TypeIt("#simpleUsage", {
+        speed: 100,
+        waitUntilVisible: true,
+        loop: true,
+      })
+        .type("Loading...", { delay: 2000 })
+        .delete(10)
+        .type("Extracting data...", { delay: 3000 })
+        .delete(18)
+        .type("Generating PDF...", { delay: 3000 })
+        .go();
+    });
+  });
+</script>
   </body>
 </html>

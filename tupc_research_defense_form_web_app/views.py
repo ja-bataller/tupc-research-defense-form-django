@@ -1,5 +1,3 @@
-from email.headerregistry import Group
-from tkinter.tix import IMMEDIATE
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
@@ -268,6 +266,7 @@ def signup(request):
                 user_check.last_name = request.POST.get('last_name_input').title()
                 user_check.suffix = request.POST.get('suffix_input')
                 user_check.department = "Industrial Technology"
+                user_check.user_account = "Student"
                 user_check.is_student = 1
                 user_check.save()
 
@@ -297,6 +296,8 @@ def signup(request):
                     course = course_data.course,
                     major = course_data.major,
                     course_major_abbr = course_data.course_major_abbr,
+
+                    group_count = 0,
 
                     bet3_subject_teacher_username = subject_teacher_data.username,
                     bet3_subject_teacher_name = subject_teacher_full_name,
@@ -407,29 +408,31 @@ def login_as_user_accounts(request):
 def studentDashboard(request):
     current_user = (request.user)
     current_password = current_user.password
-
+    
+    ############## TOPBAR ##############
     topbar_data = topbarProcess(request);
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
 
-    # Panel Invitation BET-3
+    # BET-3 Panel Invitation
     try:
         panel_invitation_bet3_check = PanelInvitationBET3.objects.get(student_leader_username=current_user.username)
 
-
         context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
 
-        "panel_invitation_bet3" : panel_invitation_bet3_check,
+        'panel_invitation_bet3': panel_invitation_bet3_check,
         }
         return render(request, 'student-dashboard.html', context)
+
     except:
         pass
     
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
         }
 
     return render(request, 'student-dashboard.html', context)
@@ -441,14 +444,15 @@ def studentDashboard(request):
 def studentProfile(request):
     current_user = (request.user)
     current_password = current_user.password
-
+    
+    ############## TOPBAR ##############
     topbar_data = topbarProcess(request);
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
 
-    # Student Profile
+    # Student - Get the currently logged in user data
     student = StudentLeader.objects.get(username=current_user)
-
     user_username = student.username
     user_first_name = student.first_name
     user_middle_name = student.middle_name
@@ -459,20 +463,19 @@ def studentProfile(request):
     course_name = student.course
     major_name = student.major
 
-
     context = {
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
 
                 'user_first_name': user_first_name,
-                'user_middle_name' : user_middle_name,
-                'user_last_name' : user_last_name,
+                'user_middle_name': user_middle_name,
+                'user_last_name': user_last_name,
                 'user_suffix': user_suffix,
                 'user_course': user_course,  
-                'course_name' : course_name,
-                'major_name' : major_name,
+                'course_name': course_name,
+                'major_name': major_name,
                 'username': user_username, 
-                'user_email':user_email,
+                'user_email': user_email,
                 }   
 
     if request.method == 'POST':
@@ -499,11 +502,11 @@ def studentProfile(request):
                         'currently_loggedin_user_account' : currently_loggedin_user_account,
 
                         'user_first_name': user_first_name,
-                        'user_middle_name' : user_middle_name,
-                        'user_last_name' : user_last_name,
+                        'user_middle_name': user_middle_name,
+                        'user_last_name': user_last_name,
                         'user_course': user_course,  
-                        'course_name' : course_name,
-                        'major_name' : major_name,
+                        'course_name': course_name,
+                        'major_name': major_name,
                         'username': user_username, 
                         'user_email':user_email,
 
@@ -515,14 +518,14 @@ def studentProfile(request):
             else:
                 context = {
                     'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+                    'currently_loggedin_user_account': currently_loggedin_user_account,
 
                     'user_first_name': user_first_name,
-                    'user_middle_name' : user_middle_name,
-                    'user_last_name' : user_last_name,
+                    'user_middle_name': user_middle_name,
+                    'user_last_name': user_last_name,
                     'user_course': user_course,  
-                    'course_name' : course_name,
-                    'major_name' : major_name,
+                    'course_name': course_name,
+                    'major_name': major_name,
                     'username': user_username, 
                     'user_email':user_email,
 
@@ -534,14 +537,14 @@ def studentProfile(request):
         else:
             context = {
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
 
                 'user_first_name': user_first_name,
-                'user_middle_name' : user_middle_name,
-                'user_last_name' : user_last_name,
+                'user_middle_name': user_middle_name,
+                'user_last_name': user_last_name,
                 'user_course': user_course,  
-                'course_name' : course_name,
-                'major_name' : major_name,
+                'course_name': course_name,
+                'major_name': major_name,
                 'username': user_username, 
                 'user_email':user_email, 
 
@@ -552,6 +555,787 @@ def studentProfile(request):
 
     return render(request, 'student-profile.html', context)
 
+
+# Student - Group Member Process
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentGroupMemberProcess(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+    
+    try:
+        get_group_count = StudentLeader.objects.get(username = current_user.username)
+        group_count = get_group_count.group_count
+
+        if group_count == 0:
+            return redirect('student-add-group-members')
+        else:
+            return redirect('student-group-members-dashboard')
+
+    except:
+         return redirect('logout_user')
+
+
+# Student - Add Group Member Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentAddGroupMember(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
+
+    except:
+        return redirect('index')
+    
+    if get_student_leader_data.group_count >= 1:
+
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'response': 'sweet unauthorized to add group members'
+        }
+
+        return render(request, 'student-group-member-dashboard.html', context)
+
+    if request.method == 'POST':
+        group_member_count = request.POST.get('group_member_count')
+
+        student_username_2 = request.POST.get('student_username_2')
+        student_first_name_2 = request.POST.get('student_first_name_2')
+        student_middle_name_2 = request.POST.get('student_middle_name_2')
+        student_last_name_2 = request.POST.get('student_last_name_2')
+        student_suffix_2 = request.POST.get('student_suffix_2')
+
+        student_username_3 = request.POST.get('student_username_3')
+        student_first_name_3 = request.POST.get('student_first_name_3')
+        student_middle_name_3 = request.POST.get('student_middle_name_3')
+        student_last_name_3 = request.POST.get('student_last_name_3')
+        student_suffix_3 = request.POST.get('student_suffix_3')
+
+        student_username_4 = request.POST.get('student_username_4')
+        student_first_name_4 = request.POST.get('student_first_name_4')
+        student_middle_name_4 = request.POST.get('student_middle_name_4')
+        student_last_name_4 = request.POST.get('student_last_name_4')
+        student_suffix_4 = request.POST.get('student_suffix_4')
+
+        student_username_5 = request.POST.get('student_username_5')
+        student_first_name_5 = request.POST.get('student_first_name_5')
+        student_middle_name_5 = request.POST.get('student_middle_name_5')
+        student_last_name_5 = request.POST.get('student_last_name_5')
+        student_suffix_5 = request.POST.get('student_suffix_5')
+        
+        student_leader_full_name = None
+
+        if get_student_leader_data.middle_name == "":
+            student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+        else:
+            student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + '.'
+        
+        if group_member_count == "1":
+            get_student_leader_data.group_count = 1
+            get_student_leader_data.save()
+
+            get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = current_user.username)
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'student_leader_data': get_student_leader_data,
+                'student_leader_full_name': student_leader_full_name,
+
+                'group_members': get_group_members,
+
+                'response': 'sweet no group members added'
+            }
+            return render(request, 'student-group-member-dashboard.html', context)
+        
+        else:
+
+            if student_username_2 != "":
+                student_member_full_name_2 = None
+
+                # Student - Check if TUPC ID No is the same with the other group members.
+                if student_username_2 in {current_user.username, student_username_3, student_username_4,student_username_5}:
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet group member has same username"
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                # Student - Check if Group Member is Student Leader.
+                try:
+                    User.objects.get(username = student_username_2)
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'existing_username': student_username_2,
+
+                        'response': "sweet group member is a student leader"
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                except:
+                    pass
+                
+                # Student - Check if Group Member is a group member.
+                try:
+                    StudentGroupMember.objects.get(student_member_username = student_username_2)
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'existing_username': student_username_2,
+
+                        'response': "sweet already group member "
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                except:
+                    pass
+
+                if student_middle_name_2 == "":
+                    student_member_full_name_2 = student_last_name_2 + " " + student_suffix_2 + ", " + student_first_name_2
+                else:
+                    student_member_full_name_2 = student_last_name_2 + " " + student_suffix_2 + ", " + student_first_name_2 + " " + student_middle_name_2[0] + '.'
+
+                save_group_member_2 = StudentGroupMember(
+                    student_leader_username = current_user.username,
+                    student_leader_full_name = student_leader_full_name.title(),
+                    student_member_username = student_username_2,
+                    student_member_full_name = student_member_full_name_2.title(),
+                    course = get_student_leader_data.course,
+                    major = get_student_leader_data.major,
+                    course_major_abbr = get_student_leader_data.course_major_abbr,
+                )
+                save_group_member_2.save()
+
+                get_student_leader_data.group_count = 2
+                get_student_leader_data.save()
+            
+            if student_username_3 != "":
+                student_member_full_name_3 = None
+
+                # Student - Check if TUPC ID No is the same with the other group members.
+                if student_username_3 in {current_user.username, student_username_2, student_username_4,student_username_5}:
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet group member has same username"
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                # Student - Check if Group Member is Student Leader.
+                try:
+                    User.objects.get(username = student_username_3)
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'existing_username': student_username_3,
+
+                        'response': "sweet group member is a student leader"
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                except:
+                    pass
+                
+                # Student - Check if Group Member is a group member.
+                try:
+                    StudentGroupMember.objects.get(student_member_username = student_username_3)
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'existing_username': student_username_3,
+
+                        'response': "sweet already group member "
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                except:
+                    pass
+
+                if student_middle_name_3 == "":
+                    student_member_full_name_3 = student_last_name_3 + " " + student_suffix_3 + ", " + student_first_name_3
+                else:
+                    student_member_full_name_3 = student_last_name_3 + " " + student_suffix_3 + ", " + student_first_name_3 + " " + student_middle_name_3[0] + '.'
+
+                save_group_member_3 = StudentGroupMember(
+                    student_leader_username = current_user.username,
+                    student_leader_full_name = student_leader_full_name.title(),
+                    student_member_username = student_username_3,
+                    student_member_full_name = student_member_full_name_3.title(),
+                    course = get_student_leader_data.course,
+                    major = get_student_leader_data.major,
+                    course_major_abbr = get_student_leader_data.course_major_abbr,
+                )
+                save_group_member_3.save()
+
+                get_student_leader_data.group_count = 3
+                get_student_leader_data.save()
+            
+            if student_username_4 != "":
+                student_member_full_name_4 = None
+
+                # Student - Check if TUPC ID No is the same with the other group members.
+                if student_username_4 in {current_user.username, student_username_2, student_username_3,student_username_5}:
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet group member has same username"
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                # Student - Check if Group Member is Student Leader.
+                try:
+                    User.objects.get(username = student_username_4)
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'existing_username': student_username_4,
+
+                        'response': "sweet group member is a student leader"
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                except:
+                    pass
+                
+                # Student - Check if Group Member is a group member.
+                try:
+                    StudentGroupMember.objects.get(student_member_username = student_username_4)
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'existing_username': student_username_4,
+
+                        'response': "sweet already group member "
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                except:
+                    pass
+
+                if student_middle_name_4 == "":
+                    student_member_full_name_4 = student_last_name_4 + " " + student_suffix_4 + ", " + student_first_name_4
+                else:
+                    student_member_full_name_4 = student_last_name_4 + " " + student_suffix_4 + ", " + student_first_name_4 + " " + student_middle_name_4[0] + '.'
+
+                save_group_member_4 = StudentGroupMember(
+                    student_leader_username = current_user.username,
+                    student_leader_full_name = student_leader_full_name.title(),
+                    student_member_username = student_username_4,
+                    student_member_full_name = student_member_full_name_4.title(),
+                    course = get_student_leader_data.course,
+                    major = get_student_leader_data.major,
+                    course_major_abbr = get_student_leader_data.course_major_abbr,
+                )
+                save_group_member_4.save()
+
+                get_student_leader_data.group_count = 4
+                get_student_leader_data.save()
+
+            if student_username_5 != "":
+                student_member_full_name_5 = None
+
+                # Student - Check if TUPC ID No is the same with the other group members.
+                if student_username_5 in {current_user.username, student_username_2, student_username_3,student_username_4}:
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet group member has same username"
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                # Student - Check if Group Member is Student Leader.
+                try:
+                    User.objects.get(username = student_username_5)
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'existing_username': student_username_5,
+
+                        'response': "sweet group member is a student leader"
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                except:
+                    pass
+                
+                # Student - Check if Group Member is a group member.
+                try:
+                    StudentGroupMember.objects.get(student_member_username = student_username_5)
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'existing_username': student_username_5,
+
+                        'response': "sweet already group member "
+                        }
+
+                    return render(request, 'student-add-group-member.html', context)
+
+                except:
+                    pass
+
+                if student_middle_name_5 == "":
+                    student_member_full_name_5 = student_last_name_5 + " " + student_suffix_5 + ", " + student_first_name_5
+                else:
+                    student_member_full_name_5 = student_last_name_5 + " " + student_suffix_5 + ", " + student_first_name_5 + " " + student_middle_name_5[0] + '.'
+
+                save_group_member_5 = StudentGroupMember(
+                    student_leader_username = current_user.username,
+                    student_leader_full_name = student_leader_full_name.title(),
+                    student_member_username = student_username_5,
+                    student_member_full_name = student_member_full_name_5.title(),
+                    course = get_student_leader_data.course,
+                    major = get_student_leader_data.major,
+                    course_major_abbr = get_student_leader_data.course_major_abbr,
+                )
+                save_group_member_5.save()
+
+                get_student_leader_data.group_count = 5
+                get_student_leader_data.save()
+
+        get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = current_user.username)
+
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'student_leader_data': get_student_leader_data,
+        'student_leader_full_name': student_leader_full_name,
+
+        'group_members':get_group_members,
+
+        'response': 'sweet group members added'
+        }
+
+        return render(request, 'student-group-member-dashboard.html', context)
+    
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'student_leader_data': get_student_leader_data,
+        }
+
+    return render(request, 'student-add-group-member.html', context)
+
+
+# Student - Group Member Dashboard Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentGroupMembersDashboard(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
+
+    except:
+        return redirect('index')
+
+    if get_student_leader_data.group_count == 0:
+
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'response': 'sweet unauthorized to access group members'
+        }
+
+        return render(request, 'student-group-member-dashboard.html', context)
+
+    get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = current_user.username)
+
+    student_leader_full_name = None
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0]
+    
+    context = {
+    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+    'currently_loggedin_user_account': currently_loggedin_user_account,
+
+    'student_leader_data': get_student_leader_data,
+    'student_leader_full_name': student_leader_full_name,
+
+    'group_members':get_group_members,
+    }
+
+    return render(request, 'student-group-member-dashboard.html', context)
+
+
+# Student - Research Title Process
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentResearchTitleProcess(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Check if the Student Leader submitted the group members information
+    try:
+        get_group_count = StudentLeader.objects.get(username = current_user.username)
+        group_count = get_group_count.group_count
+
+        if group_count == 0:
+            context = {
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+            'currently_loggedin_user_account': currently_loggedin_user_account,
+
+            'response': "sweet no group members"
+            }
+
+            return render(request, 'student-dashboard.html', context)
+
+    except:
+         return redirect('logout_user')
+    
+    check_research_title = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
+         
+    if check_research_title:
+        return redirect('student-research-title-dashboard')
+
+    else:
+        return redirect('student-add-research-titles')
+
+
+# Student - Add Research Title Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentAddResearchTitle(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
+
+    except:
+        return redirect('index')
+
+    try:
+        ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'response': "sweet unauthorize to add research titles"
+        }
+
+        return render(request, 'student-research-title-dashboard.html', context)
+    except:
+        pass
+    
+    student_leader_full_name = None
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0]
+
+    research_titles = []
+
+    if request.method == 'POST':
+        research_title_1_input = request.POST.get('research_title_1_input')
+        research_title_2_input = request.POST.get('research_title_2_input')
+        research_title_3_input = request.POST.get('research_title_3_input')
+        research_title_4_input = request.POST.get('research_title_4_input')
+        research_title_5_input = request.POST.get('research_title_5_input')
+
+        if research_title_1_input != "":
+
+            if research_title_1_input in (research_title_2_input, research_title_3_input, research_title_4_input, research_title_5_input):
+                print("pass 1")
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'response': "sweet same research title"
+                }
+
+                return render(request, 'student-add-research-title.html', context)
+
+            try:
+                ResearchTitle.objects.get(research_title = research_title_1_input)
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'existing_research_title': research_title_1_input,
+
+                'response': "sweet research title exist"
+                }
+                return render(request, 'student-add-research-title.html', context)
+
+            except:
+                pass
+
+            research_titles.append(research_title_1_input)
+        
+        if research_title_2_input != "":
+
+            if research_title_2_input in {research_title_1_input, research_title_3_input, research_title_4_input, research_title_5_input}:
+                
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'response': "sweet same research title"
+                }
+                return render(request, 'student-add-research-title.html', context)
+
+            try:
+                ResearchTitle.objects.get(research_title = research_title_2_input)
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'existing_research_title': research_title_2_input,
+
+                'response': "sweet research title exist"
+                }
+                return render(request, 'student-add-research-title.html', context)
+
+            except:
+                pass
+
+            research_titles.append(research_title_2_input)
+        
+        if research_title_3_input != "":
+
+            if research_title_3_input in {research_title_1_input, research_title_2_input, research_title_4_input, research_title_5_input}:
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'response': "sweet same research title"
+                }
+
+                return render(request, 'student-add-research-title.html', context)
+
+            try:
+                ResearchTitle.objects.get(research_title = research_title_3_input)
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'existing_research_title': research_title_3_input,
+
+                'response': "sweet research title exist"
+                }
+                return render(request, 'student-add-research-title.html', context)
+
+            except:
+                pass
+
+            research_titles.append(research_title_3_input)
+
+        if research_title_4_input != "":
+
+            if research_title_4_input in {research_title_1_input, research_title_2_input, research_title_3_input, research_title_5_input}:
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'response': "sweet same research title"
+                }
+
+                return render(request, 'student-add-research-title.html', context)
+            try:
+                ResearchTitle.objects.get(research_title = research_title_4_input)
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'existing_research_title': research_title_4_input,
+
+                'response': "sweet research title exist"
+                }
+                return render(request, 'student-add-research-title.html', context)
+
+            except:
+                pass
+
+            research_titles.append(research_title_4_input)
+        
+        if research_title_5_input != "":
+
+            if research_title_5_input in {research_title_1_input, research_title_2_input, research_title_3_input, research_title_4_input}:
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'response': "sweet same research title"
+                }
+
+                return render(request, 'student-add-research-title.html', context)
+            try:
+                ResearchTitle.objects.get(research_title = research_title_5_input)
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'existing_research_title': research_title_5_input,
+
+                'response': "sweet research title exist"
+                }
+                return render(request, 'student-add-research-title.html', context)
+
+            except:
+                pass
+
+            research_titles.append(research_title_5_input)
+
+        for i in range(len(research_titles)):
+            save_Research_title = ResearchTitle(
+                research_title = research_titles[i].title(),
+                course = get_student_leader_data.course,
+                major = get_student_leader_data.major,
+                course_major_abbr = get_student_leader_data.course_major_abbr,
+                student_leader_username = current_user.username,
+                student_leader_name = student_leader_full_name,
+                status = "Title Defense - Pending",
+                date_submitted = today.strftime("%B %d, %Y")
+            )
+            save_Research_title.save()
+            i + 1
+
+        get_research_titles = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
+
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'research_titles': get_research_titles,
+
+        'response': "sweet research title saved"
+        }
+
+        return render(request, 'student-research-title-dashboard.html', context)
+ 
+    context = {
+    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+    'currently_loggedin_user_account': currently_loggedin_user_account,
+    }
+
+    return render(request, 'student-add-research-title.html', context)
+
+# Student - Group Member Dashboard Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentResearchTitleDashboard(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    get_research_titles = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
+    
+    context = {
+    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+    'currently_loggedin_user_account': currently_loggedin_user_account,
+
+    'research_titles': get_research_titles
+    }
+
+    return render(request, 'student-research-title-dashboard.html', context)
 
 # Student - Panel Invitation BET-3 Process
 @login_required(login_url='index')
@@ -2301,7 +3085,23 @@ def studentPanelInvitationBet3Form(request):
     print(panel_list)
     print(panel_date_response)
 
-    student_member_list = [user_panel_invitation.student_member_name_1, user_panel_invitation.student_member_name_2, user_panel_invitation.student_member_name_3, user_panel_invitation.student_member_name_4, user_panel_invitation.student_member_name_5]
+    student_member_list = []
+    
+    if user_panel_invitation.student_member_name_1 != "":
+        student_member_list.append(user_panel_invitation.student_member_name_1)
+
+    if user_panel_invitation.student_member_name_2 != "":
+        student_member_list.append(user_panel_invitation.student_member_name_2)
+
+    if user_panel_invitation.student_member_name_3 != "":
+        student_member_list.append(user_panel_invitation.student_member_name_3)
+
+    if user_panel_invitation.student_member_name_4 != "":
+        student_member_list.append(user_panel_invitation.student_member_name_4)
+
+    if user_panel_invitation.student_member_name_5 != "":
+        student_member_list.append(user_panel_invitation.student_member_name_5)
+    
     student_member_list.sort()
 
     panel_1_download = None
@@ -2327,6 +3127,31 @@ def studentPanelInvitationBet3Form(request):
             student_table.cell(3, 0).paragraphs[0].runs[0].text = student_member_list[2]
             student_table.cell(4, 0).paragraphs[0].runs[0].text = student_member_list[3]
             student_table.cell(5, 0).paragraphs[0].runs[0].text = student_member_list[4]
+
+            # try:
+            #     student_table.cell(1, 0).paragraphs[0].runs[0].text = student_member_list[0]
+            # except:
+            #     student_table.cell(1, 0).paragraphs[0].runs[0].text = ""
+
+            # try:
+            #     student_table.cell(2, 0).paragraphs[0].runs[0].text = student_member_list[1]
+            # except:
+            #     student_table.cell(2, 0).paragraphs[0].runs[0].text = ""
+
+            # try:
+            #     student_table.cell(3, 0).paragraphs[0].runs[0].text = student_member_list[2]
+            # except:
+            #     student_table.cell(3, 0).paragraphs[0].runs[0].text = ""
+
+            # try:
+            #     student_table.cell(4, 0).paragraphs[0].runs[0].text = student_member_list[3]
+            # except:
+            #     student_table.cell(4, 0).paragraphs[0].runs[0].text = ""
+
+            # try:
+            #     student_table.cell(5, 0).paragraphs[0].runs[0].text = student_member_list[4]
+            # except:
+            #     student_table.cell(5, 0).paragraphs[0].runs[0].text = ""
 
             student_table.cell(1, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
             student_table.cell(1, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
@@ -2520,7 +3345,7 @@ def studentPanelInvitationBet3DeclinedForm(request):
     panel_members = User.objects.all().filter(is_panel=1)
 
     try:
-        user_panel_invitation = PanelInvitationBET3.objects.get(student_leader_username = current_user.username)
+        user_panel_invitation = PanelInvitationBET3Declined.objects.get(student_leader_username = current_user.username)
     
     except:
         context = {
@@ -2530,10 +3355,44 @@ def studentPanelInvitationBet3DeclinedForm(request):
 
         return render(request, 'student-dashboard.html', context)
     
+    panel_username = []
     panel_list = []
     panel_response = []
     panel_date_response = []
-    pass
+    
+    for panel_members in user_panel_invitation:
+        panel_username.append(panel_members.panel_member_username)
+
+    print(panel_list)
+    print(panel_date_response)
+
+    student_member_list = []
+    
+    # if user_panel_invitation.student_member_name_1 != "":
+    #     student_member_list.append(user_panel_invitation.student_member_name_1)
+
+    # if user_panel_invitation.student_member_name_2 != "":
+    #     student_member_list.append(user_panel_invitation.student_member_name_2)
+
+    # if user_panel_invitation.student_member_name_3 != "":
+    #     student_member_list.append(user_panel_invitation.student_member_name_3)
+
+    # if user_panel_invitation.student_member_name_4 != "":
+    #     student_member_list.append(user_panel_invitation.student_member_name_4)
+
+    # if user_panel_invitation.student_member_name_5 != "":
+    #     student_member_list.append(user_panel_invitation.student_member_name_5)
+    
+    # student_member_list.sort()
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+        'panel_members' : panel_members,
+        'user_panel_invitation' : user_panel_invitation,
+        }
+
+    return render(request, 'student-panel-invitation-bet-3-form.html', context)
 
 # Student - Panel Conforme BET-3 Process
 @login_required(login_url='index')

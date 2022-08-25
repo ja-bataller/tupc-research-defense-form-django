@@ -9,28 +9,88 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Student - Panel Invitation</title>
+    <title>Student - Add Group Members</title>
 
     {% include 'css-main-cdn.html' %}
   </head>
 
   <body id="page-top">
     <div id="wrapper">
-      {% include 'student-forms-sidebar.html' %}
+      
+      <!-- Sidebar -->
+      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'student-dashboard' %}">
+          <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'student-dashboard' %}">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span></a
+          >
+        </li>
+
+        <!-- Nav Item - Group Collapse Menu -->
+        <li class="nav-item active">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGroup" aria-expanded="true" aria-controls="collapseGroup">
+            <i class="fa-solid fa-users"></i>
+            <span>Group</span>
+          </a>
+          <div id="collapseGroup" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="{% url 'student-group-members' %}">Members</a>
+              <a class="collapse-item" href="{% url 'student-research-titles' %}">Research Titles</a>
+            </div>
+          </div>
+        </li>
+
+        <!-- Nav Item - Forms Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForms" aria-expanded="true" aria-controls="collapseForms">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>Forms</span>
+          </a>
+          <div id="collapseForms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">BET-3</h6>
+              <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Panel Invitation</a>
+              <div class="collapse-divider"></div>
+              <h6 class="collapse-header">BET-5</h6>
+            </div>
+          </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider" />
+
+        <!-- Nav Item - The Developers -->
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fa-solid fa-code"></i>
+            <span>The Devs</span>
+          </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block" />
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+          <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+      </ul>
+      <!-- End of Sidebar -->
 
       <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
           {% include 'topbar.html'%}
 
           <div class="container-fluid">
-            <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-gray-800">Panel Invitation (BET-3)</h1>
-              <!-- <div class="float-right">
-                            <button type="button" class="btn btn-success"><i class="fa-solid fa-file-pdf"></i> Download
-                                Form</button>
-                        </div> -->
-            </div>
-
             <form method="POST">
               {% csrf_token %}
 
@@ -38,42 +98,41 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <h6 class="h4 mb-0 text-gray-800 mb-2">Group Members:</h6>
+                      <h6 class="h4 mb-0 text-gray-800 mb-2">Group Member:</h6>
 
                       <h6 class="h6 mb-0 text-gray-800 mb-2">How many members are you in a group?</h6>
-                      <select id="student_member_count" class="custom-select mb-4">
+                      <select id="student_member_count" name="group_member_count" class="custom-select mb-4">
                         <option selected value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
                       </select>
-                      
+
                       <div class="form-group mb-3">
                         <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - TUPC ID No. :</h6>
-                        <input type="text" id="student_username_1" class="form-control" name="student_username_1" value="{{current_user.username}}"  onkeyup="this.value = this.value.toUpperCase();" disabled/>
+                        <input type="text" id="student_username_1" class="form-control" name="student_username_1" value="{{student_leader_data.username}}" onkeyup="this.value = this.value.toUpperCase();" disabled />
                       </div>
 
                       <div class="form-group mb-3">
                         <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - First Name:</h6>
-                        <input type="text" id="student_first_name_1" class="form-control" name="student_first_name_1" style="text-transform: capitalize" value="{{current_user.first_name}}"  disabled/>
+                        <input type="text" id="student_first_name_1" class="form-control" name="student_first_name_1" style="text-transform: capitalize" value="{{student_leader_data.first_name}}" disabled />
                       </div>
 
                       <div class="form-group mb-3">
                         <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Middle Name:</h6>
-                        <input type="text" id="student_middle_name_1" class="form-control" name="student_middle_name_1" style="text-transform: capitalize" value="{{current_user.middle_name}}"  disabled />
+                        <input type="text" id="student_middle_name_1" class="form-control" name="student_middle_name_1" style="text-transform: capitalize" value="{{student_leader_data.middle_name}}" disabled />
                       </div>
 
                       <div class="form-group mb-3">
                         <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Last Name:</h6>
-                        <input type="text" id="student_last_name_1" class="form-control" name="student_last_name_1" style="text-transform: capitalize" value="{{current_user.last_name}}"  disabled />
+                        <input type="text" id="student_last_name_1" class="form-control" name="student_last_name_1" style="text-transform: capitalize" value="{{student_leader_data.last_name}}" disabled />
                       </div>
 
                       <div class="form-group mb-3">
                         <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Suffix:</h6>
-                        <input type="text" id="student_suffix_1" class="form-control" name="student_suffix_1" style="text-transform: capitalize" value="{{current_user.suffix}}"  disabled />
+                        <input type="text" id="student_suffix_1" class="form-control" name="student_suffix_1" style="text-transform: capitalize" value="{{student_leader_data.suffix}}" disabled />
                       </div>
-                      
 
                       <div id="student_member_2" style="display: None">
                         <hr class="mt-5 mb-5" />
@@ -227,133 +286,6 @@
                         </div>
                       </div>
 
-                      <h6 class="h4 mb-0 text-gray-800 mb-2">Research Title:</h6>
-
-                      <h6 class="h6 mb-0 text-gray-800 mb-2">How many Research Title you have in a group?</h6>
-                      <select id="research_title_count" class="custom-select mb-4">
-                        <option selected value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                      </select>
-
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #1</h6>
-                        <input type="text" class="form-control" name="research_title_1_input" style="text-transform: capitalize" required />
-                      </div>
-
-                      <div id="research_title_2" class="form-group mb-3" style="display: None">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #2</h6>
-                        <input type="text" id="research_title_2_input" class="form-control" name="research_title_2_input" style="text-transform: capitalize" />
-                      </div>
-
-                      <div id="research_title_3" class="form-group mb-3" style="display: None">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #3</h6>
-                        <input type="text" id="research_title_3_input" class="form-control" name="research_title_3_input" style="text-transform: capitalize" />
-                      </div>
-
-                      <div id="research_title_4" class="form-group mb-3" style="display: None">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #4</h6>
-                        <input type="text" id="research_title_4_input" class="form-control" name="research_title_4_input" style="text-transform: capitalize" />
-                      </div>
-
-                      <div id="research_title_5" class="form-group mb-3" style="display: None">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #5</h6>
-                        <input type="text" id="research_title_5_input" class="form-control" name="research_title_5_input" style="text-transform: capitalize" />
-                      </div>
-
-                      <h6 class="h6 mb-0 text-gray-800 mt-5 mb-2">Date & Time of Defense:</h6>
-                      <div class="form-group mb-5">
-                        <select class="custom-select" name="defense_schedule_input" required>
-                          <option value="0" selected>What is your preferred date for Defense?</option>
-                          {% for date in defense_dates %}
-                          <option value="{{date.id}}">{{date.date}} -  {{date.start_time}} to {{date.end_time}}</option>
-                          {% endfor %}
-                        </select>
-                      </div>
-
-                      <!-- Department Head Start -->
-                      <h6 class="h6 mb-0 text-gray-800 mb-2">Department of Industrial Technology - Head:</h6>
-                      <div class="form-group mb-3">
-                        <input type="text" class="form-control" value="{{dept_head_name}}" name="dept_head_name_input" style="text-transform: capitalize" required disabled />
-                      </div>
-                      <!-- Department Head End -->
-
-                      <!-- Panel Members Start -->
-                      <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Members:</h6>
-
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">1</span>
-                        </div>
-                        <select class="custom-select" name="panel1_input" required>
-                          <option selected>Choose panel member here...</option>
-                          {% for panel in panel_members %} 
-                          {% if panel.middle_name == "" %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
-                          {% else %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
-                          {% endif %} 
-                          {% endfor %}
-                        </select>
-                      </div>
-
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">2</span>
-                        </div>
-                        <select class="custom-select" name="panel2_input" required>
-                          <option selected>Choose panel member here...</option>
-                          {% for panel in panel_members %} {% if panel.middle_name == "" %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
-                          {% else %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
-                          {% endif %} {% endfor %}
-                        </select>
-                      </div>
-
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">3</span>
-                        </div>
-                        <select class="custom-select" name="panel3_input" required>
-                          <option selected>Choose panel member here...</option>
-                          {% for panel in panel_members %} {% if panel.middle_name == "" %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
-                          {% else %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
-                          {% endif %} {% endfor %}
-                        </select>
-                      </div>
-
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">4</span>
-                        </div>
-                        <select class="custom-select" name="panel4_input" required>
-                          <option selected>Choose panel member here...</option>
-                          {% for panel in panel_members %} {% if panel.middle_name == "" %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
-                          {% else %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
-                          {% endif %} {% endfor %}
-                        </select>
-                      </div>
-
-                      <div class="input-group mb-4">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">5</span>
-                        </div>
-                        <select class="custom-select" name="panel5_input" required>
-                          <option selected>Choose panel member here...</option>
-                          {% for panel in panel_members %} {% if panel.middle_name == "" %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
-                          {% else %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
-                          {% endif %} {% endfor %}
-                        </select>
-                      </div>
                       <!-- Panel Members End -->
                       <button type="submit" class="btn btn-outline-success w-100">Submit</button>
                     </div>
@@ -379,141 +311,6 @@
     </a>
 
     {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% include 'alert-validation.html' %}
-
-    <script>
-      let today = new Date();
-      let dd = today.getDate() + 7; // +7 to enable the date 1 week from todays date
-      let mm = today.getMonth() + 1; //January is 0 so need to add 1 to make it 1
-      let yyyy = today.getFullYear();
-
-      if (dd < 10) {
-        dd = "0" + dd;
-      }
-      if (mm < 10) {
-        mm = "0" + mm;
-      }
-
-      min_date = yyyy + "-" + mm + "-" + dd;
-      document.getElementById("defense_date").setAttribute("min", min_date);
-    </script>
-
-    <script>
-      const picker = document.getElementById("defense_date");
-      picker.addEventListener("input", function (e) {
-        var day = new Date(this.value).getUTCDay();
-        if ([6, 0].includes(day)) {
-          e.preventDefault();
-          this.value = "";
-          iziToast.error({
-            title: "Invalid",
-            message: "Weekend Dates is not allowed.",
-            position: "topCenter",
-            timeout: 5000,
-          });
-        }
-      });
-    </script>
-
-    <script>
-      let research_title_count = document.querySelector("#research_title_count");
-      let research_title_1 = document.querySelector("#research_title_1");
-      let research_title_2 = document.querySelector("#research_title_2");
-      let research_title_3 = document.querySelector("#research_title_3");
-      let research_title_4 = document.querySelector("#research_title_4");
-      let research_title_5 = document.querySelector("#research_title_5");
-
-      let research_title_1_input = document.querySelector("#research_title_1_input");
-      let research_title_2_input = document.querySelector("#research_title_2_input");
-      let research_title_3_input = document.querySelector("#research_title_3_input");
-      let research_title_4_input = document.querySelector("#research_title_4_input");
-      let research_title_5_input = document.querySelector("#research_title_5_input");
-
-      research_title_count.addEventListener("change", (event) => {
-        if (research_title_count.value == "1") {
-          research_title_1.style.display = "block";
-
-          research_title_2.style.display = "none";
-          research_title_2_input.removeAttribute("required");
-          research_title_2_input.value = "";
-
-          research_title_3.style.display = "none";
-          research_title_3_input.removeAttribute("required");
-          research_title_3_input.value = "";
-
-          research_title_4.style.display = "none";
-          research_title_4_input.removeAttribute("required");
-          research_title_4_input.value = "";
-
-          research_title_5.style.display = "none";
-          research_title_5_input.removeAttribute("required");
-          research_title_4_input.value = "";
-        }
-
-        if (research_title_count.value == "2") {
-          research_title_1.style.display = "block";
-
-          research_title_2.style.display = "block";
-          research_title_2_input.required = true;
-
-          research_title_3.style.display = "none";
-          research_title_3_input.value = "";
-
-          research_title_4.style.display = "none";
-          research_title_4_input.value = "";
-
-          research_title_5.style.display = "none";
-          research_title_5_input.value = "";
-        }
-
-        if (research_title_count.value == "3") {
-          research_title_1.style.display = "block";
-
-          research_title_2.style.display = "block";
-          research_title_2_input.required = true;
-
-          research_title_3.style.display = "block";
-          research_title_3_input.required = true;
-
-          research_title_4.style.display = "none";
-          research_title_4_input.value = "";
-
-          research_title_5.style.display = "none";
-          research_title_5_input.value = "";
-        }
-
-        if (research_title_count.value == "4") {
-          research_title_1.style.display = "block";
-
-          research_title_2.style.display = "block";
-          research_title_2_input.required = true;
-
-          research_title_3.style.display = "block";
-          research_title_3_input.required = true;
-
-          research_title_4.style.display = "block";
-          research_title_4_input.required = true;
-
-          research_title_5.style.display = "none";
-          research_title_5_input.value = "";
-        }
-
-        if (research_title_count.value == "5") {
-          research_title_1.style.display = "block";
-
-          research_title_2.style.display = "block";
-          research_title_2_input.required = true;
-
-          research_title_3.style.display = "block";
-          research_title_3_input.required = true;
-
-          research_title_4.style.display = "block";
-          research_title_4_input.required = true;
-
-          research_title_5.style.display = "block";
-          research_title_5_input.required = true;
-        }
-      });
-    </script>
 
     <script>
       let student_member_count = document.querySelector("#student_member_count");
@@ -545,8 +342,6 @@
       let student_middle_name_5 = document.querySelector("#student_middle_name_5");
       let student_last_name_5 = document.querySelector("#student_last_name_5");
       let student_suffix_5 = document.querySelector("#student_suffix_5");
-
-      let research_title_count_sync = document.querySelector("#research_title_count");
 
       student_member_count.addEventListener("change", (event) => {
         if (student_member_count.value == "1") {
@@ -600,6 +395,10 @@
           student_member_4.style.display = "none";
           student_member_5.style.display = "none";
 
+          student_username_2.required = true;
+          student_first_name_2.required = true;
+          student_last_name_2.required = true;
+
           student_username_3.removeAttribute("required");
           student_first_name_3.removeAttribute("required");
           student_last_name_3.removeAttribute("required");
@@ -635,6 +434,14 @@
           student_member_4.style.display = "none";
           student_member_5.style.display = "none";
 
+          student_username_2.required = true;
+          student_first_name_2.required = true;
+          student_last_name_2.required = true;
+
+          student_username_3.required = true;
+          student_first_name_3.required = true;
+          student_last_name_3.required = true;
+
           student_username_4.removeAttribute("required");
           student_first_name_4.removeAttribute("required");
           student_last_name_4.removeAttribute("required");
@@ -660,6 +467,18 @@
           student_member_4.style.display = "block";
           student_member_5.style.display = "none";
 
+          student_username_2.required = true;
+          student_first_name_2.required = true;
+          student_last_name_2.required = true;
+
+          student_username_3.required = true;
+          student_first_name_3.required = true;
+          student_last_name_3.required = true;
+
+          student_username_4.required = true;
+          student_first_name_4.required = true;
+          student_last_name_4.required = true;
+
           student_username_5.removeAttribute("required");
           student_first_name_5.removeAttribute("required");
           student_last_name_5.removeAttribute("required");
@@ -674,6 +493,22 @@
           student_member_3.style.display = "block";
           student_member_4.style.display = "block";
           student_member_5.style.display = "block";
+
+          student_username_2.required = true;
+          student_first_name_2.required = true;
+          student_last_name_2.required = true;
+
+          student_username_3.required = true;
+          student_first_name_3.required = true;
+          student_last_name_3.required = true;
+
+          student_username_4.required = true;
+          student_first_name_4.required = true;
+          student_last_name_4.required = true;
+
+          student_username_5.required = true;
+          student_first_name_5.required = true;
+          student_last_name_5.required = true;
         } else {
           Swal.fire("Invalid", "You entered an invalid Group Member Count.", "error");
 
@@ -684,109 +519,29 @@
       });
     </script>
 
-    {% if response == 'sweet inc form' %}
+    {% if response == 'sweet group member is a student leader' %}
     <script>
-      Swal.fire("Uh-oh", "Sorry, can't fill-up  form at the moment. \n Please try again later.", "warning");
+      Swal.fire("Invalid", "{{existing_username}} can't be a Group Member. (Faculty Member / Student Leader)", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
+        window.location.replace("{% url 'student-add-group-members' %}");
+      }, 2000);
     </script>
-    {% endif %} {% if response == 'sweet panel not in the list' %}
+    {% endif %} {% if response == 'sweet group member has same username' %}
     <script>
-      Swal.fire("Uh-oh", "You just entered a Panel Member which is not in the list. Please choose from the choices given.", "warning");
-    </script>
-    {% endif %} {% if response == 'sweet student member exist 2' %}
-    <script>
-      Swal.fire("Uh-oh", "Group Member #2 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
-    </script>
-    {% endif %} {% if response == 'sweet student member exist 3' %}
-    <script>
-      Swal.fire("Uh-oh", "Group Member #3 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
-    </script>
-    {% endif %} {% if response == 'sweet student member exist 4' %}
-    <script>
-      Swal.fire("Uh-oh", "Group Member #4 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
-    </script>
-    {% endif %} 
-    {% if response == 'sweet student member exist 5' %}
-    <script>
-      Swal.fire("Uh-oh", "Group Member #5 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
-    </script>
-    {% endif %}
+      Swal.fire("Invalid", "You entered a TUPC ID No. same with the other group members.", "error");
 
-    {% if response == 'sweet no DIT Head' %}
-    <script>
-      Swal.fire("Uh-oh", "Can't fill up at the moment. It seems like there is no DIT Head assigned yet. Please try again later.", "warning");
       setTimeout(function () {
-        window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
+        window.location.replace("{% url 'student-add-group-members' %}");
+      }, 2000);
     </script>
-    {% endif %}
-
-    {% if response == 'sweet inc panel' %}
+    {% endif %} {% if response == 'sweet already a group member' %}
     <script>
-      Swal.fire("Uh-oh", "Can't fill up at the moment. It seems like there is not enough Panel assigned yet. Please try again later.", "warning");
+      Swal.fire("Invalid", "{{existing_username }} is already a Group Member.", "error");
+
       setTimeout(function () {
-        window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet no defense schedule' %}
-    <script>
-      Swal.fire("Uh-oh", "Can't fill up at the moment. There is no Defense Schedule available. Please try again later.", "warning");
-      setTimeout(function () {
-        window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet same username' %}
-    <script>
-      Swal.fire("Invalid", "You entered the same Username with the other Group Members.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet invalid suffix' %}
-    <script>
-      Swal.fire("Invalid", "You entered a Suffix that is not in the list. Please one from the choices given.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet same research title' %}
-    <script>
-      Swal.fire("Invalid", "You entered the same Research Title with the other input field.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet defense schedule doesnt exist' %}
-    <script>
-      Swal.fire("Invalid", "You entered a Defense Schedule that is not in the list. Please one from the choices given.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet same panel' %}
-    <script>
-      Swal.fire("Invalid", "You entered the same Panel Member with the other input field.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet invalid panel' %}
-    <script>
-      Swal.fire("Invalid", "You entered a Panel Member that is not in the list. Please one from the choices given.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet group member exist' %}
-    <script>
-      Swal.fire("{{existing_member.username}} {{existing_member.student_member_name}}", "It seems that this student is already part of group.", "warning");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet research title exist' %}
-    <script>
-      Swal.fire("{{existing_research_title.research_title}}", "The Research Title you entered already exist.", "warning");
+        window.location.replace("{% url 'student-add-group-members' %}");
+      }, 2000);
     </script>
     {% endif %}
   </body>

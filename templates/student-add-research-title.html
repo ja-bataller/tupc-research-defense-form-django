@@ -1,0 +1,288 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Student - Add Group Members</title>
+
+    {% include 'css-main-cdn.html' %}
+  </head>
+
+  <body id="page-top">
+    <div id="wrapper">
+       
+      <!-- Sidebar -->
+      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'student-dashboard' %}">
+          <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'student-dashboard' %}">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span></a
+          >
+        </li>
+
+        <!-- Nav Item - Group Collapse Menu -->
+        <li class="nav-item active">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGroup" aria-expanded="true" aria-controls="collapseGroup">
+            <i class="fa-solid fa-users"></i>
+            <span>Group</span>
+          </a>
+          <div id="collapseGroup" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="{% url 'student-group-members' %}">Members</a>
+              <a class="collapse-item" href="{% url 'student-research-titles' %}">Research Titles</a>
+            </div>
+          </div>
+        </li>
+
+        <!-- Nav Item - Forms Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForms" aria-expanded="true" aria-controls="collapseForms">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>Forms</span>
+          </a>
+          <div id="collapseForms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">BET-3</h6>
+              <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Panel Invitation</a>
+              <div class="collapse-divider"></div>
+              <h6 class="collapse-header">BET-5</h6>
+            </div>
+          </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider" />
+
+        <!-- Nav Item - The Developers -->
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fa-solid fa-code"></i>
+            <span>The Devs</span>
+          </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block" />
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+          <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+      </ul>
+      <!-- End of Sidebar -->
+
+      <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+          {% include 'topbar.html'%}
+
+          <div class="container-fluid">
+            <!-- <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-0 text-gray-800">Research Title</h1>
+            </div> -->
+
+            <form method="POST">
+              {% csrf_token %}
+
+              <div class="card border-left-info shadow h-100 py-2 mb-3">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <h6 class="h4 mb-0 text-gray-800 mb-2">Research Title:</h6>
+
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">How many Research Title you have in a group?</h6>
+                      <select id="research_title_count" class="custom-select mb-4">
+                        <option selected value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select>
+
+                      <div id="research_title_1" class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #1</h6>
+                        <input type="text" class="form-control" name="research_title_1_input" style="text-transform: capitalize" required />
+                      </div>
+
+                      <div id="research_title_2" class="form-group mb-3" style="display: None">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #2</h6>
+                        <input type="text" id="research_title_2_input" class="form-control" name="research_title_2_input" style="text-transform: capitalize" />
+                      </div>
+
+                      <div id="research_title_3" class="form-group mb-3" style="display: None">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #3</h6>
+                        <input type="text" id="research_title_3_input" class="form-control" name="research_title_3_input" style="text-transform: capitalize" />
+                      </div>
+
+                      <div id="research_title_4" class="form-group mb-3" style="display: None">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #4</h6>
+                        <input type="text" id="research_title_4_input" class="form-control" name="research_title_4_input" style="text-transform: capitalize" />
+                      </div>
+
+                      <div id="research_title_5" class="form-group mb-3" style="display: None">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #5</h6>
+                        <input type="text" id="research_title_5_input" class="form-control" name="research_title_5_input" style="text-transform: capitalize" />
+                      </div>
+                      <!-- Panel Members End -->
+                      <button type="submit" class="btn btn-outline-success w-100">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% include 'alert-validation.html' %} {% if response == 'sweet same research title' %}
+    <script>
+      Swal.fire("Invalid", "You entered a Research Title same with the input field.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-add-research-titles' %}");
+      }, 2000);
+    </script>
+    {% endif %} {% if response == 'sweet research title exist' %}
+    <script>
+      Swal.fire("Invalid", "{{existing_research_title}} already exists.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-add-research-titles' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+    <script>
+      let research_title_count = document.querySelector("#research_title_count");
+      let research_title_1 = document.querySelector("#research_title_1");
+      let research_title_2 = document.querySelector("#research_title_2");
+      let research_title_3 = document.querySelector("#research_title_3");
+      let research_title_4 = document.querySelector("#research_title_4");
+      let research_title_5 = document.querySelector("#research_title_5");
+
+      let research_title_1_input = document.querySelector("#research_title_1_input");
+      let research_title_2_input = document.querySelector("#research_title_2_input");
+      let research_title_3_input = document.querySelector("#research_title_3_input");
+      let research_title_4_input = document.querySelector("#research_title_4_input");
+      let research_title_5_input = document.querySelector("#research_title_5_input");
+
+      research_title_count.addEventListener("change", (event) => {
+        if (research_title_count.value == "1") {
+          research_title_1.style.display = "block";
+
+          research_title_2.style.display = "none";
+          research_title_2_input.removeAttribute("required");
+          research_title_2_input.value = "";
+
+          research_title_3.style.display = "none";
+          research_title_3_input.removeAttribute("required");
+          research_title_3_input.value = "";
+
+          research_title_4.style.display = "none";
+          research_title_4_input.removeAttribute("required");
+          research_title_4_input.value = "";
+
+          research_title_5.style.display = "none";
+          research_title_5_input.removeAttribute("required");
+          research_title_4_input.value = "";
+        }
+
+        if (research_title_count.value == "2") {
+          research_title_1.style.display = "block";
+
+          research_title_2.style.display = "block";
+          research_title_2_input.required = true;
+
+          research_title_3.style.display = "none";
+          research_title_3_input.removeAttribute("required");
+          research_title_3_input.value = "";
+
+          research_title_4.style.display = "none";
+          research_title_4_input.removeAttribute("required");
+          research_title_4_input.value = "";
+
+          research_title_5.style.display = "none";
+          research_title_5_input.removeAttribute("required");
+          research_title_4_input.value = "";
+        }
+
+        if (research_title_count.value == "3") {
+          research_title_1.style.display = "block";
+
+          research_title_2.style.display = "block";
+          research_title_2_input.required = true;
+
+          research_title_3.style.display = "block";
+          research_title_3_input.required = true;
+
+          research_title_4.style.display = "none";
+          research_title_4_input.removeAttribute("required");
+          research_title_4_input.value = "";
+
+          research_title_5.style.display = "none";
+          research_title_5_input.removeAttribute("required");
+          research_title_4_input.value = "";
+        }
+
+        if (research_title_count.value == "4") {
+          research_title_1.style.display = "block";
+
+          research_title_2.style.display = "block";
+          research_title_2_input.required = true;
+
+          research_title_3.style.display = "block";
+          research_title_3_input.required = true;
+
+          research_title_4.style.display = "block";
+          research_title_4_input.required = true;
+
+          research_title_5.style.display = "none";
+          research_title_5_input.removeAttribute("required");
+          research_title_4_input.value = "";
+        }
+
+        if (research_title_count.value == "5") {
+          research_title_1.style.display = "block";
+
+          research_title_2.style.display = "block";
+          research_title_2_input.required = true;
+
+          research_title_3.style.display = "block";
+          research_title_3_input.required = true;
+
+          research_title_4.style.display = "block";
+          research_title_4_input.required = true;
+
+          research_title_5.style.display = "block";
+          research_title_5_input.required = true;
+        }
+      });
+    </script>
+  </body>
+</html>

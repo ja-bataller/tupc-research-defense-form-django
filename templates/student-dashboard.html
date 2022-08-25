@@ -41,40 +41,37 @@
                     <span>Home</span></a>
             </li>
 
-            <!-- Divider -->
-            <!-- <hr class="sidebar-divider"> -->
-
-            <!-- Nav Item - Pages Collapse Menu -->
+            <!-- Nav Item - Group Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fa-solid fa-folder-open"></i>
-                    <span>Forms</span>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGroup"
+                    aria-expanded="true" aria-controls="collapseGroup">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Group</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapseGroup" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">BET-3</h6>
-                        <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Panel Invitation</a>
-                        <!-- <a class="collapse-item" href="{% url 'student-panel-conforme-bet3' %}">Panel Conforme</a> -->
-                        <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">BET-5</h6>
-                        <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
+                        <a class="collapse-item" href="{% url 'student-group-members' %}">Members</a> 
+                        <a class="collapse-item" href="{% url 'student-research-titles' %}">Research Titles</a>   
                     </div>
                 </div>
             </li>
 
-
-            <!-- Nav Item - Tables -->
-            <!-- <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span>History</span></a>
-    </li> -->
+            <!-- Nav Item - Forms Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForms"
+                    aria-expanded="true" aria-controls="collapseForms">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <span>Forms</span>
+                </a>
+                <div id="collapseForms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">BET-3</h6>
+                        <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Panel Invitation</a>
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">BET-5</h6>
+                    </div>
+                </div>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -83,18 +80,17 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <i class="fa-solid fa-code"></i>
-                    <span>The Devs</span></a>
+                    <span>The Devs</span>
+                </a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
-
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
 
         </ul>
         <!-- End of Sidebar -->
@@ -177,6 +173,12 @@
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
       }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet no group members' %}
+    <script>
+      Swal.fire("Invalid", "Unable to access this page. Please submit your Group Members information.", "error");
     </script>
     {% endif %}
 

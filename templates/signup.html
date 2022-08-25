@@ -68,9 +68,9 @@
             </div>
 
             <div class="form-group">
-              <label>Subject Teacher:</label>
+              <label>BET-3 Subject Teacher:</label>
               <select class="custom-select" name="subject_teacher_input" required>
-                <option value="default" selected>Who is your Subject Teacher?</option>
+                <option value="default" selected>Who is your BET-3 Subject Teacher?</option>
                 {% for subject_teacher in subject_teachers %}
                 {% if subject_teacher.middle_name == "" %}
                 <option value="{{subject_teacher.username}}">{{subject_teacher.honorific}} {{subject_teacher.first_name}} {{subject_teacher.last_name}} {{subject_teacher.suffix}}</option>

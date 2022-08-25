@@ -10,11 +10,20 @@ urlpatterns = [
 
    # Student Views
    path('student-profile/', views.studentProfile, name ="student-profile"), 
-   path('student-dashboard/', views.studentDashboard, name ="student-dashboard"), 
+   path('student-dashboard/', views.studentDashboard, name ="student-dashboard"),
+
+   path('student-group-members/', views.studentGroupMemberProcess, name ="student-group-members"),
+   path('student-add-group-members/', views.studentAddGroupMember, name ="student-add-group-members"),
+   path('student-group-members-dashboard/', views.studentGroupMembersDashboard, name ="student-group-members-dashboard"),
+
+   path('student-research-titles/', views.studentResearchTitleProcess, name ="student-research-titles"),
+   path('student-add-research-titles/', views.studentAddResearchTitle, name ="student-add-research-titles"),
+   path('student-research-title-dashboard/', views.studentResearchTitleDashboard, name ="student-research-title-dashboard"),
 
    path('student-panel-invitation-bet3/', views.studentPanelInvitationBet3, name ="student-panel-invitation-bet3"), 
    path('student-panel-invitation-bet3-create/', views.studentPanelInvitationBet3Create, name ="student-panel-invitation-bet3-create"),
    path('student-panel-invitation-bet3-form/', views.studentPanelInvitationBet3Form, name ="student-panel-invitation-bet3-form"),
+   path('student-panel-invitation-bet3-declined-form/', views.studentPanelInvitationBet3DeclinedForm, name ="student-panel-invitation-bet3-declined-form"),
    path('student-panel-invitation-bet3-add-panel/', views.studentPanelInvitationBet3AddPanel, name ="student-panel-invitation-bet3-add-panel"),
 
    path('student-panel-conforme-bet3/', views.studentPanelConformeBet3, name ="student-panel-conforme-bet3"), 
