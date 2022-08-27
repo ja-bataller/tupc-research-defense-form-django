@@ -178,6 +178,16 @@
       }, 2000);
     </script>
     {% endif %}
+
+    {% if response == 'sweet incomplete research titles' %}
+    <script>
+      Swal.fire("Unauthorized", "You can't access this page. Please submit the list of your Research Titles.", "warning");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-add-research-titles' %}");
+      }, 2000);
+    </script>
+    {% endif %}
     <script>
       let research_title_count = document.querySelector("#research_title_count");
       let research_title_1 = document.querySelector("#research_title_1");

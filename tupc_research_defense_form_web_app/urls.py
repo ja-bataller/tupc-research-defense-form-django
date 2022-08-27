@@ -22,6 +22,10 @@ urlpatterns = [
 
    path('student-panel-invitation-bet3/', views.studentPanelInvitationBet3, name ="student-panel-invitation-bet3"), 
    path('student-panel-invitation-bet3-create/', views.studentPanelInvitationBet3Create, name ="student-panel-invitation-bet3-create"),
+   path('student-panel-invitation-bet3-save/', views.studentPanelInvitationBet3Save, name ="student-panel-invitation-bet3-save"),
+
+    path('student-download-panel-invitation-bet3/<str:id>', views.studentDownloadPanelInvitationBet3, name ="student-download-panel-invitation-bet3"),
+
    path('student-panel-invitation-bet3-form/', views.studentPanelInvitationBet3Form, name ="student-panel-invitation-bet3-form"),
    path('student-panel-invitation-bet3-declined-form/', views.studentPanelInvitationBet3DeclinedForm, name ="student-panel-invitation-bet3-declined-form"),
    path('student-panel-invitation-bet3-add-panel/', views.studentPanelInvitationBet3AddPanel, name ="student-panel-invitation-bet3-add-panel"),

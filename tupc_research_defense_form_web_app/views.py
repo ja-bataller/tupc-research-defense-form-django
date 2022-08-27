@@ -303,7 +303,9 @@ def signup(request):
                     bet3_subject_teacher_name = subject_teacher_full_name,
                     bet3_status = "Ongoing",
 
-                    current_subject = "BET-3"
+                    current_subject = "BET-3",
+
+                    request_limit = 5
                     )
 
                 student_leader.save()
@@ -601,6 +603,9 @@ def studentAddGroupMember(request):
 
     except:
         return redirect('index')
+
+    if get_student_leader_data.group_members_status == "completed":
+        return redirect("student-group-members-dashboard")
     
     if get_student_leader_data.group_count >= 1:
 
@@ -612,6 +617,9 @@ def studentAddGroupMember(request):
         }
 
         return render(request, 'student-group-member-dashboard.html', context)
+
+
+    suffix_list = ["","Sr.", "Jr.", "I", "II", "III", "IV", "V"]
 
     if request.method == 'POST':
         group_member_count = request.POST.get('group_member_count')
@@ -670,6 +678,29 @@ def studentAddGroupMember(request):
 
             if student_username_2 != "":
                 student_member_full_name_2 = None
+
+                if "TUPC-" not in student_username_2:
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet invalid username"
+                        }
+                    return render(request, 'student-add-group-member.html', context)
+                
+                if student_suffix_2 not in suffix_list:
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet invalid suffix"
+                        }
+                    return render(request, 'student-add-group-member.html', context)
 
                 # Student - Check if TUPC ID No is the same with the other group members.
                 if student_username_2 in {current_user.username, student_username_3, student_username_4,student_username_5}:
@@ -746,6 +777,29 @@ def studentAddGroupMember(request):
             if student_username_3 != "":
                 student_member_full_name_3 = None
 
+                if "TUPC-" not in student_username_3:
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet invalid username"
+                        }
+                    return render(request, 'student-add-group-member.html', context)
+                
+                if student_suffix_3 not in suffix_list:
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet invalid suffix"
+                        }
+                    return render(request, 'student-add-group-member.html', context)
+
                 # Student - Check if TUPC ID No is the same with the other group members.
                 if student_username_3 in {current_user.username, student_username_2, student_username_4,student_username_5}:
                     context = {
@@ -820,6 +874,29 @@ def studentAddGroupMember(request):
             
             if student_username_4 != "":
                 student_member_full_name_4 = None
+
+                if "TUPC-" not in student_username_4:
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet invalid username"
+                        }
+                    return render(request, 'student-add-group-member.html', context)
+                
+                if student_suffix_4 not in suffix_list:
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet invalid suffix"
+                        }
+                    return render(request, 'student-add-group-member.html', context)
 
                 # Student - Check if TUPC ID No is the same with the other group members.
                 if student_username_4 in {current_user.username, student_username_2, student_username_3,student_username_5}:
@@ -896,6 +973,29 @@ def studentAddGroupMember(request):
             if student_username_5 != "":
                 student_member_full_name_5 = None
 
+                if "TUPC-" not in student_username_5:
+
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet invalid username"
+                        }
+                    return render(request, 'student-add-group-member.html', context)
+                
+                if student_suffix_5 not in suffix_list:
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                        'student_leader_data': get_student_leader_data,
+
+                        'response': "sweet invalid suffix"
+                        }
+                    return render(request, 'student-add-group-member.html', context)
+
                 # Student - Check if TUPC ID No is the same with the other group members.
                 if student_username_5 in {current_user.username, student_username_2, student_username_3,student_username_4}:
                     context = {
@@ -968,6 +1068,8 @@ def studentAddGroupMember(request):
                 get_student_leader_data.group_count = 5
                 get_student_leader_data.save()
 
+        get_student_leader_data.group_members_status = "completed"
+        get_student_leader_data.save()
         get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = current_user.username)
 
         context = {
@@ -1013,16 +1115,16 @@ def studentGroupMembersDashboard(request):
     except:
         return redirect('index')
 
-    if get_student_leader_data.group_count == 0:
-
+    if get_student_leader_data.group_members_status != "completed":
         context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account': currently_loggedin_user_account,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-        'response': 'sweet unauthorized to access group members'
+        'response': "sweet incomplete group members"
         }
 
-        return render(request, 'student-group-member-dashboard.html', context)
+        return render(request, 'student-add-group-member.html', context)
+    
 
     get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = current_user.username)
 
@@ -1059,24 +1161,6 @@ def studentResearchTitleProcess(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
 
-    # Student - Check if the Student Leader submitted the group members information
-    try:
-        get_group_count = StudentLeader.objects.get(username = current_user.username)
-        group_count = get_group_count.group_count
-
-        if group_count == 0:
-            context = {
-            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-            'currently_loggedin_user_account': currently_loggedin_user_account,
-
-            'response': "sweet no group members"
-            }
-
-            return render(request, 'student-dashboard.html', context)
-
-    except:
-         return redirect('logout_user')
-    
     check_research_title = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
          
     if check_research_title:
@@ -1106,18 +1190,18 @@ def studentAddResearchTitle(request):
     except:
         return redirect('index')
 
-    try:
-        ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
+    if get_student_leader_data.group_members_status != "completed":
         context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account': currently_loggedin_user_account,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-        'response': "sweet unauthorize to add research titles"
+        'response': "sweet incomplete group members"
         }
 
-        return render(request, 'student-research-title-dashboard.html', context)
-    except:
-        pass
+        return render(request, 'student-add-group-member.html', context)
+
+    if get_student_leader_data.research_titles_status == "completed":
+        return redirect("student-research-title-dashboard")
     
     student_leader_full_name = None
 
@@ -1293,6 +1377,10 @@ def studentAddResearchTitle(request):
             save_Research_title.save()
             i + 1
 
+
+        get_student_leader_data.research_titles_status = "completed"
+        get_student_leader_data.save()
+
         get_research_titles = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
 
         context = {
@@ -1326,6 +1414,31 @@ def studentResearchTitleDashboard(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
 
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
+    except:
+        return redirect ('index')
+
+    if get_student_leader_data.group_members_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'response': "sweet incomplete group members"
+        }
+
+        return render(request, 'student-add-group-member.html', context)
+    
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'response': "sweet incomplete research titles"
+        }
+
+        return render(request, 'student-add-research-title.html', context)
+
     get_research_titles = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
     
     context = {
@@ -1342,58 +1455,59 @@ def studentResearchTitleDashboard(request):
 @user_passes_test(lambda u: u.is_student, login_url='index')
 def studentPanelInvitationBet3(request):
     current_user = (request.user)
+    current_password = current_user.password
 
-    student_data = StudentLeader.objects.get(username=current_user.username)
-    defense_dates = DefenseSchedule.objects.all().filter(username = student_data.bet3_subject_teacher_username , course = student_data.course_major_abbr, status = "Available")
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
+    except:
+        return redirect ('index')
+
     
-    panel_members = User.objects.all().filter(is_panel=1)
-
-    try:
-        PanelInvitationBET3.objects.get(student_leader_username=current_user)
-        print("Panel Invitation - BET-3 Exist")
-        return redirect('student-panel-invitation-bet3-form')
-
-    except:
-        pass
-
-    try:
-        dept_head_check = User.objects.get(is_department_head=1)
-        pass
-
-    except:
-        print("No DIT Head")
-
+    if get_student_leader_data.group_members_status != "completed":
         context = {
-            'response' : "sweet no DIT Head"
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'response': "sweet incomplete group members"
         }
 
-        return render(request, 'student-panel-invitation-bet-3-create.html', context)
+        return render(request, 'student-add-group-member.html', context)
+    
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-    if not panel_members or panel_members.count() < 5:
-            print("Incomplete Faculty Member")
-            context = {
-                'response' : "sweet inc panel"
-            }
+        'response': "sweet incomplete research titles"
+        }
 
-            return render(request, 'student-panel-invitation-bet-3-create.html', context)
-    else:
-        pass
+        return render(request, 'student-add-research-title.html', context)
+
+    get_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username)
+    get_accepted_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username, form_status = "accepted")
+    get_pending_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username, form_status = "pending")
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'student_leader_data': get_student_leader_data,
+
+        'panel_invitations': get_panel_invitations,
+        'accepted_panel_invitations': get_accepted_panel_invitations.count(),
+        'pending_panel_invitations': get_pending_panel_invitations.count(),
+        }
+
+    return render(request, 'student-bet3-panel-invitation-dashboard.html', context)
 
 
-    if not defense_dates:
-            print("No Defense Schedule")
-            context = {
-                'response' : "sweet no defense schedule"
-            }
-
-            return render(request, 'student-panel-invitation-bet-3-create.html', context)
-    else:
-        pass
-
-    print("Panel Conforme - BET-3 Create")
-    return redirect('student-panel-invitation-bet3-create')
-
-# Student - Panel Invitation Create Page
+# Student - BET-3 Panel Invitation Create Page
 @login_required(login_url='index')
 @user_passes_test(lambda u: u.is_student, login_url='index')
 def studentPanelInvitationBet3Create(request):
@@ -1404,23 +1518,63 @@ def studentPanelInvitationBet3Create(request):
     topbar_data = topbarProcess(request);
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
-    ############## TOPBAR ##############
+    ############## TOPBAR ############## 
 
-    student = StudentLeader.objects.get(username=current_user.username)
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
+    except:
+        return redirect ('index')
 
-    defense_dates = DefenseSchedule.objects.all().filter(course=student.course_major_abbr, username = student.bet3_subject_teacher_username, status = "Available")
+    if get_student_leader_data.group_members_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-    defense_date_list = []
+        'response': "sweet incomplete group members"
+        }
 
-    suffix_list = ["", "Sr.", "Jr.","I","II","III","IV","V"]
+        return render(request, 'student-add-group-member.html', context)
+    
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'response': "sweet incomplete research titles"
+        }
+
+        return render(request, 'student-add-research-title.html', context)
+
+    if get_student_leader_data.bet3_panel_invitation_status == "completed":
+            return redirect ('student-panel-invitation-bet3')
+
+    try:
+        get_pending_panel_invitation = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username, form_status = "pending")
+        pending_count = get_pending_panel_invitation.count()
+        print(pending_count)
+        print(get_student_leader_data.request_limit)
+
+        if int(get_student_leader_data.request_limit) == int(pending_count):
+            print("Request Limit Exceed")
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                'response': "sweet request limit exceed"
+                }
+
+            return render(request, 'student-bet3-panel-invitation-dashboard.html', context)
+    except:
+        pass
 
     panel_members = User.objects.all().filter(is_panel=1)
 
+    defense_dates = DefenseSchedule.objects.all().filter(course=get_student_leader_data.course_major_abbr, username = get_student_leader_data.bet3_subject_teacher_username, status = "Available")
+
+    defense_date_list = []
+
     panel_list = []
-
-    dept_head_name = None
-
-    print(panel_members)
 
     # Check if there is DIT Head assigned.
     try:
@@ -1432,7 +1586,7 @@ def studentPanelInvitationBet3Create(request):
             dept_head_name = dept_head.honorific + " " + dept_head.first_name + " " + dept_head.middle_name[0] + " " + dept_head.last_name + " " + dept_head.suffix
 
     except:
-        print("No DIT Head")
+        print("No Department Head")
 
         context = {
             'response' : "sweet no DIT Head"
@@ -1440,13 +1594,14 @@ def studentPanelInvitationBet3Create(request):
 
         return render(request, 'student-panel-invitation-bet-3-create.html', context)
 
+
     # Check if there is a Panel assigned.
     if not panel_members or panel_members.count() < 5:
             print("Incomplete Faculty Member")
+
             context = {
                 'response' : "sweet inc panel"
             }
-
             return render(request, 'student-panel-invitation-bet-3-create.html', context)
     else:
         for panel in panel_members:
@@ -1455,59 +1610,25 @@ def studentPanelInvitationBet3Create(request):
     for defense_date_id in defense_dates:
         defense_date_list.append(defense_date_id.id)
 
+    student_leader_full_name = None
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
 
     if request.method == 'POST':
-        student_username_1 = current_user.username
-        student_first_name_1 = current_user.first_name
-        student_middle_name_1 = current_user.middle_name
-        student_last_name_1 = current_user.last_name
-        student_suffix_1 = current_user.suffix
+        defense_schedule_input = request.POST.get('defense_schedule_input')
+        panel_input = request.POST.get('panel_input')
+     
+        # Check if the entered Panel is valid
+        if panel_input not in panel_list:
 
-        student_username_2 = request.POST.get('student_username_2')
-        student_first_name_2 = request.POST.get('student_first_name_2')
-        student_middle_name_2 = request.POST.get('student_middle_name_2')
-        student_last_name_2 = request.POST.get('student_last_name_2')
-        student_suffix_2 = request.POST.get('student_suffix_2')
-
-        student_username_3 = request.POST.get('student_username_3')
-        student_first_name_3 = request.POST.get('student_first_name_3')
-        student_middle_name_3 = request.POST.get('student_middle_name_3')
-        student_last_name_3 = request.POST.get('student_last_name_3')
-        student_suffix_3 = request.POST.get('student_suffix_3')
-
-        student_username_4 = request.POST.get('student_username_4')
-        student_first_name_4 = request.POST.get('student_first_name_4')
-        student_middle_name_4 = request.POST.get('student_middle_name_4')
-        student_last_name_4 = request.POST.get('student_last_name_4')
-        student_suffix_4 = request.POST.get('student_suffix_4')
-
-        student_username_5 = request.POST.get('student_username_5')
-        student_first_name_5 = request.POST.get('student_first_name_5')
-        student_middle_name_5 = request.POST.get('student_middle_name_5')
-        student_last_name_5 = request.POST.get('student_last_name_5')
-        student_suffix_5 = request.POST.get('student_suffix_5')
-
-        research_title_1_input = request.POST.get('research_title_1_input').title()
-        research_title_2_input = request.POST.get('research_title_2_input').title()
-        research_title_3_input = request.POST.get('research_title_3_input').title()
-        research_title_4_input = request.POST.get('research_title_4_input').title()
-        research_title_5_input = request.POST.get('research_title_5_input').title()
-
-        defense_schedule_input = int(request.POST.get('defense_schedule_input'))
-
-        panel1_input = request.POST.get('panel1_input')
-        panel2_input = request.POST.get('panel2_input')
-        panel3_input = request.POST.get('panel3_input')
-        panel4_input = request.POST.get('panel4_input')
-        panel5_input = request.POST.get('panel5_input')
-
-        if student_username_1 in (student_username_2, student_username_3, student_username_4, student_username_5):
-            
             context = {
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
                 'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-                'current_user':student,
+                'student_leader_data': get_student_leader_data,
 
                 'dept_head_name' : dept_head_name,
 
@@ -1515,239 +1636,26 @@ def studentPanelInvitationBet3Create(request):
 
                 'defense_dates': defense_dates,
 
-                'response' : 'sweet same username'
+                'response': "sweet invalid panel"
                 }
 
             return render(request, 'student-panel-invitation-bet-3-create.html', context)
-        
-        # Check if the Student Member #1 exist
+
+        # Check if the entered Panel Member exist
         try:
-            group_member_check = StudentGroupMember.objects.get(student_member_username = student_username_1)
+            get_panel_data = User.objects.get(username = panel_input)
 
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'current_user':student,
-
-                'dept_head_name' : dept_head_name,
-
-                'panel_members' : panel_members,
-
-                'defense_dates': defense_dates,
-
-                'existing_member' : group_member_check,
-
-                'response' : 'sweet group member exist'
-                }
-
-            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+            if get_panel_data.middle_name == "":
+                panel_full_name = get_panel_data.honorific + " " + get_panel_data.first_name + " " + get_panel_data.last_name + " " + get_panel_data.suffix
+            else:
+                panel_full_name = get_panel_data.honorific + " " + get_panel_data.first_name + " " + get_panel_data.middle_name[0] + " " + get_panel_data.last_name + " " + get_panel_data.suffix
 
         except:
-            pass
-
-        # If Student Member #2 is not none
-        if student_username_2 != "":
-
-            if student_username_2 in (student_username_1, student_username_3, student_username_4, student_username_5):
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'response' : 'sweet same username'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            # Check if Group Member exists
-            try:
-                group_member_check = StudentGroupMember.objects.get(student_member_username = student_username_2)
-
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'existing_member' : group_member_check,
-
-                    'response' : 'sweet group member exist'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            except:
-                pass
-
-        # If Student Member #3 is not none
-        if student_username_3 != "":
-
-            if student_username_3 in (student_username_1, student_username_2, student_username_4, student_username_5):
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'response' : 'sweet same username'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            # Check if the Student Member #3 exist
-            try:
-                group_member_check = StudentGroupMember.objects.get(student_member_username = student_username_3)
-
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'existing_member' : group_member_check,
-
-                    'response' : 'sweet group member exist'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            except:
-                pass
-
-        # If Student Member #4 is not none
-        if student_username_4 != "":
-            
-            if student_username_4 in (student_username_1, student_username_2, student_username_3, student_username_5):
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'response' : 'sweet same username'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            # Check if the Student Member #4 exist
-            try:
-                group_member_check = StudentGroupMember.objects.get(student_member_username = student_username_4)
-
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'existing_member' : group_member_check,
-
-                    'response' : 'sweet group member exist'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            except:
-                pass
-
-        # If Student Member #5 is not none
-        if student_username_5 != "":
-            
-            if student_username_5 in (student_username_1, student_username_2, student_username_3, student_username_4):
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'response' : 'sweet same username'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            
-            # Check if the Student Member #5 exist
-            try:
-                group_member_check = StudentGroupMember.objects.get(student_member_username = student_username_5)
-
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'existing_member' : group_member_check,
-
-                    'response' : 'sweet group member exist'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            except:
-                pass
-
-        if student_suffix_1 in suffix_list or \
-            student_suffix_2 in suffix_list or \
-                student_suffix_3 in suffix_list or \
-                    student_suffix_4 in suffix_list or \
-                        student_suffix_5 in suffix_list:
-            pass
-
-        else:
             context = {
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
                 'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-                'current_user':student,
+                'student_leader_data': get_student_leader_data,
 
                 'dept_head_name' : dept_head_name,
 
@@ -1755,39 +1663,20 @@ def studentPanelInvitationBet3Create(request):
 
                 'defense_dates': defense_dates,
 
-                'response' : 'sweet invalid suffix'
+                'response': "sweet panel not found"
                 }
 
             return render(request, 'student-panel-invitation-bet-3-create.html', context)
-        
-        if research_title_1_input in (research_title_2_input, research_title_3_input, research_title_4_input, research_title_5_input):
-            
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-                'current_user':student,
-
-                'dept_head_name' : dept_head_name,
-
-                'panel_members' : panel_members,
-
-                'defense_dates': defense_dates,
-
-                'response' : 'sweet same research title'
-                }
-
-            return render(request, 'student-panel-invitation-bet-3-create.html', context)
-        
-        # Check if the Research Title #1 exist
+        # Check if the entered Panel Member has Pending Panel Invitation
         try:
-            research_title_check = ResearchTitle.objects.get(research_title = research_title_1_input)
+            BET3PanelInvitation.objects.get(student_leader_username = current_user.username, panel_username = panel_input, form_status = "pending")
 
             context = {
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
                 'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-                'current_user':student,
+                'student_leader_data': get_student_leader_data,
 
                 'dept_head_name' : dept_head_name,
 
@@ -1795,211 +1684,24 @@ def studentPanelInvitationBet3Create(request):
 
                 'defense_dates': defense_dates,
 
-                'existing_research_title' : research_title_check,
+                'panel_full_name': panel_full_name,
 
-                'response' : 'sweet research title exist'
+                'response': "sweet panel invitation exist"
                 }
 
             return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
         except:
             pass
-
-        if research_title_2_input != "":
-
-            if research_title_2_input in (research_title_1_input, research_title_3_input, research_title_4_input, research_title_5_input):
             
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+        # Check if the entered Panel Member has Accepted Panel Invitation
+        try:
+            BET3PanelInvitation.objects.get(student_leader_username = current_user.username, panel_username = panel_input, form_status = "accepted")
 
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'response' : 'sweet same research title'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            # Check if the Research Title #2 exist
-            try:
-                research_title_check = ResearchTitle.objects.get(research_title = research_title_2_input)
-
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'existing_research_title' : research_title_check,
-
-                    'response' : 'sweet research title exist'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            except:
-                pass
-        
-        if research_title_3_input != "":
-
-            if research_title_3_input in (research_title_1_input, research_title_2_input, research_title_4_input, research_title_5_input):
-            
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'response' : 'sweet same research title'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            # Check if the Research Title #3 exist
-            try:
-                research_title_check = ResearchTitle.objects.get(research_title = research_title_3_input)
-
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'existing_research_title' : research_title_check,
-
-                    'response' : 'sweet research title exist'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            except:
-                pass
-
-        if research_title_4_input != "":
-
-            if research_title_4_input in (research_title_1_input, research_title_2_input, research_title_3_input, research_title_5_input):
-            
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'response' : 'sweet same research title'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            # Check if the Research Title #4 exist
-            try:
-                research_title_check = ResearchTitle.objects.get(research_title = research_title_4_input)
-
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'existing_research_title' : research_title_check,
-
-                    'response' : 'sweet research title exist'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            except:
-                pass
-
-        if research_title_5_input != "":
-            if research_title_5_input in (research_title_1_input, research_title_2_input, research_title_3_input, research_title_4_input):
-            
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'response' : 'sweet same research title'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            # Check if the Research Title #5 exist
-            try:
-                research_title_check = ResearchTitle.objects.get(research_title = research_title_5_input)
-
-                context = {
-                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                    'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                    'current_user':student,
-
-                    'dept_head_name' : dept_head_name,
-
-                    'panel_members' : panel_members,
-
-                    'defense_dates': defense_dates,
-
-                    'existing_research_title' : research_title_check,
-
-                    'response' : 'sweet research title exist'
-                    }
-
-                return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-            except:
-                pass
-
-        # Check if the Defense Schedule entered is valid.
-        if defense_schedule_input not in defense_date_list:
-            print("invalid date")
             context = {
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
                 'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-                'current_user':student,
+                'student_leader_data': get_student_leader_data,
 
                 'dept_head_name' : dept_head_name,
 
@@ -2007,489 +1709,150 @@ def studentPanelInvitationBet3Create(request):
 
                 'defense_dates': defense_dates,
 
-                'response' : 'sweet defense schedule doesnt exist'
+                'panel_full_name': panel_full_name,
+
+                'response': "sweet panel invitation accepted exist"
                 }
 
             return render(request, 'student-panel-invitation-bet-3-create.html', context)
-        
-        # If entered panel member is not the same with other input field
-        if panel1_input in (panel2_input, panel3_input, panel4_input, panel5_input) or \
-            panel2_input in (panel1_input, panel3_input, panel4_input, panel5_input) or \
-                 panel3_input in (panel1_input, panel2_input, panel4_input, panel5_input) or \
-                     panel4_input in (panel1_input, panel2_input, panel3_input, panel5_input) or \
-                         panel5_input in (panel1_input, panel2_input, panel3_input, panel4_input):
-
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'current_user':student,
-
-                'dept_head_name' : dept_head_name,
-
-                'panel_members' : panel_members,
-
-                'defense_dates': defense_dates,
-
-                'response' : 'sweet same panel'
-                }
-
-            return render(request, 'student-panel-invitation-bet-3-create.html', context)
-        
-        # Check if the Panel Member entered is valid.
-        if panel1_input in panel_list or \
-            panel2_input in panel_list or \
-                panel3_input in panel_list or \
-                    panel4_input in panel_list or \
-                        panel5_input in panel_list:
+        except:
             pass
-
-        else:
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'current_user':student,
-
-                'dept_head_name' : dept_head_name,
-
-                'panel_members' : panel_members,
-
-                'defense_dates': defense_dates,
-
-                'response' : 'sweet invalid panel'
-                }
-
-            return render(request, 'student-panel-invitation-bet-3-create.html', context)
-
-        ############## PANEL DATA ##############
-        panel_data_1 = User.objects.get(username = panel1_input)
-        panel_data_2 = User.objects.get(username = panel2_input)
-        panel_data_3 = User.objects.get(username = panel3_input)
-        panel_data_4 = User.objects.get(username = panel4_input)
-        panel_data_5 = User.objects.get(username = panel5_input)
-
-        panel_full_name_1 = None
-        panel_full_name_2 = None
-        panel_full_name_3 = None
-        panel_full_name_4 = None
-        panel_full_name_5 = None
-
-        if panel_data_1.middle_name == "":
-            panel_full_name_1 = panel_data_1.honorific + " " + panel_data_1.first_name + " " +  panel_data_1.last_name + " " + panel_data_1.suffix
-        else:
-            panel_full_name_1 = panel_data_1.honorific + " " + panel_data_1.first_name + " " +  panel_data_1.middle_name[0] + ". " +  panel_data_1.last_name + " " + panel_data_1.suffix
-
-
-        if panel_data_2.middle_name == "":
-            panel_full_name_2 = panel_data_2.honorific + " " + panel_data_2.first_name + " " +  panel_data_2.last_name + " " + panel_data_2.suffix
-        else:
-            panel_full_name_2 = panel_data_2.honorific + " " + panel_data_2.first_name + " " +  panel_data_2.middle_name[0] + ". " +  panel_data_2.last_name + " " + panel_data_2.suffix
-
-
-        if panel_data_3.middle_name == "":
-            panel_full_name_3 = panel_data_3.honorific + " " + panel_data_3.first_name + " " +  panel_data_3.last_name + " " + panel_data_3.suffix
-        else:
-            panel_full_name_3 = panel_data_3.honorific + " " + panel_data_3.first_name + " " +  panel_data_3.middle_name[0] + ". " +  panel_data_3.last_name + " " + panel_data_3.suffix
         
 
-        if panel_data_4.middle_name == "":
-            panel_full_name_4 = panel_data_4.honorific + " " + panel_data_4.first_name + " " +  panel_data_4.last_name + " " + panel_data_4.suffix
-        else:
-            panel_full_name_4 = panel_data_4.honorific + " " + panel_data_4.first_name + " " +  panel_data_4.middle_name[0] + ". " +  panel_data_4.last_name + " " + panel_data_4.suffix
+        try:
+            check_defense_schedule = DefenseSchedule.objects.get(student_leader_username = current_user.username)
 
+            get_student_leader_data.research_title_defense_date = check_defense_schedule.date
+            get_student_leader_data.research_title_defense_start_time = check_defense_schedule.start_time
+            get_student_leader_data.research_title_defense_end_time = check_defense_schedule.end_time
+            get_student_leader_data.save()
+            print("Student Leader Data Updated")
 
-        if panel_data_5.middle_name == "":
-            panel_full_name_5 = panel_data_5.honorific + " " + panel_data_5.first_name + " " +  panel_data_5.last_name + " " + panel_data_5.suffix
-        else:
-            panel_full_name_5 = panel_data_5.honorific + " " + panel_data_5.first_name + " " +  panel_data_5.middle_name[0] + ". " +  panel_data_5.last_name + " " + panel_data_5.suffix
-        ############## PANEL DATA ##############
+            send_panel_invitation = BET3PanelInvitation (
+                student_leader_username = current_user.username,
+                student_leader_full_name = student_leader_full_name,
+                course_major_abbr = get_student_leader_data.course_major_abbr,
 
+                dit_head_username = dept_head.username,
+                dit_head_full_name	= dept_head_name,
+                dit_head_response = "pending",
 
-        ############## STUDENT DATA ##############
-        student_leader_data = StudentLeader.objects.get(username = current_user.username)
+                panel_username = get_panel_data.username,
+                panel_full_name = panel_full_name,
+                panel_response = "on hold",
 
-        student_full_name_1 = ""
-        student_full_name_2 = ""
-        student_full_name_3 = ""
-        student_full_name_4 = ""
-        student_full_name_5 = ""
+                research_title_defense_date = check_defense_schedule.date,
+                research_title_defense_start_time = check_defense_schedule.start_time,
+                research_title_defense_end_time = check_defense_schedule.end_time,
 
-        course_short = student_leader_data.course.replace("Engineering", "Eng.")
+                form_status = "pending",
+                form_date_sent = today.strftime("%B %d, %Y"),
+                form = "BET-3 Panel Invitation"
+            )
+            send_panel_invitation.save()
+            print("Panel Invitation Sent")
 
-        if student_middle_name_1 == "":
-            student_full_name_1 = current_user.last_name + " " + current_user.suffix + ', ' + current_user.first_name 
-        else:
-            student_full_name_1 =  current_user.last_name + " " + current_user.suffix + ', ' + current_user.first_name + " " +  current_user.middle_name[0] + "." 
+        except:
+    
+            # Check if the entered Defense Scheduled is valid
+            if int(defense_schedule_input) not in defense_date_list:
 
-        if student_username_2 != "":
-            if student_middle_name_2 == "":
-                student_full_name_2 = student_last_name_2 + " " + student_suffix_2 + ', ' + student_first_name_2 + " "
+                context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                    'dept_head_name' : dept_head_name,
+
+                    'panel_members' : panel_members,
+
+                    'defense_dates': defense_dates,
+
+                    'response': "sweet invalid defense schedule"
+                    }
+
+                return render(request, 'student-panel-invitation-bet-3-create.html', context)
             else:
-                student_full_name_2 = student_last_name_2 + " " +  student_suffix_2 + ", " +  student_first_name_2 + " " + student_middle_name_2[0] + "."
 
-        if student_username_3 != "":
-            if student_middle_name_3 == "":
-                student_full_name_3 = student_last_name_3 + " " + student_suffix_3 + ', ' + student_first_name_3 + " "
-            else:
-                student_full_name_3 = student_last_name_3 + " " +  student_suffix_3 + ", " +  student_first_name_3 + " " + student_middle_name_3[0] + "."
-        
-        if student_username_4 != "":
-            if student_middle_name_4 == "":
-                student_full_name_4 = student_last_name_4 + " " + student_suffix_4 + ', ' + student_first_name_4 + " "
-            else:
-                student_full_name_4 = student_last_name_4 + " " +  student_suffix_4 + ", " +  student_first_name_4 + " " + student_middle_name_4[0] + "."
+                # Save Defense Schedule Table
+                try:
+                    save_defense_schedule = DefenseSchedule.objects.get(id = int(defense_schedule_input))
 
-        if student_username_5 != "":
-            if student_middle_name_5 == "":
-                student_full_name_5 = student_last_name_5 + " " + student_suffix_5 + ', ' + student_first_name_5 + " "
-            else:
-                student_full_name_5 = student_last_name_5 + " " +  student_suffix_5 + ", " +  student_first_name_5 + " " + student_middle_name_5[0] + "."
-        ############## STUDENT DATA ##############
+                    save_defense_schedule.student_leader_username = current_user.username
+                    save_defense_schedule.student_leader_name = student_leader_full_name
+                    save_defense_schedule.status = "Reserved"
+                    save_defense_schedule.save()
+                    print("Defense Schedule Data Updated")
 
-        ############## DEFENSE SCHEDULE DATA ##############
-        defense_schedule_data = DefenseSchedule.objects.get(id=defense_schedule_input)
-        ############## DEFENSE SCHEDULE DATA ##############
+                except:
+                    context = {
+                        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-       
-        student_leader_username = current_user.username
+                        'student_leader_data': get_student_leader_data,
 
-        dit_head_name = dept_head_name.title()
-        dit_head_response = "Pending"
-        dit_head_response_date = None
+                        'dept_head_name' : dept_head_name,
 
-        panel_member_username_1 = panel_data_1.username
-        panel_member_name_1 = panel_full_name_1.title()
-        panel_member_response_1 = "On Hold"
-        panel_member_response_date_1 = None
+                        'panel_members' : panel_members,
 
-        panel_member_username_2 = panel_data_2.username
-        panel_member_name_2 = panel_full_name_2.title()
-        panel_member_response_2 = "On Hold"
-        panel_member_response_date_2 = None
+                        'defense_dates': defense_dates,
 
-        panel_member_username_3 = panel_data_3.username
-        panel_member_name_3 = panel_full_name_3.title()
-        panel_member_response_3 = "On Hold"
-        panel_member_response_date_3 = None
+                        'response': "sweet defense schedule not found"
+                        }
 
-        panel_member_username_4 = panel_data_4.username
-        panel_member_name_4 = panel_full_name_4.title()
-        panel_member_response_4 = "On Hold"
-        panel_member_response_date_4 = None
+                    return render(request, 'student-panel-invitation-bet-3-create.html', context)
 
-        panel_member_username_5 = panel_data_5.username
-        panel_member_name_5 = panel_full_name_5.title()
-        panel_member_response_5 = "On Hold"
-        panel_member_response_date_5 = None
+                get_student_leader_data.research_title_defense_date = save_defense_schedule.date
+                get_student_leader_data.research_title_defense_start_time = save_defense_schedule.start_time
+                get_student_leader_data.research_title_defense_end_time = save_defense_schedule.end_time
+                get_student_leader_data.save()
+                print("Student Leader Data Updated")
 
-        student_member_username_1 = current_user.username
-        student_member_name_1 = student_full_name_1.title()
+                send_panel_invitation = BET3PanelInvitation (
+                    student_leader_username = current_user.username,
+                    student_leader_full_name = student_leader_full_name,
+                    course_major_abbr = get_student_leader_data.course_major_abbr,
 
-        student_member_username_2 = student_username_2
-        student_member_name_2 = student_full_name_2.title()
+                    dit_head_username = dept_head.username,
+                    dit_head_full_name	= dept_head_name,
+                    dit_head_response = "pending",
 
-        student_member_username_3 = student_username_3
-        student_member_name_3 = student_full_name_3.title()
+                    panel_username = get_panel_data.username,
+                    panel_full_name = panel_full_name,
+                    panel_response = "on hold",
 
-        student_member_username_4 = student_username_4
-        student_member_name_4 = student_full_name_4.title()
+                    research_title_defense_date = save_defense_schedule.date,
+                    research_title_defense_start_time = save_defense_schedule.start_time,
+                    research_title_defense_end_time = save_defense_schedule.end_time,
 
-        student_member_username_5 = student_username_5
-        student_member_name_5 = student_full_name_5.title()
-
-        course = course_short
-        major = student_leader_data.major
-        course_major_abbr = student_leader_data.course_major_abbr
-
-        research_title_1 = research_title_1_input.title()
-        research_title_2 = research_title_2_input.title()
-        research_title_3 = research_title_3_input.title()
-        research_title_4 = research_title_4_input.title()
-        research_title_5 = research_title_5_input.title()
-
-        form_date_submitted = today.strftime("%B %d, %Y")
-
-        defense_date = defense_schedule_data.date
-        defense_start_time = defense_schedule_data.start_time
-        defense_end_time =  defense_schedule_data.end_time
-        form_status = "Ongoing"
-
-        print(student_leader_username)
-
-        print(dit_head_name)
-        print(dit_head_response)
-        print(dit_head_response_date)
-
-        print(panel_member_username_1)
-        print(panel_member_name_1)
-        print(panel_member_response_1)
-        print(panel_member_response_date_1)
-
-        print(panel_member_username_2)
-        print(panel_member_name_2)
-        print(panel_member_response_2)
-        print(panel_member_response_date_2)
-
-        print(panel_member_username_3)
-        print(panel_member_name_3)
-        print(panel_member_response_3)
-        print(panel_member_response_date_3)
-
-        print(panel_member_username_4)
-        print(panel_member_name_4)
-        print(panel_member_response_4)
-        print(panel_member_response_date_4)
-
-        print(panel_member_username_5)
-        print(panel_member_name_5)
-        print(panel_member_response_5)
-        print(panel_member_response_date_5)
-
-        print(student_member_username_1)
-        print(student_member_name_1)
-
-        print(student_member_username_2)
-        print(student_member_name_2)
-
-        print(student_member_username_3)
-        print(student_member_name_3)
-
-        print(student_member_username_4)
-        print(student_member_name_4)
-
-        print(student_member_username_5)
-        print(student_member_name_5)
-
-        print(course)
-        print(major)
-        print(course_major_abbr)
-
-        print(research_title_1)
-        print(research_title_2)
-        print(research_title_3)
-        print(research_title_4)
-        print(research_title_5)
-
-        print(form_date_submitted)
-
-        print(defense_date)
-        print(defense_start_time)
-        print(defense_end_time)
-        print(form_status)
-
-        ############## Student Leader ##############
-        student_leader_status = StudentLeader.objects.get(username=current_user.username)
-        student_leader_status.defense_status = "Title Defense"
-        student_leader_status.save()
-        ############## Student Leader ##############
-
-        ############## PANEL INVITATION ##############
-        panel_invitation = PanelInvitationBET3(
-            student_leader_username = student_leader_username,
-
-            dit_head_name = dit_head_name,
-            dit_head_response = dit_head_response,
-
-            panel_member_username_1 = panel_member_username_1,
-            panel_member_name_1 = panel_member_name_1,
-            panel_member_response_1 = panel_member_response_1,
-
-            panel_member_username_2 = panel_member_username_2,
-            panel_member_name_2 = panel_member_name_2,
-            panel_member_response_2 = panel_member_response_2,
-
-            panel_member_username_3 = panel_member_username_3,
-            panel_member_name_3 = panel_member_name_3,
-            panel_member_response_3 = panel_member_response_3,
-
-            panel_member_username_4  = panel_member_username_4,
-            panel_member_name_4 = panel_member_name_4,
-            panel_member_response_4 = panel_member_response_4,
-
-            panel_member_username_5 = panel_member_username_5,
-            panel_member_name_5 = panel_member_name_5,
-            panel_member_response_5 = panel_member_response_5,
-
-            student_member_username_1 = student_member_username_1, 
-            student_member_name_1 = student_member_name_1,
-
-            student_member_username_2 = student_member_username_2, 
-            student_member_name_2 = student_member_name_2,
-
-            student_member_username_3 = student_member_username_3, 
-            student_member_name_3 = student_member_name_3,
-
-            student_member_username_4 = student_member_username_4, 
-            student_member_name_4 = student_member_name_4,
-
-            student_member_username_5 = student_member_username_5, 
-            student_member_name_5 = student_member_name_5,
-
-            course = course_short,
-            major = major,
-            course_major_abbr = course_major_abbr,
-
-            research_title_1 = research_title_1,
-            research_title_2 = research_title_2,
-            research_title_3 = research_title_3,
-            research_title_4 = research_title_4,
-            research_title_5 = research_title_5,
-
-            form_date_submitted = form_date_submitted,
-
-            defense_date = defense_date,
-            defense_start_time = defense_start_time,
-            defense_end_time = defense_end_time,
-
-            accept_count = 0,
-
-            form_status = form_status,
-        )
-        panel_invitation.save()
-        ############## PANEL INVITATION ##############
-
-        ############## Defense Schedule ##############
-        defense_schedule = DefenseSchedule.objects.get(id=defense_schedule_input)
-        defense_schedule.student_leader_username = current_user.username
-        defense_schedule.student_leader_name = student_full_name_1
-        defense_schedule.status = "Reserved"
-        defense_schedule.save()
-        ############## Defense Schedule ##############
-
-        ############## Research Title ##############
-        research_title_1 = ResearchTitle(
-            research_title = research_title_1,
-            course = student_leader_data.course,
-            major = student_leader_data.major,
-            student_leader_username = student_leader_data.username,
-            student_leader_name = student_full_name_1,
-            course_major_abbr = course_major_abbr,
-            date_submitted = form_date_submitted
-        )
-        research_title_1.save()
-
-        if research_title_2 != "":
-            research_title_2 = ResearchTitle(
-                research_title = research_title_2,
-                course = student_leader_data.course,
-                major = student_leader_data.major,
-                student_leader_username = student_leader_data.username,
-                student_leader_name = student_full_name_1,
-                course_major_abbr = course_major_abbr,
-                date_submitted = form_date_submitted
-            )
-            research_title_2.save()
-
-        if research_title_3 != "":
-            research_title_3 = ResearchTitle(
-                research_title = research_title_3,
-                course = student_leader_data.course,
-                major = student_leader_data.major,
-                student_leader_username = student_leader_data.username,
-                student_leader_name = student_full_name_1,
-                course_major_abbr = course_major_abbr,
-                date_submitted = form_date_submitted
-            )
-            research_title_3.save()
-
-        if research_title_4 != "":
-            research_title_4 = ResearchTitle(
-            research_title = research_title_4,
-            course = student_leader_data.course,
-            major = student_leader_data.major,
-            student_leader_username = student_leader_data.username,
-            student_leader_name = student_full_name_1,
-            course_major_abbr = course_major_abbr,
-            date_submitted = form_date_submitted
-        )
-            research_title_4.save()
-
-        if research_title_5 != "":
-            research_title_5 = ResearchTitle(
-                research_title = research_title_5,
-                course = student_leader_data.course,
-                major = student_leader_data.major,
-                student_leader_username = student_leader_data.username,
-                student_leader_name = student_full_name_1,
-                course_major_abbr = course_major_abbr,
-                date_submitted = form_date_submitted
-            )
-            research_title_5.save()
-        ############## Research Title ##############
-
-        ############## Group Members ##############
-        if student_member_username_2 != "":
-            group_member_2 = StudentGroupMember(
-                student_leader_name = student_member_name_1,
-                student_leader_username = student_leader_data.username,
-                
-                student_member_username = student_member_username_2,
-                student_member_name = student_member_name_2,
-
-                course = student_leader_data.course,
-                major = student_leader_data.major,
-                course_major_abbr = course_major_abbr,
-            )
-            group_member_2.save()
-
-        if student_member_username_3 != "":
-            group_member_3 = StudentGroupMember(
-                student_leader_name = student_member_name_1,
-                student_leader_username = student_leader_data.username,
-                
-                student_member_username = student_member_username_3,
-                student_member_name = student_member_name_3,
-
-                course = student_leader_data.course,
-                major = student_leader_data.major,
-                course_major_abbr = course_major_abbr,
-            )
-            group_member_3.save()
-
-        if student_member_username_4 != "":
-            group_member_4 = StudentGroupMember(
-                student_leader_name = student_member_name_1,
-                student_leader_username = student_leader_data.username,
-                
-                student_member_username = student_member_username_4,
-                student_member_name = student_member_name_4,
-
-                course = student_leader_data.course,
-                major = student_leader_data.major,
-                course_major_abbr = course_major_abbr,
-            )
-            group_member_4.save()
-
-        if student_member_username_5 != "":
-            group_member_5 = StudentGroupMember(
-                student_leader_name = student_member_name_1,
-                student_leader_username = student_leader_data.username,
-                
-                student_member_username = student_member_username_5,
-                student_member_name = student_member_name_5,
-
-                course = student_leader_data.course,
-                major = student_leader_data.major,
-                course_major_abbr = course_major_abbr,
-            )
-            group_member_5.save()
-        ############## Group Members ##############
-
+                    form_status = "pending",
+                    form_date_sent = today.strftime("%B %d, %Y"),
+                    form = "BET-3 Panel Invitation"
+                )
+                send_panel_invitation.save()
+                print("Panel Invitation Sent")
 
         context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-        'response': "sweet panel invitation bet-3 success",
-        }
-        return render(request, 'student-dashboard.html', context)
+                'student_leader_data': get_student_leader_data,
+
+                'dept_head_name' : dept_head_name,
+
+                'panel_members' : panel_members,
+
+                'defense_dates': defense_dates,
+
+                'response': "sweet panel invitation sent"
+                }
+
+        return render(request, 'student-panel-invitation-bet-3-create.html', context)
 
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
         'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-        'current_user':student,
+        'student_leader_data': get_student_leader_data,
 
         'dept_head_name' : dept_head_name,
 
@@ -2499,6 +1862,256 @@ def studentPanelInvitationBet3Create(request):
         }
 
     return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+
+# Student - BET-3 Panel Invitation Create Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentPanelInvitationBet3Save(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
+        get_student_leader_data.bet3_panel_invitation_status = "completed"
+        get_student_leader_data.save()
+    except:
+        return redirect ('student-panel-invitation-bet3')
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'student_leader_data': get_student_leader_data,
+
+        'response': 'sweet bet-3 panel invitation saved'
+        }
+
+    return render(request, 'student-bet3-panel-invitation-dashboard.html', context)
+
+# Student - Accepted BET-3 Panel Invitation
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentDownloadPanelInvitationBet3(request, id):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
+        get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = current_user.username)
+        get_research_titles = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
+        get_panel_invitation = BET3PanelInvitation.objects.get(id = int(id), student_leader_username = current_user.username)
+
+    except:
+        return redirect ('student-panel-invitation-bet3')
+
+    ############## BET-3 PANEL INVITATION DATA ##############
+    date_submitted = get_panel_invitation.form_date_sent
+
+    student_member_list = [get_panel_invitation.student_leader_full_name]
+    course = get_student_leader_data.course.replace("Engineering", "Eng.")
+    major = get_student_leader_data.major
+
+    research_title_list = []
+
+    defense_date = get_panel_invitation.research_title_defense_date
+    defense_start_time = get_panel_invitation.research_title_defense_start_time
+    defense_end_time = get_panel_invitation.research_title_defense_end_time
+
+    dit_head_full_name = get_panel_invitation.dit_head_full_name
+    dit_head_response = get_panel_invitation.dit_head_response
+    dit_head_response_date = get_panel_invitation.dit_head_response_date
+
+    panel_full_name = get_panel_invitation.panel_full_name
+    panel_response = get_panel_invitation.panel_response
+    panel_response_date = get_panel_invitation.panel_response_date
+    ############## BET-3 PANEL INVITATION DATA ##############
+
+    if get_group_members:
+        for group_member in get_group_members:
+            student_member_list.append(group_member.student_member_full_name)
+
+    student_member_list.sort()
+
+    if get_research_titles:
+        for research_title in get_research_titles:
+            research_title_list.append(research_title.research_title)
+
+    print("Date Sent: ", date_submitted)
+
+    print("Group Members: ", student_member_list)
+    print("Course: ", course)
+    print("Major: ", major)
+    print("Research Titles: ", research_title_list)
+
+    print("Defense Date: ", defense_date)
+    print("Defense Start Time: ", defense_start_time)
+    print("Defense End Time: ", defense_end_time)
+
+    print("DIT Head Name: ", dit_head_full_name)
+    print("DIT Head Response: ", dit_head_response)
+    print("DIT Head Response Date: ", dit_head_response_date)
+
+    print("Panel Name: ", panel_full_name)
+    print("Panel Response: ", panel_response)
+    print("Panel Response Date: ", panel_response_date)
+
+    doc = Document('static/forms/1-PANEL-INVITATION.docx')
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/1-PANEL-INVITATION.docx')
+
+    student_table = doc.tables[1]
+    qr_code_box = doc.tables[2]
+    response_table = doc.tables[3]
+
+    try:
+        student_table.cell(1, 0).paragraphs[0].runs[0].text = student_member_list[0]
+        student_table.cell(1, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(1, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(1, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(1, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(1, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(2, 0).paragraphs[0].runs[0].text = student_member_list[1]
+        student_table.cell(2, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(2, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(2, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(2, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(2, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(3, 0).paragraphs[0].runs[0].text = student_member_list[2]
+        student_table.cell(3, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(3, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(3, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(3, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(3, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(4, 0).paragraphs[0].runs[0].text = student_member_list[3]
+        student_table.cell(4, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(4, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(4, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(4, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(4, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(5, 0).paragraphs[0].runs[0].text = student_member_list[4]
+        student_table.cell(5, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(5, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(5, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(5, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(5, 4).paragraphs[0].runs[0].text = ""
+    
+    doc.paragraphs[1].runs[1].text = date_submitted
+    doc.paragraphs[2].runs[0].text = panel_full_name
+    doc.paragraphs[5].runs[1].text = panel_full_name
+
+    try:
+        doc.paragraphs[11].runs[1].text = research_title_list[0]
+    except:
+         doc.paragraphs[11].runs[1].text = ""
+
+    try:   
+        doc.paragraphs[12].runs[1].text = research_title_list[1]
+    except:
+        doc.paragraphs[12].runs[1].text = ""
+
+    try:
+        doc.paragraphs[13].runs[1].text = research_title_list[2]
+    except:
+        doc.paragraphs[13].runs[1].text = ""
+
+    try:
+        doc.paragraphs[14].runs[1].text = research_title_list[3]
+    except:
+        doc.paragraphs[14].runs[1].text = ""
+    
+    try:
+        doc.paragraphs[15].runs[1].text = research_title_list[4]
+    except:
+        doc.paragraphs[15].runs[1].text = ""
+    
+    doc.paragraphs[17].runs[1].text = defense_date
+    doc.paragraphs[17].runs[3].text = defense_start_time
+    doc.paragraphs[17].runs[5].text = defense_end_time
+    doc.paragraphs[22].runs[0].text = dit_head_full_name
+
+    response_table.cell(0, 9).paragraphs[0].runs[0].text = panel_response_date
+
+    if panel_response == "accepted":
+        response_table.cell(0, 2).paragraphs[0].runs[0].text = '✓'
+        response_table.cell(0, 5).paragraphs[0].runs[0].text = ''
+
+    if panel_response  == "declined":
+        response_table.cell(0, 2).paragraphs[0].runs[0].text = ''
+        response_table.cell(0, 5).paragraphs[0].runs[0].text = '✓'
+
+    img = qrcode.make('DIT Head: ' + dit_head_full_name + '\n DIT Head Response: ' + dit_head_response + '\n DIT Head Date Response: ' + dit_head_response_date + "\n Panel Member Name: " + panel_full_name + "\n Panel Response: " + panel_response + "\n Panel Member Date Response: " + panel_response_date + "\n BET-3 Panel Invitation Submitted: " + date_submitted)
+    type(img) 
+    img.save(current_user.username + '-PANEL-INVITATION-BET-3.png')
+
+    # INSERT IMAGE
+    qr_code = qr_code_box.cell(0, 0).add_paragraph()
+    qr_code_run = qr_code.add_run()
+    qr_code_run.add_picture(current_user.username + '-PANEL-INVITATION-BET-3.png',width=Inches(1), height=Inches(1))
+
+    doc.save(current_user.username +"-"+panel_full_name+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
+    convert(current_user.username +"-"+panel_full_name+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
+
+    qr_code_path = (current_user.username + '-PANEL-INVITATION-BET-3.png')
+    if os.path.isfile(qr_code_path):
+        os.remove(qr_code_path)
+        print("QR Code has been deleted")
+    else:
+        print("QR Code does not exist")
+
+
+    panel_invitation_bet_3_path = (current_user.username +"-"+panel_full_name+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
+    # panel_invitation_bet_3_path = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.docx')
+
+    if os.path.isfile(panel_invitation_bet_3_path):
+        os.remove(panel_invitation_bet_3_path)
+        print("Panel Invitation BET-3 has been deleted")
+    else:
+        print("Panel Invitation BET-3 does not exist")
+
+    get_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username)
+    get_accepted_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username, form_status = "accepted")
+    get_pending_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username, form_status = "pending")
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'student_leader_data': get_student_leader_data,
+
+        'panel_invitations': get_panel_invitations,
+        'accepted_panel_invitations': get_accepted_panel_invitations.count(),
+        'pending_panel_invitations': get_pending_panel_invitations.count(),
+
+        "response": 'sweet downloaded'
+        }
+
+    return render(request, 'student-bet3-panel-invitation-dashboard.html', context)
+
 
 @login_required(login_url='index')
 @user_passes_test(lambda u: u.is_student, login_url='index')
@@ -6172,23 +5785,16 @@ def ditHeadPanelInvitationBet3(request):
     currently_loggedin_user_account = topbar_data[1]
 
      # PANEL INVITATION BET-3
-    try:
-        panel_invitation_bet3_check = PanelInvitationBET3.objects.all().filter(dit_head_response="pending")
-   
-        context = {
-            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+    get_panel_invitation = BET3PanelInvitation.objects.all().filter(dit_head_response="pending")
 
-            'panel_invitation_bet3_check' : panel_invitation_bet3_check,
-            }
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
 
-        return render(request, 'dit-head-panel-invitation-bet-3.html', context)
-
-    except:
-        context = {
-            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'panel_invitations' : get_panel_invitation,
         }
 
-        return render(request, 'dit-head-panel-invitation-bet-3.html', context)
+    return render(request, 'dit-head-panel-invitation-bet-3.html', context)
+
 
 # DIT Head - Panel Invitation BET-3 Accept Process
 @login_required(login_url='index')
@@ -6206,27 +5812,23 @@ def ditHeadPanelInvitationBet3Accept(request, id):
 
     # PANEL INVITATION BET-3
     try:
-        panel_invitation_bet3_check_form = PanelInvitationBET3.objects.get(id = id)
+        check_panel_invitation = BET3PanelInvitation.objects.get(id = id)
    
-        panel_invitation_bet3_check_form.dit_head_response = "accepted"
-        panel_invitation_bet3_check_form.dit_head_response_date = dit_head_response_date
+        check_panel_invitation.dit_head_response = "accepted"
+        check_panel_invitation.dit_head_response_date = dit_head_response_date
 
-        panel_invitation_bet3_check_form.panel_member_response_1 = "pending"
-        panel_invitation_bet3_check_form.panel_member_response_2 = "pending"
-        panel_invitation_bet3_check_form.panel_member_response_3 = "pending"
-        panel_invitation_bet3_check_form.panel_member_response_4 = "pending"
-        panel_invitation_bet3_check_form.panel_member_response_5 = "pending"
-        panel_invitation_bet3_check_form.save()
+        check_panel_invitation.panel_response = "pending"
+        check_panel_invitation.save()
 
-        panel_invitation_bet3_check = PanelInvitationBET3.objects.all().filter(dit_head_response="pending")
+        get_panel_invitations = BET3PanelInvitation.objects.all().filter(dit_head_response="pending")
    
         context = {
             'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
 
-            'panel_invitation_bet3_check' : panel_invitation_bet3_check,
+            'panel_invitations' : get_panel_invitations,
 
-            'accepted_student_member_name' : panel_invitation_bet3_check_form.student_member_name_1,
-            'accepted_student_member_username' : panel_invitation_bet3_check_form.student_member_username_1,
+            'accepted_student_member_name' : check_panel_invitation.student_leader_full_name,
+            'accepted_student_member_username' : check_panel_invitation.student_leader_username,
 
             'response' : 'sweet panel invitation bet-3 accepted',
             }
@@ -6253,28 +5855,26 @@ def ditHeadPanelInvitationBet3Decline(request, id):
 
     # PANEL INVITATION BET-3
     try:
-        panel_invitation_bet3_check_form = PanelInvitationBET3.objects.get(id = id)
-        defense_schedule_check = DefenseSchedule.objects.get(student_leader_username = panel_invitation_bet3_check_form.student_leader_username)
+        check_panel_invitation = BET3PanelInvitation.objects.get(id = int(id))
+   
+        check_panel_invitation.dit_head_response = "declined"
+        check_panel_invitation.dit_head_response_date = dit_head_response_date
+        check_panel_invitation.form_status = "declined - DIT Head"
 
-        defense_schedule_check.student_leader_username = ""
-        defense_schedule_check.student_leader_name = ""
-        defense_schedule_check.status = "Available"
-        
+        check_panel_invitation.panel_response = "None"
+        check_panel_invitation.panel_response_date = "None"
 
-        research_title_check = ResearchTitle.objects.all().filter(student_leader_username = panel_invitation_bet3_check_form.student_leader_username).delete()
-        group_member_check = StudentGroupMember.objects.all().filter(student_leader_username = panel_invitation_bet3_check_form.student_leader_username).delete()
-        defense_schedule_check.save()
-        panel_invitation_bet3_check_form.delete()
+        check_panel_invitation.save()
 
-        panel_invitation_bet3_check = PanelInvitationBET3.objects.all().filter(dit_head_response="pending")
+        panel_invitation_bet3_check = BET3PanelInvitation.objects.all().filter(dit_head_username = currently_loggedin_user.username,dit_head_response="pending")
         
         context = {
             'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
 
-            'panel_invitation_bet3_check' : panel_invitation_bet3_check,
+            'panel_invitations' : panel_invitation_bet3_check,
 
-            'accepted_student_member_name' : panel_invitation_bet3_check_form.student_member_name_1,
-            'accepted_student_member_username' : panel_invitation_bet3_check_form.student_member_username_1,
+            'declined_student_member_name' : check_panel_invitation.student_leader_full_name,
+            'declined_student_member_username' : check_panel_invitation.student_leader_username,
 
             'response': 'sweet panel invitation bet-3 declined'
 
@@ -6512,27 +6112,11 @@ def panelPanelInvitationBet3(request):
     currently_loggedin_user_account = topbar_data[1]
 
     # PANEL INVITATION BET-3
-    panel_invitation_bet3_check_1 = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-    panel_invitation_bet3_check_2 = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-    panel_invitation_bet3_check_3 = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-    panel_invitation_bet3_check_4 = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-    panel_invitation_bet3_check_5 = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-    
-    print(panel_invitation_bet3_check_1)
-    print(panel_invitation_bet3_check_2)
-    print(panel_invitation_bet3_check_3)
-    print(panel_invitation_bet3_check_4)
-    print(panel_invitation_bet3_check_5)
+    get_panel_invitation = BET3PanelInvitation.objects.all().filter(panel_username = currently_loggedin_user.username, panel_response = "pending")
 
     context = {
             'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-
-            "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1,
-            "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2,
-            "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3,
-            "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4,
-            "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5,
-            
+            'panel_invitations': get_panel_invitation
             }
 
     return render(request, 'panel-panel-invitation-bet-3.html', context)
@@ -6551,3059 +6135,35 @@ def panelPanelInvitationBet3Accept(request, id):
 
     response_date = today.strftime("%B %d, %Y")
 
-    # PANEL INVITATION BET-3
     try:
-        panel_invitation_bet3_check_1 = PanelInvitationBET3.objects.get(id = id, panel_member_username_1 = currently_loggedin_user.username)
+        check_panel_invitation = BET3PanelInvitation.objects.get(id = id)
    
-        panel_invitation_bet3_check_1.panel_member_response_1 = "accepted"
-        panel_invitation_bet3_check_1.panel_member_response_date_1 = response_date
-        panel_invitation_bet3_check_1.accept_count = panel_invitation_bet3_check_1.accept_count + 1
+        check_panel_invitation.panel_response = "accepted"
+        check_panel_invitation.panel_response_date = response_date
 
-        panel_invitation_bet3_check_1.save()
+        check_panel_invitation.form_status = "accepted"
+        check_panel_invitation.save()
 
-        panel_invitation_bet_3_check_all = PanelInvitationBET3.objects.get(id = id)
+        update_student_leader_data = StudentLeader.objects.get(username = check_panel_invitation.student_leader_username)
+        update_student_leader_data.request_limit = int(update_student_leader_data.request_limit) - 1
+        update_student_leader_data.save()
 
-        if panel_invitation_bet_3_check_all.panel_member_response_1 != "pending" and \
-                panel_invitation_bet_3_check_all.panel_member_response_2 != "pending" and \
-                    panel_invitation_bet_3_check_all.panel_member_response_3 != "pending" and \
-                        panel_invitation_bet_3_check_all.panel_member_response_4 != "pending" and \
-                            panel_invitation_bet_3_check_all.panel_member_response_5 != "pending":
-            
-            if panel_invitation_bet_3_check_all.accept_count >= 3:
-                panel_invitation_bet_3_check_all.form_status = "Complete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-            else:
-                panel_invitation_bet_3_check_all.form_status = "Incomplete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-            
-
-        panel_invitation_bet3_check_1_new = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-        panel_invitation_bet3_check_2_new = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-        panel_invitation_bet3_check_3_new = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-        panel_invitation_bet3_check_4_new = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-        panel_invitation_bet3_check_5_new = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
-        context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-
-                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
-                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
-                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
-                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
-                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
-
-                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
-                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
-
-                'response' : 'sweet panel invitation bet-3 accepted',
-                
-                }
-        print("pass all")
-        return render(request, 'panel-panel-invitation-bet-3.html', context)
-        
-    except:
-        pass
-    
-    try:
-        panel_invitation_bet3_check_2 = PanelInvitationBET3.objects.get(id = id, panel_member_username_2 = currently_loggedin_user.username)
    
-        panel_invitation_bet3_check_2.panel_member_response_2 = "accepted"
-        panel_invitation_bet3_check_2.panel_member_response_date_2 = response_date
-        panel_invitation_bet3_check_2.accept_count = panel_invitation_bet3_check_2.accept_count + 1
-
-        panel_invitation_bet3_check_2.save()
-
-        panel_invitation_bet_3_check_all = PanelInvitationBET3.objects.get(id = id)
-
-        if panel_invitation_bet_3_check_all.panel_member_response_1 != "pending" and \
-                panel_invitation_bet_3_check_all.panel_member_response_2 != "pending" and \
-                    panel_invitation_bet_3_check_all.panel_member_response_3 != "pending" and \
-                        panel_invitation_bet_3_check_all.panel_member_response_4 != "pending" and \
-                            panel_invitation_bet_3_check_all.panel_member_response_5 != "pending":
-            
-            if panel_invitation_bet_3_check_all.accept_count >= 3:
-                panel_invitation_bet_3_check_all.form_status = "Complete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-            else:
-                panel_invitation_bet_3_check_all.form_status = "Incomplete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-        panel_invitation_bet3_check_1_new = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-        panel_invitation_bet3_check_2_new = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-        panel_invitation_bet3_check_3_new = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-        panel_invitation_bet3_check_4_new = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-        panel_invitation_bet3_check_5_new = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
         context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-
-                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
-                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
-                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
-                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
-                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
-
-                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
-                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
-
-                'response' : 'sweet panel invitation bet-3 accepted',
-                
-                }
-        print("pass all")
-        return render(request, 'panel-panel-invitation-bet-3.html', context)
-        
-    except:
-        pass
-
-    try:
-        panel_invitation_bet3_check_3 = PanelInvitationBET3.objects.get(id = id, panel_member_username_3 = currently_loggedin_user.username)
-   
-        panel_invitation_bet3_check_3.panel_member_response_3 = "accepted"
-        panel_invitation_bet3_check_3.panel_member_response_date_3 = response_date
-        panel_invitation_bet3_check_3.accept_count = panel_invitation_bet3_check_3.accept_count + 1
-
-        panel_invitation_bet3_check_3.save()
-
-        panel_invitation_bet_3_check_all = PanelInvitationBET3.objects.get(id = id)
-
-        if panel_invitation_bet_3_check_all.panel_member_response_1 != "pending" and \
-                panel_invitation_bet_3_check_all.panel_member_response_2 != "pending" and \
-                    panel_invitation_bet_3_check_all.panel_member_response_3 != "pending" and \
-                        panel_invitation_bet_3_check_all.panel_member_response_4 != "pending" and \
-                            panel_invitation_bet_3_check_all.panel_member_response_5 != "pending":
-            
-            if panel_invitation_bet_3_check_all.accept_count >= 3:
-                panel_invitation_bet_3_check_all.form_status = "Complete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-            else:
-                panel_invitation_bet_3_check_all.form_status = "Incomplete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-        panel_invitation_bet3_check_1_new = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-        panel_invitation_bet3_check_2_new = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-        panel_invitation_bet3_check_3_new = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-        panel_invitation_bet3_check_4_new = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-        panel_invitation_bet3_check_5_new = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
-        context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-
-                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
-                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
-                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
-                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
-                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
-
-                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
-                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
-
-                'response' : 'sweet panel invitation bet-3 accepted',
-                
-                }
-        print("pass all")
-        return render(request, 'panel-panel-invitation-bet-3.html', context)
-        
-    except:
-        pass
-
-    try:
-        panel_invitation_bet3_check_4 = PanelInvitationBET3.objects.get(id = id, panel_member_username_4 = currently_loggedin_user.username)
-   
-        panel_invitation_bet3_check_4.panel_member_response_4 = "accepted"
-        panel_invitation_bet3_check_4.panel_member_response_date_4 = response_date
-        panel_invitation_bet3_check_4.accept_count = panel_invitation_bet3_check_4.accept_count + 1
-
-        panel_invitation_bet3_check_4.save()
-
-        panel_invitation_bet_3_check_all = PanelInvitationBET3.objects.get(id = id)
-
-        if panel_invitation_bet_3_check_all.panel_member_response_1 != "pending" and \
-                panel_invitation_bet_3_check_all.panel_member_response_2 != "pending" and \
-                    panel_invitation_bet_3_check_all.panel_member_response_3 != "pending" and \
-                        panel_invitation_bet_3_check_all.panel_member_response_4 != "pending" and \
-                            panel_invitation_bet_3_check_all.panel_member_response_5 != "pending":
-            
-            if panel_invitation_bet_3_check_all.accept_count >= 3:
-                panel_invitation_bet_3_check_all.form_status = "Complete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-            else:
-                panel_invitation_bet_3_check_all.form_status = "Incomplete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-        panel_invitation_bet3_check_1_new = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-        panel_invitation_bet3_check_2_new = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-        panel_invitation_bet3_check_3_new = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-        panel_invitation_bet3_check_4_new = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-        panel_invitation_bet3_check_5_new = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
-        context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-
-                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
-                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
-                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
-                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
-                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
-
-                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
-                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
-
-                'response' : 'sweet panel invitation bet-3 accepted',
-                
-                }
-        print("pass all")
-        return render(request, 'panel-panel-invitation-bet-3.html', context)
-        
-    except:
-        pass
-
-    try:
-        panel_invitation_bet3_check_5 = PanelInvitationBET3.objects.get(id = id, panel_member_username_5 = currently_loggedin_user.username)
-   
-        panel_invitation_bet3_check_5.panel_member_response_5 = "accepted"
-        panel_invitation_bet3_check_5.panel_member_response_date_5 = response_date
-        panel_invitation_bet3_check_5.accept_count = panel_invitation_bet3_check_5.accept_count + 1
-
-        panel_invitation_bet3_check_5.save()
-
-        panel_invitation_bet_3_check_all = PanelInvitationBET3.objects.get(id = id)
-
-        if panel_invitation_bet_3_check_all.panel_member_response_1 != "pending" and \
-                panel_invitation_bet_3_check_all.panel_member_response_2 != "pending" and \
-                    panel_invitation_bet_3_check_all.panel_member_response_3 != "pending" and \
-                        panel_invitation_bet_3_check_all.panel_member_response_4 != "pending" and \
-                            panel_invitation_bet_3_check_all.panel_member_response_5 != "pending":
-            
-            if panel_invitation_bet_3_check_all.accept_count >= 3:
-                panel_invitation_bet_3_check_all.form_status = "Complete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-            else:
-                panel_invitation_bet_3_check_all.form_status = "Incomplete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-        panel_invitation_bet3_check_1_new = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-        panel_invitation_bet3_check_2_new = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-        panel_invitation_bet3_check_3_new = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-        panel_invitation_bet3_check_4_new = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-        panel_invitation_bet3_check_5_new = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
-        context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-
-                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
-                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
-                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
-                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
-                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
-
-                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
-                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
-
-                'response' : 'sweet panel invitation bet-3 accepted',
-                
-                }
-        print("pass all")
-        return render(request, 'panel-panel-invitation-bet-3.html', context)
-        
-    except:
-        pass
-
-    panel_invitation_bet3_check_1 = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-    panel_invitation_bet3_check_2 = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-    panel_invitation_bet3_check_3 = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-    panel_invitation_bet3_check_4 = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-    panel_invitation_bet3_check_5 = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
-    context = {
             'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
 
-            "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1,
-            "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2,
-            "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3,
-            "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4,
-            "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5,
-            
+            'accepted_student_member_name' : check_panel_invitation.student_leader_full_name,
+            'accepted_student_member_username' : check_panel_invitation.student_leader_username,
+
+            'response' : 'sweet panel invitation bet-3 accepted',
             }
 
-    return render(request, 'panel-panel-invitation-bet-3.html', context)
+        return render(request, 'panel-panel-invitation-bet-3.html', context)
+
+    except:
+        print("NO FOUND")
+        return redirect('panel-panel-invitation-bet-3')
+
 
 # Panel - Panel Invitation BET-3 Decline Process
 @login_required(login_url='index')
@@ -9619,3051 +6179,30 @@ def panelPanelInvitationBet3Decline(request, id):
 
     response_date = today.strftime("%B %d, %Y")
 
-    # PANEL INVITATION BET-3
     try:
-        panel_invitation_bet3_check_1 = PanelInvitationBET3.objects.get(id = id, panel_member_username_1 = currently_loggedin_user.username)
+        check_panel_invitation = BET3PanelInvitation.objects.get(id = id)
    
-        panel_invitation_bet3_check_1.panel_member_response_1 = "declined"
-        panel_invitation_bet3_check_1.panel_member_response_date_1 = response_date
+        check_panel_invitation.panel_response = "declined"
+        check_panel_invitation.panel_response_date = response_date
 
-        panel_invitation_bet3_check_1.save()
+        check_panel_invitation.form_status = "declined"
+        check_panel_invitation.save()
 
-        panel_invitation_bet_3_check_all = PanelInvitationBET3.objects.get(id = id)
-
-        if panel_invitation_bet_3_check_all.panel_member_response_1 != "pending" and \
-                panel_invitation_bet_3_check_all.panel_member_response_2 != "pending" and \
-                    panel_invitation_bet_3_check_all.panel_member_response_3 != "pending" and \
-                        panel_invitation_bet_3_check_all.panel_member_response_4 != "pending" and \
-                            panel_invitation_bet_3_check_all.panel_member_response_5 != "pending":
-            
-            if panel_invitation_bet_3_check_all.accept_count >= 3:
-                panel_invitation_bet_3_check_all.form_status = "Complete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-            else:
-                panel_invitation_bet_3_check_all.form_status = "Incomplete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-            
-
-        panel_invitation_bet3_check_1_new = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-        panel_invitation_bet3_check_2_new = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-        panel_invitation_bet3_check_3_new = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-        panel_invitation_bet3_check_4_new = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-        panel_invitation_bet3_check_5_new = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
-        context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-
-                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
-                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
-                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
-                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
-                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
-
-                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
-                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
-
-                'response' : 'sweet panel invitation bet-3 declined',
-                
-                }
-        print("pass all")
-        return render(request, 'panel-panel-invitation-bet-3.html', context)
-        
-    except:
-        pass
-    
-    try:
-        panel_invitation_bet3_check_2 = PanelInvitationBET3.objects.get(id = id, panel_member_username_2 = currently_loggedin_user.username)
    
-        panel_invitation_bet3_check_2.panel_member_response_2 = "declined"
-        panel_invitation_bet3_check_2.panel_member_response_date_2 = response_date
-
-        panel_invitation_bet3_check_2.save()
-
-        panel_invitation_bet_3_check_all = PanelInvitationBET3.objects.get(id = id)
-
-        if panel_invitation_bet_3_check_all.panel_member_response_1 != "pending" and \
-                panel_invitation_bet_3_check_all.panel_member_response_2 != "pending" and \
-                    panel_invitation_bet_3_check_all.panel_member_response_3 != "pending" and \
-                        panel_invitation_bet_3_check_all.panel_member_response_4 != "pending" and \
-                            panel_invitation_bet_3_check_all.panel_member_response_5 != "pending":
-            
-            if panel_invitation_bet_3_check_all.accept_count >= 3:
-                panel_invitation_bet_3_check_all.form_status = "Complete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-            else:
-                panel_invitation_bet_3_check_all.form_status = "Incomplete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-        panel_invitation_bet3_check_1_new = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-        panel_invitation_bet3_check_2_new = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-        panel_invitation_bet3_check_3_new = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-        panel_invitation_bet3_check_4_new = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-        panel_invitation_bet3_check_5_new = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
         context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-
-                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
-                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
-                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
-                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
-                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
-
-                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
-                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
-
-                'response' : 'sweet panel invitation bet-3 declined',
-                
-                }
-        print("pass all")
-        return render(request, 'panel-panel-invitation-bet-3.html', context)
-        
-    except:
-        pass
-
-    try:
-        panel_invitation_bet3_check_3 = PanelInvitationBET3.objects.get(id = id, panel_member_username_3 = currently_loggedin_user.username)
-   
-        panel_invitation_bet3_check_3.panel_member_response_3 = "declined"
-        panel_invitation_bet3_check_3.panel_member_response_date_3 = response_date
-
-        panel_invitation_bet3_check_3.save()
-
-        panel_invitation_bet_3_check_all = PanelInvitationBET3.objects.get(id = id)
-
-        if panel_invitation_bet_3_check_all.panel_member_response_1 != "pending" and \
-                panel_invitation_bet_3_check_all.panel_member_response_2 != "pending" and \
-                    panel_invitation_bet_3_check_all.panel_member_response_3 != "pending" and \
-                        panel_invitation_bet_3_check_all.panel_member_response_4 != "pending" and \
-                            panel_invitation_bet_3_check_all.panel_member_response_5 != "pending":
-            
-            if panel_invitation_bet_3_check_all.accept_count >= 3:
-                panel_invitation_bet_3_check_all.form_status = "Complete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-            else:
-                panel_invitation_bet_3_check_all.form_status = "Incomplete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-        panel_invitation_bet3_check_1_new = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-        panel_invitation_bet3_check_2_new = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-        panel_invitation_bet3_check_3_new = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-        panel_invitation_bet3_check_4_new = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-        panel_invitation_bet3_check_5_new = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
-        context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-
-                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
-                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
-                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
-                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
-                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
-
-                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
-                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
-
-                'response' : 'sweet panel invitation bet-3 declined',
-                
-                }
-        print("pass all")
-        return render(request, 'panel-panel-invitation-bet-3.html', context)
-        
-    except:
-        pass
-
-    try:
-        panel_invitation_bet3_check_4 = PanelInvitationBET3.objects.get(id = id, panel_member_username_4 = currently_loggedin_user.username)
-   
-        panel_invitation_bet3_check_4.panel_member_response_4 = "declined"
-        panel_invitation_bet3_check_4.panel_member_response_date_4 = response_date
-
-        panel_invitation_bet3_check_4.save()
-
-        panel_invitation_bet_3_check_all = PanelInvitationBET3.objects.get(id = id)
-
-        if panel_invitation_bet_3_check_all.panel_member_response_1 != "pending" and \
-                panel_invitation_bet_3_check_all.panel_member_response_2 != "pending" and \
-                    panel_invitation_bet_3_check_all.panel_member_response_3 != "pending" and \
-                        panel_invitation_bet_3_check_all.panel_member_response_4 != "pending" and \
-                            panel_invitation_bet_3_check_all.panel_member_response_5 != "pending":
-            
-            if panel_invitation_bet_3_check_all.accept_count >= 3:
-                panel_invitation_bet_3_check_all.form_status = "Complete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-            else:
-                panel_invitation_bet_3_check_all.form_status = "Incomplete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-        panel_invitation_bet3_check_1_new = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-        panel_invitation_bet3_check_2_new = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-        panel_invitation_bet3_check_3_new = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-        panel_invitation_bet3_check_4_new = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-        panel_invitation_bet3_check_5_new = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
-        context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-
-                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
-                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
-                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
-                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
-                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
-
-                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
-                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
-
-                'response' : 'sweet panel invitation bet-3 declined',
-                
-                }
-        print("pass all")
-        return render(request, 'panel-panel-invitation-bet-3.html', context)
-        
-    except:
-        pass
-
-    try:
-        panel_invitation_bet3_check_5 = PanelInvitationBET3.objects.get(id = id, panel_member_username_5 = currently_loggedin_user.username)
-   
-        panel_invitation_bet3_check_5.panel_member_response_5 = "declined"
-        panel_invitation_bet3_check_5.panel_member_response_date_5 = response_date
-
-        panel_invitation_bet3_check_5.save()
-
-        panel_invitation_bet_3_check_all = PanelInvitationBET3.objects.get(id = id)
-
-        if panel_invitation_bet_3_check_all.panel_member_response_1 != "pending" and \
-                panel_invitation_bet_3_check_all.panel_member_response_2 != "pending" and \
-                    panel_invitation_bet_3_check_all.panel_member_response_3 != "pending" and \
-                        panel_invitation_bet_3_check_all.panel_member_response_4 != "pending" and \
-                            panel_invitation_bet_3_check_all.panel_member_response_5 != "pending":
-            
-            if panel_invitation_bet_3_check_all.accept_count >= 3:
-                panel_invitation_bet_3_check_all.form_status = "Complete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-            else:
-                panel_invitation_bet_3_check_all.form_status = "Incomplete"
-                panel_invitation_bet_3_check_all.save()
-
-                panel_invitation_bet3_complete = PanelInvitationBET3.objects.get(id = id)
-
-                if panel_invitation_bet3_complete.panel_member_response_1 == "declined":
-                    print("Pass Panel 1")
-                    declined_panel_1_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_1,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_1,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_1,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_1,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_1_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_1 = ""
-                    panel_invitation_bet3_complete.panel_member_name_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_1 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_1 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_2 == "declined":
-                    print("Pass Panel 2")
-                    declined_panel_2_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-                        
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_2,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_2,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_2,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_2,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_2_invitation_bet3.save()
-                    print("Saved Panel 2")
-                    
-                    panel_invitation_bet3_complete.panel_member_username_2 = ""
-                    panel_invitation_bet3_complete.panel_member_name_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_2 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_2 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_3 == "declined":
-                    print("Pass Panel 3")
-                    declined_panel_3_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_3,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_3,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_3,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_3,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_3_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_3 = ""
-                    panel_invitation_bet3_complete.panel_member_name_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_3 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_3 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_4 == "declined":
-                    print("Pass Panel 4")
-                    declined_panel_4_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_4,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_4,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_4,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_4,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_4_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_4 = ""
-                    panel_invitation_bet3_complete.panel_member_name_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_4 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_4 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-                if panel_invitation_bet3_complete.panel_member_response_5 == "declined":
-                    print("Pass Panel 5")
-                    declined_panel_5_invitation_bet3 = PanelInvitationBET3Declined (
-                        student_leader_username = panel_invitation_bet3_complete.student_leader_username,
-
-                        dit_head_name = panel_invitation_bet3_complete.dit_head_name,
-                        dit_head_response = panel_invitation_bet3_complete.dit_head_response,
-                        dit_head_response_date = panel_invitation_bet3_complete.dit_head_response_date,
-
-                        panel_member_username = panel_invitation_bet3_complete.panel_member_username_5,
-                        panel_member_name = panel_invitation_bet3_complete.panel_member_name_5,
-                        panel_member_response = panel_invitation_bet3_complete.panel_member_response_5,
-                        panel_member_response_date = panel_invitation_bet3_complete.panel_member_response_date_5,
-
-                        student_member_username_1 = panel_invitation_bet3_complete.student_member_username_1,
-                        student_member_name_1 = panel_invitation_bet3_complete.student_member_name_1,
-
-                        student_member_username_2 = panel_invitation_bet3_complete.student_member_username_2,
-                        student_member_name_2 = panel_invitation_bet3_complete.student_member_name_2,
-
-                        student_member_username_3 = panel_invitation_bet3_complete.student_member_username_3,
-                        student_member_name_3 = panel_invitation_bet3_complete.student_member_name_3,
-
-                        student_member_username_4 = panel_invitation_bet3_complete.student_member_username_4,
-                        student_member_name_4 = panel_invitation_bet3_complete.student_member_name_4,
-
-                        student_member_username_5 = panel_invitation_bet3_complete.student_member_username_5,
-                        student_member_name_5 = panel_invitation_bet3_complete.student_member_name_5,
-
-                        course = panel_invitation_bet3_complete.course,
-                        major = panel_invitation_bet3_complete.major,
-                        course_major_abbr = panel_invitation_bet3_complete.course_major_abbr,
-
-                        research_title_1 = panel_invitation_bet3_complete.research_title_1,
-                        research_title_2 = panel_invitation_bet3_complete.research_title_2,
-                        research_title_3 = panel_invitation_bet3_complete.research_title_3,
-                        research_title_4 = panel_invitation_bet3_complete.research_title_4,
-                        research_title_5 = panel_invitation_bet3_complete.research_title_5,
-                        
-                        form_date_submitted = panel_invitation_bet3_complete.form_date_submitted,
-                        defense_date = panel_invitation_bet3_complete.defense_date,
-                        defense_start_time = panel_invitation_bet3_complete.defense_start_time,
-                        defense_end_time = panel_invitation_bet3_complete.defense_end_time,
-
-                        form = "Panel Invitation BET-3"
-                    )
-                    declined_panel_5_invitation_bet3.save()
-
-                    panel_invitation_bet3_complete.panel_member_username_5 = ""
-                    panel_invitation_bet3_complete.panel_member_name_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_5 = ""
-                    panel_invitation_bet3_complete.panel_member_response_date_5 = ""
-                    panel_invitation_bet3_complete.save()
-
-
-        panel_invitation_bet3_check_1_new = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-        panel_invitation_bet3_check_2_new = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-        panel_invitation_bet3_check_3_new = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-        panel_invitation_bet3_check_4_new = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-        panel_invitation_bet3_check_5_new = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
-        context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-
-                "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1_new,
-                "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2_new,
-                "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3_new,
-                "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4_new,
-                "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5_new,
-
-                'accepted_student_member_name' : panel_invitation_bet_3_check_all.student_member_name_1,
-                'accepted_student_member_username' : panel_invitation_bet_3_check_all.student_member_username_1,
-
-                'response' : 'sweet panel invitation bet-3 declined',
-                
-                }
-        print("pass all")
-        return render(request, 'panel-panel-invitation-bet-3.html', context)
-        
-    except:
-        pass
-
-    print("PASS ALL")
-    
-    panel_invitation_bet3_check_1 = PanelInvitationBET3.objects.all().filter(panel_member_username_1 = currently_loggedin_user.username, panel_member_response_1 = "pending")
-    panel_invitation_bet3_check_2 = PanelInvitationBET3.objects.all().filter(panel_member_username_2 = currently_loggedin_user.username, panel_member_response_2 = "pending")
-    panel_invitation_bet3_check_3 = PanelInvitationBET3.objects.all().filter(panel_member_username_3 = currently_loggedin_user.username, panel_member_response_3 = "pending")
-    panel_invitation_bet3_check_4 = PanelInvitationBET3.objects.all().filter(panel_member_username_4 = currently_loggedin_user.username, panel_member_response_4 = "pending")
-    panel_invitation_bet3_check_5 = PanelInvitationBET3.objects.all().filter(panel_member_username_5 = currently_loggedin_user.username, panel_member_response_5 = "pending")
-
-    context = {
             'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
 
-            "panel_invitation_bet3_check_1": panel_invitation_bet3_check_1,
-            "panel_invitation_bet3_check_2": panel_invitation_bet3_check_2,
-            "panel_invitation_bet3_check_3": panel_invitation_bet3_check_3,
-            "panel_invitation_bet3_check_4": panel_invitation_bet3_check_4,
-            "panel_invitation_bet3_check_5": panel_invitation_bet3_check_5,
+            'declined_student_member_name' : check_panel_invitation.student_leader_full_name,
+            'declined_student_member_username' : check_panel_invitation.student_leader_username,
+
+            'response' : 'sweet panel invitation bet-3 declined',
             }
 
-    return render(request, 'panel-panel-invitation-bet-3.html', context)
+        return render(request, 'panel-panel-invitation-bet-3.html', context)
+
+    except:
+        print("NO FOUND")
+        return redirect('panel-panel-invitation-bet-3')
 
 # Panel - Panel Conforme BET-3 Page
 @login_required(login_url='index')
@@ -12936,7 +6475,7 @@ def subjectTeacherResearchTitleDefenseDashboard(request):
 
         try:
             student_defense_scheduled = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, course = course_input)
-            student_defense_unscheduled = StudentLeader.objects.all().filter(bet3_subject_teacher_username = currently_loggedin_user.username, course_major_abbr = course_input, defense_status = "")
+            student_defense_unscheduled = StudentLeader.objects.all().filter(bet3_subject_teacher_username = currently_loggedin_user.username, course_major_abbr = course_input, research_title_defense_date = "")
             
             print(student_defense_unscheduled)
             context = {
@@ -12952,10 +6491,6 @@ def subjectTeacherResearchTitleDefenseDashboard(request):
         except:
             pass
     
-    context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'course_handled_list': course_handled_list,
-        }
 
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,

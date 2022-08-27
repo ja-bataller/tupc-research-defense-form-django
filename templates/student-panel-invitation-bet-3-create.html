@@ -38,233 +38,9 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <h6 class="h4 mb-0 text-gray-800 mb-2">Group Members:</h6>
-
-                      <h6 class="h6 mb-0 text-gray-800 mb-2">How many members are you in a group?</h6>
-                      <select id="student_member_count" class="custom-select mb-4">
-                        <option selected value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                      </select>
-                      
-                      <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - TUPC ID No. :</h6>
-                        <input type="text" id="student_username_1" class="form-control" name="student_username_1" value="{{current_user.username}}"  onkeyup="this.value = this.value.toUpperCase();" disabled/>
-                      </div>
-
-                      <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - First Name:</h6>
-                        <input type="text" id="student_first_name_1" class="form-control" name="student_first_name_1" style="text-transform: capitalize" value="{{current_user.first_name}}"  disabled/>
-                      </div>
-
-                      <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Middle Name:</h6>
-                        <input type="text" id="student_middle_name_1" class="form-control" name="student_middle_name_1" style="text-transform: capitalize" value="{{current_user.middle_name}}"  disabled />
-                      </div>
-
-                      <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Last Name:</h6>
-                        <input type="text" id="student_last_name_1" class="form-control" name="student_last_name_1" style="text-transform: capitalize" value="{{current_user.last_name}}"  disabled />
-                      </div>
-
-                      <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Suffix:</h6>
-                        <input type="text" id="student_suffix_1" class="form-control" name="student_suffix_1" style="text-transform: capitalize" value="{{current_user.suffix}}"  disabled />
-                      </div>
-                      
-
-                      <div id="student_member_2" style="display: None">
-                        <hr class="mt-5 mb-5" />
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - TUPC ID No. :</h6>
-                          <input type="text" id="student_username_2" class="form-control" name="student_username_2" onkeyup="this.value = this.value.toUpperCase();" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - First Name:</h6>
-                          <input type="text" id="student_first_name_2" class="form-control" style="text-transform: capitalize" name="student_first_name_2" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - Middle Name:</h6>
-                          <input type="text" id="student_middle_name_2" class="form-control" style="text-transform: capitalize" name="student_middle_name_2" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - Last Name:</h6>
-                          <input type="text" id="student_last_name_2" class="form-control" style="text-transform: capitalize" name="student_last_name_2" />
-                        </div>
-
-                        <div class="form-group mb-5">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - Suffix:</h6>
-                          <select id="student_suffix_2" class="custom-select" name="student_suffix_2">
-                            <option selected value="">None</option>
-                            <option value="Sr.">Sr.</option>
-                            <option value="Jr.">Jr.</option>
-                            <option value="I">I</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div id="student_member_3" style="display: None">
-                        <hr class="mt-5 mb-5" />
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - TUPC ID No. :</h6>
-                          <input type="text" id="student_username_3" class="form-control" name="student_username_3" onkeyup="this.value = this.value.toUpperCase();" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - First Name:</h6>
-                          <input type="text" id="student_first_name_3" class="form-control" style="text-transform: capitalize" name="student_first_name_3" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - Middle Name:</h6>
-                          <input type="text" id="student_middle_name_3" class="form-control" style="text-transform: capitalize" name="student_middle_name_3" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - Last Name:</h6>
-                          <input type="text" id="student_last_name_3" class="form-control" style="text-transform: capitalize" name="student_last_name_3" />
-                        </div>
-
-                        <div class="form-group mb-5">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - Suffix:</h6>
-                          <select id="student_suffix_3" class="custom-select" name="student_suffix_3">
-                            <option selected value="">None</option>
-                            <option value="Sr.">Sr.</option>
-                            <option value="Jr.">Jr.</option>
-                            <option value="I">I</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div id="student_member_4" style="display: None">
-                        <hr class="mt-5 mb-5" />
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - TUPC ID No. :</h6>
-                          <input type="text" id="student_username_4" class="form-control" name="student_username_4" onkeyup="this.value = this.value.toUpperCase();" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - First Name:</h6>
-                          <input type="text" id="student_first_name_4" class="form-control" style="text-transform: capitalize" name="student_first_name_4" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - Middle Name:</h6>
-                          <input type="text" id="student_middle_name_4" class="form-control" style="text-transform: capitalize" name="student_middle_name_4" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - Last Name:</h6>
-                          <input type="text" id="student_last_name_4" class="form-control" style="text-transform: capitalize" name="student_last_name_4" />
-                        </div>
-
-                        <div class="form-group mb-5">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - Suffix:</h6>
-                          <select id="student_suffix_4" class="custom-select" name="student_suffix_4">
-                            <option selected value="">None</option>
-                            <option value="Sr.">Sr.</option>
-                            <option value="Jr.">Jr.</option>
-                            <option value="I">I</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div id="student_member_5" style="display: None">
-                        <hr class="mt-5 mb-5" />
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - TUPC ID No. :</h6>
-                          <input type="text" id="student_username_5" class="form-control" name="student_username_5" onkeyup="this.value = this.value.toUpperCase();" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - First Name:</h6>
-                          <input type="text" id="student_first_name_5" class="form-control" style="text-transform: capitalize" name="student_first_name_5" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - Middle Name:</h6>
-                          <input type="text" id="student_middle_name_5" class="form-control" style="text-transform: capitalize" name="student_middle_name_5" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - Last Name:</h6>
-                          <input type="text" id="student_last_name_5" class="form-control" style="text-transform: capitalize" name="student_last_name_5" />
-                        </div>
-
-                        <div class="form-group mb-5">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - Suffix:</h6>
-                          <select id="student_suffix_5" class="custom-select" name="student_suffix_5">
-                            <option selected value="">None</option>
-                            <option value="Sr.">Sr.</option>
-                            <option value="Jr.">Jr.</option>
-                            <option value="I">I</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <h6 class="h4 mb-0 text-gray-800 mb-2">Research Title:</h6>
-
-                      <h6 class="h6 mb-0 text-gray-800 mb-2">How many Research Title you have in a group?</h6>
-                      <select id="research_title_count" class="custom-select mb-4">
-                        <option selected value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                      </select>
-
-                      <div id="research_title_1" class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #1</h6>
-                        <input type="text" class="form-control" name="research_title_1_input" style="text-transform: capitalize" required />
-                      </div>
-
-                      <div id="research_title_2" class="form-group mb-3" style="display: None">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #2</h6>
-                        <input type="text" id="research_title_2_input" class="form-control" name="research_title_2_input" style="text-transform: capitalize" />
-                      </div>
-
-                      <div id="research_title_3" class="form-group mb-3" style="display: None">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #3</h6>
-                        <input type="text" id="research_title_3_input" class="form-control" name="research_title_3_input" style="text-transform: capitalize" />
-                      </div>
-
-                      <div id="research_title_4" class="form-group mb-3" style="display: None">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #4</h6>
-                        <input type="text" id="research_title_4_input" class="form-control" name="research_title_4_input" style="text-transform: capitalize" />
-                      </div>
-
-                      <div id="research_title_5" class="form-group mb-3" style="display: None">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Research Title #5</h6>
-                        <input type="text" id="research_title_5_input" class="form-control" name="research_title_5_input" style="text-transform: capitalize" />
-                      </div>
-
-                      <h6 class="h6 mb-0 text-gray-800 mt-5 mb-2">Date & Time of Defense:</h6>
-                      <div class="form-group mb-5">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Date & Time of Defense:</h6>
+                      {% if student_leader_data.research_title_defense_date == "" %}
+                      <div class="form-group mb-4">
                         <select class="custom-select" name="defense_schedule_input" required>
                           <option value="0" selected>What is your preferred date for Defense?</option>
                           {% for date in defense_dates %}
@@ -272,10 +48,15 @@
                           {% endfor %}
                         </select>
                       </div>
+                      {% else %}
+                      <div class="form-group mb-4">
+                        <input type="text" class="form-control" value="{{student_leader_data.research_title_defense_date}} - {{student_leader_data.research_title_defense_start_time}} to {{student_leader_data.research_title_defense_end_time}}" name="title_defense_date"  required disabled />
+                      </div>
+                      {% endif %}
 
                       <!-- Department Head Start -->
                       <h6 class="h6 mb-0 text-gray-800 mb-2">Department of Industrial Technology - Head:</h6>
-                      <div class="form-group mb-3">
+                      <div class="form-group mb-4">
                         <input type="text" class="form-control" value="{{dept_head_name}}" name="dept_head_name_input" style="text-transform: capitalize" required disabled />
                       </div>
                       <!-- Department Head End -->
@@ -283,11 +64,8 @@
                       <!-- Panel Members Start -->
                       <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Members:</h6>
 
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">1</span>
-                        </div>
-                        <select class="custom-select" name="panel1_input" required>
+                      <div class="form-group mb-3">
+                        <select class="custom-select" name="panel_input" required>
                           <option selected>Choose panel member here...</option>
                           {% for panel in panel_members %} 
                           {% if panel.middle_name == "" %}
@@ -299,61 +77,6 @@
                         </select>
                       </div>
 
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">2</span>
-                        </div>
-                        <select class="custom-select" name="panel2_input" required>
-                          <option selected>Choose panel member here...</option>
-                          {% for panel in panel_members %} {% if panel.middle_name == "" %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
-                          {% else %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
-                          {% endif %} {% endfor %}
-                        </select>
-                      </div>
-
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">3</span>
-                        </div>
-                        <select class="custom-select" name="panel3_input" required>
-                          <option selected>Choose panel member here...</option>
-                          {% for panel in panel_members %} {% if panel.middle_name == "" %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
-                          {% else %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
-                          {% endif %} {% endfor %}
-                        </select>
-                      </div>
-
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">4</span>
-                        </div>
-                        <select class="custom-select" name="panel4_input" required>
-                          <option selected>Choose panel member here...</option>
-                          {% for panel in panel_members %} {% if panel.middle_name == "" %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
-                          {% else %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
-                          {% endif %} {% endfor %}
-                        </select>
-                      </div>
-
-                      <div class="input-group mb-4">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">5</span>
-                        </div>
-                        <select class="custom-select" name="panel5_input" required>
-                          <option selected>Choose panel member here...</option>
-                          {% for panel in panel_members %} {% if panel.middle_name == "" %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
-                          {% else %}
-                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
-                          {% endif %} {% endfor %}
-                        </select>
-                      </div>
                       <!-- Panel Members End -->
                       <button type="submit" class="btn btn-outline-success w-100">Submit</button>
                     </div>
@@ -380,413 +103,68 @@
 
     {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% include 'alert-validation.html' %}
 
-    <script>
-      let today = new Date();
-      let dd = today.getDate() + 7; // +7 to enable the date 1 week from todays date
-      let mm = today.getMonth() + 1; //January is 0 so need to add 1 to make it 1
-      let yyyy = today.getFullYear();
-
-      if (dd < 10) {
-        dd = "0" + dd;
-      }
-      if (mm < 10) {
-        mm = "0" + mm;
-      }
-
-      min_date = yyyy + "-" + mm + "-" + dd;
-      document.getElementById("defense_date").setAttribute("min", min_date);
-    </script>
-
-    <script>
-      const picker = document.getElementById("defense_date");
-      picker.addEventListener("input", function (e) {
-        var day = new Date(this.value).getUTCDay();
-        if ([6, 0].includes(day)) {
-          e.preventDefault();
-          this.value = "";
-          iziToast.error({
-            title: "Invalid",
-            message: "Weekend Dates is not allowed.",
-            position: "topCenter",
-            timeout: 5000,
-          });
-        }
-      });
-    </script>
-
-    <script>
-      let research_title_count = document.querySelector("#research_title_count");
-      let research_title_1 = document.querySelector("#research_title_1");
-      let research_title_2 = document.querySelector("#research_title_2");
-      let research_title_3 = document.querySelector("#research_title_3");
-      let research_title_4 = document.querySelector("#research_title_4");
-      let research_title_5 = document.querySelector("#research_title_5");
-
-      let research_title_1_input = document.querySelector("#research_title_1_input");
-      let research_title_2_input = document.querySelector("#research_title_2_input");
-      let research_title_3_input = document.querySelector("#research_title_3_input");
-      let research_title_4_input = document.querySelector("#research_title_4_input");
-      let research_title_5_input = document.querySelector("#research_title_5_input");
-
-      research_title_count.addEventListener("change", (event) => {
-        if (research_title_count.value == "1") {
-          research_title_1.style.display = "block";
-
-          research_title_2.style.display = "none";
-          research_title_2_input.removeAttribute("required");
-          research_title_2_input.value = "";
-
-          research_title_3.style.display = "none";
-          research_title_3_input.removeAttribute("required");
-          research_title_3_input.value = "";
-
-          research_title_4.style.display = "none";
-          research_title_4_input.removeAttribute("required");
-          research_title_4_input.value = "";
-
-          research_title_5.style.display = "none";
-          research_title_5_input.removeAttribute("required");
-          research_title_4_input.value = "";
-        }
-
-        if (research_title_count.value == "2") {
-          research_title_1.style.display = "block";
-
-          research_title_2.style.display = "block";
-          research_title_2_input.required = true;
-
-          research_title_3.style.display = "none";
-          research_title_3_input.value = "";
-
-          research_title_4.style.display = "none";
-          research_title_4_input.value = "";
-
-          research_title_5.style.display = "none";
-          research_title_5_input.value = "";
-        }
-
-        if (research_title_count.value == "3") {
-          research_title_1.style.display = "block";
-
-          research_title_2.style.display = "block";
-          research_title_2_input.required = true;
-
-          research_title_3.style.display = "block";
-          research_title_3_input.required = true;
-
-          research_title_4.style.display = "none";
-          research_title_4_input.value = "";
-
-          research_title_5.style.display = "none";
-          research_title_5_input.value = "";
-        }
-
-        if (research_title_count.value == "4") {
-          research_title_1.style.display = "block";
-
-          research_title_2.style.display = "block";
-          research_title_2_input.required = true;
-
-          research_title_3.style.display = "block";
-          research_title_3_input.required = true;
-
-          research_title_4.style.display = "block";
-          research_title_4_input.required = true;
-
-          research_title_5.style.display = "none";
-          research_title_5_input.value = "";
-        }
-
-        if (research_title_count.value == "5") {
-          research_title_1.style.display = "block";
-
-          research_title_2.style.display = "block";
-          research_title_2_input.required = true;
-
-          research_title_3.style.display = "block";
-          research_title_3_input.required = true;
-
-          research_title_4.style.display = "block";
-          research_title_4_input.required = true;
-
-          research_title_5.style.display = "block";
-          research_title_5_input.required = true;
-        }
-      });
-    </script>
-
-    <script>
-      let student_member_count = document.querySelector("#student_member_count");
-      let student_member_2 = document.querySelector("#student_member_2");
-      let student_member_3 = document.querySelector("#student_member_3");
-      let student_member_4 = document.querySelector("#student_member_4");
-      let student_member_5 = document.querySelector("#student_member_5");
-
-      let student_username_2 = document.querySelector("#student_username_2");
-      let student_first_name_2 = document.querySelector("#student_first_name_2");
-      let student_middle_name_2 = document.querySelector("#student_middle_name_2");
-      let student_last_name_2 = document.querySelector("#student_last_name_2");
-      let student_suffix_2 = document.querySelector("#student_suffix_2");
-
-      let student_username_3 = document.querySelector("#student_username_3");
-      let student_first_name_3 = document.querySelector("#student_first_name_3");
-      let student_middle_name_3 = document.querySelector("#student_middle_name_3");
-      let student_last_name_3 = document.querySelector("#student_last_name_3");
-      let student_suffix_3 = document.querySelector("#student_suffix_3");
-
-      let student_username_4 = document.querySelector("#student_username_4");
-      let student_first_name_4 = document.querySelector("#student_first_name_4");
-      let student_middle_name_4 = document.querySelector("#student_middle_name_4");
-      let student_last_name_4 = document.querySelector("#student_last_name_4");
-      let student_suffix_4 = document.querySelector("#student_suffix_4");
-
-      let student_username_5 = document.querySelector("#student_username_5");
-      let student_first_name_5 = document.querySelector("#student_first_name_5");
-      let student_middle_name_5 = document.querySelector("#student_middle_name_5");
-      let student_last_name_5 = document.querySelector("#student_last_name_5");
-      let student_suffix_5 = document.querySelector("#student_suffix_5");
-
-      let research_title_count_sync = document.querySelector("#research_title_count");
-
-      student_member_count.addEventListener("change", (event) => {
-        if (student_member_count.value == "1") {
-          student_member_2.style.display = "none";
-          student_member_3.style.display = "none";
-          student_member_4.style.display = "none";
-          student_member_5.style.display = "none";
-
-          student_username_2.removeAttribute("required");
-          student_first_name_2.removeAttribute("required");
-          student_last_name_2.removeAttribute("required");
-
-          student_username_2.value = "";
-          student_first_name_2.value = "";
-          student_middle_name_2.value = "";
-          student_last_name_2.value = "";
-          student_suffix_2.selectedIndex = 0;
-
-          student_username_3.removeAttribute("required");
-          student_first_name_3.removeAttribute("required");
-          student_last_name_3.removeAttribute("required");
-
-          student_username_3.value = "";
-          student_first_name_3.value = "";
-          student_middle_name_3.value = "";
-          student_last_name_3.value = "";
-          student_suffix_3.selectedIndex = 0;
-
-          student_username_4.removeAttribute("required");
-          student_first_name_4.removeAttribute("required");
-          student_last_name_4.removeAttribute("required");
-
-          student_username_4.value = "";
-          student_first_name_4.value = "";
-          student_middle_name_4.value = "";
-          student_last_name_4.value = "";
-          student_suffix_4.selectedIndex = 0;
-
-          student_username_5.removeAttribute("required");
-          student_first_name_5.removeAttribute("required");
-          student_last_name_5.removeAttribute("required");
-
-          student_username_5.value = "";
-          student_first_name_5.value = "";
-          student_middle_name_5.value = "";
-          student_last_name_5.value = "";
-          student_suffix_5.selectedIndex = 0;
-        } else if (student_member_count.value == "2") {
-          student_member_2.style.display = "block";
-          student_member_3.style.display = "none";
-          student_member_4.style.display = "none";
-          student_member_5.style.display = "none";
-
-          student_username_3.removeAttribute("required");
-          student_first_name_3.removeAttribute("required");
-          student_last_name_3.removeAttribute("required");
-
-          student_username_3.value = "";
-          student_first_name_3.value = "";
-          student_middle_name_3.value = "";
-          student_last_name_3.value = "";
-          student_suffix_3.selectedIndex = 0;
-
-          student_username_4.removeAttribute("required");
-          student_first_name_4.removeAttribute("required");
-          student_last_name_4.removeAttribute("required");
-
-          student_username_4.value = "";
-          student_first_name_4.value = "";
-          student_middle_name_4.value = "";
-          student_last_name_4.value = "";
-          student_suffix_4.selectedIndex = 0;
-
-          student_username_5.removeAttribute("required");
-          student_first_name_5.removeAttribute("required");
-          student_last_name_5.removeAttribute("required");
-
-          student_username_5.value = "";
-          student_first_name_5.value = "";
-          student_middle_name_5.value = "";
-          student_last_name_5.value = "";
-          student_suffix_5.selectedIndex = 0;
-        } else if (student_member_count.value == "3") {
-          student_member_2.style.display = "block";
-          student_member_3.style.display = "block";
-          student_member_4.style.display = "none";
-          student_member_5.style.display = "none";
-
-          student_username_4.removeAttribute("required");
-          student_first_name_4.removeAttribute("required");
-          student_last_name_4.removeAttribute("required");
-
-          student_username_4.value = "";
-          student_first_name_4.value = "";
-          student_middle_name_4.value = "";
-          student_last_name_4.value = "";
-          student_suffix_4.selectedIndex = 0;
-
-          student_username_5.removeAttribute("required");
-          student_first_name_5.removeAttribute("required");
-          student_last_name_5.removeAttribute("required");
-
-          student_username_5.value = "";
-          student_first_name_5.value = "";
-          student_middle_name_5.value = "";
-          student_last_name_5.value = "";
-          student_suffix_5.selectedIndex = 0;
-        } else if (student_member_count.value == "4") {
-          student_member_2.style.display = "block";
-          student_member_3.style.display = "block";
-          student_member_4.style.display = "block";
-          student_member_5.style.display = "none";
-
-          student_username_5.removeAttribute("required");
-          student_first_name_5.removeAttribute("required");
-          student_last_name_5.removeAttribute("required");
-
-          student_username_5.value = "";
-          student_first_name_5.value = "";
-          student_middle_name_5.value = "";
-          student_last_name_5.value = "";
-          student_suffix_5.selectedIndex = 0;
-        } else if (student_member_count.value == "5") {
-          student_member_2.style.display = "block";
-          student_member_3.style.display = "block";
-          student_member_4.style.display = "block";
-          student_member_5.style.display = "block";
-        } else {
-          Swal.fire("Invalid", "You entered an invalid Group Member Count.", "error");
-
-          setTimeout(function () {
-            location.reload();
-          }, 2000);
-        }
-      });
-    </script>
-
-    {% if response == 'sweet inc form' %}
-    <script>
-      Swal.fire("Uh-oh", "Sorry, can't fill-up  form at the moment. \n Please try again later.", "warning");
-
-      setTimeout(function () {
-        window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
-    </script>
-    {% endif %} {% if response == 'sweet panel not in the list' %}
-    <script>
-      Swal.fire("Uh-oh", "You just entered a Panel Member which is not in the list. Please choose from the choices given.", "warning");
-    </script>
-    {% endif %} {% if response == 'sweet student member exist 2' %}
-    <script>
-      Swal.fire("Uh-oh", "Group Member #2 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
-    </script>
-    {% endif %} {% if response == 'sweet student member exist 3' %}
-    <script>
-      Swal.fire("Uh-oh", "Group Member #3 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
-    </script>
-    {% endif %} {% if response == 'sweet student member exist 4' %}
-    <script>
-      Swal.fire("Uh-oh", "Group Member #4 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
-    </script>
-    {% endif %} 
-    {% if response == 'sweet student member exist 5' %}
-    <script>
-      Swal.fire("Uh-oh", "Group Member #5 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
-    </script>
-    {% endif %}
-
     {% if response == 'sweet no DIT Head' %}
     <script>
-      Swal.fire("Uh-oh", "Can't fill up at the moment. It seems like there is no DIT Head assigned yet. Please try again later.", "warning");
+      Swal.fire("Uh-oh", "There is no Department Head assigned. Please try again later.", "warning");
       setTimeout(function () {
-        window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
+        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
+      }, 2000);
     </script>
     {% endif %}
 
-    {% if response == 'sweet inc panel' %}
+    {% if response == 'sweet invalid defense schedule' %}
     <script>
-      Swal.fire("Uh-oh", "Can't fill up at the moment. It seems like there is not enough Panel assigned yet. Please try again later.", "warning");
-      setTimeout(function () {
-        window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet no defense schedule' %}
-    <script>
-      Swal.fire("Uh-oh", "Can't fill up at the moment. There is no Defense Schedule available. Please try again later.", "warning");
-      setTimeout(function () {
-        window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet same username' %}
-    <script>
-      Swal.fire("Invalid", "You entered the same Username with the other Group Members.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet invalid suffix' %}
-    <script>
-      Swal.fire("Invalid", "You entered a Suffix that is not in the list. Please one from the choices given.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet same research title' %}
-    <script>
-      Swal.fire("Invalid", "You entered the same Research Title with the other input field.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet defense schedule doesnt exist' %}
-    <script>
-      Swal.fire("Invalid", "You entered a Defense Schedule that is not in the list. Please one from the choices given.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet same panel' %}
-    <script>
-      Swal.fire("Invalid", "You entered the same Panel Member with the other input field.", "error");
+      Swal.fire("Invalid", "The Defense Schedule you entered is invalid. Please choose one from the choices given.", "error");
     </script>
     {% endif %}
 
     {% if response == 'sweet invalid panel' %}
     <script>
-      Swal.fire("Invalid", "You entered a Panel Member that is not in the list. Please one from the choices given.", "error");
+      Swal.fire("Invalid", "The Panel you entered is invalid. Please choose one from the choices given.", "error");
     </script>
     {% endif %}
 
-    {% if response == 'sweet group member exist' %}
+    {% if response == 'sweet defense schedule not found' %}
     <script>
-      Swal.fire("{{existing_member.username}} {{existing_member.student_member_name}}", "It seems that this student is already part of group.", "warning");
+      Swal.fire("Uh-oh", "The Defense Schedule you entered doesn't exist.", "warning");
     </script>
     {% endif %}
 
-    {% if response == 'sweet research title exist' %}
+    {% if response == 'sweet Panel not found' %}
     <script>
-      Swal.fire("{{existing_research_title.research_title}}", "The Research Title you entered already exist.", "warning");
+      Swal.fire("Uh-oh", "The Panel Member you entered doesn't exist.", "warning");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet panel invitation exist' %}
+    <script>
+      Swal.fire("Uh-oh", "You have already sent an invitation to {{panel_full_name}}", "info");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet panel invitation accepted exist' %}
+    <script>
+      Swal.fire("Info", "{{panel_full_name}} has already accepted your panel invitation.", "info");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet panel invitation sent' %}
+    <script>
+      Swal.fire("Success", "The Panel Invitation has been sent successfully.", "success");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet no defense schedule' %}
+    <script>
+      Swal.fire("Info", "There are no available defense schedule. Please try again later.", "info");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
+      }, 2000);
     </script>
     {% endif %}
   </body>

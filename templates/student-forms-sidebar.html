@@ -18,8 +18,20 @@
             <span>Home</span></a>
     </li>
 
-    <!-- Divider -->
-    <!-- <hr class="sidebar-divider"> -->
+    <!-- Nav Item - Group Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGroup"
+            aria-expanded="true" aria-controls="collapseGroup">
+            <i class="fa-solid fa-users"></i>
+            <span>Group</span>
+        </a>
+        <div id="collapseGroup" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{% url 'student-group-members' %}">Members</a> 
+                <a class="collapse-item" href="{% url 'student-research-titles' %}">Research Titles</a>   
+            </div>
+        </div>
+    </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item active">

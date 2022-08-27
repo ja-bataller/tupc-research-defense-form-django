@@ -544,5 +544,35 @@
       }, 2000);
     </script>
     {% endif %}
+
+    {% if response == 'sweet incomplete group members' %}
+    <script>
+      Swal.fire("Unauthorized", "You can't access this page.Please submit the list of your Group Members.", "warning");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-add-group-members' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet invalid username' %}
+    <script>
+      Swal.fire("Invalid", "You entered an invalid TUPC ID No. in some input field.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-add-group-members' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet invalid suffix' %}
+    <script>
+      Swal.fire("Invalid", "You entered an invalid suffix in some input field.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-add-group-members' %}");
+      }, 2000);
+    </script>
+    {% endif %}
   </body>
 </html>

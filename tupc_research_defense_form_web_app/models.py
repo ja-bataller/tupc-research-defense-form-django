@@ -78,7 +78,13 @@ class StudentLeader(models.Model):
 
     research_title_defense_date = models.CharField(max_length=256, blank=True)
     research_title_defense_start_time = models.CharField(max_length=256, blank=True)
-    research_title_defense_start_end = models.CharField(max_length=256, blank=True)
+    research_title_defense_end_time = models.CharField(max_length=256, blank=True)
+
+    group_members_status = models.CharField(max_length=256, blank=True)
+    research_titles_status = models.CharField(max_length=256, blank=True)
+    bet3_panel_invitation_status = models.CharField(max_length=256, blank=True)
+
+    request_limit = models.IntegerField(blank=True)
 
     def __str__(self) -> str:
         return self.username
@@ -128,20 +134,26 @@ class DefenseSchedule(models.Model):
 
 
 # Panel Invitation - BET-3
-class PanelInvitationBET3(models.Model):
+class BET3PanelInvitation(models.Model):
     student_leader_username = models.CharField(max_length=256)
     student_leader_full_name = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256, blank=True)
     
-    dit_head_name = models.CharField(max_length=256)
+    dit_head_username= models.CharField(max_length=256)
+    dit_head_full_name = models.CharField(max_length=256)
     dit_head_response = models.CharField(max_length=256)
     dit_head_response_date = models.CharField(max_length=256)
 
-    panel_member_username= models.CharField(max_length=256)
-    panel_member_full_name= models.CharField(max_length=256)
-    panel_member_response= models.CharField(max_length=256)
-    panel_member_response_date= models.CharField(max_length=256)
+    panel_username = models.CharField(max_length=256)
+    panel_full_name = models.CharField(max_length=256)
+    panel_response = models.CharField(max_length=256)
+    panel_response_date = models.CharField(max_length=256)
 
-    form_date_submitted = models.CharField(max_length=256)
+    research_title_defense_date = models.CharField(max_length=256, blank=True)
+    research_title_defense_start_time = models.CharField(max_length=256, blank=True)
+    research_title_defense_end_time = models.CharField(max_length=256, blank=True)
+
+    form_date_sent = models.CharField(max_length=256)
 
     form_status = models.CharField(max_length=256)
     form = models.CharField(max_length=256)

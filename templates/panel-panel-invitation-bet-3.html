@@ -146,98 +146,41 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>Panel</th>
+                      <th>Ref No.</th>
                       <th>Student ID No.</th>
                       <th>Student Name</th>
                       <th>Course</th>
+                      <th>Panel ID No.</th>
+                      <th>Panel Name</th>
                       <th>Date & Time of Defense</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
-                      <th>Panel</th>
+                      <th>Ref No.</th>
                       <th>Student ID No.</th>
                       <th>Student Name</th>
                       <th>Course</th>
+                      <th>Panel ID No.</th>
+                      <th>Panel Name</th>
                       <th>Date & Time of Defense</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
                   <tbody>
-                    {% for panel_invitation in panel_invitation_bet3_check_1 %}
+                    {% for panel_invitation in panel_invitations %}
                     <tr>
-                      <td>{{panel_invitation.panel_member_name_1}}</td>
+                      <td>{{panel_invitation.id}}</td>
                       <td>{{panel_invitation.student_leader_username}}</td>
-                      <td>{{panel_invitation.student_member_name_1}}</td>
+                      <td>{{panel_invitation.student_leader_full_name}}</td>
                       <td>{{panel_invitation.course_major_abbr}}</td>
-                      <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to
-                        {{panel_invitation.defense_end_time}}</td>
+                      <td>{{panel_invitation.panel_username}}</td>
+                      <td>{{panel_invitation.panel_full_name}}</td>
+                      <td>{{panel_invitation.research_title_defense_date}} - {{panel_invitation.research_title_defense_start_time}} to {{panel_invitation.research_title_defense_end_time}}</td>
                       <td class="text-center">
-                        <button id="accept_btn_1" type="button" class="btn btn-outline-success mb-2"
-                          data-id="{{panel_invitation.id}}">Accept</button>
-                        <button id="decline_btn_1" type="button" class="btn btn-outline-danger mb-2"
-                          data-id="{{panel_invitation.id}}">Decline</button>
-                      </td>
-                    </tr>
-                    {% endfor %} {% for panel_invitation in panel_invitation_bet3_check_2 %}
-                    <tr>
-                      <td>{{panel_invitation.panel_member_name_2}}</td>
-                      <td>{{panel_invitation.student_leader_username}}</td>
-                      <td>{{panel_invitation.student_member_name_1}}</td>
-                      <td>{{panel_invitation.course_major_abbr}}</td>
-                      <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to
-                        {{panel_invitation.defense_end_time}}</td>
-                      <td class="text-center">
-                        <button id="accept_btn_2" type="button" class="btn btn-outline-success mb-2"
-                          data-id="{{panel_invitation.id}}">Accept</button>
-                        <button id="decline_btn_2" type="button" class="btn btn-outline-danger mb-2"
-                          data-id="{{panel_invitation.id}}">Decline</button>
-                      </td>
-                    </tr>
-                    {% endfor %} {% for panel_invitation in panel_invitation_bet3_check_3 %}
-                    <tr>
-                      <td>{{panel_invitation.panel_member_name_3}}</td>
-                      <td>{{panel_invitation.student_leader_username}}</td>
-                      <td>{{panel_invitation.student_member_name_1}}</td>
-                      <td>{{panel_invitation.course_major_abbr}}</td>
-                      <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to
-                        {{panel_invitation.defense_end_time}}</td>
-                      <td class="text-center">
-                        <button id="accept_btn_3" type="button" class="btn btn-outline-success mb-2"
-                          data-id="{{panel_invitation.id}}">Accept</button>
-                        <button id="decline_btn_3" type="button" class="btn btn-outline-danger mb-2"
-                          data-id="{{panel_invitation.id}}">Decline</button>
-                      </td>
-                    </tr>
-                    {% endfor %} {% for panel_invitation in panel_invitation_bet3_check_4 %}
-                    <tr>
-                      <td>{{panel_invitation.panel_member_name_4}}</td>
-                      <td>{{panel_invitation.student_leader_username}}</td>
-                      <td>{{panel_invitation.student_member_name_1}}</td>
-                      <td>{{panel_invitation.course_major_abbr}}</td>
-                      <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to
-                        {{panel_invitation.defense_end_time}}</td>
-                      <td class="text-center">
-                        <button id="accept_btn_4" type="button" class="btn btn-outline-success mb-2"
-                          data-id="{{panel_invitation.id}}">Accept</button>
-                        <button id="decline_btn_4" type="button" class="btn btn-outline-danger mb-2"
-                          data-id="{{panel_invitation.id}}">Decline</button>
-                      </td>
-                    </tr>
-                    {% endfor %} {% for panel_invitation in panel_invitation_bet3_check_5 %}
-                    <tr>
-                      <td>{{panel_invitation.panel_member_name_5}}</td>
-                      <td>{{panel_invitation.student_leader_username}}</td>
-                      <td>{{panel_invitation.student_member_name_1}}</td>
-                      <td>{{panel_invitation.course_major_abbr}}</td>
-                      <td>{{panel_invitation.defense_date}} - {{panel_invitation.defense_start_time}} to
-                        {{panel_invitation.defense_end_time}}</td>
-                      <td class="text-center">
-                        <button id="accept_btn_5" type="button" class="btn btn-outline-success mb-2"
-                          data-id="{{panel_invitation.id}}">Accept</button>
-                        <button id="decline_btn_5" type="button" class="btn btn-outline-danger mb-2"
-                          data-id="{{panel_invitation.id}}">Decline</button>
+                        <a class="btn btn-outline-success mb-2" type="button" href="{% url 'panel-panel-invitation-bet-3-accept' panel_invitation.id %}">Accept</a>
+                        <a class="btn btn-outline-danger mb-2" type="button" href="{% url 'panel-panel-invitation-bet-3-decline' panel_invitation.id %}">Decline</a>
                       </td>
                     </tr>
                     {% endfor %}
@@ -254,42 +197,6 @@
       <!-- Footer -->
       {% include 'footer.html' %}
       <!-- End of Footer -->
-
-      <!-- Accept Modal -->
-      <div class="modal fade" id="acceptFormModal" tabindex="-1" aria-labelledby="acceptFormModal" aria-hidden="true"
-        data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
-              </button>
-            </div>
-            <div class="modal-body">Are you sure you want to accept the Panel Invitation?</div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-              <a id="accept_form" class="btn btn-outline-success" type="button" href="#">Accept</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Decline Modal -->
-      <div class="modal fade" id="declineFormModal" tabindex="-1" aria-labelledby="declineFormModal" aria-hidden="true"
-        data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Decline request?</h5>
-              </button>
-            </div>
-            <div class="modal-body">Are you sure you want to decline the Panel Invitation?</div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-              <a id="decline_form" class="btn btn-outline-danger" type="button" href="#">Decline</a>
-            </div>
-          </div>
-        </div>
-      </div>
 
     </div>
     <!-- End of Content Wrapper -->
@@ -319,7 +226,7 @@
 
   {% if response == 'sweet panel invitation bet-3 declined' %}
   <script>
-    Swal.fire("Declined", "The Panel Invitation request of {{accepted_student_member_username}} is declined.", "info");
+    Swal.fire("Declined", "The Panel Invitation request of {{declined_student_member_username}} is declined.", "info");
 
     setTimeout(function () {
       window.location.replace("{% url 'panel-panel-invitation-bet-3' %}");
@@ -337,130 +244,6 @@
   </script>
   {% endif %}
 
-  
-
-  <script>
-    let accept_btn_1 = document.querySelector("#accept_btn_1");
-    let accept_btn_2 = document.querySelector("#accept_btn_2");
-    let accept_btn_3 = document.querySelector("#accept_btn_3");
-    let accept_btn_4 = document.querySelector("#accept_btn_4");
-    let accept_btn_5 = document.querySelector("#accept_btn_5");
-
-
-    let decline_btn_1 = document.querySelector("#decline_btn_1");
-    let decline_btn_2 = document.querySelector("#decline_btn_2");
-    let decline_btn_3 = document.querySelector("#decline_btn_3");
-    let decline_btn_4 = document.querySelector("#decline_btn_4");
-    let decline_btn_5 = document.querySelector("#decline_btn_5");;
-
-    let accept_form = document.querySelector("#accept_form");
-    let decline_form = document.querySelector("#decline_form");
-
-    try {
-      accept_btn_1.addEventListener("click", function () {
-        let data_id_1 = accept_btn_1.getAttribute('data-id');
-
-        document.getElementById("accept_form").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id_1);
-        $("#acceptFormModal").modal()
-      });
-
-      decline_btn_1.addEventListener("click", function () {
-        let data_id_1 = accept_btn_1.getAttribute('data-id');
-
-        document.getElementById("decline_form").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id_1);
-        $("#declineFormModal").modal()
-      });
-    }
-
-    catch {
-      //pass
-    }
-
-    try {
-      accept_btn_2.addEventListener("click", function () {
-        let data_id_2 = accept_btn_2.getAttribute('data-id');
-
-        document.getElementById("accept_form").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id_2);
-        $("#acceptFormModal").modal()
-      });
-
-      decline_btn_2.addEventListener("click", function () {
-        let data_id_2 = accept_btn_2.getAttribute('data-id');
-
-        document.getElementById("decline_form").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id_2);
-        $("#declineFormModal").modal()
-      });
-    }
-
-    catch {
-      //pass
-    }
-
-
-    try {
-      accept_btn_3.addEventListener("click", function () {
-        let data_id_3 = accept_btn_3.getAttribute('data-id');
-
-        document.getElementById("accept_form").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id_3);
-        $("#acceptFormModal").modal()
-      });
-
-      decline_btn_3.addEventListener("click", function () {
-        let data_id_3 = accept_btn_3.getAttribute('data-id');
-
-        document.getElementById("decline_form").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id_3);
-        $("#declineFormModal").modal()
-      });
-    }
-
-    catch {
-      //pass
-    }
-
-
-
-    try {
-      accept_btn_4.addEventListener("click", function () {
-        let data_id_4 = accept_btn_4.getAttribute('data-id');
-
-        document.getElementById("accept_form").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id_4);
-        $("#acceptFormModal").modal()
-      });
-
-      decline_btn_4.addEventListener("click", function () {
-        let data_id_4 = accept_btn_4.getAttribute('data-id');
-
-        document.getElementById("decline_form").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id_4);
-        $("#declineFormModal").modal()
-      });
-    }
-
-
-    catch {
-      //pass
-    }
-
-    try {
-      accept_btn_5.addEventListener("click", function () {
-        let data_id_5 = accept_btn_5.getAttribute('data-id');
-
-        document.getElementById("accept_form").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id_5);
-        $("#acceptFormModal").modal()
-      });
-
-      decline_btn_5.addEventListener("click", function () {
-        let data_id_5 = accept_btn_5.getAttribute('data-id');
-
-        document.getElementById("decline_form").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id_5);
-        $("#declineFormModal").modal()
-      });
-    }
-
-    catch {
-      //pass
-    }
-
-  </script>
 </body>
 
 </html>
