@@ -345,44 +345,25 @@ def logout_user(request):
     currently_loggedin_user = (request.user)
 
     if currently_loggedin_user.is_student == 1:
-        panel_invitation_bet_3_path_1 = ('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+'1-' + currently_loggedin_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
-        panel_invitation_bet_3_path_2 = ('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+'2-' + currently_loggedin_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
-        panel_invitation_bet_3_path_3 = ('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+'3-' + currently_loggedin_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
-        panel_invitation_bet_3_path_4 = ('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+'4-' + currently_loggedin_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
-        panel_invitation_bet_3_path_5 = ('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+'5-' + currently_loggedin_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
+        file_paths = []
 
-        if os.path.isfile(panel_invitation_bet_3_path_1):
-            os.remove(panel_invitation_bet_3_path_1)
-            print("Panel Invitation BET-3 1 has been deleted")
-        else:
-            print("Panel Invitation BET-3 1 does not exist")
+        get_file_paths = FilePath.objects.all().filter(student_leader_username = currently_loggedin_user.username)
 
-        if os.path.isfile(panel_invitation_bet_3_path_2):
-            os.remove(panel_invitation_bet_3_path_2)
-            print("Panel Invitation BET-3 2 has been deleted")
-        else:
-            print("Panel Invitation BET-3 2 does not exist")
+        for file_path in get_file_paths:
+            file_paths.append(file_path.file_path)
 
-        if os.path.isfile(panel_invitation_bet_3_path_3):
-            os.remove(panel_invitation_bet_3_path_3)
-            print("Panel Invitation BET-3 3 has been deleted")
-        else:
-            print("Panel Invitation BET-3 3 does not exist")
+        print(file_path)
 
-
-        if os.path.isfile(panel_invitation_bet_3_path_4):
-            os.remove(panel_invitation_bet_3_path_4)
-            print("Panel Invitation BET-3 4 has been deleted")
-        else:
-            print("Panel Invitation BET-3 4 does not exist")
-
-
-        if os.path.isfile(panel_invitation_bet_3_path_5):
-            os.remove(panel_invitation_bet_3_path_5)
-            print("Panel Invitation BET-3 5 has been deleted")
-        else:
-            print("Panel Invitation BET-3 5 does not exist")
-
+        for i in range(len(file_paths)):
+            if os.path.isfile(file_paths[i]):
+                os.remove(file_paths[i])
+                print("Panel Invitation BET-3 has been deleted")
+            else:
+                print("Panel Invitation BET-3 does not exist")
+            i + 1
+        
+        FilePath.objects.all().filter(student_leader_username = currently_loggedin_user.username).delete()
+        
     logout(request)
     return redirect('index')
 
@@ -1935,6 +1916,7 @@ def studentDownloadPanelInvitationBet3(request, id):
     dit_head_response_date = get_panel_invitation.dit_head_response_date
 
     panel_full_name = get_panel_invitation.panel_full_name
+    panel_username = get_panel_invitation.panel_username
     panel_response = get_panel_invitation.panel_response
     panel_response_date = get_panel_invitation.panel_response_date
     ############## BET-3 PANEL INVITATION DATA ##############
@@ -2073,8 +2055,16 @@ def studentDownloadPanelInvitationBet3(request, id):
     qr_code_run = qr_code.add_run()
     qr_code_run.add_picture(current_user.username + '-PANEL-INVITATION-BET-3.png',width=Inches(1), height=Inches(1))
 
-    doc.save(current_user.username +"-"+panel_full_name+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
-    convert(current_user.username +"-"+panel_full_name+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
+    doc.save(current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
+    convert(current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.pdf'
+
+    filePath =  FilePath(
+        student_leader_username = current_user.username,
+        file_path = current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.pdf'
+    )
+    filePath.save()
 
     qr_code_path = (current_user.username + '-PANEL-INVITATION-BET-3.png')
     if os.path.isfile(qr_code_path):
@@ -2102,6 +2092,8 @@ def studentDownloadPanelInvitationBet3(request, id):
         'currently_loggedin_user_account': currently_loggedin_user_account,
 
         'student_leader_data': get_student_leader_data,
+
+        #'download_link': download_link,
 
         'panel_invitations': get_panel_invitations,
         'accepted_panel_invitations': get_accepted_panel_invitations.count(),
@@ -2941,71 +2933,6 @@ def studentPanelInvitationBet3Form(request):
 
     return render(request, 'student-panel-invitation-bet-3-form.html', context)
 
-
-# Student - Panel Invitation Generate Declined Form
-@login_required(login_url='index')
-@user_passes_test(lambda u: u.is_student, login_url='index')
-def studentPanelInvitationBet3DeclinedForm(request):
-    current_user = (request.user)
-    current_password = current_user.password
-
-    ############## TOPBAR ##############
-    topbar_data = topbarProcess(request);
-    currently_loggedin_user_full_name = topbar_data[0]
-    currently_loggedin_user_account = topbar_data[1]
-    ############## TOPBAR ##############
-
-    panel_members = User.objects.all().filter(is_panel=1)
-
-    try:
-        user_panel_invitation = PanelInvitationBET3Declined.objects.get(student_leader_username = current_user.username)
-    
-    except:
-        context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
-        }
-
-        return render(request, 'student-dashboard.html', context)
-    
-    panel_username = []
-    panel_list = []
-    panel_response = []
-    panel_date_response = []
-    
-    for panel_members in user_panel_invitation:
-        panel_username.append(panel_members.panel_member_username)
-
-    print(panel_list)
-    print(panel_date_response)
-
-    student_member_list = []
-    
-    # if user_panel_invitation.student_member_name_1 != "":
-    #     student_member_list.append(user_panel_invitation.student_member_name_1)
-
-    # if user_panel_invitation.student_member_name_2 != "":
-    #     student_member_list.append(user_panel_invitation.student_member_name_2)
-
-    # if user_panel_invitation.student_member_name_3 != "":
-    #     student_member_list.append(user_panel_invitation.student_member_name_3)
-
-    # if user_panel_invitation.student_member_name_4 != "":
-    #     student_member_list.append(user_panel_invitation.student_member_name_4)
-
-    # if user_panel_invitation.student_member_name_5 != "":
-    #     student_member_list.append(user_panel_invitation.student_member_name_5)
-    
-    # student_member_list.sort()
-
-    context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
-        'panel_members' : panel_members,
-        'user_panel_invitation' : user_panel_invitation,
-        }
-
-    return render(request, 'student-panel-invitation-bet-3-form.html', context)
 
 # Student - Panel Conforme BET-3 Process
 @login_required(login_url='index')
@@ -3897,7 +3824,6 @@ def studentPanelConformeBet3Create(request):
         print("Incomplete Form")
         context = {'user_full_name': user_full_name}
         return render(request, 'student-panel-conforme-bet-3-create.html', context)
-
 
 # Student - Panel Conforme BET-3 Form Page
 @login_required(login_url='index')

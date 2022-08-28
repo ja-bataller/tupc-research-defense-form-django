@@ -33,10 +33,12 @@
               <div class="col-lg-9 col-md-12 mb-3">
                 <h1 class="h3 mb-0 text-gray-800">BET-3 - Panel Invitation</h1>
               </div>
-
+              
+              {% if student_leader_data.bet3_panel_invitation_status != "completed" %}
               <div class="col-lg-3 col-md-12 mb-3">
                 <a href="{% url 'student-panel-invitation-bet3-create' %}" type="button" class="btn btn-outline-success w-100"><i class="fa-solid fa-file-signature"></i> Create Form</a>
               </div>
+              {% endif %}
             </div>
 
             <!-- DataTales Example -->
@@ -203,6 +205,8 @@
     {% if response == 'sweet downloaded' %}
     <script>
       Swal.fire("Downloaded", "The Panel Invitation Form has been downloaded.", "success");
+
+      // window.open("{{download_link}}", '_blank').focus();
     </script>
     {% endif %} {% if response == 'sweet request limit exceed' %}
     <script>

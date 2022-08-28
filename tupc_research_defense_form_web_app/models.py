@@ -132,7 +132,6 @@ class DefenseSchedule(models.Model):
     def __str__(self) -> str:
         return self.username
 
-
 # Panel Invitation - BET-3
 class BET3PanelInvitation(models.Model):
     student_leader_username = models.CharField(max_length=256)
@@ -160,6 +159,15 @@ class BET3PanelInvitation(models.Model):
 
     def __str__(self) -> str:
         return self.student_leader_username
+
+
+class FilePath(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    file_path = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
 
 # class PanelInvitationBET3Declined(models.Model):
 #     student_leader_username = models.CharField(max_length=256)
