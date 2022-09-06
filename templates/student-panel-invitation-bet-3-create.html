@@ -115,6 +115,9 @@
     {% if response == 'sweet invalid defense schedule' %}
     <script>
       Swal.fire("Invalid", "The Defense Schedule you entered is invalid. Please choose one from the choices given.", "error");
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3-create' %}");
+      }, 2000);
     </script>
     {% endif %}
 
@@ -167,5 +170,15 @@
       }, 2000);
     </script>
     {% endif %}
+
+    {% if response == 'sweet subject teacher' %}
+    <script>
+      Swal.fire("Info", "{{panel_full_name}} is your Subject Teacher", "info");
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3-create' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
   </body>
 </html>

@@ -179,8 +179,8 @@
                       <td>{{panel_invitation.panel_full_name}}</td>
                       <td>{{panel_invitation.research_title_defense_date}} - {{panel_invitation.research_title_defense_start_time}} to {{panel_invitation.research_title_defense_end_time}}</td>
                       <td class="text-center">
-                        <a class="btn btn-outline-success mb-2" type="button" href="{% url 'panel-panel-invitation-bet-3-accept' panel_invitation.id %}">Accept</a>
-                        <a class="btn btn-outline-danger mb-2" type="button" href="{% url 'panel-panel-invitation-bet-3-decline' panel_invitation.id %}">Decline</a>
+                        <a id="accept_{{panel_invitation.id}}" data-id="{{panel_invitation.id}}" class="btn btn-outline-success mb-2" type="button" href="#">Accept</a>
+                        <a id="decline_{{panel_invitation.id}}" data-id="{{panel_invitation.id}}" class="btn btn-outline-danger mb-2" type="button" href="#">Decline</a>
                       </td>
                     </tr>
                     {% endfor %}
@@ -208,15 +208,73 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
+  <!-- Accept Modal -->
+  <div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="acceptModal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to accept <span id="student_name_accept"></span> BET-3 Panel Invitation request?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+          <a id="accept_btn" class="btn btn-outline-success" type="button" href="#">Yes - Accept</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decline Modal -->
+  <div class="modal fade" id="declineModal" tabindex="-1" aria-labelledby="declineModal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Decline Request?</h5>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to decline <span id="student_name_decline"></span> BET-3 Panel Invitation request?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+          <a id="decline_btn" class="btn btn-outline-danger" type="button" href="#">Yes - Decline</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   {% include 'logout-modal.html' %}
   {% include 'script-cdn.html' %}
 
   <!-- Sweetalert 2 CDN -->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+  {% for panel_invitation in panel_invitations %}
+  <script>
+    document.getElementById('accept_' + '{{panel_invitation.id}}').addEventListener("click", function () {
+      data_id = $(document.getElementById('accept_' + '{{panel_invitation.id}}')).attr("data-id")
+
+      document.getElementById('student_name_accept').textContent = "{{panel_invitation.student_leader_full_name}}";
+      document.getElementById("accept_btn").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}"
+        .replace(/0/, data_id);
+      $("#acceptModal").modal()
+    });
+
+    document.getElementById('decline_' + '{{panel_invitation.id}}').addEventListener("click", function () {
+      data_id = $(document.getElementById('decline_' + '{{panel_invitation.id}}')).attr("data-id")
+
+      document.getElementById('student_name_decline').textContent = "{{panel_invitation.student_leader_full_name}}";
+      document.getElementById("decline_btn").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}"
+        .replace(/0/, data_id);
+      $("#declineModal").modal()
+    });
+  </script>
+  {% endfor %}
+
   {% if response == 'sweet panel invitation bet-3 accepted' %}
   <script>
-    Swal.fire("Accepted", "The Panel Invitation request of {{accepted_student_member_username}} is accepted.", "success");
+    Swal.fire("Accepted", "The Panel Invitation request of {{accepted_student_member_name}} is accepted.", "success");
 
     setTimeout(function () {
       window.location.replace("{% url 'panel-panel-invitation-bet-3' %}");
@@ -226,7 +284,7 @@
 
   {% if response == 'sweet panel invitation bet-3 declined' %}
   <script>
-    Swal.fire("Declined", "The Panel Invitation request of {{declined_student_member_username}} is declined.", "info");
+    Swal.fire("Declined", "The Panel Invitation request of {{declined_student_member_name}} is declined.", "info");
 
     setTimeout(function () {
       window.location.replace("{% url 'panel-panel-invitation-bet-3' %}");

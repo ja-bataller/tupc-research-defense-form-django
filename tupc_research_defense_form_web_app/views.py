@@ -1,3 +1,5 @@
+from multiprocessing import context
+from telnetlib import STATUS
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
@@ -17,6 +19,7 @@ import os
 import subprocess
 
 today = date.today()
+date_today = today.strftime("%B %d, %Y")
 ##########################################################################################################################
 
 # Index / Log in Page
@@ -352,7 +355,7 @@ def logout_user(request):
         for file_path in get_file_paths:
             file_paths.append(file_path.file_path)
 
-        print(file_path)
+        print(file_paths)
 
         for i in range(len(file_paths)):
             if os.path.isfile(file_paths[i]):
@@ -398,24 +401,19 @@ def studentDashboard(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
 
-    # BET-3 Panel Invitation
+    
+    # Student - Get Student Leader Data
     try:
-        panel_invitation_bet3_check = PanelInvitationBET3.objects.get(student_leader_username=current_user.username)
-
-        context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account': currently_loggedin_user_account,
-
-        'panel_invitation_bet3': panel_invitation_bet3_check,
-        }
-        return render(request, 'student-dashboard.html', context)
-
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
     except:
-        pass
+        return redirect('logout')
     
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
         'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'student_leader_data': get_student_leader_data,
+        'date_today': date_today,
         }
 
     return render(request, 'student-dashboard.html', context)
@@ -551,19 +549,19 @@ def studentGroupMemberProcess(request):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
-    
-    try:
-        get_group_count = StudentLeader.objects.get(username = current_user.username)
-        group_count = get_group_count.group_count
 
-        if group_count == 0:
-            return redirect('student-add-group-members')
-        else:
-            return redirect('student-group-members-dashboard')
+    # Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
 
     except:
-         return redirect('logout_user')
+        return redirect('index')
 
+    if get_student_leader_data.group_members_status == "completed":
+        return redirect("student-group-members-dashboard")
+    else:
+        return redirect("student-add-group-members")
+    
 
 # Student - Add Group Member Page
 @login_required(login_url='index')
@@ -578,7 +576,7 @@ def studentAddGroupMember(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
 
-    # Student - Get Student Leader Data
+    # Get Student Leader Data
     try:
         get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
 
@@ -588,18 +586,6 @@ def studentAddGroupMember(request):
     if get_student_leader_data.group_members_status == "completed":
         return redirect("student-group-members-dashboard")
     
-    if get_student_leader_data.group_count >= 1:
-
-        context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account': currently_loggedin_user_account,
-
-        'response': 'sweet unauthorized to add group members'
-        }
-
-        return render(request, 'student-group-member-dashboard.html', context)
-
-
     suffix_list = ["","Sr.", "Jr.", "I", "II", "III", "IV", "V"]
 
     if request.method == 'POST':
@@ -629,8 +615,7 @@ def studentAddGroupMember(request):
         student_last_name_5 = request.POST.get('student_last_name_5')
         student_suffix_5 = request.POST.get('student_suffix_5')
         
-        student_leader_full_name = None
-
+        # Student Leader Full Name
         if get_student_leader_data.middle_name == "":
             student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
         else:
@@ -640,6 +625,9 @@ def studentAddGroupMember(request):
             get_student_leader_data.group_count = 1
             get_student_leader_data.save()
 
+            get_student_leader_data.group_members_status = "completed"
+            get_student_leader_data.save()
+            
             get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = current_user.username)
 
             context = {
@@ -651,7 +639,7 @@ def studentAddGroupMember(request):
 
                 'group_members': get_group_members,
 
-                'response': 'sweet no group members added'
+                'response': 'sweet no group members'
             }
             return render(request, 'student-group-member-dashboard.html', context)
         
@@ -1090,6 +1078,7 @@ def studentGroupMembersDashboard(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
 
+    # Get Student Leader Data
     try:
         get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
 
@@ -1097,14 +1086,7 @@ def studentGroupMembersDashboard(request):
         return redirect('index')
 
     if get_student_leader_data.group_members_status != "completed":
-        context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-        'response': "sweet incomplete group members"
-        }
-
-        return render(request, 'student-add-group-member.html', context)
+        return redirect("student-add-group-members")
     
 
     get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = current_user.username)
@@ -1142,14 +1124,17 @@ def studentResearchTitleProcess(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
 
-    check_research_title = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
-         
-    if check_research_title:
-        return redirect('student-research-title-dashboard')
+    # Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
 
+    except:
+        return redirect('index')
+
+    if get_student_leader_data.research_titles_status == "completed":
+        return redirect('student-research-title-dashboard')
     else:
         return redirect('student-add-research-titles')
-
 
 # Student - Add Research Title Page
 @login_required(login_url='index')
@@ -1171,21 +1156,22 @@ def studentAddResearchTitle(request):
     except:
         return redirect('index')
 
+    ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
         context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+            'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-        'response': "sweet incomplete group members"
-        }
+            'response': "sweet incomplete group members"
+            }
 
         return render(request, 'student-add-group-member.html', context)
 
     if get_student_leader_data.research_titles_status == "completed":
         return redirect("student-research-title-dashboard")
-    
-    student_leader_full_name = None
+    ############## PAGE VALIDATION ##############
 
+    # Student Leader Full Name
     if get_student_leader_data.middle_name == "":
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
@@ -1219,7 +1205,7 @@ def studentAddResearchTitle(request):
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
                 'currently_loggedin_user_account': currently_loggedin_user_account,
 
-                'existing_research_title': research_title_1_input,
+                'existing_research_title': research_title_1_input.title,
 
                 'response': "sweet research title exist"
                 }
@@ -1395,30 +1381,26 @@ def studentResearchTitleDashboard(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
 
+    # Student - Get Student Leader Data
     try:
         get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
     except:
         return redirect ('index')
 
+    ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
         context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+            'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-        'response': "sweet incomplete group members"
-        }
+            'response': "sweet incomplete group members"
+            }
 
         return render(request, 'student-add-group-member.html', context)
-    
+
     if get_student_leader_data.research_titles_status != "completed":
-        context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-        'response': "sweet incomplete research titles"
-        }
-
-        return render(request, 'student-add-research-title.html', context)
+        return redirect("student-add-research-titles")
+    ############## PAGE VALIDATION ##############
 
     get_research_titles = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
     
@@ -1444,12 +1426,13 @@ def studentPanelInvitationBet3(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
 
+    # Student - Get Student Leader Data
     try:
         get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
     except:
         return redirect ('index')
 
-    
+    ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
         context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
@@ -1469,6 +1452,7 @@ def studentPanelInvitationBet3(request):
         }
 
         return render(request, 'student-add-research-title.html', context)
+    ############## PAGE VALIDATION ##############
 
     get_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username)
     get_accepted_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username, form_status = "accepted")
@@ -1501,11 +1485,13 @@ def studentPanelInvitationBet3Create(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ############## 
 
+    # Student - Get Student Leader Data
     try:
         get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
     except:
         return redirect ('index')
 
+    ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
         context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
@@ -1528,12 +1514,11 @@ def studentPanelInvitationBet3Create(request):
 
     if get_student_leader_data.bet3_panel_invitation_status == "completed":
             return redirect ('student-panel-invitation-bet3')
+    ############## PAGE VALIDATION ##############
 
     try:
         get_pending_panel_invitation = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username, form_status = "pending")
         pending_count = get_pending_panel_invitation.count()
-        print(pending_count)
-        print(get_student_leader_data.request_limit)
 
         if int(get_student_leader_data.request_limit) == int(pending_count):
             print("Request Limit Exceed")
@@ -1552,6 +1537,24 @@ def studentPanelInvitationBet3Create(request):
     panel_members = User.objects.all().filter(is_panel=1)
 
     defense_dates = DefenseSchedule.objects.all().filter(course=get_student_leader_data.course_major_abbr, username = get_student_leader_data.bet3_subject_teacher_username, status = "Available")
+
+    if get_student_leader_data.research_title_defense_date != "":
+        pass
+    else:
+        if not defense_dates:
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'student_leader_data': get_student_leader_data,
+
+                'response': "sweet no defense schedule"
+                }
+
+            return render(request, 'student-bet3-panel-invitation-dashboard.html', context)
+        else:
+            pass
+        
 
     defense_date_list = []
 
@@ -1622,7 +1625,7 @@ def studentPanelInvitationBet3Create(request):
 
             return render(request, 'student-panel-invitation-bet-3-create.html', context)
 
-        # Check if the entered Panel Member exist
+        # Check if there are Panel Members assigned
         try:
             get_panel_data = User.objects.get(username = panel_input)
 
@@ -1648,6 +1651,31 @@ def studentPanelInvitationBet3Create(request):
                 }
 
             return render(request, 'student-panel-invitation-bet-3-create.html', context)
+
+        # Check if the entered Panel Member is Subject Teacher
+        try:
+            StudentLeader.objects.get(username = current_user.username, bet3_subject_teacher_username = panel_input)
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                'student_leader_data': get_student_leader_data,
+
+                'dept_head_name' : dept_head_name,
+
+                'panel_members' : panel_members,
+
+                'defense_dates': defense_dates,
+
+                'panel_full_name': panel_full_name,
+
+                'response': "sweet subject teacher"
+                }
+
+            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+        except:
+            pass
 
         # Check if the entered Panel Member has Pending Panel Invitation
         try:
@@ -1702,13 +1730,7 @@ def studentPanelInvitationBet3Create(request):
 
         try:
             check_defense_schedule = DefenseSchedule.objects.get(student_leader_username = current_user.username)
-
-            get_student_leader_data.research_title_defense_date = check_defense_schedule.date
-            get_student_leader_data.research_title_defense_start_time = check_defense_schedule.start_time
-            get_student_leader_data.research_title_defense_end_time = check_defense_schedule.end_time
-            get_student_leader_data.save()
-            print("Student Leader Data Updated")
-
+            print(check_defense_schedule)
             send_panel_invitation = BET3PanelInvitation (
                 student_leader_username = current_user.username,
                 student_leader_full_name = student_leader_full_name,
@@ -1727,14 +1749,16 @@ def studentPanelInvitationBet3Create(request):
                 research_title_defense_end_time = check_defense_schedule.end_time,
 
                 form_status = "pending",
-                form_date_sent = today.strftime("%B %d, %Y"),
-                form = "BET-3 Panel Invitation"
+                form_date_sent = date_today,
+                form = "BET-3 Panel Invitation",
+                
+                subject_teacher_username = get_student_leader_data.bet3_subject_teacher_username,
+                subject_teacher_full_name = get_student_leader_data.bet3_subject_teacher_name,
             )
             send_panel_invitation.save()
             print("Panel Invitation Sent")
 
         except:
-    
             # Check if the entered Defense Scheduled is valid
             if int(defense_schedule_input) not in defense_date_list:
 
@@ -1807,25 +1831,28 @@ def studentPanelInvitationBet3Create(request):
 
                     form_status = "pending",
                     form_date_sent = today.strftime("%B %d, %Y"),
-                    form = "BET-3 Panel Invitation"
+                    form = "BET-3 Panel Invitation",
+
+                    subject_teacher_username = get_student_leader_data.bet3_subject_teacher_username,
+                    subject_teacher_full_name = get_student_leader_data.bet3_subject_teacher_name,
                 )
                 send_panel_invitation.save()
                 print("Panel Invitation Sent")
 
         context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-                'student_leader_data': get_student_leader_data,
+                    'student_leader_data': get_student_leader_data,
 
-                'dept_head_name' : dept_head_name,
+                    'dept_head_name' : dept_head_name,
 
-                'panel_members' : panel_members,
+                    'panel_members' : panel_members,
 
-                'defense_dates': defense_dates,
+                    'defense_dates': defense_dates,
 
-                'response': "sweet panel invitation sent"
-                }
+                    'response': "sweet panel invitation sent"
+                    }
 
         return render(request, 'student-panel-invitation-bet-3-create.html', context)
 
@@ -1858,12 +1885,36 @@ def studentPanelInvitationBet3Save(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
 
+    # Student - Get Student Leader Data
     try:
         get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
-        get_student_leader_data.bet3_panel_invitation_status = "completed"
-        get_student_leader_data.save()
     except:
-        return redirect ('student-panel-invitation-bet3')
+        return redirect ('index')
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'response': "sweet incomplete group members"
+        }
+
+        return render(request, 'student-add-group-member.html', context)
+    
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'response': "sweet incomplete research titles"
+        }
+
+        return render(request, 'student-add-research-title.html', context)
+    ############## PAGE VALIDATION ##############
+
+    get_student_leader_data.bet3_panel_invitation_status = "completed"
+    get_student_leader_data.save()
 
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
@@ -1875,6 +1926,7 @@ def studentPanelInvitationBet3Save(request):
         }
 
     return render(request, 'student-bet3-panel-invitation-dashboard.html', context)
+
 
 # Student - Accepted BET-3 Panel Invitation
 @login_required(login_url='index')
@@ -2057,14 +2109,22 @@ def studentDownloadPanelInvitationBet3(request, id):
 
     doc.save(current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
     convert(current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
-    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
-    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.pdf'
 
     filePath =  FilePath(
         student_leader_username = current_user.username,
         file_path = current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.pdf'
     )
     filePath.save()
+
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.pdf'
+
+    # filePath =  FilePath(
+    #     student_leader_username = current_user.username,
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-PANEL-INVITATION-BET3.pdf'
+    # )
+    # filePath.save()
 
     qr_code_path = (current_user.username + '-PANEL-INVITATION-BET-3.png')
     if os.path.isfile(qr_code_path):
@@ -2105,9 +2165,10 @@ def studentDownloadPanelInvitationBet3(request, id):
     return render(request, 'student-bet3-panel-invitation-dashboard.html', context)
 
 
+# Student - BET-3 Research Title Defense Form
 @login_required(login_url='index')
 @user_passes_test(lambda u: u.is_student, login_url='index')
-def studentPanelInvitationBet3AddPanel(request):
+def studentBET3ResearchTitleDefense(request): 
     current_user = (request.user)
     current_password = current_user.password
 
@@ -2117,822 +2178,103 @@ def studentPanelInvitationBet3AddPanel(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
 
-    panel_members = User.objects.all().filter(is_panel=1)
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
+    except:
+        return redirect ('index')
 
-    panel_list = []
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'response': "sweet incomplete group members"
+        }
+
+        return render(request, 'student-add-group-member.html', context)
     
-    # Check if there is a Panel assigned.
-    if not panel_members or panel_members.count() < 5:
-            print("Incomplete Faculty Member")
-            context = {
-                'response' : "sweet inc panel"
-            }
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
 
-            return render(request, 'student-panel-invitation-bet-3-create.html', context)
+        'response': "sweet incomplete research titles"
+        }
+
+        return render(request, 'student-add-research-title.html', context)
+    
+    if get_student_leader_data.bet3_panel_invitation_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'response': "sweet incomplete bet3 panel invitation"
+        }
+
+        return render(request, 'student-bet3-panel-invitation-dashboard.html', context)
+    ############## PAGE VALIDATION ##############
+
+    # Get Student Group Members
+    try:
+        get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username = current_user.username)
+    except:
+        return redirect('student-dashboard')
+
+    # Get Student Research Title / Titles
+    try:
+        get_student_research_titles = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
+    except:
+        return redirect('student-dashboard')
+
+    # Get Student Accepted Research Title
+    try:
+        get_student_accepted_research_title = ResearchTitle.objects.get(student_leader_username = current_user.username, status = "Title Defense - Accepted")
+    except:
+        get_student_accepted_research_title = None
+    
+    # Get Student Accepted - Revise Title Research Title
+    try:
+        get_student_revise_research_title = ResearchTitle.objects.get(student_leader_username = current_user.username, status = "Title Defense - Revise Title")
+    except:
+        get_student_revise_research_title = None
+
+    # Get Panel Research Title Defense Form
+    try:
+        get_panel_research_title_defense_form = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = current_user.username)
+    except:
+        return redirect('student-dashboard')
+
+    if get_student_leader_data.group_members_status != "Completed" and \
+         get_student_leader_data.research_titles_status != "Completed" and \
+            get_student_leader_data.bet3_panel_invitation_status != "Completed":
+             
+             return redirect('student-dashboard')
+    
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
-        for panel in panel_members:
-            panel_list.append(panel.username)
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
 
-    try:
-        user_panel_invitation = PanelInvitationBET3.objects.get(student_leader_username = current_user.username)
-    
-    except:
-        context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
-        }
 
-        return render(request, 'student-dashboard.html', context)
-
-    if request.method == 'POST':
-        panel1_input = request.POST.get('panel1_input')
-        panel2_input = request.POST.get('panel2_input')
-        panel3_input = request.POST.get('panel3_input')
-        panel4_input = request.POST.get('panel4_input')
-        panel5_input = request.POST.get('panel5_input')
-        
-        print(panel1_input)
-        print(panel2_input)
-        print(panel3_input)
-        print(panel4_input)
-        print(panel5_input)
-
-        if user_panel_invitation.panel_member_username_1 == "":
-            if panel1_input not in panel_list:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet invalid panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            panel_data_1 = User.objects.get(username = panel1_input)
-            panel_full_name_1 = None
-            
-            if panel1_input == user_panel_invitation.panel_member_username_2:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            if panel1_input == user_panel_invitation.panel_member_username_3:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            if panel1_input == user_panel_invitation.panel_member_username_4:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            if panel1_input == user_panel_invitation.panel_member_username_5:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-            
-            if panel_data_1.middle_name == "":
-                panel_full_name_1 = panel_data_1.honorific + " " + panel_data_1.first_name + " " +  panel_data_1.last_name + " " + panel_data_1.suffix
-            else:
-                panel_full_name_1 = panel_data_1.honorific + " " + panel_data_1.first_name + " " +  panel_data_1.middle_name[0] + ". " +  panel_data_1.last_name + " " + panel_data_1.suffix
-            
-            user_panel_invitation.panel_member_username_1 = panel1_input
-            user_panel_invitation.panel_member_name_1 = panel_full_name_1
-            user_panel_invitation.panel_member_response_1 = "pending"
-            user_panel_invitation.save()
-
-        try:
-            user_panel_invitation_2 = PanelInvitationBET3.objects.get(student_leader_username = current_user.username)
-        
-        except:
-            context = {
-            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-            'currently_loggedin_user_account' : currently_loggedin_user_account,
-            }
-
-            return render(request, 'student-dashboard.html', context)
-
-        if user_panel_invitation_2.panel_member_username_2 == "":
-            if panel2_input not in panel_list:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_2,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet invalid panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-            
-            panel_data_2 = User.objects.get(username = panel2_input)
-            panel_full_name_2 = None
-
-            if panel2_input == user_panel_invitation_2.panel_member_username_1:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_2,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-            
-            if panel2_input == user_panel_invitation_2.panel_member_username_3:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_2,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            if panel2_input == user_panel_invitation_2.panel_member_username_4:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_2,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            if panel2_input == user_panel_invitation_2.panel_member_username_5:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_2,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-            
-            if panel_data_2.middle_name == "":
-                panel_full_name_2 = panel_data_2.honorific + " " + panel_data_2.first_name + " " +  panel_data_2.last_name + " " + panel_data_2.suffix
-            
-            else:
-                panel_full_name_2 = panel_data_2.honorific + " " + panel_data_2.first_name + " " +  panel_data_2.middle_name[0] + ". " +  panel_data_2.last_name + " " + panel_data_2.suffix
-            
-            user_panel_invitation_2.panel_member_username_2 = panel2_input
-            user_panel_invitation_2.panel_member_name_2 = panel_full_name_2
-            user_panel_invitation_2.panel_member_response_2 = "pending"
-            user_panel_invitation_2.save()
-
-        try:
-            user_panel_invitation_3 = PanelInvitationBET3.objects.get(student_leader_username = current_user.username)
-        
-        except:
-            context = {
-            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-            'currently_loggedin_user_account' : currently_loggedin_user_account,
-            }
-
-            return render(request, 'student-dashboard.html', context)
-
-        if user_panel_invitation_3.panel_member_username_3 == "":
-            if panel3_input not in panel_list:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_3,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet invalid panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            panel_data_3 = User.objects.get(username = panel3_input)
-            panel_full_name_3 = None
-            
-            if panel3_input == user_panel_invitation_3.panel_member_username_1:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_3,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-            
-            if panel3_input == user_panel_invitation_3.panel_member_username_2:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_3,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            if panel3_input == user_panel_invitation_3.panel_member_username_4:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_3,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            if panel3_input == user_panel_invitation_3.panel_member_username_5:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_3,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-            
-            if panel_data_3.middle_name == "":
-                panel_full_name_3 = panel_data_3.honorific + " " + panel_data_3.first_name + " " +  panel_data_3.last_name + " " + panel_data_3.suffix
-            
-            else:
-                panel_full_name_3 = panel_data_3.honorific + " " + panel_data_3.first_name + " " +  panel_data_3.middle_name[0] + ". " +  panel_data_3.last_name + " " + panel_data_3.suffix
-            
-            user_panel_invitation_3.panel_member_username_3 = panel3_input
-            user_panel_invitation_3.panel_member_name_3 = panel_full_name_3
-            user_panel_invitation_3.panel_member_response_3 = "pending"
-            user_panel_invitation_3.save()
-
-        try:
-            user_panel_invitation_4 = PanelInvitationBET3.objects.get(student_leader_username = current_user.username)
-        
-        except:
-            context = {
-            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-            'currently_loggedin_user_account' : currently_loggedin_user_account,
-            }
-
-            return render(request, 'student-dashboard.html', context)
-
-        if user_panel_invitation_4.panel_member_username_4 == "":
-            if panel4_input not in panel_list:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_4,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet invalid panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-            panel_data_4 = User.objects.get(username = panel4_input)
-            panel_full_name_4 = None
-
-            if panel4_input == user_panel_invitation_4.panel_member_username_1:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_4,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-            
-            if panel4_input == user_panel_invitation_4.panel_member_username_2:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_4,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            if panel4_input == user_panel_invitation_4.panel_member_username_3:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_4,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            if panel4_input == user_panel_invitation_4.panel_member_username_5:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_4,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-            
-            if panel_data_4.middle_name == "":
-                panel_full_name_4 = panel_data_4.honorific + " " + panel_data_4.first_name + " " +  panel_data_4.last_name + " " + panel_data_4.suffix
-            
-            else:
-                panel_full_name_4 = panel_data_4.honorific + " " + panel_data_4.first_name + " " +  panel_data_4.middle_name[0] + ". " +  panel_data_4.last_name + " " + panel_data_4.suffix
-            
-            user_panel_invitation_4.panel_member_username_4 = panel4_input
-            user_panel_invitation_4.panel_member_name_4 = panel_full_name_4
-            user_panel_invitation_4.panel_member_response_4 = "pending"
-            user_panel_invitation_4.save()
-
-        try:
-            user_panel_invitation_5 = PanelInvitationBET3.objects.get(student_leader_username = current_user.username)
-        
-        except:
-            context = {
-            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-            'currently_loggedin_user_account' : currently_loggedin_user_account,
-            }
-
-            return render(request, 'student-dashboard.html', context)
-
-        if user_panel_invitation_5.panel_member_username_5 == "":
-            if panel5_input not in panel_list:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_5,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet invalid panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            panel_data_5 = User.objects.get(username = panel5_input)
-            panel_full_name_5 = None
-
-            if panel5_input == user_panel_invitation_5.panel_member_username_1:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_5,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-            
-            if panel5_input == user_panel_invitation_5.panel_member_username_2:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_5,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            if panel5_input == user_panel_invitation_5.panel_member_username_3:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_5,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
-            if panel5_input == user_panel_invitation_5.panel_member_username_4:
-                context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-                'user_panel_invitation' : user_panel_invitation_5,
-                'panel_members' : panel_members,
-
-                'response' : 'sweet already a panel'
-                }
-
-                return render(request, 'student-panel-invitation-bet-3-form.html', context)
-            
-            if panel_data_5.middle_name == "":
-                panel_full_name_5 = panel_data_5.honorific + " " + panel_data_5.first_name + " " +  panel_data_5.last_name + " " + panel_data_5.suffix
-            
-            else:
-                panel_full_name_5 = panel_data_5.honorific + " " + panel_data_5.first_name + " " +  panel_data_5.middle_name[0] + ". " +  panel_data_5.last_name + " " + panel_data_5.suffix
-            
-            user_panel_invitation_5.panel_member_username_5 = panel5_input
-            user_panel_invitation_5.panel_member_name_5 = panel_full_name_5
-            user_panel_invitation_5.panel_member_response_5 = "pending"
-            user_panel_invitation_5.save()
-
-        try:
-            user_panel_invitation_new = PanelInvitationBET3.objects.get(student_leader_username = current_user.username)
-
-            if user_panel_invitation_new.panel_member_username_1 != "" and \
-                user_panel_invitation_new.panel_member_username_2 != "" and \
-                    user_panel_invitation_new.panel_member_username_3 != "" and \
-                        user_panel_invitation_new.panel_member_username_4!= "" and \
-                            user_panel_invitation_new.panel_member_username_5 != "":
-                            
-                user_panel_invitation_new.form_status = "Ongoing"
-                user_panel_invitation_new.save()
-
-            context = {
-            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-            'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-            'user_panel_invitation' : user_panel_invitation_new,
-            'panel_members' : panel_members,
-
-            'response' : 'sweet added new panel'
-            }
-
-            return render(request, 'student-panel-invitation-bet-3-form.html', context)
-        except:
-            return redirect('student-dashboard')
-
-                
-# Student - Panel Invitation Form Page
-@login_required(login_url='index')
-@user_passes_test(lambda u: u.is_student, login_url='index')
-def studentPanelInvitationBet3Form(request):
-    current_user = (request.user)
-    current_password = current_user.password
-
-    ############## TOPBAR ##############
-    topbar_data = topbarProcess(request);
-    currently_loggedin_user_full_name = topbar_data[0]
-    currently_loggedin_user_account = topbar_data[1]
-    ############## TOPBAR ##############
-
-    panel_members = User.objects.all().filter(is_panel=1)
-
-    try:
-        user_panel_invitation = PanelInvitationBET3.objects.get(student_leader_username = current_user.username)
-    
-    except:
-        context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
-        }
-
-        return render(request, 'student-dashboard.html', context)
-    
-    panel_username = []
-    panel_list = []
-    panel_response = []
-    panel_date_response = []
-
-    if user_panel_invitation.panel_member_name_1 != "" and user_panel_invitation.panel_member_response_date_1 != "":
-        panel_username.append(user_panel_invitation.panel_member_username_1)
-        panel_list.append(user_panel_invitation.panel_member_name_1)
-        panel_response.append(user_panel_invitation.panel_member_response_1)
-        panel_date_response.append(user_panel_invitation.panel_member_response_date_1)
-
-    if user_panel_invitation.panel_member_name_2 != "" and user_panel_invitation.panel_member_response_date_2 != "":
-        panel_username.append(user_panel_invitation.panel_member_username_2)
-        panel_list.append(user_panel_invitation.panel_member_name_2)
-        panel_response.append(user_panel_invitation.panel_member_response_2)
-        panel_date_response.append(user_panel_invitation.panel_member_response_date_2)
-
-    if user_panel_invitation.panel_member_name_3 != "" and user_panel_invitation.panel_member_response_date_3 != "":
-        panel_username.append(user_panel_invitation.panel_member_username_3)
-        panel_list.append(user_panel_invitation.panel_member_name_3)
-        panel_response.append(user_panel_invitation.panel_member_response_3)
-        panel_date_response.append(user_panel_invitation.panel_member_response_date_3)
-
-    if user_panel_invitation.panel_member_name_4 != "" and user_panel_invitation.panel_member_response_date_4 != "":
-        panel_username.append(user_panel_invitation.panel_member_username_4)
-        panel_list.append(user_panel_invitation.panel_member_name_4)
-        panel_response.append(user_panel_invitation.panel_member_response_4)
-        panel_date_response.append(user_panel_invitation.panel_member_response_date_4)
-
-    if user_panel_invitation.panel_member_name_5 != "" and user_panel_invitation.panel_member_response_date_5 != "":
-        panel_username.append(user_panel_invitation.panel_member_username_5)
-        panel_list.append(user_panel_invitation.panel_member_name_5)
-        panel_response.append(user_panel_invitation.panel_member_response_5)
-        panel_date_response.append(user_panel_invitation.panel_member_response_date_5)
-
-    print(panel_list)
-    print(panel_date_response)
-
-    student_member_list = []
-    
-    if user_panel_invitation.student_member_name_1 != "":
-        student_member_list.append(user_panel_invitation.student_member_name_1)
-
-    if user_panel_invitation.student_member_name_2 != "":
-        student_member_list.append(user_panel_invitation.student_member_name_2)
-
-    if user_panel_invitation.student_member_name_3 != "":
-        student_member_list.append(user_panel_invitation.student_member_name_3)
-
-    if user_panel_invitation.student_member_name_4 != "":
-        student_member_list.append(user_panel_invitation.student_member_name_4)
-
-    if user_panel_invitation.student_member_name_5 != "":
-        student_member_list.append(user_panel_invitation.student_member_name_5)
-    
-    student_member_list.sort()
-
-    panel_1_download = None
-    panel_2_download = None
-    panel_3_download = None
-    panel_4_download = None
-    panel_5_download = None
-
-    # Generate PDF Form
-    if request.method == "POST":
-        file_count = 1
-        for i in range(len(panel_list)):
-
-            doc = Document('static/forms/1-PANEL-INVITATION.docx')
-            # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/1-PANEL-INVITATION.docx')
-
-            student_table = doc.tables[1]
-            qr_code_box = doc.tables[2]
-            response_table = doc.tables[3]
-
-            student_table.cell(1, 0).paragraphs[0].runs[0].text = student_member_list[0]
-            student_table.cell(2, 0).paragraphs[0].runs[0].text = student_member_list[1]
-            student_table.cell(3, 0).paragraphs[0].runs[0].text = student_member_list[2]
-            student_table.cell(4, 0).paragraphs[0].runs[0].text = student_member_list[3]
-            student_table.cell(5, 0).paragraphs[0].runs[0].text = student_member_list[4]
-
-            # try:
-            #     student_table.cell(1, 0).paragraphs[0].runs[0].text = student_member_list[0]
-            # except:
-            #     student_table.cell(1, 0).paragraphs[0].runs[0].text = ""
-
-            # try:
-            #     student_table.cell(2, 0).paragraphs[0].runs[0].text = student_member_list[1]
-            # except:
-            #     student_table.cell(2, 0).paragraphs[0].runs[0].text = ""
-
-            # try:
-            #     student_table.cell(3, 0).paragraphs[0].runs[0].text = student_member_list[2]
-            # except:
-            #     student_table.cell(3, 0).paragraphs[0].runs[0].text = ""
-
-            # try:
-            #     student_table.cell(4, 0).paragraphs[0].runs[0].text = student_member_list[3]
-            # except:
-            #     student_table.cell(4, 0).paragraphs[0].runs[0].text = ""
-
-            # try:
-            #     student_table.cell(5, 0).paragraphs[0].runs[0].text = student_member_list[4]
-            # except:
-            #     student_table.cell(5, 0).paragraphs[0].runs[0].text = ""
-
-            student_table.cell(1, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
-            student_table.cell(1, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
-
-            if user_panel_invitation.student_member_username_2 == "":
-                student_table.cell(2, 2).paragraphs[0].runs[0].text = ""
-                student_table.cell(2, 4).paragraphs[0].runs[0].text = ""
-            else:
-                student_table.cell(2, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
-                student_table.cell(2, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
-                
-                
-            if user_panel_invitation.student_member_username_3 == "":
-                student_table.cell(3, 2).paragraphs[0].runs[0].text = ""
-                student_table.cell(3, 4).paragraphs[0].runs[0].text = ""
-    
-            else:
-                student_table.cell(3, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
-                student_table.cell(3, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
-                
-                
-            if  user_panel_invitation.student_member_username_4 == "":
-                student_table.cell(4, 2).paragraphs[0].runs[0].text = ""
-                student_table.cell(4, 4).paragraphs[0].runs[0].text = ""
-            else:
-                student_table.cell(4, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
-                student_table.cell(4, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
-                
-                
-            if  user_panel_invitation.student_member_username_5 == "":
-                student_table.cell(5, 2).paragraphs[0].runs[0].text = ""
-                student_table.cell(5, 4).paragraphs[0].runs[0].text = ""
-            else:
-                student_table.cell(5, 2).paragraphs[0].runs[0].text = user_panel_invitation.course
-                student_table.cell(5, 4).paragraphs[0].runs[0].text = user_panel_invitation.major
-                
-            doc.paragraphs[1].runs[1].text = user_panel_invitation.form_date_submitted
-            doc.paragraphs[2].runs[0].text = panel_list[i]
-            doc.paragraphs[5].runs[1].text = panel_list[i]
-
-            doc.paragraphs[11].runs[1].text = user_panel_invitation.research_title_1
-            doc.paragraphs[12].runs[1].text = user_panel_invitation.research_title_2
-            doc.paragraphs[13].runs[1].text = user_panel_invitation.research_title_3
-            doc.paragraphs[14].runs[1].text = user_panel_invitation.research_title_4
-            doc.paragraphs[15].runs[1].text = user_panel_invitation.research_title_5
-
-            doc.paragraphs[17].runs[1].text =  user_panel_invitation.defense_date
-            doc.paragraphs[17].runs[3].text =  user_panel_invitation.defense_start_time
-            doc.paragraphs[17].runs[5].text =  user_panel_invitation.defense_end_time
-            doc.paragraphs[22].runs[0].text =  user_panel_invitation.dit_head_name
-
-            response_table.cell(0, 9).paragraphs[0].runs[0].text = panel_date_response[i]
-
-            if panel_response[i] == "accepted":
-                response_table.cell(0, 2).paragraphs[0].runs[0].text = '✓'
-                response_table.cell(0, 5).paragraphs[0].runs[0].text = ''
-
-            else:
-                response_table.cell(0, 2).paragraphs[0].runs[0].text = ''
-                response_table.cell(0, 5).paragraphs[0].runs[0].text = '✓'
-
-            print(student_table.cell(1, 0).text)
-            print(student_table.cell(2, 0).text)
-            print(student_table.cell(3, 0).text)
-            print(student_table.cell(4, 0).text)
-            print(student_table.cell(5, 0).text)
-
-            print(student_table.cell(1, 2).text)
-            print(student_table.cell(2, 2).text)
-            print(student_table.cell(3, 2).text)
-            print(student_table.cell(4, 2).text)
-            print(student_table.cell(5, 2).text)
-
-            print(student_table.cell(1, 4).text)
-            print(student_table.cell(2, 4).text)
-            print(student_table.cell(3, 4).text)
-            print(student_table.cell(4, 4).text)
-            print(student_table.cell(5, 4).text)
-
-
-            print(doc.paragraphs[1].runs[1].text) # Date Submitted
-            print(doc.paragraphs[2].runs[0].text) # Receiver 1
-            print(doc.paragraphs[5].runs[1].text) # Receiver 2
-
-            print(doc.paragraphs[11].runs[1].text) # Research Title 1
-            print(doc.paragraphs[12].runs[1].text) # Research Title 2
-            print(doc.paragraphs[13].runs[1].text) # Research Title 3
-            print(doc.paragraphs[14].runs[1].text) # Research Title 4
-            print(doc.paragraphs[15].runs[1].text) # Research Title 5
-
-            print(doc.paragraphs[17].runs[1].text) # Defense Date
-            print(doc.paragraphs[17].runs[3].text) # Defense Time Start
-            print(doc.paragraphs[17].runs[5].text) # Defense Time End
-            print(doc.paragraphs[22].runs[0].text) # DIT Head Name
-            print(response_table.cell(0, 9).text) # Panel Date Response
-
-            img = qrcode.make('DIT Head: ' + user_panel_invitation.dit_head_name + '\n DIT Head Date Response: ' + user_panel_invitation.dit_head_response_date + "\n Panel Member Name: " + panel_list[i] + "\n Panel Member Date Response: " + panel_date_response[i] + "\n Form Date Submitted: " + user_panel_invitation.form_date_submitted)
-            type(img) 
-            img.save(str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET-3.png')
-
-            # INSERT IMAGE
-            qr_code = qr_code_box.cell(0, 0).add_paragraph()
-            qr_code_run = qr_code.add_run()
-            qr_code_run.add_picture(str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET-3.png',width=Inches(1), height=Inches(1))
-            # qr_code_run.alignment=WD_ALIGN_PARAGRAPH.CENTER
-
-            doc.save(str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.docx')
-            convert(str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.docx')
-            # os.startfile(str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.pdf')
-
-             # UNCOMMENT WHEN DEPLOYED
-            # doc.save("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.docx')
-            # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/" + str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
-            # if panel_username[i] == user_panel_invitation.panel_member_username_1:
-            #     panel_1_download = "http://johnanthonybataller.pythonanywhere.com/static/" + str(file_count) + '-' + current_user.username + "-PANEL-INVITATION-BET3-NEW.pdf"
-
-            # if panel_username[i] == user_panel_invitation.panel_member_username_2:
-            #     panel_2_download = "http://johnanthonybataller.pythonanywhere.com/static/" + str(file_count) + '-' + current_user.username + "-PANEL-INVITATION-BET3-NEW.pdf"
-
-            # if panel_username[i] == user_panel_invitation.panel_member_username_3:
-            #     panel_3_download = "http://johnanthonybataller.pythonanywhere.com/static/" + str(file_count) + '-' + current_user.username + "-PANEL-INVITATION-BET3-NEW.pdf"
-
-            # if panel_username[i] == user_panel_invitation.panel_member_username_4:
-            #     panel_4_download = "http://johnanthonybataller.pythonanywhere.com/static/" + str(file_count) + '-' + current_user.username + "-PANEL-INVITATION-BET3-NEW.pdf"
-
-            # if panel_username[i] == user_panel_invitation.panel_member_username_5:
-            #     panel_5_download = "http://johnanthonybataller.pythonanywhere.com/static/" + str(file_count) + '-' + current_user.username + "-PANEL-INVITATION-BET3-NEW.pdf"
-            # UNCOMMENT WHEN DEPLOYED
-
-            qr_code_path = (str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET-3.png')
-            if os.path.isfile(qr_code_path):
-                os.remove(qr_code_path)
-                print("QR Code has been deleted")
-            else:
-                print("QR Code does not exist")
-
-
-            panel_invitation_bet_3_path = (str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.docx')
-            # panel_invitation_bet_3_path = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + str(file_count) + '-' + current_user.username + '-PANEL-INVITATION-BET3-NEW.docx')
-
-            if os.path.isfile(panel_invitation_bet_3_path):
-                os.remove(panel_invitation_bet_3_path)
-                print("Panel Invitation BET-3 has been deleted")
-            else:
-                print("Panel Invitation BET-3 does not exist")
-            
-            i + 1
-            file_count = file_count + 1
-        
-
-        context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
-
-        'user_panel_invitation' : user_panel_invitation,
-
-        # 'panel_1_download': panel_1_download,
-        # 'panel_2_download': panel_2_download,
-        # 'panel_3_download': panel_3_download,
-        # 'panel_4_download': panel_4_download,
-        # 'panel_5_download': panel_5_download,
-
-        'response' : "sweet downloaded"
-        }
-
-        return render(request, 'student-panel-invitation-bet-3-form.html', context)
 
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'currently_loggedin_user_account' : currently_loggedin_user_account,
-        'panel_members' : panel_members,
-        'user_panel_invitation' : user_panel_invitation,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'student_leader_data': get_student_leader_data,
+        'student_leader_full_name': student_leader_full_name,
+        'student_group_members': get_student_group_members,
+        'student_research_titles' : get_student_research_titles,
+        'student_accepted_research_title': get_student_accepted_research_title,
+        'student_revise_research_title': get_student_revise_research_title,
+
+        'panel_research_title_defense_form': get_panel_research_title_defense_form,
         }
 
-    return render(request, 'student-panel-invitation-bet-3-form.html', context)
-
+    return render(request, 'student-bet3-research-title-defense.html', context)
 
 # Student - Panel Conforme BET-3 Process
 @login_required(login_url='index')
@@ -5914,13 +5256,236 @@ def panelDashboard(request):
     topbar_data = topbarProcess(request);
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username = currently_loggedin_user.username)
+    except:
+        return redirect('index')
+
+    get_today_title_defense = BET3PanelInvitation.objects.all().filter(panel_username = currently_loggedin_user.username, research_title_defense_date = today.strftime("%B %d, %Y"), form_status = "accepted" ,panel_attendance = "")
+    get_today_title_defense_present = BET3PanelInvitation.objects.all().filter(panel_username = currently_loggedin_user.username, research_title_defense_date = today.strftime("%B %d, %Y"), form_status = "accepted" ,panel_attendance = "present")
     
+    # Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = get_today_title_defense.student_leader_username)
+    except:
+        get_student_leader_data = None
+
+    print(get_student_leader_data)
+
+    try:
+        get_completed_title_defense = DefenseSchedule.objects.get(student_leader_username = get_student_leader_data.username, name = get_student_leader_data.bet3_subject_teacher_name, form = "Research Title Defense", date = date_today, status = "Completed")
+    except:
+        get_completed_title_defense = None
+
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'date_today': today.strftime("%B %d, %Y"),
+
+        'panel_data': get_panel_data,
+
+        'today_title_defense': get_today_title_defense,
+        'today_title_defense_present': get_today_title_defense_present,
+        'completed_title_defense': get_completed_title_defense,
         }
 
     return render(request, 'panel-dashboard.html', context)
 
+
+# Panel - Research Title Defense Day Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
+def panelTitleDefenseDay(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = id)
+    except:
+        return redirect('subject-teacher-dashboard')
+    
+    if get_student_leader_data.middle_name == " ":
+        student_leader_full_name = get_student_leader_data.last_name+" "+get_student_leader_data.suffix+", "+get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name+" "+get_student_leader_data.suffix+", "+get_student_leader_data.first_name+" "+get_student_leader_data.middle_name[0]+"."
+    
+    if get_student_leader_data.research_title_defense_date != date_today:
+        return redirect ('panel-dashboard')
+
+    get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = id)
+    get_research_titles = BET3ResearchTitleVote.objects.all().filter(student_leader_username = id, panel_username = currently_loggedin_user.username)
+
+    get_panel_members = BET3PanelInvitation.objects.all().filter(student_leader_username = id, form_status = "accepted", form = "BET-3 Panel Invitation", panel_attendance = "")
+
+    get_present_panel_members = BET3PanelInvitation.objects.all().filter(student_leader_username = id, form_status = "accepted", form = "BET-3 Panel Invitation", panel_attendance = "present")
+    get_absent_panel_members = BET3PanelInvitation.objects.all().filter(student_leader_username = id, form_status = "accepted", form = "BET-3 Panel Invitation", panel_attendance = "absent")
+
+    get_current_panel_title_defense = BET3ResearchTitleDefenseForm.objects.get(student_leader_username = id, panel_attendance = "present", panel_username = currently_loggedin_user.username)
+    get_present_panel_members_title_defense = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = id, panel_attendance = "present")
+    get_panel_chairman = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = id, panel_attendance = "present", is_panel_chairman = 1)
+
+    check_panel_complete_response = BET3ResearchTitleVote.objects.all().filter(student_leader_username = id, panel_username = currently_loggedin_user.username, panel_response = "")
+    
+    get_research_title_data = ResearchTitle.objects.all().filter(student_leader_username = id)
+
+    try:
+        get_research_title_accepted = ResearchTitle.objects.get(student_leader_username = id, status = "Title Defense - Accepted")
+    except:
+        get_research_title_accepted = None
+    
+    try:
+        get_research_title_revise = ResearchTitle.objects.get(student_leader_username = id, status = "Title Defense - Revise Title")
+    except:
+        get_research_title_revise = None
+
+    try:
+        check_panel_mark_done = BET3ResearchTitleDefenseForm.objects.get(student_leader_username = id, panel_username = currently_loggedin_user.username, form_status = "")
+    except:
+        check_panel_mark_done = None
+    
+    print(check_panel_complete_response)
+    
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+        'student_leader_data': get_student_leader_data,
+        'student_leader_full_name': student_leader_full_name,
+        'group_members' : get_group_members,
+        'research_titles': get_research_titles,
+        'panel_members': get_panel_members,
+
+        'present_panel_members': get_present_panel_members,
+        'absent_panel_members': get_absent_panel_members,
+
+        'current_panel_title_defense': get_current_panel_title_defense,
+        'present_panel_members_title_defense': get_present_panel_members_title_defense,
+        'panel_chairman': get_panel_chairman,
+
+        'check_panel_complete_response': check_panel_complete_response,
+        'check_panel_mark_done': check_panel_mark_done,
+        'research_title_data': get_research_title_data,
+        'research_title_accepted' : get_research_title_accepted,
+        'research_title_revise': get_research_title_revise,
+        }
+    
+    return render(request, 'panel-title-defense-day.html', context)
+
+
+# Panel - Accept Title Process
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
+def panelAcceptTitle(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    update_title = BET3ResearchTitleVote.objects.get(id = id)
+    update_title.panel_response = "accepted"
+    update_title.panel_response_date = date_today
+    update_title.save()
+
+    update_accepted_count = ResearchTitle.objects.get(research_title = update_title.research_title)
+    update_accepted_count.accepted = update_accepted_count.accepted + 1
+    update_accepted_count.save()
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'accepted_research_title': update_title.research_title,
+        'student_username': update_title.student_leader_username,
+        'response': "sweet title accepted"
+        }
+    
+    return render(request, 'panel-dashboard.html', context)
+
+
+# Panel - Defer Title Process
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
+def panelDeferTitle(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    update_title = BET3ResearchTitleVote.objects.get(id = id)
+    update_title.panel_response = "deferred"
+    update_title.panel_response_date = date_today
+    update_title.save()
+
+    update_deferred_count = ResearchTitle.objects.get(research_title = update_title.research_title)
+    update_deferred_count.deferred = update_deferred_count.deferred + 1
+    update_deferred_count.save()
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'deferred_research_title': update_title.research_title,
+        'student_username': update_title.student_leader_username,
+        'response': "sweet title deferred"
+        }
+    
+    return render(request, 'panel-dashboard.html', context)
+
+# Panel - Revise Title Process
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
+def panelReviseTitle(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    update_title = BET3ResearchTitleVote.objects.get(id = id)
+    update_title.panel_response = "revise title"
+    update_title.panel_response_date = date_today
+    update_title.save()
+
+    update_revise_title_count = ResearchTitle.objects.get(research_title = update_title.research_title)
+    update_revise_title_count.revise_title = update_revise_title_count.revise_title + 1
+    update_revise_title_count.accepted = update_revise_title_count.accepted + 1
+    update_revise_title_count.save()
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'revise_research_title': update_title.research_title,
+        'student_username': update_title.student_leader_username,
+        'response': "sweet revise title"
+        }
+    
+    return render(request, 'panel-dashboard.html', context)
+
+
+# Panel - Title Defense Mark as Done Process
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
+def panelTitleDefenseMarkDone(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        update_panel_title_defense = BET3ResearchTitleDefenseForm.objects.get(id = id)
+    except:
+        return redirect ('panel-dashboard')
+    
+    update_panel_title_defense.form_status = 'completed'
+    update_panel_title_defense.save()
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'student_username': update_panel_title_defense.student_leader_username,
+        'response': "sweet mark as done"
+        }
+    
+    return render(request, 'panel-dashboard.html', context)
 
 # Panel - Profile Page
 @login_required(login_url='index')
@@ -6130,6 +5695,26 @@ def panelPanelInvitationBet3Decline(request, id):
         print("NO FOUND")
         return redirect('panel-panel-invitation-bet-3')
 
+
+# Panel - Research Title Defense Dashboard Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def panelResearchTitleDefenseDashboard(request):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    get_panel_research_title_defense_form = BET3ResearchTitleDefenseForm.objects.all().filter(panel_username = currently_loggedin_user.username)
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account':currently_loggedin_user_account
+        }
+
+    return render(request, 'panel-research-title-defense-dashboard.html', context)
+
 # Panel - Panel Conforme BET-3 Page
 @login_required(login_url='index')
 @user_passes_test(lambda u: u.is_panel, login_url='index')
@@ -6264,13 +5849,916 @@ def subjectTeacherDashboard(request):
     topbar_data = topbarProcess(request);
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_subject_teacher_data = User.objects.get(username = currently_loggedin_user.username)
+    except:
+        return redirect('index')
+
+    get_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = date_today, status = "Reserved")
     
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'date_today': today.strftime("%B %d, %Y"),
+
+        'subject_teacher_data': get_subject_teacher_data,
+        'today_defense_schedule': get_today_defense_schedule,
         }
 
     return render(request, 'subject-teacher-dashboard.html', context)
 
+
+# Subject Teacher - Research Title Defense Day Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherTitleDefenseDay(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # Student Leader - get data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = id)
+    except:
+        return redirect('subject-teacher-dashboard')
+    
+    # If Student Defense Schedule and Date Today is not the same
+    if get_student_leader_data.research_title_defense_date != today.strftime("%B %d, %Y"):
+        return redirect('subject-teacher-dashboard')
+    
+    if get_student_leader_data.middle_name == " ":
+        student_leader_full_name = get_student_leader_data.last_name+" "+get_student_leader_data.suffix+", "+get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name+" "+get_student_leader_data.suffix+", "+get_student_leader_data.first_name+" "+get_student_leader_data.middle_name[0]+"."
+    
+    get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = id)
+    get_research_titles = ResearchTitle.objects.all().filter(student_leader_username = id)
+
+    get_panel_members = BET3PanelInvitation.objects.all().filter(student_leader_username = id, form_status = "accepted", form = "BET-3 Panel Invitation", research_title_defense_date = date_today, panel_attendance = "")
+
+    get_present_panel_members = BET3PanelInvitation.objects.all().filter(student_leader_username = id, form_status = "accepted", form = "BET-3 Panel Invitation", research_title_defense_date = date_today, panel_attendance = "present")
+    get_absent_panel_members = BET3PanelInvitation.objects.all().filter(student_leader_username = id, form_status = "accepted", form = "BET-3 Panel Invitation", research_title_defense_date = date_today, panel_attendance = "absent")
+
+    get_present_panel_members_title_defense = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = id, defense_date = date_today, panel_attendance = "present")
+    get_panel_chairman = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = id, defense_date = date_today, panel_attendance = "present", is_panel_chairman = 1)
+
+    get_pending_title_defense_vote = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = id, form_status = "", defense_date = date_today)
+
+    try:
+        check_accepted_title = ResearchTitle.objects.get(student_leader_username = id, status = "Title Defense - Accepted")
+    except:
+        check_accepted_title = None
+    
+    try:
+        get_research_title_accepted = ResearchTitle.objects.get(student_leader_username = id, status = "Title Defense - Accepted")
+    except:
+        get_research_title_accepted = None
+
+    try:
+        get_research_title_revise = ResearchTitle.objects.get(student_leader_username = id, status = "Title Defense - Revise Title")
+    except:
+        get_research_title_revise = None
+
+
+    try:
+        get_student_title_defense_schedule = DefenseSchedule.objects.get(student_leader_username = id, date = date_today, status = "Reserved")
+    except:
+        pass
+
+    # Check if the Title Defense is Completed
+    try:
+        check_title_defense_completed = DefenseSchedule.objects.get(student_leader_username = id, date = date_today, status = "Completed")
+    except:
+        check_title_defense_completed = None
+
+    if request.method == 'POST':
+        suggest_title_input = request.POST.get('suggest_title_input')
+
+        if suggest_title_input != "":
+            get_research_title_revise.suggested_title = suggest_title_input.title
+            get_research_title_revise.save()
+
+        for i in range(len(get_present_panel_members)):
+            get_present_panel_members[i].is_completed = True
+            get_present_panel_members[i].save()
+            i + 1
+
+        get_student_title_defense_schedule.status = "Completed"
+        get_student_title_defense_schedule.save()
+
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'date_today': today.strftime("%B %d, %Y"),
+        
+        'response': "sweet title defense end"
+        }
+
+        return render(request, 'subject-teacher-dashboard.html', context)
+
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+        'student_leader_data': get_student_leader_data,
+        'student_leader_full_name': student_leader_full_name,
+        'group_members' : get_group_members,
+        'research_titles': get_research_titles,
+        'panel_members': get_panel_members,
+
+        'present_panel_members': get_present_panel_members,
+        'absent_panel_members': get_absent_panel_members,
+
+        'present_panel_members_title_defense': get_present_panel_members_title_defense,
+        'panel_chairman': get_panel_chairman,
+
+        'pending_title_defense_vote': get_pending_title_defense_vote,
+
+        'has_accepted_title': check_accepted_title,
+
+        'research_title_accepted': get_research_title_accepted,
+        'research_title_revise': get_research_title_revise,
+
+        'title_defense_completed':check_title_defense_completed
+        }
+
+    return render(request, 'subject-teacher-title-defense-day.html', context)
+
+# Subject Teacher - Research Title Defense Day - Present Process
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherTitleDefenseDayPresent(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_invitation_data = BET3PanelInvitation.objects.get(id = id)
+    except:
+        return redirect('subject-teacher-dashboard')
+    
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = get_panel_invitation_data.student_leader_username)
+    except:
+        return redirect('subject-teacher-dashboard')
+
+    research_title_list = []
+    get_research_titles = ResearchTitle.objects.all().filter(student_leader_username = get_panel_invitation_data.student_leader_username)
+    
+    for title in get_research_titles:
+        research_title_list.append(title.research_title)
+
+    print(research_title_list)
+
+    for i in range(len(research_title_list)):
+        create_title_voting_sheet = BET3ResearchTitleVote (
+            student_leader_username = get_panel_invitation_data.student_leader_username,
+            student_leader_full_name = get_panel_invitation_data.student_leader_full_name,
+            course_major_abbr = get_panel_invitation_data.course_major_abbr,
+
+            research_title = research_title_list[i],
+
+            panel_username = get_panel_invitation_data.panel_username,
+            panel_full_name = get_panel_invitation_data.panel_full_name,
+        )
+        create_title_voting_sheet.save()
+        i + 1
+
+    get_panel_invitation_data.panel_attendance = "present"
+    get_panel_invitation_data.save()
+
+    save_title_defense_form = BET3ResearchTitleDefenseForm(
+        student_leader_username = get_panel_invitation_data.student_leader_username,
+        student_leader_full_name = get_panel_invitation_data.student_leader_full_name,
+        course_major_abbr = get_panel_invitation_data.course_major_abbr,
+
+        panel_username = get_panel_invitation_data.panel_username,
+        panel_full_name = get_panel_invitation_data.panel_full_name,
+        panel_attendance = "present",
+
+        form_date = get_panel_invitation_data.research_title_defense_date,
+        form = "Research Title Defense",
+
+        subject_teacher_username = get_student_leader_data.bet3_subject_teacher_username,
+        subject_teacher_full_name = get_student_leader_data.bet3_subject_teacher_name,
+        defense_date = get_student_leader_data.research_title_defense_date,
+        defense_start_time = get_student_leader_data.research_title_defense_start_time,
+        defense_end_time = get_student_leader_data.research_title_defense_end_time,
+    )
+    save_title_defense_form.save()
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'date_today': today.strftime("%B %d, %Y"),
+
+        'response': 'sweet present panel',
+        'panel_invitation_data': get_panel_invitation_data,
+        }
+
+    return render(request, 'subject-teacher-dashboard.html', context)
+
+# Subject Teacher - Research Title Defense Day - Absent Process
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherTitleDefenseDayAbsent(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_invitation_data = BET3PanelInvitation.objects.get(id = id)
+    except:
+        return redirect('subject-teacher-dashboard')
+    
+    get_panel_invitation_data.panel_attendance = "absent"
+    get_panel_invitation_data.save()
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'date_today': today.strftime("%B %d, %Y"),
+
+        'response': 'sweet absent panel',
+        'panel_invitation_data': get_panel_invitation_data,
+        }
+
+    return render(request, 'subject-teacher-dashboard.html', context)
+
+
+# Subject Teacher - Research Title Defense Day - Set Panel Chairman Process
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherTitleDefenseDaySetPanelChairman(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    save_panel_chairman = BET3ResearchTitleDefenseForm.objects.get(id = id)
+    save_panel_chairman.is_panel_chairman = True
+    save_panel_chairman.save()
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'date_today': today.strftime("%B %d, %Y"),
+
+        'response': 'sweet panel chairman assigned',
+        'panel_chairman_data': save_panel_chairman,
+        }
+
+    return render(request, 'subject-teacher-dashboard.html', context)
+
+
+# Subject Teacher - Research Title Defense Day - Close Voting
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherTitleDefenseDayCloseVote(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_subject_teacher_data = User.objects.get(username = currently_loggedin_user.username)
+    except:
+        return redirect('index')
+
+
+    get_student_research_title_data = ResearchTitle.objects.all().filter(student_leader_username = id)
+
+    get_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = today.strftime("%B %d, %Y"))
+    
+    get_pending_title_defense_vote = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = id, form_status = "")
+
+    try:
+        ResearchTitle.objects.get(student_leader_username = id, status = "Title Defense - Accepted")
+        context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet already accepted title',
+                }
+
+        return render(request, 'subject-teacher-dashboard.html', context)
+    except:
+        pass
+
+    if get_pending_title_defense_vote:
+
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'date_today': today.strftime("%B %d, %Y"),
+
+        'subject_teacher_data': get_subject_teacher_data,
+        'today_defense_schedule': get_today_defense_schedule,
+
+        'student_leader_username': id,
+
+        'response': 'sweet panel voting pending',
+        }
+
+        return render(request, 'subject-teacher-dashboard.html', context)
+    
+    #######################################################################################
+    # Research Title 1 is for Revision
+    try:
+        if get_student_research_title_data[0].revise_title >= int(3):
+
+            update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+            update_research_title_data_0.status = "Title Defense - Revise Title"
+            update_research_title_data_0.save()
+
+            try:
+                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+                update_research_title_data_1.status = "Title Defense - Deferred"
+                update_research_title_data_1.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+                update_research_title_data_2.status = "Title Defense - Deferred"
+                update_research_title_data_2.save()
+            except:
+                pass
+                
+            try:
+                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+                update_research_title_data_3.status = "Title Defense - Deferred"
+                update_research_title_data_3.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+                update_research_title_data_4.status = "Title Defense - Deferred"
+                update_research_title_data_4.save()
+            except:
+                pass
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet panel voting closed',
+                }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+    except:
+        pass
+
+    # Research Title 1 is Deferred
+    try:
+        if get_student_research_title_data[0].deferred >= int(3):
+
+            update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+            update_research_title_data_0.status = "Title Defense - Deferred"
+            update_research_title_data_0.save()
+        
+    except:
+        pass
+
+    # Research Title 1 is Accepted
+    try:
+        if get_student_research_title_data[0].accepted >= int(3):
+
+            update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+            update_research_title_data_0.status = "Title Defense - Accepted"
+            update_research_title_data_0.save()
+
+            try:
+                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+                update_research_title_data_1.status = "Title Defense - Deferred"
+                update_research_title_data_1.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+                update_research_title_data_2.status = "Title Defense - Deferred"
+                update_research_title_data_2.save()
+            except:
+                pass
+                
+            try:
+                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+                update_research_title_data_3.status = "Title Defense - Deferred"
+                update_research_title_data_3.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+                update_research_title_data_4.status = "Title Defense - Deferred"
+                update_research_title_data_4.save()
+            except:
+                pass
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet panel voting closed',
+                }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+    except:
+        pass
+    #######################################################################################
+    # Research Title 2 is for Revision
+    try:
+        if get_student_research_title_data[1].revise_title >= int(3):
+
+            update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+            update_research_title_data_1.status = "Title Defense - Revise Title"
+            update_research_title_data_1.save()
+
+            try:
+                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+                update_research_title_data_0.status = "Title Defense - Deferred"
+                update_research_title_data_0.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+                update_research_title_data_2.status = "Title Defense - Deferred"
+                update_research_title_data_2.save()
+            except:
+                pass
+                
+            try:
+                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+                update_research_title_data_3.status = "Title Defense - Deferred"
+                update_research_title_data_3.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+                update_research_title_data_4.status = "Title Defense - Deferred"
+                update_research_title_data_4.save()
+            except:
+                pass
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet panel voting closed',
+                }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+    except:
+        pass
+
+    # Research Title 2 is Deferred
+    try:
+        if get_student_research_title_data[1].deferred >= int(3):
+
+            update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+            update_research_title_data_1.status = "Title Defense - Deferred"
+            update_research_title_data_1.save()
+        
+    except:
+        pass
+
+    # Research Title 2 is Accepted
+    try:
+        if get_student_research_title_data[1].accepted >= int(3):
+
+            update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+            update_research_title_data_1.status = "Title Defense - Accepted"
+            update_research_title_data_1.save()
+
+            try:
+                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+                update_research_title_data_0.status = "Title Defense - Deferred"
+                update_research_title_data_0.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+                update_research_title_data_2.status = "Title Defense - Deferred"
+                update_research_title_data_2.save()
+            except:
+                pass
+                
+            try:
+                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+                update_research_title_data_3.status = "Title Defense - Deferred"
+                update_research_title_data_3.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+                update_research_title_data_4.status = "Title Defense - Deferred"
+                update_research_title_data_4.save()
+            except:
+                pass
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet panel voting closed',
+                }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+    except:
+        pass
+    #######################################################################################
+    # Research Title 3 is for Revision
+    try:
+        if get_student_research_title_data[2].revise_title >= int(3):
+
+            update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+            update_research_title_data_2.status = "Title Defense - Revise Title"
+            update_research_title_data_2.save()
+
+            try:
+                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+                update_research_title_data_0.status = "Title Defense - Deferred"
+                update_research_title_data_0.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+                update_research_title_data_1.status = "Title Defense - Deferred"
+                update_research_title_data_1.save()
+            except:
+                pass
+                
+            try:
+                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+                update_research_title_data_3.status = "Title Defense - Deferred"
+                update_research_title_data_3.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+                update_research_title_data_4.status = "Title Defense - Deferred"
+                update_research_title_data_4.save()
+            except:
+                pass
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet panel voting closed',
+                }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+    except:
+        pass
+
+    # Research Title 3 is Deferred
+    try:
+        if get_student_research_title_data[2].deferred >= int(3):
+
+            update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+            update_research_title_data_2.status = "Title Defense - Deferred"
+            update_research_title_data_2.save()
+        
+    except:
+        pass
+
+    # Research Title 3 is Accepted
+    try:
+        if get_student_research_title_data[2].accepted >= int(3):
+
+            update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+            update_research_title_data_2.status = "Title Defense - Accepted"
+            update_research_title_data_2.save()
+
+            try:
+                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+                update_research_title_data_0.status = "Title Defense - Deferred"
+                update_research_title_data_0.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+                update_research_title_data_1.status = "Title Defense - Deferred"
+                update_research_title_data_1.save()
+            except:
+                pass
+                
+            try:
+                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+                update_research_title_data_3.status = "Title Defense - Deferred"
+                update_research_title_data_3.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+                update_research_title_data_4.status = "Title Defense - Deferred"
+                update_research_title_data_4.save()
+            except:
+                pass
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet panel voting closed',
+                }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+    except:
+        pass
+    #######################################################################################
+    # Research Title 4 is for Revision
+    try:
+        if get_student_research_title_data[3].revise_title >= int(3):
+
+            update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+            update_research_title_data_3.status = "Title Defense - Revise Title"
+            update_research_title_data_3.save()
+
+            try:
+                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+                update_research_title_data_0.status = "Title Defense - Deferred"
+                update_research_title_data_0.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+                update_research_title_data_1.status = "Title Defense - Deferred"
+                update_research_title_data_1.save()
+            except:
+                pass
+                
+            try:
+                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+                update_research_title_data_2.status = "Title Defense - Deferred"
+                update_research_title_data_2.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+                update_research_title_data_4.status = "Title Defense - Deferred"
+                update_research_title_data_4.save()
+            except:
+                pass
+                
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet panel voting closed',
+                }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+    except:
+        pass
+
+    # Research Title 4 is Deferred
+    try:
+        if get_student_research_title_data[3].deferred >= int(3):
+
+            update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+            update_research_title_data_3.status = "Title Defense - Deferred"
+            update_research_title_data_3.save()
+            pass
+        
+    except:
+        pass
+
+    # Research Title 4 is Accepted
+    try:
+        if get_student_research_title_data[3].accepted >= int(3):
+
+            update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+            update_research_title_data_3.status = "Title Defense - Accepted"
+            update_research_title_data_3.save()
+
+            try:
+                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+                update_research_title_data_0.status = "Title Defense - Deferred"
+                update_research_title_data_0.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+                update_research_title_data_1.status = "Title Defense - Deferred"
+                update_research_title_data_1.save()
+            except:
+                pass
+                
+            try:
+                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+                update_research_title_data_2.status = "Title Defense - Deferred"
+                update_research_title_data_2.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+                update_research_title_data_4.status = "Title Defense - Deferred"
+                update_research_title_data_4.save()
+            except:
+                pass
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet panel voting closed',
+                }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+    except:
+        pass
+    #######################################################################################
+    # Research Title 5 is for Revision
+    try:
+        if get_student_research_title_data[4].revise_title >= int(3):
+
+            update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+            update_research_title_data_4.status = "Title Defense - Revise Title"
+            update_research_title_data_4.save()
+
+            try:
+                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+                update_research_title_data_0.status = "Title Defense - Deferred"
+                update_research_title_data_0.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+                update_research_title_data_1.status = "Title Defense - Deferred"
+                update_research_title_data_1.save()
+            except:
+                pass
+                
+            try:
+                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+                update_research_title_data_2.status = "Title Defense - Deferred"
+                update_research_title_data_2.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+                update_research_title_data_3.status = "Title Defense - Deferred"
+                update_research_title_data_3.save()
+            except:
+                pass
+                
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet panel voting closed',
+                }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+    except:
+        pass
+
+    # Research Title 5 is Deferred
+    try:
+        if get_student_research_title_data[4].deferred >= int(3):
+
+            update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+            update_research_title_data_4.status = "Title Defense - Deferred"
+            update_research_title_data_4.save()
+            
+            pass
+        
+    except:
+        pass
+
+    # Research Title 5 is Accepted
+    try:
+        if get_student_research_title_data[4].accepted >= int(3):
+
+            update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+            update_research_title_data_4.status = "Title Defense - Accepted"
+            update_research_title_data_4.save()
+
+            try:
+                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+                update_research_title_data_0.status = "Title Defense - Deferred"
+                update_research_title_data_0.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+                update_research_title_data_1.status = "Title Defense - Deferred"
+                update_research_title_data_1.save()
+            except:
+                pass
+                
+            try:
+                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+                update_research_title_data_2.status = "Title Defense - Deferred"
+                update_research_title_data_2.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+                update_research_title_data_3.status = "Title Defense - Deferred"
+                update_research_title_data_3.save()
+            except:
+                pass
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet panel voting closed',
+                }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+    except:
+        pass
+    #######################################################################################
 
 # Subject Teacher - Profile Page
 @login_required(login_url='index')
@@ -6400,7 +6888,7 @@ def subjectTeacherResearchTitleDefenseDashboard(request):
         print(course_input)
 
         try:
-            student_defense_scheduled = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, course = course_input)
+            student_defense_scheduled = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, course = course_input, status = "Reserved")
             student_defense_unscheduled = StudentLeader.objects.all().filter(bet3_subject_teacher_username = currently_loggedin_user.username, course_major_abbr = course_input, research_title_defense_date = "")
             
             print(student_defense_unscheduled)
@@ -6530,7 +7018,7 @@ def subjectTeacherSaveResearchTitleDefenseSchedule(request):
         print(end_time)
 
         try:
-            DefenseSchedule.objects.get(username = currently_loggedin_user.username, course = course_input, form = 'Research Title Defense', date = py_date, start_time = start_time, end_time = end_time)
+            DefenseSchedule.objects.get(username = currently_loggedin_user.username, form = 'Research Title Defense', date = py_date, start_time = start_time, end_time = end_time)
         
             context = {
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,

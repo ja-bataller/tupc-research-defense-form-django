@@ -1,0 +1,430 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Panel - Title Defense Day</title>
+
+  {% include 'css-main-cdn.html' %}
+</head>
+
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'panel-dashboard' %}">
+        <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0" />
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'panel-dashboard' %}">
+          <i class="fa-solid fa-house"></i>
+          <span>Home</span></a>
+      </li>
+
+      <!-- Divider -->
+      <!-- <hr class="sidebar-divider"> -->
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+          aria-controls="collapsePages">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Forms</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">BET-3</h6>
+            <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'panel-research-title-defense-dashboard' %}">Research Title
+              Defense</a>
+            <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
+            <!-- <a class="collapse-item" href="">Research Title Defense</a>
+                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">BET-5</h6>
+            <!-- <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a> -->
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Tables -->
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="tables.html">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>History</span></a>
+    </li> -->
+
+      <!-- Divider -->
+      <hr class="sidebar-divider" />
+
+      <!-- Nav Item - The Developers -->
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fa-solid fa-code"></i>
+          <span>The Devs</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block" />
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+          <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
+                  <div class="float-right">Panel</div>
+                </span>
+                <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="{% url 'panel-profile' %}">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <div class="d-sm-flex align-items-center justify-content-between">
+            <h1 class="h3 text-gra-800">Research Title Defense</h1>
+          </div>
+          <h1 class="h6 mb-0 text-gray-800 mb-2">{{student_leader_data.research_title_defense_date}} -
+            {{student_leader_data.research_title_defense_start_time}} to
+            {{student_leader_data.research_title_defense_end_time}}</h1>
+
+          <div class="row">
+            <div class="col-md-4 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">Group Members:</div>
+                    <div class="col-sm-12">- {{student_leader_full_name}}</div>
+
+                    {% if group_members %} {% for group_member in group_members %}
+                    <div class="col-sm-12">- {{group_member.student_member_full_name}}</div>
+                    {% endfor %} {% endif %}
+
+                    <div class="col-sm-12 mt-4 font-weight-bold">Course:</div>
+                    <div class="col-sm-12">{{student_leader_data.course_major_abbr}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">
+                      Research Titles:
+                    </div>
+
+                    {% if research_title_data %}
+                    {% for research_title in research_title_data %}
+
+                    {% if research_title.status == "Title Defense - Accepted" %}
+                    <div class="col-sm-12">
+                      - {{research_title.research_title}} - <span class="text-success">Accepted</span>
+                    </div>
+                    {% endif %}
+
+                    {% if research_title.status == "Title Defense - Deferred" %}
+                    <div class="col-sm-12">
+                      - {{research_title.research_title}} - <span class="text-danger">Deferred</span>
+                    </div>
+                    {% endif %}
+
+                    {% if research_title.status == "Title Defense - Revise Title" %}
+                    <div class="col-sm-12">
+                      - {{research_title.research_title}} - <span class="text-info">Revise Title</span>
+                    </div>
+                    {% endif %}
+
+                    {% if research_title.status == "Title Defense - Pending" %}
+                    <div class="col-sm-12">
+                      - {{research_title.research_title}}
+                    </div>
+                    {% endif %}
+
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if research_title_accepted.research_title %}
+                    <div class="col-sm-12 mt-4 font-weight-bold">
+                     Accepted Title:
+                    </div>
+                    
+                    <div class="col-sm-12">
+                      {{research_title_accepted.research_title}}
+                    </div>
+                    
+                    {% elif research_title_revise.research_title %}
+                    <div class="col-sm-12 mt-4 font-weight-bold">
+                      Accepted - Revise Title:
+                    </div>
+
+                    <div class="col-sm-12">
+                      {{research_title_revise.research_title}}
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">Panel Members:</div>
+
+                    {% if present_panel_members_title_defense %}
+                    {% for panel_member in present_panel_members_title_defense %}
+                    <div class="col-sm-12">- {{panel_member.panel_full_name}}</div>
+                    {% endfor %} {% endif %}
+
+                    <div class="col-sm-12 mt-4 font-weight-bold">Subject Teacher:</div>
+
+                    <div class="col-sm-12">{{student_leader_data.bet3_subject_teacher_name}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-2">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Research Title</th>
+                      <th>Your Response</th>                
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Research Title</th>
+                      <th>Your Response</th>
+                      <th>Action</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    {% for title in research_titles %}
+                    <tr>
+                    
+                      <td>{{title.research_title}}</td>
+
+                      {% if title.panel_response == "accepted" %}
+                          <td class="text-center text-success">{{title.panel_response}}</td>
+                          <td></td>
+
+                      {% elif title.panel_response == "deferred" %}
+                          <td class="text-center text-danger">{{title.panel_response}}</td>
+                          <td></td>
+
+                      {% elif title.panel_response == "revise title" %}
+                          <td class="text-center text-info">{{title.panel_response}}</td>
+                          <td></td>
+
+                      {% else %}
+                          <td class="text-center text-secondary">Pending</td>
+                      {% endif %}
+                      
+
+                      {% if research_title_data.status == "Title Defense - Accepted" %}
+                        <td class="text-center text-success">Accepted</td>
+                      {% elif title_data.status == "Title Defense - Deferred" %}
+                        <td class="text-center text-danger">Deferred</td>
+                      {% elif title.status == "Title Defense - Revise Title" %}
+                        <td class="text-center text-secondary">Revise Title</td>
+                      {% endif %}
+                      
+                    
+                      {% if title.panel_response == "" %}
+                      <td class="text-center text-success">
+                        <a id="accepted_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-success w-100 mb-2"
+                          >Accepted</a>
+                        <a id="deferred_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-danger w-100 mb-2"
+                          >Deferred</a>
+                        <a id="revise_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-secondary w-100 mb-2"
+                          >Revise Title</a>
+                      </td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          {% if not check_panel_complete_response %}
+          {% if check_panel_mark_done %}
+          <a class="btn btn-outline-secondary w-100 mb-2"
+            href="{% url 'panel-title-defense-mark-done' current_panel_title_defense.id %}">Mark as Done</a>
+          {% endif %}
+          {% endif %}
+          </div>
+
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Accept Title Modal -->
+  <div class="modal fade" id="acceptedTitleModal" tabindex="-1" aria-labelledby="acceptedTitleModal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Accept Title?</h5>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to mark this research title "<span
+            id="accepted_research_title"></span>" as accepted?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No</button>
+          <a id="accept_title_btn" class="btn btn-outline-success" type="button" href="#">Yes - Accept</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deferred Title Modal -->
+  <div class="modal fade" id="deferredTitleModal" tabindex="-1" aria-labelledby="deferredTitleModal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Defer Title?</h5>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to mark this research title "<span
+            id="deferred_research_title"></span>" as deferred?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No</button>
+          <a id="defer_title_btn" class="btn btn-outline-danger" type="button" href="#">Yes - Defer</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revise Title Modal -->
+  <div class="modal fade" id="reviseTitleModal" tabindex="-1" aria-labelledby="reviseTitleModal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Revise Title?</h5>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to mark this research title "<span
+            id="revise_research_title"></span>" for revision?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No</button>
+          <a id="revise_title_btn" class="btn btn-outline-info" type="button" href="#">Yes - Revise</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+</body>
+
+{% for title in research_titles %}
+<script>
+  document.getElementById("accepted_" + "{{title.id}}").addEventListener("click", function () {
+    data_id = $(document.getElementById("accepted_" + "{{title.id}}")).attr("data-id");
+
+    document.getElementById("accepted_research_title").textContent = "{{title.research_title}}";
+    document.getElementById("accept_title_btn").href = "{% url 'panel-accept-title' id=0 %}"
+      .replace(/0/, data_id);
+    $("#acceptedTitleModal").modal();
+  });
+
+  document.getElementById("deferred_" + "{{title.id}}").addEventListener("click", function () {
+    data_id = $(document.getElementById("deferred_" + "{{title.id}}")).attr("data-id");
+
+    document.getElementById("deferred_research_title").textContent = "{{title.research_title}}";
+    document.getElementById("defer_title_btn").href = "{% url 'panel-defer-title' id=0 %}"
+      .replace(/0/, data_id);
+    $("#deferredTitleModal").modal();
+  });
+
+  document.getElementById("revise_" + "{{title.id}}").addEventListener("click", function () {
+    data_id = $(document.getElementById("revise_" + "{{title.id}}")).attr("data-id");
+
+    document.getElementById("revise_research_title").textContent = "{{title.research_title}}";
+    document.getElementById("revise_title_btn").href = "{% url 'panel-revise-title' id=0 %}"
+      .replace(/0/, data_id);
+    $("#reviseTitleModal").modal();
+  });
+</script>
+{% endfor %}
+
+</html>

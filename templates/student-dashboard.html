@@ -67,6 +67,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">BET-3</h6>
                         <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Panel Invitation</a>
+                        <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">BET-5</h6>
                     </div>
@@ -106,10 +107,25 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-3">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-sm-12 mb-3">
+                          <div class="card bg-white text-dark shadow">
+                            <div class="card-body">
+                              Welcome {{student_leader_data.first_name}} 
+                              <div class="text-dark-50 small">Student</div>
+                            </div>
+                          </div>
+                        </div>
+          
+                        <div class="col-md-4 col-sm-12 mb-3">
+                          <div class="card bg-white text-dark shadow">
+                            <div class="card-body">
+                              Today:
+                              <div class="text-dark-50 small">{{date_today}}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">

@@ -547,11 +547,12 @@
 
     {% if response == 'sweet incomplete group members' %}
     <script>
-      Swal.fire("Unauthorized", "You can't access this page.Please submit the list of your Group Members.", "warning");
+      Swal.fire("Unauthorized", "You can't access this page. Please submit the list of your Group Members.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-add-group-members' %}");
       }, 2000);
+      
     </script>
     {% endif %}
 

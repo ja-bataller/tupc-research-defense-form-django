@@ -44,7 +44,11 @@
             <!-- DataTales Example -->
             <div class="card shadow mb-2">
               <div class="card-header py-3">
+                {% if student_leader_data.research_title_defense_date %}
                 <h6 class="m-0 font-weight-bold">Title Defense Schedule: {{student_leader_data.research_title_defense_date}} - {{student_leader_data.research_title_defense_start_time}} to {{student_leader_data.research_title_defense_end_time}}</h6>
+                {% else %}
+                <h6 class="m-0 font-weight-bold">Title Defense Schedule: No Schedule</h6>
+                {% endif %}
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -210,7 +214,7 @@
     </script>
     {% endif %} {% if response == 'sweet request limit exceed' %}
     <script>
-      Swal.fire("Uh-oh", "You have reached the Panel Invitation request limit.", "warning");
+      Swal.fire("Uh-oh", "You have reached the Panel Invitation request limit.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
       }, 3000);
@@ -221,6 +225,26 @@
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
       }, 3000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet incomplete bet3 panel invitation' %}
+    <script>
+      Swal.fire("Unathorized", "You can't access this page. Please complete the BET-3 Panel Invitation Form.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet no defense schedule' %}
+    <script>
+      Swal.fire("Uh-oh", "There are No Available Title Defense Schedule. Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
+      }, 2000);
     </script>
     {% endif %}
   </body>

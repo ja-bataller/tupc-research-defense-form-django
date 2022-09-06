@@ -181,7 +181,7 @@
 
     {% if response == 'sweet incomplete research titles' %}
     <script>
-      Swal.fire("Unauthorized", "You can't access this page. Please submit the list of your Research Titles.", "warning");
+      Swal.fire("Unauthorized", "You can't access this page. Please submit the list of your Research Titles.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-add-research-titles' %}");

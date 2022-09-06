@@ -170,13 +170,13 @@
         window.location.replace("{% url 'student-group-members-dashboard' %}");
       }, 1500);
     </script>
-    {% endif %} {% if response == 'sweet no group members added' %}
+    {% endif %} {% if response == 'sweet no group members' %}
     <script>
       Swal.fire("Info", "You don't have any group members.", "info");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-group-members-dashboard' %}");
-      }, 1500);
+      }, 2000);
     </script>
     {% endif %} {% if response == 'sweet unauthorized to add group members' %}
     <script>

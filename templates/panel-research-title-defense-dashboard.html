@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Subject Teacher - Dashboard</title>
+    <title>Panel - Dashboard</title>
 
     {% include 'css-main-cdn.html' %}
   </head>
@@ -21,7 +21,7 @@
       <!-- Sidebar -->
       <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'subject-teacher-dashboard' %}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'panel-dashboard' %}">
           <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
         </a>
 
@@ -29,8 +29,8 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'panel-dashboard' %}">
             <i class="fa-solid fa-house"></i>
             <span>Home</span></a
           >
@@ -40,15 +40,25 @@
         <!-- <hr class="sidebar-divider"> -->
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
             <i class="fa-solid fa-folder-open"></i>
-            <span>Research Title Defense</span>
+            <span>Forms</span>
           </a>
           <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="{% url 'subject-teacher-research-title-defense-dashboard' %}">Schedule Dashboard</a>
-              <a class="collapse-item" href="{% url 'subject-teacher-set-research-title-defense-schedule' %}">Set Schedule</a>
+              <h6 class="collapse-header">BET-3</h6>
+              <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
+              <a class="collapse-item" href="{% url 'panel-research-title-defense-dashboard' %}">Research Title Defense</a>
+              <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
+              <!-- <a class="collapse-item" href="">Research Title Defense</a>
+                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+              <div class="collapse-divider"></div>
+              <h6 class="collapse-header">BET-5</h6>
+              <!-- <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a> -->
             </div>
           </div>
         </li>
@@ -85,7 +95,7 @@
       <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
-          
+
           <!-- Topbar -->
           <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
             <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
@@ -100,13 +110,13 @@
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="mr-2 d-lg-inline text-gray-600 small"
                     >{{currently_loggedin_user_full_name}} <br />
-                    <div class="float-right">Subject Teacher</div>
+                    <div class="float-right">Panel</div>
                   </span>
                   <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="{% url 'subject-teacher-profile' %}">
+                  <a class="dropdown-item" href="{% url 'panel-profile' %}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                   </a>
@@ -125,26 +135,11 @@
           <!-- Begin Page Content -->
           <div class="container-fluid">
             
-            <div class="row">
-              <div class="col-md-8 col-sm-12 mb-3">
-                <div class="card bg-white text-dark shadow">
-                  <div class="card-body">
-                    Welcome {{subject_teacher_data.honorific}} {{subject_teacher_data.last_name}}
-                    <div class="text-dark-50 small">Subject Teacher</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-4 col-sm-12 mb-3">
-                <div class="card bg-white text-dark shadow">
-                  <div class="card-body">
-                    Today:
-                    <div class="text-dark-50 small">{{date_today}}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+            <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-3">
+            <h1 class="h3 mb-0 text-gray-800">Research Title Defense - BET-3</h1>
+          </div>
+          
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
               {% if not today_defense_schedule %}
@@ -162,7 +157,6 @@
                     <thead>
                       <tr>
                         <th>Ref No.</th>
-                        <th>Student Leader ID</th>
                         <th>Student Leader Name</th>
                         <th>Course</th>
                         <th>Defense</th>
@@ -174,7 +168,6 @@
                     <tfoot>
                       <tr>
                         <th>Ref No.</th>
-                        <th>Student Leader ID</th>
                         <th>Student Leader Name</th>
                         <th>Course</th>
                         <th>Defense</th>
@@ -248,39 +241,5 @@
       }, 2000);
     </script>
     {% endif %}
-
-    {% if response == 'sweet panel voting pending' %}
-    <script>
-      Swal.fire("Info", "It seems some of the Panel Members is not yet done voting for research title.", "info");
-      setTimeout(function () {
-        window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-      }, 2000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet panel voting closed' %}
-    <script>
-      Swal.fire("Closed", "You have closed the research title voting.", "info");
-      setTimeout(function () {
-        window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-      }, 2000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet already accepted title' %}
-    <script>
-        window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet title defense end' %}
-    <script>
-      Swal.fire("Completed", "Title Defense has been marked as Completed.", "success");
-      setTimeout(function () {
-        window.location.replace("{% url 'subject-teacher-dashboard'%}");
-      }, 2000);
-    </script>
-    {% endif %}
-    
   </body>
 </html>
