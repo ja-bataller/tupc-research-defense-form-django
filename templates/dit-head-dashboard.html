@@ -41,7 +41,7 @@
         <!-- Divider -->
         <!-- <hr class="sidebar-divider"> -->
 
-        <!-- Nav Item - Pages Collapse Menu -->
+        <!-- Nav Item - Forms Collapse Menu -->
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
             <i class="fa-solid fa-folder-open"></i>
@@ -51,6 +51,29 @@
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">BET-3</h6>
               <a class="collapse-item" href="{% url 'dit-head-panel-invitation-bet-3' %}">Panel Invitation</a>
+              <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
+              <!-- <a class="collapse-item" href="">Research Title Defense</a>
+                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+              <div class="collapse-divider"></div>
+              <h6 class="collapse-header">BET-5</h6>
+              <!-- <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a> -->
+            </div>
+          </div>
+        </li>
+
+        <!-- Nav Item - Logs Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true" aria-controls="collapseLogs">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Logs</span>
+          </a>
+          <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">BET-3</h6>
+              <a class="collapse-item" href="{% url 'dit-head-bet3-panel-invitation-logs' %}">Panel Invitation</a>
               <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
               <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
@@ -136,7 +159,25 @@
 
           <!-- Begin Page Content -->
           <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-8 col-sm-12 mb-3">
+                <div class="card bg-white text-dark shadow">
+                  <div class="card-body">
+                    Welcome {{currently_loggedin_user_data.honorific}} {{currently_loggedin_user_data.last_name}} 
+                    <div class="text-dark-50 small">Department of Industrial Technology - Head</div>
+                  </div>
+                </div>
+              </div>
 
+              <div class="col-md-4 col-sm-12 mb-3">
+                <div class="card bg-white text-dark shadow">
+                  <div class="card-body">
+                    Today:
+                    <div class="text-dark-50 small">{{date_today}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- /.container-fluid -->
         </div>

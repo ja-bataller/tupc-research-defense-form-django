@@ -18,6 +18,7 @@
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
+
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
@@ -49,7 +50,33 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
-            <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
+            <a class="collapse-item" href="{% url 'panel-research-title-defense-dashboard' %}">Research Title
+              Defense</a>
+            <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
+            <!-- <a class="collapse-item" href="">Research Title Defense</a>
+                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">BET-5</h6>
+            <!-- <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a> -->
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
+          aria-controls="collapseLogs">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Logs</span>
+        </a>
+        <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">BET-3</h6>
+            <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Panel Invitation</a>
+            <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
             <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
             <div class="collapse-divider"></div>
@@ -177,10 +204,14 @@
                       <td>{{panel_invitation.course_major_abbr}}</td>
                       <td>{{panel_invitation.panel_username}}</td>
                       <td>{{panel_invitation.panel_full_name}}</td>
-                      <td>{{panel_invitation.research_title_defense_date}} - {{panel_invitation.research_title_defense_start_time}} to {{panel_invitation.research_title_defense_end_time}}</td>
+                      <td>{{panel_invitation.research_title_defense_date}} -
+                        {{panel_invitation.research_title_defense_start_time}} to
+                        {{panel_invitation.research_title_defense_end_time}}</td>
                       <td class="text-center">
-                        <a id="accept_{{panel_invitation.id}}" data-id="{{panel_invitation.id}}" class="btn btn-outline-success mb-2" type="button" href="#">Accept</a>
-                        <a id="decline_{{panel_invitation.id}}" data-id="{{panel_invitation.id}}" class="btn btn-outline-danger mb-2" type="button" href="#">Decline</a>
+                        <a id="accept_{{panel_invitation.id}}" data-id="{{panel_invitation.id}}"
+                          class="btn btn-outline-success mb-2" type="button" href="#">Accept</a>
+                        <a id="decline_{{panel_invitation.id}}" data-id="{{panel_invitation.id}}"
+                          class="btn btn-outline-danger mb-2" type="button" href="#">Decline</a>
                       </td>
                     </tr>
                     {% endfor %}
@@ -217,7 +248,8 @@
           <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
           </button>
         </div>
-        <div class="modal-body">Are you sure you want to accept <span id="student_name_accept"></span> BET-3 Panel Invitation request?</div>
+        <div class="modal-body">Are you sure you want to accept <span id="student_name_accept"></span> BET-3 Panel
+          Invitation request?</div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
           <a id="accept_btn" class="btn btn-outline-success" type="button" href="#">Yes - Accept</a>
@@ -235,7 +267,8 @@
           <h5 class="modal-title" id="exampleModalLabel">Decline Request?</h5>
           </button>
         </div>
-        <div class="modal-body">Are you sure you want to decline <span id="student_name_decline"></span> BET-3 Panel Invitation request?</div>
+        <div class="modal-body">Are you sure you want to decline <span id="student_name_decline"></span> BET-3 Panel
+          Invitation request?</div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
           <a id="decline_btn" class="btn btn-outline-danger" type="button" href="#">Yes - Decline</a>
@@ -290,8 +323,8 @@
       window.location.replace("{% url 'panel-panel-invitation-bet-3' %}");
     }, 2000);
   </script>
-  {% endif %} 
-  
+  {% endif %}
+
   {% if response == 'sweet panel conforme bet-3 accepted' %}
   <script>
     Swal.fire("Accepted", "{{accepted_research_title}} is accepted.", "success");

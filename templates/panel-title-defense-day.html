@@ -30,7 +30,7 @@
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'panel-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
@@ -52,6 +52,30 @@
             <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
             <a class="collapse-item" href="{% url 'panel-research-title-defense-dashboard' %}">Research Title
               Defense</a>
+            <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
+            <!-- <a class="collapse-item" href="">Research Title Defense</a>
+                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">BET-5</h6>
+            <!-- <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a> -->
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
+          aria-controls="collapseLogs">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Logs</span>
+        </a>
+        <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">BET-3</h6>
+            <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Panel Invitation</a>
             <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
             <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
@@ -150,9 +174,11 @@
                     <div class="col-sm-12 font-weight-bold">Group Members:</div>
                     <div class="col-sm-12">- {{student_leader_full_name}}</div>
 
-                    {% if group_members %} {% for group_member in group_members %}
+                    {% if group_members %} 
+                    {% for group_member in group_members %}
                     <div class="col-sm-12">- {{group_member.student_member_full_name}}</div>
-                    {% endfor %} {% endif %}
+                    {% endfor %} 
+                    {% endif %}
 
                     <div class="col-sm-12 mt-4 font-weight-bold">Course:</div>
                     <div class="col-sm-12">{{student_leader_data.course_major_abbr}}</div>
@@ -216,6 +242,15 @@
                     <div class="col-sm-12">
                       {{research_title_revise.research_title}}
                     </div>
+
+
+                    <div class="col-sm-12 mt-4 font-weight-bold">
+                      Suggested Title:
+                    </div>
+
+                    <div class="col-sm-12">
+                      {{research_title_revise.suggested_title}}
+                    </div>
                     {% endif %}
                   </div>
                 </div>
@@ -230,8 +265,13 @@
 
                     {% if present_panel_members_title_defense %}
                     {% for panel_member in present_panel_members_title_defense %}
+                    {% if panel_member.is_panel_chairman == 1 %}
+                    <div class="col-sm-12">- {{panel_member.panel_full_name}} -<span class="text-success">Panel Chairman</span></div>
+                    {% else %}
                     <div class="col-sm-12">- {{panel_member.panel_full_name}}</div>
-                    {% endfor %} {% endif %}
+                    {% endif %}
+                    {% endfor %} 
+                    {% endif %}
 
                     <div class="col-sm-12 mt-4 font-weight-bold">Subject Teacher:</div>
 
@@ -313,7 +353,7 @@
           </div>
           {% if not check_panel_complete_response %}
           {% if check_panel_mark_done %}
-          <a class="btn btn-outline-secondary w-100 mb-2"
+          <a class="btn btn-outline-success w-100 mb-2"
             href="{% url 'panel-title-defense-mark-done' current_panel_title_defense.id %}">Mark as Done</a>
           {% endif %}
           {% endif %}

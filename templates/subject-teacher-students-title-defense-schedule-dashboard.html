@@ -1,0 +1,186 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Subject Teacher - Students Title Defense Schedule</title>
+
+    {% include 'css-main-cdn.html' %}
+  </head>
+
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        
+      {% include 'subject-teacher-sidebar-title-defense.html' %}
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          
+          <!-- Topbar -->
+          <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+              <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+              <!-- Nav Item - User Information -->
+              <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="mr-2 d-lg-inline text-gray-600 small"
+                    >{{currently_loggedin_user_full_name}} <br />
+                    <div class="float-right">Subject Teacher</div>
+                  </span>
+                  <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
+                </a>
+                <!-- Dropdown - User Information -->
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                  <a class="dropdown-item" href="{% url 'subject-teacher-profile' %}">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Profile
+                  </a>
+
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </nav>
+          <!-- End of Topbar -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-0 text-gray-800">Students Title Defense Schedule</h1>
+            </div>
+
+            <form  id="course_available_sched" method="POST">
+              {% csrf_token %}
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Course:</label>
+                </div>
+                <select id="course_list" class="custom-select" name="course_input" required>
+                  <option selected>---</option>
+                  {% for course in course_handled_list %}
+                  <option value="{{course}}">{{course}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </form>
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+              <!-- <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Pending Dashboard</h6>
+                </div> -->
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Ref No.</th>
+                        <th>Student Leader ID</th>
+                        <th>Student Leader Name</th>
+                        <th>Course</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Ref No.</th>
+                        <th>Student Leader ID</th>
+                        <th>Student Leader Name</th>
+                        <th>Course</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      {% for student_scheduled in student_defense_scheduled %}
+                      {% if student_scheduled.status == "Reserved" %}
+                      <tr>
+                        <td>{{student_scheduled.id}}</td>
+                        <td>{{student_scheduled.student_leader_username}}</td>
+                        <td>{{student_scheduled.student_leader_name}}</td>
+                        <td>{{student_scheduled.course}}</td>
+                        <td>{{student_scheduled.date}}</td>
+                        <td>{{student_scheduled.start_time}} to {{student_scheduled.end_time}}</td>
+                        <td class="text-success">Scheduled</td>
+                      </tr>
+                      {% endif %}
+                      {% endfor %}
+
+                      {% for student_unscheduled in student_defense_unscheduled %}
+                      <tr>
+                        <td>None</td>
+                        <td>{{student_unscheduled.username}}</td>
+                        {% if student_unscheduled.middle_name == "" %}
+                        <td>{{student_unscheduled.first_name}} {{student_unscheduled.last_name}} {{student_unscheduled.suffix}}</td>
+                        {% else %}
+                        <td>{{student_unscheduled.first_name}} {{student_unscheduled.middle_name}} {{student_unscheduled.last_name}} {{student_unscheduled.suffix}}</td>
+                        {% endif %}
+                        <td>{{student_unscheduled.course_major_abbr}} </td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td class="text-danger">No Schedule</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+
+    <script>
+      let course_list = document.querySelector("#course_list");
+
+      course_list.addEventListener("change", (event) => {
+        if (course_list.value == "---") {
+          console.log("1");
+          window.location.replace("{% url 'subject-teacher-set-research-title-defense-schedule' %}");
+        } else {
+          document.getElementById("course_available_sched").submit();
+        }
+      });
+    </script>
+  </body>
+</html>

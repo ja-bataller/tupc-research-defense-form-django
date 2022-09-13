@@ -99,6 +99,25 @@
                         <input id="last_name_input" name="last_name_input" type="text" class="form-control" value="{{member_last_name}}" style="text-transform: capitalize" disabled />
                       </div>
 
+                      <div id="suffix_value" class="form-group">
+                        <label>Suffix:</label>
+                        <input type="text" class="form-control" value="{{member_suffix}}" style="text-transform: capitalize" disabled />
+                      </div>
+
+                      <div id="suffix_input" class="form-group" style="display: None;">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Suffix:</h6>
+                        <select id="suffix_input" class="custom-select" name="suffix_input">
+                          <option selected value="">None</option>
+                          <option value="Sr.">Sr.</option>
+                          <option value="Jr.">Jr.</option>
+                          <option value="I">I</option>
+                          <option value="II">II</option>
+                          <option value="III">III</option>
+                          <option value="IV">IV</option>
+                          <option value="V">V</option>
+                        </select>
+                      </div>
+
                       <div id="user_account" class="form-group">
                         <label>Department:</label>
                         <input id="department_input" name="department_input" type="text" class="form-control" value="{{member_department}}" disabled />
@@ -233,6 +252,8 @@
       let first_name_input = document.querySelector("#first_name_input");
       let middle_name_input = document.querySelector("#middle_name_input");
       let last_name_input = document.querySelector("#last_name_input");
+      let suffix_input = document.querySelector("#suffix_input");
+      let suffix_value = document.querySelector("#suffix_value");
       let department_input = document.querySelector("#department_input");
 
       let password_input = document.querySelector("#password_input");
@@ -261,6 +282,8 @@
 
           honorific_value.style.display = "none";
           honorific_input.style.display = "block";
+          suffix_value.style.display = "none";
+          suffix_input.style.display = "block";
           password_input.style.display = "block";
           save_changes_btn.style.display = "block";
 
@@ -312,6 +335,12 @@
       });
 
     </script>
+
+    {% if response == 'sweet invalid suffix' %}
+    <script>
+      Swal.fire("Invalid", "You just entered a Suffix which is not in the list. Please choose one from the choices given.", "error");
+    </script>
+    {% endif %}
 
   </body>
 </html>

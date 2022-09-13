@@ -17,68 +17,8 @@
   <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-      <!-- Sidebar -->
-      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-        <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'subject-teacher-dashboard' %}">
-          <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
-        </a>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
-
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
-            <i class="fa-solid fa-house"></i>
-            <span>Home</span></a
-          >
-        </li>
-
-        <!-- Divider -->
-        <!-- <hr class="sidebar-divider"> -->
-
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item active">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fa-solid fa-folder-open"></i>
-            <span>Research Title Defense</span>
-          </a>
-          <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="{% url 'subject-teacher-research-title-defense-dashboard' %}">Schedule Dashboard</a>
-              <a class="collapse-item" href="{% url 'subject-teacher-set-research-title-defense-schedule' %}">Set Schedule</a>
-            </div>
-          </div>
-        </li>
-
-        <!-- Nav Item - Tables -->
-        <!-- <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span>History</span></a>
-    </li> -->
-
-        <!-- Divider -->
-        <hr class="sidebar-divider" />
-
-        <!-- Nav Item - The Developers -->
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fa-solid fa-code"></i>
-            <span>The Devs</span></a
-          >
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block" />
-
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-          <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
-      </ul>
-      <!-- End of Sidebar -->
+      {% include 'subject-teacher-sidebar-title-defense.html' %}
 
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
@@ -123,7 +63,7 @@
           <!-- Begin Page Content -->
           <div class="container-fluid">
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-gray-800">Title Defense - Available Schedule</h1>
+              <h1 class="h3 mb-0 text-gray-800">Title Defense Schedule</h1>
             </div>
 
             <form id="course_available_sched" method="POST">
@@ -169,20 +109,25 @@
                       </tr>
                     </tfoot>
                     <tbody>
-                      {% for course_schedule in course_defense_schedules %}
+                      {% for course_schedule in course_available_defense_schedules %}
                       <tr>
                         <td>{{course_schedule.id}}</td>
                         <td>{{course_schedule.course}}</td>
                         <td>{{course_schedule.date}} - {{course_schedule.start_time}} to {{course_schedule.end_time}}</td>
-                        {% if course_schedule.status == "Available" %}
                         <td class="text-success">{{course_schedule.status}}</td>
                         <td class="text-center">
                           <a type="button" class="btn btn-outline-danger" href="{% url 'subject-teacher-delete-research-title-defense-schedule' course_schedule.id %}"><i class="fa-solid fa-trash-can"></i></a>
                         </td>
-                        {% else %}
+                      </tr>
+                      {% endfor %}
+
+                      {% for course_schedule in course_reserved_defense_schedules %}
+                      <tr>
+                        <td>{{course_schedule.id}}</td>
+                        <td>{{course_schedule.course}}</td>
+                        <td>{{course_schedule.date}} - {{course_schedule.start_time}} to {{course_schedule.end_time}}</td>
                         <td class="text-danger">{{course_schedule.status}}</td>
                         <td class="text-center"></td>
-                        {% endif %}
                       </tr>
                       {% endfor %}
                     </tbody>
@@ -192,14 +137,14 @@
             </div>
 
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-gray-800">Title Defense - Add Schedule</h1>
+              <h1 class="h3 mb-0 text-gray-800">Title Defense - Set Schedule</h1>
             </div>
 
             <form method="POST" action="{% url 'subject-teacher-save-research-title-defense-schedule' %}">
               {% csrf_token %}
 
               <div class="form-group mb-3">
-                <label>Course:</label>
+                <label>Choose Course:</label>
                 <select id="course_input" class="custom-select" name="course_input" required>
                   <option selected>---</option>
                   {% for course in course_handled_list %}
@@ -209,12 +154,12 @@
               </div>
 
               <div class="form-group mb-3">
-                <label>Date:</label>
+                <label>Set Date:</label>
                 <input id="defense_date" type="date" name="date_input" class="form-control" required />
               </div>
 
               <div class="form-group mb-3">
-                <label>Time:</label>
+                <label>Set Time:</label>
                 <select id="time_list" class="custom-select" name="time_input" required>
                   <option value="Default" selected>---</option>
                   <option value="8:00 AM-9:00 AM">8:00 AM - 9:00 AM</option>

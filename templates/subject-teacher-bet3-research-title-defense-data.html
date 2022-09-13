@@ -1,0 +1,282 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Subject Teacher - Title DefenseLogs</title>
+
+  {% include 'css-main-cdn.html' %}
+</head>
+
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    {% include 'subject-teacher-sidebar-title-defense.html' %}
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+          <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
+                  <div class="float-right">Subject Teacher</div>
+                </span>
+                <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="{% url 'subject-teacher-profile' %}">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <div class="d-sm-flex align-items-center justify-content-between">
+            <h1 class="h3 text-gra-800">Research Title Defense</h1>
+          </div>
+
+          {% if student_leader_data.research_title_defense_date %}
+          <h1 class="h6 mb-0 text-gray-800 mb-2">
+            {{student_leader_data.research_title_defense_date}} -
+            {{student_leader_data.research_title_defense_start_time}} to
+            {{student_leader_data.research_title_defense_end_time}}</h1>
+          {% endif %}
+
+          {% if defense_date %}
+          <h1 class="h6 mb-0 text-gray-800 mb-2">
+            {{defense_date}} -
+            {{defense_start_time}} to
+            {{defense_end_time}}</h1>
+          {% endif %}
+
+          <div class="row">
+            <div class="col-md-6 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">
+                      Group Members:
+                    </div>
+                    <div class="col-sm-12">
+                      - {{student_leader_full_name}}
+                    </div>
+
+                    {% if group_members %}
+                    {% for group_member in group_members %}
+                    <div class="col-sm-12">
+                      - {{group_member.student_member_full_name}}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="col-sm-12 mt-4 font-weight-bold">
+                      Course:
+                    </div>
+                    <div class="col-sm-12">
+                      {% if student_leader_data.course_major_abbr %}
+                      {{student_leader_data.course_major_abbr}}
+                      {% endif %}
+
+                      {% if student_course %}
+                      {{student_course}}
+                      {% endif %}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">
+                      Research Titles:
+                    </div>
+
+                    {% if research_titles %}
+                    {% for research_title in research_titles %}
+
+                    {% if research_title.status == "Title Defense - Accepted" %}
+                    <div class="col-sm-12">
+                      - {{research_title.research_title}} - <span class="text-success">Accepted</span>
+                    </div>
+                    {% endif %}
+
+                    {% if research_title.status == "Title Defense - Deferred" %}
+                    <div class="col-sm-12">
+                      - {{research_title.research_title}} - <span class="text-danger">Deferred</span>
+                    </div>
+                    {% endif %}
+
+                    {% if research_title.status == "Title Defense - Revise Title" %}
+                    <div class="col-sm-12">
+                      - {{research_title.research_title}} - <span class="text-info">Revise Title</span>
+                    </div>
+                    {% endif %}
+
+                    {% if research_title.status == "Title Defense - Pending" %}
+                    <div class="col-sm-12">
+                      - {{research_title.research_title}}
+                    </div>
+                    {% endif %}
+
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if research_title_accepted.research_title %}
+                    <div class="col-sm-12 mt-4 font-weight-bold">
+                      Accepted Title:
+                    </div>
+
+                    <div class="col-sm-12">
+                      {{research_title_accepted.research_title}}
+                    </div>
+
+                    {% elif research_title_revise.research_title %}
+                    <div class="col-sm-12 mt-4 font-weight-bold">
+                      Accepted - Revise Title:
+                    </div>
+
+                    <div class="col-sm-12">
+                      {{research_title_revise.research_title}}
+                    </div>
+
+
+                    <div class="col-sm-12 mt-4 font-weight-bold">
+                      Suggested Title:
+                    </div>
+
+                    <div class="col-sm-12">
+                      {{research_title_revise.suggested_title}}
+                    </div>
+                    {% endif %}
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-2">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Panel ID No.</th>
+                      <th>Panel Name</th>
+                      <th>Attendance</th>
+                      <th>Vote Status</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Panel ID No.</th>
+                      <th>Panel Name</th>
+                      <th>Attendance</th>
+                      <th>Vote Status</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+
+                    {% for panel_member in present_panel_members %}
+                    <tr>
+                      <td>{{panel_member.panel_username}}</td>
+                      <td>{{panel_member.panel_full_name}}</td>
+                      {% if panel_member.is_panel_chairman == 1 %}
+                      <td class="text-success">
+                        Present - Panel Chairman
+                      </td>
+                      {% else %}
+                      <td class="text-success">
+                        Present
+                      </td>
+                      {% endif %}
+                      {% if panel_member.form_status == "completed" %}
+                      <td class="text-success">
+                        Done
+                      </td>
+                      {% else %}
+                      <td class="text-secondary">
+                        Pending
+                      </td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+
+                    {% for panel_member in absent_panel_members %}
+                    <tr>
+                      <td>{{panel_member.panel_username}}</td>
+                      <td>{{panel_member.panel_full_name}}</td>
+                      <td class="text-center text-danger">
+                        Absent
+                      </td>
+                      <td>N/A</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+
+</body>
+
+</html>

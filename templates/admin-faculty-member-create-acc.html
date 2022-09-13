@@ -71,6 +71,20 @@
                         <label>Last Name:</label>
                         <input type="text" name="last_name_input" class="form-control"  style="text-transform: capitalize" required />
                       </div>
+
+                      <div class="form-group">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Suffix:</h6>
+                        <select id="suffix_input" class="custom-select" name="suffix_input">
+                          <option selected value="">None</option>
+                          <option value="Sr.">Sr.</option>
+                          <option value="Jr.">Jr.</option>
+                          <option value="I">I</option>
+                          <option value="II">II</option>
+                          <option value="III">III</option>
+                          <option value="IV">IV</option>
+                          <option value="V">V</option>
+                        </select>
+                      </div>
                       
                       {% if dit_head_exist == "exist" %}
 
@@ -150,6 +164,12 @@
     {% include 'logout-modal.html' %} 
     {% include 'script-cdn.html' %} 
     {% include 'alert-validation.html' %}
+
+    {% if response == 'sweet invalid suffix' %}
+    <script>
+      Swal.fire("Invalid", "You just entered a Suffix which is not in the list. Please choose one from the choices given.", "error");
+    </script>
+    {% endif %}
     
 
   </body>

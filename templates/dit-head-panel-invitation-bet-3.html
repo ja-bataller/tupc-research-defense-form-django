@@ -34,16 +34,16 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
           <i class="fa-solid fa-house"></i>
-          <span>Home</span></a>
+          <span>Home</span></a
+        >
       </li>
 
       <!-- Divider -->
       <!-- <hr class="sidebar-divider"> -->
 
-      <!-- Nav Item - Pages Collapse Menu -->
+      <!-- Nav Item - Forms Collapse Menu -->
       <li class="nav-item active">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-          aria-controls="collapsePages">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
           <i class="fa-solid fa-folder-open"></i>
           <span>Forms</span>
         </a>
@@ -53,23 +53,46 @@
             <a class="collapse-item" href="{% url 'dit-head-panel-invitation-bet-3' %}">Panel Invitation</a>
             <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
             <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+                      <a class="collapse-item" href="">Research Adviser Conforme</a> -->
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
             <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
+                      <a class="collapse-item" href="#">New Form</a>
+                      <a class="collapse-item" href="#">New Form</a>
+                      <a class="collapse-item" href="#">New Form</a> -->
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Logs Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true" aria-controls="collapseLogs">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Logs</span>
+        </a>
+        <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">BET-3</h6>
+            <a class="collapse-item" href="{% url 'dit-head-bet3-panel-invitation-logs' %}">Panel Invitation</a>
+            <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
+            <!-- <a class="collapse-item" href="">Research Title Defense</a>
+                      <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">BET-5</h6>
+            <!-- <a class="collapse-item" href="#">New Form</a>
+                      <a class="collapse-item" href="#">New Form</a>
+                      <a class="collapse-item" href="#">New Form</a>
+                      <a class="collapse-item" href="#">New Form</a> -->
           </div>
         </div>
       </li>
 
       <!-- Nav Item - Tables -->
       <!-- <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span>History</span></a>
-    </li> -->
+      <a class="nav-link" href="tables.html">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>History</span></a>
+  </li> -->
 
       <!-- Divider -->
       <hr class="sidebar-divider" />
@@ -78,7 +101,8 @@
       <li class="nav-item">
         <a class="nav-link" href="#">
           <i class="fa-solid fa-code"></i>
-          <span>The Devs</span></a>
+          <span>The Devs</span></a
+        >
       </li>
 
       <!-- Divider -->

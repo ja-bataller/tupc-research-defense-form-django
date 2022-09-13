@@ -1,3 +1,4 @@
+from cmath import exp
 from multiprocessing import context
 from telnetlib import STATUS
 from django.shortcuts import render, redirect
@@ -1214,6 +1215,21 @@ def studentAddResearchTitle(request):
             except:
                 pass
 
+            try:
+                ResearchTitleLog.objects.get(research_title = research_title_1_input)
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'existing_research_title': research_title_1_input.title,
+
+                'response': "sweet research title exist"
+                }
+                return render(request, 'student-add-research-title.html', context)
+
+            except:
+                pass
+
             research_titles.append(research_title_1_input)
         
         if research_title_2_input != "":
@@ -1230,6 +1246,21 @@ def studentAddResearchTitle(request):
 
             try:
                 ResearchTitle.objects.get(research_title = research_title_2_input)
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'existing_research_title': research_title_2_input,
+
+                'response': "sweet research title exist"
+                }
+                return render(request, 'student-add-research-title.html', context)
+
+            except:
+                pass
+        
+            try:
+                ResearchTitleLog.objects.get(research_title = research_title_2_input)
                 context = {
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
                 'currently_loggedin_user_account': currently_loggedin_user_account,
@@ -1271,6 +1302,21 @@ def studentAddResearchTitle(request):
 
             except:
                 pass
+                
+            try:
+                ResearchTitleLog.objects.get(research_title = research_title_3_input)
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'existing_research_title': research_title_3_input,
+
+                'response': "sweet research title exist"
+                }
+                return render(request, 'student-add-research-title.html', context)
+
+            except:
+                pass
 
             research_titles.append(research_title_3_input)
 
@@ -1285,8 +1331,24 @@ def studentAddResearchTitle(request):
                 }
 
                 return render(request, 'student-add-research-title.html', context)
+            
             try:
                 ResearchTitle.objects.get(research_title = research_title_4_input)
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'existing_research_title': research_title_4_input,
+
+                'response': "sweet research title exist"
+                }
+                return render(request, 'student-add-research-title.html', context)
+
+            except:
+                pass
+
+            try:
+                ResearchTitleLog.objects.get(research_title = research_title_4_input)
                 context = {
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
                 'currently_loggedin_user_account': currently_loggedin_user_account,
@@ -1313,8 +1375,24 @@ def studentAddResearchTitle(request):
                 }
 
                 return render(request, 'student-add-research-title.html', context)
+            
             try:
                 ResearchTitle.objects.get(research_title = research_title_5_input)
+                context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account': currently_loggedin_user_account,
+
+                'existing_research_title': research_title_5_input,
+
+                'response': "sweet research title exist"
+                }
+                return render(request, 'student-add-research-title.html', context)
+
+            except:
+                pass
+
+            try:
+                ResearchTitleLog.objects.get(research_title = research_title_5_input)
                 context = {
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
                 'currently_loggedin_user_account': currently_loggedin_user_account,
@@ -1343,7 +1421,6 @@ def studentAddResearchTitle(request):
             )
             save_Research_title.save()
             i + 1
-
 
         get_student_leader_data.research_titles_status = "completed"
         get_student_leader_data.save()
@@ -1928,7 +2005,7 @@ def studentPanelInvitationBet3Save(request):
     return render(request, 'student-bet3-panel-invitation-dashboard.html', context)
 
 
-# Student - Accepted BET-3 Panel Invitation
+# Student - Download BET-3 Panel Invitation
 @login_required(login_url='index')
 @user_passes_test(lambda u: u.is_student, login_url='index')
 def studentDownloadPanelInvitationBet3(request, id):
@@ -2164,6 +2241,284 @@ def studentDownloadPanelInvitationBet3(request, id):
 
     return render(request, 'student-bet3-panel-invitation-dashboard.html', context)
 
+# Student - Download BET-3 Research Title Defense Form
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentDownloadBET3ResearchTitleDefenseForm(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+    
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
+        get_panel_chairman = BET3ResearchTitleDefenseForm.objects.get(student_leader_username = current_user.username, is_panel_chairman = True)
+        print("pass 1")
+    except:
+        print("pass 1.1")
+        return redirect ('student-bet3-research-title-defense')
+    
+    get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = current_user.username)
+    get_research_titles = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
+    get_panel_members = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = current_user.username, is_panel_chairman = False)
+
+    ############## BET-3 RESEARCH TITLE DEFENSE DATA ##############
+    date = get_student_leader_data.research_title_defense_date
+
+    try:
+        student_1 = get_research_titles[0].student_leader_name
+        degree_1 = get_student_leader_data.course_major_abbr
+    except:
+        student_1 = ""
+        degree_1= ""
+    
+    try:
+        student_2 = get_group_members[0].student_member_full_name
+        degree_2 = get_student_leader_data.course_major_abbr
+    except:
+        student_2 = ""
+        degree_2 = ""
+    
+    try:
+        student_3 = get_group_members[1].student_member_full_name
+        degree_3 = get_student_leader_data.course_major_abbr
+    except:
+        student_3 = ""
+        degree_3 = ""
+    
+    try:
+        student_4 = get_group_members[2].student_member_full_name
+        degree_4 = get_student_leader_data.course_major_abbr
+    except:
+        student_4 = ""
+        degree_4 = ""
+    
+    try:
+        student_5 = get_group_members[3].student_member_full_name
+        degree_5 = get_student_leader_data.course_major_abbr
+    except:
+        student_5 = ""
+        degree_5 = ""
+    
+    try:
+        title_1 = get_research_titles[0].research_title
+        
+        if get_research_titles[0].status == "Title Defense - Accepted":
+            comment_1 = "Accepted"
+        elif get_research_titles[0].status == "Title Defense - Revise Title":
+            comment_1 = "Revise Title"
+        elif get_research_titles[0].status == "Title Defense - Deferred":
+            comment_1 = "Deferred"
+
+    except:
+        title_1 = ""
+        comment_1= ""
+    
+
+    try:
+        title_2 = get_research_titles[1].research_title
+        
+        if get_research_titles[1].status == "Title Defense - Accepted":
+            comment_2 = "Accepted"
+        elif get_research_titles[1].status == "Title Defense - Revise Title":
+            comment_2 = "Revise Title"
+        elif get_research_titles[1].status == "Title Defense - Deferred":
+            comment_2 = "Deferred"
+
+    except:
+        title_2 = ""
+        comment_2= ""
+    
+    try:
+        title_3 = get_research_titles[2].research_title
+        
+        if get_research_titles[2].status == "Title Defense - Accepted":
+            comment_3 = "Accepted"
+        elif get_research_titles[2].status == "Title Defense - Revise Title":
+            comment_3 = "Revise Title"
+        elif get_research_titles[2].status == "Title Defense - Deferred":
+            comment_3 = "Deferred"
+
+    except:
+        title_3 = ""
+        comment_3= ""
+    
+    try:
+        title_4 = get_research_titles[3].research_title
+        
+        if get_research_titles[3].status == "Title Defense - Accepted":
+            comment_4 = "Accepted"
+        elif get_research_titles[3].status == "Title Defense - Revise Title":
+            comment_4 = "Revise Title"
+        elif get_research_titles[3].status == "Title Defense - Deferred":
+            comment_4 = "Deferred"
+
+    except:
+        title_4 = ""
+        comment_4= ""
+    
+    try:
+        title_5 = get_research_titles[4].research_title
+        
+        if get_research_titles[4].status == "Title Defense - Accepted":
+            comment_5 = "Accepted"
+        elif get_research_titles[4].status == "Title Defense - Revise Title":
+            comment_5 = "Revise Title"
+        elif get_research_titles[4].status == "Title Defense - Deferred":
+            comment_5 = "Deferred"
+
+    except:
+        title_5 = ""
+        comment_5= ""
+    
+    try:
+        if get_research_titles[0].suggested_title != "":
+            suggested_title = get_research_titles[0].suggested_title
+    except:
+        pass
+
+    try:
+        if get_research_titles[1].suggested_title != "":
+            suggested_title = get_research_titles[1].suggested_title
+    except:
+        pass
+
+    try:
+        if get_research_titles[2].suggested_title != "":
+            suggested_title = get_research_titles[2].suggested_title
+    except:
+        pass
+
+    try:
+        if get_research_titles[3].suggested_title != "":
+            suggested_title = get_research_titles[3].suggested_title
+    except:
+        pass
+
+    try:
+        if get_research_titles[4].suggested_title != "":
+            suggested_title = get_research_titles[4].suggested_title
+    except:
+        pass
+
+    if not suggested_title:
+        suggested_title = "___________________________________"
+
+
+    panel_chairman = get_panel_chairman.panel_full_name
+
+    try:
+        panel_1 = get_panel_members[0].panel_full_name
+    except:
+        panel_1 = ""
+    
+    try:
+        panel_2 = get_panel_members[1].panel_full_name
+    except:
+        panel_2 = ""
+    
+    try:
+        panel_3 = get_panel_members[2].panel_full_name
+    except:
+        panel_3 = ""
+    
+    try:
+        panel_4 = get_panel_members[3].panel_full_name
+    except:
+        panel_4 = ""
+    
+    panel_5 = ""
+    panel_6 = ""
+    ############## BET-3 RESEARCH TITLE DEFENSE DATA ##############
+    
+    doc = Document('static/forms/2-RESEARCH-TITLE-DEFENSE-FORM.docx')
+
+    doc.paragraphs[2].runs[1].text = date
+    print(doc.paragraphs[2].runs[1].text) # Date of Title defense
+
+    #EXAMINEE
+    student_name = doc.tables[1]
+    student_name.cell(1, 4).paragraphs[0].runs[0].text = student_1
+    student_name.cell(2, 4).paragraphs[0].runs[0].text = student_2
+    student_name.cell(3, 4).paragraphs[0].runs[0].text = student_3
+    student_name.cell(4, 4).paragraphs[0].runs[0].text = student_4
+    student_name.cell(5, 4).paragraphs[0].runs[0].text = student_5
+    print(student_name.cell(1, 4).text)
+    print(student_name.cell(2, 4).text)
+    print(student_name.cell(3, 4).text)
+    print(student_name.cell(4, 4).text)
+    print(student_name.cell(5, 4).text)
+    # column - row
+
+    #STUDENT COURSE
+    student_course = doc.tables[1]
+    student_course.cell(1, 6).paragraphs[0].runs[0].text = degree_1
+    student_course.cell(2, 6).paragraphs[0].runs[0].text = degree_2
+    student_course.cell(3, 6).paragraphs[0].runs[0].text = degree_3
+    student_course.cell(4, 6).paragraphs[0].runs[0].text = degree_4
+    student_course.cell(5, 6).paragraphs[0].runs[0].text = degree_5
+    print(student_course.cell(1, 6).text)
+    print(student_course.cell(2, 6).text)
+    print(student_course.cell(3, 6).text)
+    print(student_course.cell(4, 6).text)
+    print(student_course.cell(5, 6).text)
+
+    #TITLES
+    titles = doc.tables[2]
+    titles.cell(1, 1).paragraphs[0].runs[0].text = title_1
+    titles.cell(2, 1).paragraphs[0].runs[0].text = title_2
+    titles.cell(3, 1).paragraphs[0].runs[0].text = title_3
+    titles.cell(4, 1).paragraphs[0].runs[0].text = title_4
+    titles.cell(5, 1).paragraphs[0].runs[0].text = title_5
+    print(titles.cell(1, 1).text)
+    print(titles.cell(2, 1).text)
+    print(titles.cell(3, 1).text)
+    print(titles.cell(4, 1).text)
+    print(titles.cell(5, 1).text)
+
+    #COMMENT    
+    comment = doc.tables[2]
+    comment.cell(1, 2).paragraphs[0].runs[0].text = comment_1
+    comment.cell(2, 2).paragraphs[0].runs[0].text = comment_2
+    comment.cell(3, 2).paragraphs[0].runs[0].text = comment_3
+    comment.cell(4, 2).paragraphs[0].runs[0].text = comment_4
+    comment.cell(5, 2).paragraphs[0].runs[0].text = comment_5
+    print(comment.cell(1, 2).text)
+    print(comment.cell(2, 2).text)
+    print(comment.cell(3, 2).text)
+    print(comment.cell(4, 2).text)
+    print(comment.cell(5, 2).text)
+
+    doc.paragraphs[5].runs[1].text = suggested_title
+    print(doc.paragraphs[5].runs[1].text) # SUGGESTEDTITLE
+
+    doc.paragraphs[9].runs[0].text = panel_chairman
+    print(doc.paragraphs[9].runs[0].text) # PANELCHAIRMAN
+
+    #PANEL SIGNATURE
+    signature = doc.tables[3]
+    signature.cell(1, 0).paragraphs[0].runs[0].text = panel_1
+    signature.cell(1, 2).paragraphs[0].runs[0].text = panel_2
+    signature.cell(4, 0).paragraphs[0].runs[0].text = panel_3
+    signature.cell(4, 2).paragraphs[0].runs[0].text = panel_4
+    signature.cell(7, 0).paragraphs[0].runs[0].text = panel_5
+    signature.cell(7, 2).paragraphs[0].runs[0].text = panel_6
+    print(signature.cell(1, 0).text)
+    print(signature.cell(1, 2).text)
+    print(signature.cell(4, 0).text)
+    print(signature.cell(4, 2).text)
+    print(signature.cell(7, 0).text)
+    print(signature.cell(7, 2).text)
+
+    doc.save('2-RESEARCH-TITLE-DEFENSE-FORM-NEW.docx')
+    convert("2-RESEARCH-TITLE-DEFENSE-FORM-NEW.docx")
+    os.startfile('2-RESEARCH-TITLE-DEFENSE-FORM-NEW.pdf')
+
+    return redirect('student-bet3-research-title-defense')
 
 # Student - BET-3 Research Title Defense Form
 @login_required(login_url='index')
@@ -2220,12 +2575,13 @@ def studentBET3ResearchTitleDefense(request):
     try:
         get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username = current_user.username)
     except:
-        return redirect('student-dashboard')
+       get_student_group_members = None
 
     # Get Student Research Title / Titles
     try:
         get_student_research_titles = ResearchTitle.objects.all().filter(student_leader_username = current_user.username)
     except:
+        print("pass research titles")
         return redirect('student-dashboard')
 
     # Get Student Accepted Research Title
@@ -2244,12 +2600,12 @@ def studentBET3ResearchTitleDefense(request):
     try:
         get_panel_research_title_defense_form = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = current_user.username)
     except:
+        print("pass research title defense form")
         return redirect('student-dashboard')
 
-    if get_student_leader_data.group_members_status != "Completed" and \
-         get_student_leader_data.research_titles_status != "Completed" and \
-            get_student_leader_data.bet3_panel_invitation_status != "Completed":
-             
+    if get_student_leader_data.group_members_status != "completed" and \
+         get_student_leader_data.research_titles_status != "completed" and \
+            get_student_leader_data.bet3_panel_invitation_status != "completed":
              return redirect('student-dashboard')
     
 
@@ -2257,7 +2613,6 @@ def studentBET3ResearchTitleDefense(request):
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
-
 
 
     context = {
@@ -3702,7 +4057,6 @@ def adminFacultyMemberCreateAcc(request):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
-
     form = SignUpForm()
 
     dit_head_exist = None
@@ -3715,12 +4069,14 @@ def adminFacultyMemberCreateAcc(request):
     
     if request.method == "POST": 
         honorific_list = ["Mr.", "Ms.", "Mrs.", "Engr.", "Dr.", "Dra."]
+        suffix_list = ["","Sr.", "Jr.", "I", "II", "III", "IV", "V"]
         user_account_list = ["DIT Head", "Faculty Member", "Academic Affairs", 'Library', 'Research & Extension']
         
         honorific_input = request.POST.get('honorific_input')
         first_name_input = request.POST.get('first_name_input')
         middle_name_input = request.POST.get('middle_name_input')
         last_name_input = request.POST.get('last_name_input')
+        suffix_input = request.POST.get('suffix_input')
         user_account_input = request.POST.get('user_account_input')
         form = SignUpForm(request.POST)
         confirm_password = request.POST.get('confirm_password_input')
@@ -3760,7 +4116,7 @@ def adminFacultyMemberCreateAcc(request):
             print(dit_head_exist)
 
             context = {
-                # Topbar Start
+                # Topbar
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
                 'currently_loggedin_user_account' : currently_loggedin_user_account,
 
@@ -3770,6 +4126,24 @@ def adminFacultyMemberCreateAcc(request):
 
                 # Response
                 'response' : "honorific not in list",
+            }
+
+            return render(request, 'admin-faculty-member-create-acc.html', context)
+
+        if suffix_input not in suffix_list:
+            print("Suffix not in list")
+
+            context = {
+                # Topbar
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name, 
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                # Form
+                'form': form,
+                'dit_head_exist' : dit_head_exist,
+
+                # Response
+                'response' : "sweet invalid suffix",
             }
 
             return render(request, 'admin-faculty-member-create-acc.html', context)
@@ -3886,6 +4260,7 @@ def adminFacultyMemberCreateAcc(request):
                     user_check.first_name = first_name_input.title()
                     user_check.middle_name = middle_name_input.title()
                     user_check.last_name = last_name_input.title()
+                    user_check.suffix = suffix_input
                     user_check.department = "DIT Head"
                     user_check.is_department_head = 1
                     user_check.is_panel = 1
@@ -3915,6 +4290,7 @@ def adminFacultyMemberCreateAcc(request):
                     user_check.first_name = first_name_input.title()
                     user_check.middle_name = middle_name_input.title()
                     user_check.last_name = last_name_input.title()
+                    user_check.suffix = suffix_input
                     user_check.department = "Faculty Member"
                     user_check.is_panel = 1
                     user_check.is_adviser = 1
@@ -3943,6 +4319,7 @@ def adminFacultyMemberCreateAcc(request):
                     user_check.first_name = first_name_input.title()
                     user_check.middle_name = middle_name_input.title()
                     user_check.last_name = last_name_input.title()
+                    user_check.suffix = suffix_input
                     user_check.department = "Academic Affairs"
                     user_check.is_academic_affairs = 1
                     user_check.is_faculty_member = 1
@@ -3969,6 +4346,7 @@ def adminFacultyMemberCreateAcc(request):
                     user_check.first_name = first_name_input.title()
                     user_check.middle_name = middle_name_input.title()
                     user_check.last_name = last_name_input.title()
+                    user_check.suffix = suffix_input
                     user_check.department = "Library"
                     user_check.is_library = 1
                     user_check.is_faculty_member = 1
@@ -3995,6 +4373,7 @@ def adminFacultyMemberCreateAcc(request):
                     user_check.first_name = first_name_input.title()
                     user_check.middle_name = middle_name_input.title()
                     user_check.last_name = last_name_input.title()
+                    user_check.suffix = suffix_input
                     user_check.department = "Research & Extension"
                     user_check.is_research_extension = 1
                     user_check.is_faculty_member = 1
@@ -4089,6 +4468,7 @@ def adminFacultyMemberData(request, id):
     member_first_name = member_check.first_name
     member_middle_name = member_check.middle_name
     member_last_name = member_check.last_name
+    member_suffix = member_check.suffix
     member_department = member_check.department
 
     context = {
@@ -4101,11 +4481,13 @@ def adminFacultyMemberData(request, id):
         'member_first_name': member_first_name,
         'member_middle_name': member_middle_name,
         'member_last_name': member_last_name,
+        'member_suffix': member_suffix,
         'member_department': member_department,
         }
     
     if request.method == 'POST':
         honorific_list = ["Mr.", "Ms.", "Mrs.", "Engr.", "Dr.", "Dra."]
+        suffix_list = ["","Sr.", "Jr.", "I", "II", "III", "IV", "V"]
         user_account_list = ["DIT Head", "Faculty Member", "Academic Affairs", 'Library', 'Research & Extension']
         
         username_input = request.POST.get('username_input')
@@ -4114,12 +4496,11 @@ def adminFacultyMemberData(request, id):
         first_name_input = request.POST.get('first_name_input')
         middle_name_input = request.POST.get('middle_name_input')
         last_name_input = request.POST.get('last_name_input')
+        suffix_input = request.POST.get('suffix_input')
         password_input = request.POST.get('password_input')
+        
 
-        if honorific_input != "default":
-                pass
-
-        else:
+        if honorific_input not in honorific_list:
             context = {
                 'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
                 'currently_loggedin_user_account' : currently_loggedin_user_account,
@@ -4133,6 +4514,26 @@ def adminFacultyMemberData(request, id):
                 'member_department': member_department,
 
                 'response' : "choose honorific"
+                }
+
+            return render(request, 'admin-faculty-member-data.html', context)
+
+        if suffix_input not in suffix_list:
+            print("Suffix not in list")
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+                'member_honorific': member_honorific,
+                'member_username': member_username,
+                'member_email': member_email,
+                'member_first_name': member_first_name,
+                'member_middle_name': member_middle_name,
+                'member_last_name': member_last_name,
+                'member_department': member_department,
+
+                'response' : "sweet invalid suffix"
                 }
 
             return render(request, 'admin-faculty-member-data.html', context)
@@ -4185,6 +4586,7 @@ def adminFacultyMemberData(request, id):
             member_check.first_name=first_name_input.title()
             member_check.middle_name=middle_name_input.title()
             member_check.last_name=last_name_input.title()
+            member_check.suffix=suffix_input
             member_check.save()
 
             if member_check.username == username_input and member_check.email == email_input:
@@ -4417,6 +4819,7 @@ def adminFacultyMemberData(request, id):
                 'member_first_name': member_first_name,
                 'member_middle_name': member_middle_name,
                 'member_last_name': member_last_name,
+                'member_suffix': member_suffix,
                 'member_department': member_department,
 
                 'response' : "incorrect password"
@@ -4932,7 +5335,10 @@ def ditHeadDashboard(request):
     currently_loggedin_user_account = topbar_data[1]
 
     context = {
+        'currently_loggedin_user_data': currently_loggedin_user,
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+        'date_today': date_today
         }
 
     return render(request, 'dit-head-dashboard.html', context)
@@ -5245,6 +5651,28 @@ def ditHeadPanelConformeBet3Accept(request, id):
 def ditHeadPanelConformeBet3Decline(request, id):
     pass
 
+# DIT Head - BET-3 Panel Invitation Logs
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_department_head, login_url='index')
+def ditHeadBET3PanelInvitationLogs(request):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+     # BET-3 Panel Invitation Logs
+    get_panel_invitation = BET3PanelInvitation.objects.all().filter(dit_head_username = currently_loggedin_user.username)
+    get_panel_invitation_2 = BET3PanelInvitationLog.objects.all().filter(dit_head_username = currently_loggedin_user.username)
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+        'panel_invitations' : get_panel_invitation,
+        'panel_invitations_2' : get_panel_invitation_2,
+        }
+
+    return render(request, 'dit-head-bet3-panel-invitation-logs.html', context)
 ##########################################################################################################################
 
 # Panel - Dashboard Page
@@ -5448,7 +5876,6 @@ def panelReviseTitle(request, id):
 
     update_revise_title_count = ResearchTitle.objects.get(research_title = update_title.research_title)
     update_revise_title_count.revise_title = update_revise_title_count.revise_title + 1
-    update_revise_title_count.accepted = update_revise_title_count.accepted + 1
     update_revise_title_count.save()
 
     context = {
@@ -5837,7 +6264,28 @@ def panelPanelConformeBet3Accept(request, id):
     except:
         return redirect('panel-panel-conforme-bet-3.html')
 
+# Panel - BET-3 Panel Invitation Logs
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
+def panelBET3PanelInvitationLogs(request):
+    currently_loggedin_user = (request.user)
 
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # BET-3 Panel Invitation Logs
+    get_panel_invitation = BET3PanelInvitation.objects.all().filter(panel_username = currently_loggedin_user.username)
+    get_panel_invitation_2 = BET3PanelInvitationLog.objects.all().filter(panel_username = currently_loggedin_user.username)
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+        'panel_invitations' : get_panel_invitation,
+        'panel_invitations_2' : get_panel_invitation_2,
+        }
+
+    return render(request, 'panel-bet3-panel-invitation-logs.html', context)
 ##########################################################################################################################
 
 # Subject Teacher - Dashboard Page
@@ -5855,7 +6303,7 @@ def subjectTeacherDashboard(request):
     except:
         return redirect('index')
 
-    get_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = date_today, status = "Reserved")
+    get_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = date_today)
     
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
@@ -5866,7 +6314,6 @@ def subjectTeacherDashboard(request):
         }
 
     return render(request, 'subject-teacher-dashboard.html', context)
-
 
 # Subject Teacher - Research Title Defense Day Page
 @login_required(login_url='index')
@@ -5896,6 +6343,8 @@ def subjectTeacherTitleDefenseDay(request, id):
     get_group_members = StudentGroupMember.objects.all().filter(student_leader_username = id)
     get_research_titles = ResearchTitle.objects.all().filter(student_leader_username = id)
 
+    get_bet3_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = id)
+
     get_panel_members = BET3PanelInvitation.objects.all().filter(student_leader_username = id, form_status = "accepted", form = "BET-3 Panel Invitation", research_title_defense_date = date_today, panel_attendance = "")
 
     get_present_panel_members = BET3PanelInvitation.objects.all().filter(student_leader_username = id, form_status = "accepted", form = "BET-3 Panel Invitation", research_title_defense_date = date_today, panel_attendance = "present")
@@ -5921,6 +6370,16 @@ def subjectTeacherTitleDefenseDay(request, id):
     except:
         get_research_title_revise = None
 
+    try:
+        get_research_title_deferred = ResearchTitle.objects.all().filter(student_leader_username = id, status = "Title Defense - Deferred")
+
+        if get_research_title_deferred.count() == get_research_titles.count():
+            all_deferred = 1
+        else:
+            all_deferred = 0
+
+    except:
+        all_deferred = 0
 
     try:
         get_student_title_defense_schedule = DefenseSchedule.objects.get(student_leader_username = id, date = date_today, status = "Reserved")
@@ -5936,14 +6395,153 @@ def subjectTeacherTitleDefenseDay(request, id):
     if request.method == 'POST':
         suggest_title_input = request.POST.get('suggest_title_input')
 
-        if suggest_title_input != "":
-            get_research_title_revise.suggested_title = suggest_title_input.title
+        if suggest_title_input != None:
+            get_research_title_revise.suggested_title = suggest_title_input.title()
             get_research_title_revise.save()
-
+        
         for i in range(len(get_present_panel_members)):
             get_present_panel_members[i].is_completed = True
             get_present_panel_members[i].save()
             i + 1
+
+        if get_research_title_deferred.count() == get_research_titles.count():
+            print("all deferred")
+
+            get_student_title_defense_schedule.status = "Re-Defense"
+            get_student_title_defense_schedule.save()
+
+            # Get Updated Defense Schedule
+            try:
+                updated_defense_schedule = DefenseSchedule.objects.get(student_leader_username = id, date = date_today, status = "Re-Defense")
+
+                log_defense_schedule = DefenseScheduleLog(
+                        username = updated_defense_schedule.username,
+                        name = updated_defense_schedule.name,
+                        student_leader_username = updated_defense_schedule.student_leader_username,
+                        student_leader_name = updated_defense_schedule.student_leader_name,
+                        course = updated_defense_schedule.course,
+                        form = updated_defense_schedule.form,
+                        date = updated_defense_schedule.date,
+                        start_time = updated_defense_schedule.start_time,
+                        end_time = updated_defense_schedule.end_time,
+                        status = updated_defense_schedule.status
+                    )
+
+                log_defense_schedule.save()
+
+            except:
+                updated_defense_schedule = None
+
+            
+            for i in range (len(get_research_titles)):
+                log_research_titles = ResearchTitleLog(
+                    research_title = get_research_titles[i].research_title,
+
+                    course = get_research_titles[i].course,
+                    major = get_research_titles[i].major,
+                    course_major_abbr = get_research_titles[i].course_major_abbr,
+
+                    student_leader_username = get_research_titles[i].student_leader_username,
+                    student_leader_name = get_research_titles[i].student_leader_name,
+
+                    status = get_research_titles[i].status,
+                    date_submitted = get_research_titles[i].date_submitted,
+
+                    accepted = get_research_titles[i].accepted,
+                    deferred = get_research_titles[i].deferred,
+                    revise_title = get_research_titles[i].revise_title,
+                    suggested_title =  get_research_titles[i].suggested_title,
+                    old_research_title = get_research_titles[i].old_research_title,
+
+                    defense_date = get_student_leader_data.research_title_defense_date
+                    )
+                log_research_titles.save()
+                i + 1
+            
+            for i in range(len(get_bet3_panel_invitations)):
+                log_panel_invitation = BET3PanelInvitationLog(
+                    student_leader_username = get_bet3_panel_invitations[i].student_leader_username,
+                    student_leader_full_name = get_bet3_panel_invitations[i].student_leader_full_name,
+                    course_major_abbr = get_bet3_panel_invitations[i].course_major_abbr,
+                    
+                    dit_head_username = get_bet3_panel_invitations[i].dit_head_username,
+                    dit_head_full_name = get_bet3_panel_invitations[i].dit_head_full_name,
+                    dit_head_response = get_bet3_panel_invitations[i].dit_head_response,
+                    dit_head_response_date =get_bet3_panel_invitations[i].dit_head_response_date,
+
+                    panel_username = get_bet3_panel_invitations[i].panel_username,
+                    panel_full_name = get_bet3_panel_invitations[i].panel_full_name,
+                    panel_response = get_bet3_panel_invitations[i].panel_response,
+                    panel_response_date = get_bet3_panel_invitations[i].panel_response_date,
+                    panel_attendance = get_bet3_panel_invitations[i].panel_attendance,
+
+                    research_title_defense_date = get_bet3_panel_invitations[i].research_title_defense_date,
+                    research_title_defense_start_time = get_bet3_panel_invitations[i].research_title_defense_start_time,
+                    research_title_defense_end_time = get_bet3_panel_invitations[i].research_title_defense_end_time,
+
+                    form_date_sent = get_bet3_panel_invitations[i].form_date_sent,
+
+                    form_status = get_bet3_panel_invitations[i].form_status,
+                    form = get_bet3_panel_invitations[i].form,
+
+                    subject_teacher_username = get_bet3_panel_invitations[i].subject_teacher_username,
+                    subject_teacher_full_name = get_bet3_panel_invitations[i].subject_teacher_full_name,
+
+                    is_completed = get_bet3_panel_invitations[i].is_completed,
+                )
+                log_panel_invitation.save()
+                i + 1
+
+            for i in range(len(get_present_panel_members_title_defense)):
+                log_research_title_defense_form = BET3ResearchTitleDefenseFormLog(
+                    student_leader_username = get_present_panel_members_title_defense[i].student_leader_username,
+                    student_leader_full_name = get_present_panel_members_title_defense[i].student_leader_full_name,
+                    course_major_abbr = get_present_panel_members_title_defense[i].course_major_abbr,
+
+                    panel_username = get_present_panel_members_title_defense[i].panel_username,
+                    panel_full_name = get_present_panel_members_title_defense[i].panel_full_name,
+                    panel_attendance = get_present_panel_members_title_defense[i].panel_attendance,
+                    is_panel_chairman = get_present_panel_members_title_defense[i].is_panel_chairman,
+
+                    form_date = get_present_panel_members_title_defense[i].form_date,
+
+                    form_status = get_present_panel_members_title_defense[i].form_status,
+                    form = get_present_panel_members_title_defense[i].form,
+
+                    subject_teacher_username = get_present_panel_members_title_defense[i].subject_teacher_username,
+                    subject_teacher_full_name = get_present_panel_members_title_defense[i].subject_teacher_full_name,
+                    defense_date = get_present_panel_members_title_defense[i].defense_date,
+                    defense_start_time = get_present_panel_members_title_defense[i].defense_start_time,
+                    defense_end_time = get_present_panel_members_title_defense[i].defense_end_time
+                )
+                log_research_title_defense_form.save()
+                i + 1
+
+            get_student_leader_data.research_title_defense_date = ""
+            get_student_leader_data.research_title_defense_start_time = ""
+            get_student_leader_data.research_title_defense_end_time = ""
+            get_student_leader_data.request_limit = 5
+            get_student_leader_data.bet3_panel_invitation_status = ""
+            get_student_leader_data.research_titles_status = ""
+            get_student_leader_data.save()
+
+            get_research_titles.delete()
+            get_bet3_panel_invitations.delete()
+            get_present_panel_members_title_defense.delete()
+            updated_defense_schedule.delete()
+            
+            context = {
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+            'date_today': today.strftime("%B %d, %Y"),
+            'student_leader_full_name': student_leader_full_name,
+            'response': "sweet re-defense"
+            }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+        else:
+            print("not all deferred")
+            pass
 
         get_student_title_defense_schedule.status = "Completed"
         get_student_title_defense_schedule.save()
@@ -5979,11 +6577,13 @@ def subjectTeacherTitleDefenseDay(request, id):
 
         'research_title_accepted': get_research_title_accepted,
         'research_title_revise': get_research_title_revise,
+        'research_title_all_deferred' : all_deferred,
 
         'title_defense_completed':check_title_defense_completed
         }
 
     return render(request, 'subject-teacher-title-defense-day.html', context)
+
 
 # Subject Teacher - Research Title Defense Day - Present Process
 @login_required(login_url='index')
@@ -6060,6 +6660,7 @@ def subjectTeacherTitleDefenseDayPresent(request, id):
 
     return render(request, 'subject-teacher-dashboard.html', context)
 
+
 # Subject Teacher - Research Title Defense Day - Absent Process
 @login_required(login_url='index')
 @user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
@@ -6129,12 +6730,13 @@ def subjectTeacherTitleDefenseDayCloseVote(request, id):
     except:
         return redirect('index')
 
-
     get_student_research_title_data = ResearchTitle.objects.all().filter(student_leader_username = id)
 
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = today.strftime("%B %d, %Y"))
     
     get_pending_title_defense_vote = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = id, form_status = "")
+
+    get_present_panel_members_title_defense = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = id, defense_date = date_today, panel_attendance = "present")
 
     try:
         ResearchTitle.objects.get(student_leader_username = id, status = "Title Defense - Accepted")
@@ -6171,9 +6773,63 @@ def subjectTeacherTitleDefenseDayCloseVote(request, id):
         return render(request, 'subject-teacher-dashboard.html', context)
     
     #######################################################################################
-    # Research Title 1 is for Revision
+   # Research Title 1 is Accepted
     try:
-        if get_student_research_title_data[0].revise_title >= int(3):
+         if get_student_research_title_data[0].accepted > get_student_research_title_data[0].revise_title and get_student_research_title_data[0].accepted > get_student_research_title_data[0].deferred:
+
+            update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+            update_research_title_data_0.status = "Title Defense - Accepted"
+            update_research_title_data_0.save()
+
+            try:
+                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
+                update_research_title_data_1.status = "Title Defense - Deferred"
+                update_research_title_data_1.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
+                update_research_title_data_2.status = "Title Defense - Deferred"
+                update_research_title_data_2.save()
+            except:
+                pass
+                
+            try:
+                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
+                update_research_title_data_3.status = "Title Defense - Deferred"
+                update_research_title_data_3.save()
+            except:
+                pass
+            
+            try:
+                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
+                update_research_title_data_4.status = "Title Defense - Deferred"
+                update_research_title_data_4.save()
+            except:
+                pass
+
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'date_today': today.strftime("%B %d, %Y"),
+
+                'subject_teacher_data': get_subject_teacher_data,
+                'today_defense_schedule': get_today_defense_schedule,
+
+                'student_leader_username': id,
+
+                'response': 'sweet panel voting closed',
+                }
+
+            return render(request, 'subject-teacher-dashboard.html', context)
+            
+    except:
+        pass
+
+    
+    # Research Title 1 is Revise Title
+    try:
+         if get_student_research_title_data[0].revise_title > get_student_research_title_data[0].accepted and get_student_research_title_data[0].revise_title > get_student_research_title_data[0].deferred:
 
             update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
             update_research_title_data_0.status = "Title Defense - Revise Title"
@@ -6224,541 +6880,78 @@ def subjectTeacherTitleDefenseDayCloseVote(request, id):
     except:
         pass
 
+    
     # Research Title 1 is Deferred
     try:
-        if get_student_research_title_data[0].deferred >= int(3):
+         if get_student_research_title_data[0].deferred > get_student_research_title_data[0].accepted and get_student_research_title_data[0].deferred > get_student_research_title_data[0].revise_title:
 
             update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
             update_research_title_data_0.status = "Title Defense - Deferred"
             update_research_title_data_0.save()
-        
+
     except:
         pass
 
-    # Research Title 1 is Accepted
+    # Research Title 1 is undecided
     try:
-        if get_student_research_title_data[0].accepted >= int(3):
+        get_updated_student_research_title_data = ResearchTitle.objects.all().filter(student_leader_username = id)
+        if get_updated_student_research_title_data[0].status != "Title Defense - Deferred":
+            if get_student_research_title_data[0].accepted == get_student_research_title_data[0].revise_title or \
+                get_student_research_title_data[0].accepted == get_student_research_title_data[0].deferred or \
+                get_student_research_title_data[0].revise_title == get_student_research_title_data[0].deferred:
 
-            update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
-            update_research_title_data_0.status = "Title Defense - Accepted"
-            update_research_title_data_0.save()
+                    reset_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
+                    reset_research_title_data_0.status = "Title Defense - Pending"
+                    reset_research_title_data_0.accepted = 0
+                    reset_research_title_data_0.deferred = 0
+                    reset_research_title_data_0.revise_title = 0
+                    reset_research_title_data_0.save()
 
-            try:
-                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
-                update_research_title_data_1.status = "Title Defense - Deferred"
-                update_research_title_data_1.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
-                update_research_title_data_2.status = "Title Defense - Deferred"
-                update_research_title_data_2.save()
-            except:
-                pass
+                    reset_research_title_defense_form_0 = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = id, defense_date = date_today)
+                    for i in range (len(reset_research_title_defense_form_0)):
+                        reset_research_title_defense_form_0[i].form_status = ""
+                        reset_research_title_defense_form_0[i].save()
+                        i + 1
                 
-            try:
-                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
-                update_research_title_data_3.status = "Title Defense - Deferred"
-                update_research_title_data_3.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
-                update_research_title_data_4.status = "Title Defense - Deferred"
-                update_research_title_data_4.save()
-            except:
-                pass
 
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'date_today': today.strftime("%B %d, %Y"),
+                    reset_research_title_defense_vote_0 = BET3ResearchTitleVote.objects.all().filter(student_leader_username = id, research_title = get_student_research_title_data[0].research_title)
+                    for i in range (len(reset_research_title_defense_vote_0)):
+                        reset_research_title_defense_vote_0[i].panel_response = ""
+                        reset_research_title_defense_vote_0[i].save()
+                        i + 1
 
-                'subject_teacher_data': get_subject_teacher_data,
-                'today_defense_schedule': get_today_defense_schedule,
+                    context = {
+                    'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                    'date_today': today.strftime("%B %d, %Y"),
 
-                'student_leader_username': id,
+                    'subject_teacher_data': get_subject_teacher_data,
+                    'today_defense_schedule': get_today_defense_schedule,
 
-                'response': 'sweet panel voting closed',
-                }
+                    'student_leader_username': id,
 
-            return render(request, 'subject-teacher-dashboard.html', context)
-            
-    except:
-        pass
-    #######################################################################################
-    # Research Title 2 is for Revision
-    try:
-        if get_student_research_title_data[1].revise_title >= int(3):
+                    'response': 'sweet panel vote again',
+                    'tie_research_title' :  get_student_research_title_data[0].research_title,
+                    }
 
-            update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
-            update_research_title_data_1.status = "Title Defense - Revise Title"
-            update_research_title_data_1.save()
-
-            try:
-                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
-                update_research_title_data_0.status = "Title Defense - Deferred"
-                update_research_title_data_0.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
-                update_research_title_data_2.status = "Title Defense - Deferred"
-                update_research_title_data_2.save()
-            except:
-                pass
+                    return render(request, 'subject-teacher-dashboard.html', context)
                 
-            try:
-                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
-                update_research_title_data_3.status = "Title Defense - Deferred"
-                update_research_title_data_3.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
-                update_research_title_data_4.status = "Title Defense - Deferred"
-                update_research_title_data_4.save()
-            except:
-                pass
-
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'date_today': today.strftime("%B %d, %Y"),
-
-                'subject_teacher_data': get_subject_teacher_data,
-                'today_defense_schedule': get_today_defense_schedule,
-
-                'student_leader_username': id,
-
-                'response': 'sweet panel voting closed',
-                }
-
-            return render(request, 'subject-teacher-dashboard.html', context)
-            
     except:
         pass
 
-    # Research Title 2 is Deferred
-    try:
-        if get_student_research_title_data[1].deferred >= int(3):
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'date_today': today.strftime("%B %d, %Y"),
 
-            update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
-            update_research_title_data_1.status = "Title Defense - Deferred"
-            update_research_title_data_1.save()
-        
-    except:
-        pass
+        'subject_teacher_data': get_subject_teacher_data,
+        'today_defense_schedule': get_today_defense_schedule,
 
-    # Research Title 2 is Accepted
-    try:
-        if get_student_research_title_data[1].accepted >= int(3):
+        'student_leader_username': id,
 
-            update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
-            update_research_title_data_1.status = "Title Defense - Accepted"
-            update_research_title_data_1.save()
+        'response': 'sweet all titles deferred',
+        }
 
-            try:
-                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
-                update_research_title_data_0.status = "Title Defense - Deferred"
-                update_research_title_data_0.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
-                update_research_title_data_2.status = "Title Defense - Deferred"
-                update_research_title_data_2.save()
-            except:
-                pass
-                
-            try:
-                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
-                update_research_title_data_3.status = "Title Defense - Deferred"
-                update_research_title_data_3.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
-                update_research_title_data_4.status = "Title Defense - Deferred"
-                update_research_title_data_4.save()
-            except:
-                pass
+    return render(request, 'subject-teacher-dashboard.html', context)
 
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'date_today': today.strftime("%B %d, %Y"),
-
-                'subject_teacher_data': get_subject_teacher_data,
-                'today_defense_schedule': get_today_defense_schedule,
-
-                'student_leader_username': id,
-
-                'response': 'sweet panel voting closed',
-                }
-
-            return render(request, 'subject-teacher-dashboard.html', context)
-            
-    except:
-        pass
-    #######################################################################################
-    # Research Title 3 is for Revision
-    try:
-        if get_student_research_title_data[2].revise_title >= int(3):
-
-            update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
-            update_research_title_data_2.status = "Title Defense - Revise Title"
-            update_research_title_data_2.save()
-
-            try:
-                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
-                update_research_title_data_0.status = "Title Defense - Deferred"
-                update_research_title_data_0.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
-                update_research_title_data_1.status = "Title Defense - Deferred"
-                update_research_title_data_1.save()
-            except:
-                pass
-                
-            try:
-                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
-                update_research_title_data_3.status = "Title Defense - Deferred"
-                update_research_title_data_3.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
-                update_research_title_data_4.status = "Title Defense - Deferred"
-                update_research_title_data_4.save()
-            except:
-                pass
-
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'date_today': today.strftime("%B %d, %Y"),
-
-                'subject_teacher_data': get_subject_teacher_data,
-                'today_defense_schedule': get_today_defense_schedule,
-
-                'student_leader_username': id,
-
-                'response': 'sweet panel voting closed',
-                }
-
-            return render(request, 'subject-teacher-dashboard.html', context)
-            
-    except:
-        pass
-
-    # Research Title 3 is Deferred
-    try:
-        if get_student_research_title_data[2].deferred >= int(3):
-
-            update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
-            update_research_title_data_2.status = "Title Defense - Deferred"
-            update_research_title_data_2.save()
-        
-    except:
-        pass
-
-    # Research Title 3 is Accepted
-    try:
-        if get_student_research_title_data[2].accepted >= int(3):
-
-            update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
-            update_research_title_data_2.status = "Title Defense - Accepted"
-            update_research_title_data_2.save()
-
-            try:
-                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
-                update_research_title_data_0.status = "Title Defense - Deferred"
-                update_research_title_data_0.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
-                update_research_title_data_1.status = "Title Defense - Deferred"
-                update_research_title_data_1.save()
-            except:
-                pass
-                
-            try:
-                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
-                update_research_title_data_3.status = "Title Defense - Deferred"
-                update_research_title_data_3.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
-                update_research_title_data_4.status = "Title Defense - Deferred"
-                update_research_title_data_4.save()
-            except:
-                pass
-
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'date_today': today.strftime("%B %d, %Y"),
-
-                'subject_teacher_data': get_subject_teacher_data,
-                'today_defense_schedule': get_today_defense_schedule,
-
-                'student_leader_username': id,
-
-                'response': 'sweet panel voting closed',
-                }
-
-            return render(request, 'subject-teacher-dashboard.html', context)
-            
-    except:
-        pass
-    #######################################################################################
-    # Research Title 4 is for Revision
-    try:
-        if get_student_research_title_data[3].revise_title >= int(3):
-
-            update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
-            update_research_title_data_3.status = "Title Defense - Revise Title"
-            update_research_title_data_3.save()
-
-            try:
-                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
-                update_research_title_data_0.status = "Title Defense - Deferred"
-                update_research_title_data_0.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
-                update_research_title_data_1.status = "Title Defense - Deferred"
-                update_research_title_data_1.save()
-            except:
-                pass
-                
-            try:
-                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
-                update_research_title_data_2.status = "Title Defense - Deferred"
-                update_research_title_data_2.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
-                update_research_title_data_4.status = "Title Defense - Deferred"
-                update_research_title_data_4.save()
-            except:
-                pass
-                
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'date_today': today.strftime("%B %d, %Y"),
-
-                'subject_teacher_data': get_subject_teacher_data,
-                'today_defense_schedule': get_today_defense_schedule,
-
-                'student_leader_username': id,
-
-                'response': 'sweet panel voting closed',
-                }
-
-            return render(request, 'subject-teacher-dashboard.html', context)
-            
-    except:
-        pass
-
-    # Research Title 4 is Deferred
-    try:
-        if get_student_research_title_data[3].deferred >= int(3):
-
-            update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
-            update_research_title_data_3.status = "Title Defense - Deferred"
-            update_research_title_data_3.save()
-            pass
-        
-    except:
-        pass
-
-    # Research Title 4 is Accepted
-    try:
-        if get_student_research_title_data[3].accepted >= int(3):
-
-            update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
-            update_research_title_data_3.status = "Title Defense - Accepted"
-            update_research_title_data_3.save()
-
-            try:
-                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
-                update_research_title_data_0.status = "Title Defense - Deferred"
-                update_research_title_data_0.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
-                update_research_title_data_1.status = "Title Defense - Deferred"
-                update_research_title_data_1.save()
-            except:
-                pass
-                
-            try:
-                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
-                update_research_title_data_2.status = "Title Defense - Deferred"
-                update_research_title_data_2.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
-                update_research_title_data_4.status = "Title Defense - Deferred"
-                update_research_title_data_4.save()
-            except:
-                pass
-
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'date_today': today.strftime("%B %d, %Y"),
-
-                'subject_teacher_data': get_subject_teacher_data,
-                'today_defense_schedule': get_today_defense_schedule,
-
-                'student_leader_username': id,
-
-                'response': 'sweet panel voting closed',
-                }
-
-            return render(request, 'subject-teacher-dashboard.html', context)
-            
-    except:
-        pass
-    #######################################################################################
-    # Research Title 5 is for Revision
-    try:
-        if get_student_research_title_data[4].revise_title >= int(3):
-
-            update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
-            update_research_title_data_4.status = "Title Defense - Revise Title"
-            update_research_title_data_4.save()
-
-            try:
-                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
-                update_research_title_data_0.status = "Title Defense - Deferred"
-                update_research_title_data_0.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
-                update_research_title_data_1.status = "Title Defense - Deferred"
-                update_research_title_data_1.save()
-            except:
-                pass
-                
-            try:
-                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
-                update_research_title_data_2.status = "Title Defense - Deferred"
-                update_research_title_data_2.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
-                update_research_title_data_3.status = "Title Defense - Deferred"
-                update_research_title_data_3.save()
-            except:
-                pass
-                
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'date_today': today.strftime("%B %d, %Y"),
-
-                'subject_teacher_data': get_subject_teacher_data,
-                'today_defense_schedule': get_today_defense_schedule,
-
-                'student_leader_username': id,
-
-                'response': 'sweet panel voting closed',
-                }
-
-            return render(request, 'subject-teacher-dashboard.html', context)
-            
-    except:
-        pass
-
-    # Research Title 5 is Deferred
-    try:
-        if get_student_research_title_data[4].deferred >= int(3):
-
-            update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
-            update_research_title_data_4.status = "Title Defense - Deferred"
-            update_research_title_data_4.save()
-            
-            pass
-        
-    except:
-        pass
-
-    # Research Title 5 is Accepted
-    try:
-        if get_student_research_title_data[4].accepted >= int(3):
-
-            update_research_title_data_4 = ResearchTitle.objects.get(id = get_student_research_title_data[4].id)
-            update_research_title_data_4.status = "Title Defense - Accepted"
-            update_research_title_data_4.save()
-
-            try:
-                update_research_title_data_0 = ResearchTitle.objects.get(id = get_student_research_title_data[0].id)
-                update_research_title_data_0.status = "Title Defense - Deferred"
-                update_research_title_data_0.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_1 = ResearchTitle.objects.get(id = get_student_research_title_data[1].id)
-                update_research_title_data_1.status = "Title Defense - Deferred"
-                update_research_title_data_1.save()
-            except:
-                pass
-                
-            try:
-                update_research_title_data_2 = ResearchTitle.objects.get(id = get_student_research_title_data[2].id)
-                update_research_title_data_2.status = "Title Defense - Deferred"
-                update_research_title_data_2.save()
-            except:
-                pass
-            
-            try:
-                update_research_title_data_3 = ResearchTitle.objects.get(id = get_student_research_title_data[3].id)
-                update_research_title_data_3.status = "Title Defense - Deferred"
-                update_research_title_data_3.save()
-            except:
-                pass
-
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'date_today': today.strftime("%B %d, %Y"),
-
-                'subject_teacher_data': get_subject_teacher_data,
-                'today_defense_schedule': get_today_defense_schedule,
-
-                'student_leader_username': id,
-
-                'response': 'sweet panel voting closed',
-                }
-
-            return render(request, 'subject-teacher-dashboard.html', context)
-            
-    except:
-        pass
-    #######################################################################################
 
 # Subject Teacher - Profile Page
 @login_required(login_url='index')
@@ -6863,10 +7056,11 @@ def subjectTeacherProfile(request):
 
     return render(request, 'subject-teacher-profile.html', context)
 
+
 # Subject Teacher - Research Title Defense Dashboard Page
 @login_required(login_url='index')
 @user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
-def subjectTeacherResearchTitleDefenseDashboard(request):
+def subjectTeacherStudentsTitleDefenseDashboard(request):
     currently_loggedin_user = (request.user)
 
     topbar_data = topbarProcess(request);
@@ -6900,19 +7094,19 @@ def subjectTeacherResearchTitleDefenseDashboard(request):
                 'student_defense_unscheduled' : student_defense_unscheduled,
                 }
 
-            return render(request, 'subject-teacher-research-title-defense-dashboard.html', context)
+            return render(request, 'subject-teacher-students-title-defense-schedule-dashboard.html', context)
 
         except:
             pass
     
-
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
 
         'course_handled_list': course_handled_list,
         }
 
-    return render(request, 'subject-teacher-research-title-defense-dashboard.html', context)
+    return render(request, 'subject-teacher-students-title-defense-schedule-dashboard.html', context)
+
 
 # Subject Teacher - Set Research Title Defense Schedule Page
 @login_required(login_url='index')
@@ -6938,26 +7132,26 @@ def subjectTeacherSetResearchTitleDefenseSchedule(request):
         course_input = request.POST.get('course_input')
         print(course_input)
 
-        try:
-            course_defense_schedules = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, course = course_input)
-            context = {
-                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-                'course_handled_list': course_handled_list,
+        course_available_defense_schedules = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, course = course_input, status ="Available")
+        course_reserved_defense_schedules = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, course = course_input, status ="Reserved")
+    
+        context = {
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+            'course_handled_list': course_handled_list,
 
-                'course_defense_schedules' : course_defense_schedules,
-                }
+            'course_available_defense_schedules': course_available_defense_schedules,
+            'course_reserved_defense_schedules': course_reserved_defense_schedules
+            }
 
-            return render(request, 'subject-teacher-set-research-title-defense.html', context)
-
-        except:
-            pass
+        return render(request, 'subject-teacher-set-research-title-defense.html', context)
     
     context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        'course_handled_list': course_handled_list,
-        }
+            'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+            'course_handled_list': course_handled_list,
+            }
 
     return render(request, 'subject-teacher-set-research-title-defense.html', context)
+
 
 # Subject Teacher - Save Research Title Defense Schedule Process
 @login_required(login_url='index')
@@ -7062,6 +7256,7 @@ def subjectTeacherSaveResearchTitleDefenseSchedule(request):
 
     return render(request, 'subject-teacher-set-research-title-defense.html', context)
 
+
 # Subject Teacher - Delete Research Title Defense Schedule Process
 @login_required(login_url='index')
 @user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
@@ -7086,6 +7281,190 @@ def subjectTeacherDeleteResearchTitleDefenseSchedule(request, id):
                 }
 
         return render(request, 'subject-teacher-set-research-title-defense.html', context)
+
+
+# Subject Teacher - BET-3 Research Title Defense Logs Dashboard
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherBET3TitleDefenseLogs(request):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    
+    get_completed_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, status="Completed")
+    get_redefense_defense_schedule = DefenseScheduleLog.objects.all().filter(username = currently_loggedin_user.username, status="Re-Defense")
+    
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+        'completed_defense_schedule':get_completed_defense_schedule,
+        'redefense_defense_schedule': get_redefense_defense_schedule,
+
+        }
+
+    return render(request, 'subject-teacher-bet3-research-title-defense-logs.html', context)
+
+
+# Subject Teacher - BET-3 Research Title Defense Completed Logs Dashboard
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherBET3TitleDefenseLogCompleted(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    
+    # Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = id)
+    except:
+        return redirect('subject-teacher-bet3-title-defense-logs')
+
+
+    get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username = id)
+    get_research_titles = ResearchTitle.objects.all().filter(student_leader_username = id)
+
+    get_present_panel_members = BET3ResearchTitleDefenseForm.objects.all().filter(student_leader_username = id, panel_attendance = "present")
+    get_absent_panel_members = BET3PanelInvitation.objects.all().filter(student_leader_username = id, form_status = "accepted", form = "BET-3 Panel Invitation", panel_attendance = "absent")
+    
+    try:
+        get_research_title_accepted = ResearchTitle.objects.get(student_leader_username = id, status = "Title Defense - Accepted")
+    except:
+        get_research_title_accepted = None
+
+    try:
+        get_research_title_revise = ResearchTitle.objects.get(student_leader_username = id, status = "Title Defense - Revise Title")
+    except:
+        get_research_title_revise = None
+    
+
+
+    if get_student_leader_data.middle_name == " ":
+        student_leader_full_name = get_student_leader_data.last_name+" "+get_student_leader_data.suffix+", "+get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name+" "+get_student_leader_data.suffix+", "+get_student_leader_data.first_name+" "+get_student_leader_data.middle_name[0]+"."
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+        'student_leader_data': get_student_leader_data,
+        'student_leader_full_name': student_leader_full_name,
+        'group_members': get_student_group_members,
+        'research_titles': get_research_titles,
+        'research_title_accepted': get_research_title_accepted,
+        'research_title_revise': get_research_title_revise,
+
+        'present_panel_members': get_present_panel_members,
+        'absent_panel_members': get_absent_panel_members
+
+        }
+
+    return render(request, 'subject-teacher-bet3-research-title-defense-data.html', context)
+
+
+# Subject Teacher - BET-3 Research Title Defense Redefense Logs Dashboard
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherBET3TitleDefenseLogRedefense(request, id):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    
+    get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username = id)
+    get_research_titles = ResearchTitleLog.objects.all().filter(student_leader_username = id)
+
+    get_present_panel_members = BET3ResearchTitleDefenseFormLog.objects.all().filter(student_leader_username = id, panel_attendance = "present")
+    get_absent_panel_members = BET3PanelInvitationLog.objects.all().filter(student_leader_username = id, form_status = "accepted", form = "BET-3 Panel Invitation", panel_attendance = "absent")
+    
+    try:
+        get_research_title_accepted = ResearchTitle.objects.get(student_leader_username = id, status = "Title Defense - Accepted")
+    except:
+        get_research_title_accepted = None
+
+    try:
+        get_research_title_revise = ResearchTitle.objects.get(student_leader_username = id, status = "Title Defense - Revise Title")
+    except:
+        get_research_title_revise = None
+
+    defense_date = get_present_panel_members[0].defense_date
+    defense_start_time = get_present_panel_members[0].defense_start_time
+    defense_end_time = get_present_panel_members[0].defense_end_time
+    
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+        'student_leader_full_name': get_research_titles[0].student_leader_name,
+        'student_course': get_research_titles[0].course_major_abbr,
+        'group_members': get_student_group_members,
+
+        'research_titles': get_research_titles,
+        'research_title_accepted': get_research_title_accepted,
+        'research_title_revise': get_research_title_revise,
+
+        'defense_date': defense_date,
+        'defense_start_time': defense_start_time,
+        'defense_end_time': defense_end_time,
+
+        'present_panel_members': get_present_panel_members,
+        'absent_panel_members': get_absent_panel_members
+
+        }
+
+    return render(request, 'subject-teacher-bet3-research-title-defense-data.html', context)
+
+
+# Subject Teacher - Research Title Defense Dashboard Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_subject_teacher, login_url='index')
+def subjectTeacherMyTitleDefenseDashboard(request):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    course_handled_list_unfiltered = []
+
+    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username = currently_loggedin_user.username)
+
+    for course in course_handled:
+        course_handled_list_unfiltered.append(course.course_major_abbr)
+
+    course_handled_list = list(dict.fromkeys(course_handled_list_unfiltered))
+    print(course_handled_list)
+
+    if request.method == 'POST':
+        course_input = request.POST.get('course_input')
+        print(course_input)
+
+        try:
+            student_defense_scheduled = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, course = course_input, status = "Reserved")
+            
+            context = {
+                'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+                'course_handled_list': course_handled_list,
+
+                'student_defense_scheduled' : student_defense_scheduled,
+                }
+
+            return render(request, 'subject-teacher-title-defense-schedule-dashboard.html', context)
+
+        except:
+            pass
+    
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+
+        'course_handled_list': course_handled_list,
+        }
+
+    return render(request, 'subject-teacher-title-defense-schedule-dashboard.html', context)
+
 
 @login_required(login_url='index')
 def topbarProcess(request):

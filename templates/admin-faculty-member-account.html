@@ -68,9 +68,9 @@
                       <tr>
                         <td>{{panel.username}}</td>
                         {% if panel.middle_name == "" %}
-                        <td>{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</td>
+                        <td>{{panel.honorific}} {{panel.first_name}} {{panel.last_name}} {{panel.suffix}}</td>
                         {% else %}
-                        <td>{{ panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</td>
+                        <td>{{ panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}} {{panel.suffix}}</td>
                         {% endif %}
                         <td>{{panel.department}}</td>
                         <td class="text-center">

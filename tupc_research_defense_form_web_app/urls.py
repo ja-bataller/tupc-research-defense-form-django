@@ -26,6 +26,7 @@ urlpatterns = [
    path('student/bet3/panel-invitation/download/<str:id>', views.studentDownloadPanelInvitationBet3, name ="student-download-panel-invitation-bet3"),
 
    path('student/bet3/research-title-defense', views.studentBET3ResearchTitleDefense, name ="student-bet3-research-title-defense"),
+   path('student/bet3/research-title-defense-form/download', views.studentDownloadBET3ResearchTitleDefenseForm, name ="student-download-bet3-research-title-defense-form"),
 
    path('student-panel-conforme-bet3/', views.studentPanelConformeBet3, name ="student-panel-conforme-bet3"), 
    path('student-panel-conforme-bet3-create/', views.studentPanelConformeBet3Create, name ="student-panel-conforme-bet3-create"),
@@ -58,6 +59,8 @@ urlpatterns = [
    path('dit-head-panel-conforme-bet-3-accept/<str:id>', views.ditHeadPanelConformeBet3Accept, name ="dit-head-panel-conforme-bet-3-accept"),  
    path('dit-head-panel-conforme-bet-3-decline/<str:id>', views.ditHeadPanelConformeBet3Decline, name ="dit-head-panel-conforme-bet-3-decline"),  
 
+   path('dit-head/bet3/panel-invitation/logs', views.ditHeadBET3PanelInvitationLogs, name ="dit-head-bet3-panel-invitation-logs"),
+
    # Panel Views
    path('panel/dashboard', views.panelDashboard, name ="panel-dashboard"),
    path('panel/profile', views.panelProfile, name ="panel-profile"),
@@ -78,6 +81,9 @@ urlpatterns = [
    # path('panel-panel-conforme-bet-3-accept/<str:id>/', views.panelPanelConformeBet3Accept, name ="panel-panel-conforme-bet-3-accept"),
    # path('panel-panel-conforme-bet-3-decline/<str:id>/', views.panelPanelConformeBet3Decline, name ="panel-panel-conforme-bet-3-decline"),
 
+      
+   path('panel/bet3/panel-invitation/logs', views.panelBET3PanelInvitationLogs, name ="panel-bet3-panel-invitation-logs"),
+
    # Subject Teacher Views
    path('subject-teacher/dashboard', views.subjectTeacherDashboard, name ="subject-teacher-dashboard"),
    path('subject-teacher/profile', views.subjectTeacherProfile, name ="subject-teacher-profile"),
@@ -88,8 +94,14 @@ urlpatterns = [
    path('subject-teacher/title-defense-day/set-panel-chairman/<str:id>', views.subjectTeacherTitleDefenseDaySetPanelChairman, name ="subject-teacher-title-defense-day-panel-chairman"),
    path('subject-teacher/title-defense-day/close-vote/<str:id>', views.subjectTeacherTitleDefenseDayCloseVote, name ="subject-teacher-title-defense-day-close-vote"),
 
-   path('subject-teacher/title-defense/dashboard', views.subjectTeacherResearchTitleDefenseDashboard, name ="subject-teacher-research-title-defense-dashboard"),
+   path('subject-teacher/title-defense/schedule/students', views.subjectTeacherStudentsTitleDefenseDashboard, name ="subject-teacher-students-title-defense-schedule-dashboard"),
    path('subject-teacher/title-defense/set-schedule', views.subjectTeacherSetResearchTitleDefenseSchedule, name ="subject-teacher-set-research-title-defense-schedule"),
    path('subject-teacher/title-defense/save-schedule', views.subjectTeacherSaveResearchTitleDefenseSchedule, name ="subject-teacher-save-research-title-defense-schedule"),
    path('subject-teacher/title-defense/delete-schedule/<str:id>', views.subjectTeacherDeleteResearchTitleDefenseSchedule, name ="subject-teacher-delete-research-title-defense-schedule"),
+
+   path('subject-teacher/title-defense/logs', views.subjectTeacherBET3TitleDefenseLogs, name ="subject-teacher-bet3-title-defense-logs"),
+   path('subject-teacher/title-defense/logs/completed/<str:id>', views.subjectTeacherBET3TitleDefenseLogCompleted, name ="subject-teacher-bet3-title-defense-logs-completed"),
+   path('subject-teacher/title-defense/logs/redefense/<str:id>', views.subjectTeacherBET3TitleDefenseLogRedefense, name ="subject-teacher-bet3-title-defense-logs-redefense"),
+
+   path('subject-teacher/title-defense/my-schedule', views.subjectTeacherMyTitleDefenseDashboard, name ="subject-teacher-title-defense-schedule-dashboard"),
 ]
