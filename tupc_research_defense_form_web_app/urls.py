@@ -2,13 +2,13 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-   # Authentication Views
+   # Authentication URLS
    path('', views.index, name ="index"),
    path('signup', views.signup, name ="signup"),
    path('logout', views.logout_user, name ="logout_user"),
    path('login-as', views.login_as_user_accounts, name ="login-as"),
 
-   # Student Views
+   # Student URLS
    path('student/profile', views.studentProfile, name ="student-profile"), 
    path('student/dashboard', views.studentDashboard, name ="student-dashboard"),
 
@@ -24,15 +24,20 @@ urlpatterns = [
    path('student/bet3/panel-invitation/create', views.studentPanelInvitationBet3Create, name ="student-panel-invitation-bet3-create"),
    path('student/bet3/panel-invitation/save', views.studentPanelInvitationBet3Save, name ="student-panel-invitation-bet3-save"),
    path('student/bet3/panel-invitation/download/<str:id>', views.studentDownloadPanelInvitationBet3, name ="student-download-panel-invitation-bet3"),
-
+   
    path('student/bet3/research-title-defense', views.studentBET3ResearchTitleDefense, name ="student-bet3-research-title-defense"),
    path('student/bet3/research-title-defense-form/download', views.studentDownloadBET3ResearchTitleDefenseForm, name ="student-download-bet3-research-title-defense-form"),
+
+   path('student/bet3/adviser/dashboard', views.studentBET3AdviserDashboard, name ="student-bet3-adviser-dashboard"),
+   path('student/bet3/adviser-conforme/download', views.studentBET3AdviserConformeDownload, name ="student-bet3-adviser-conforme-download"),
 
    path('student-panel-conforme-bet3/', views.studentPanelConformeBet3, name ="student-panel-conforme-bet3"), 
    path('student-panel-conforme-bet3-create/', views.studentPanelConformeBet3Create, name ="student-panel-conforme-bet3-create"),
    path('student-panel-conforme-bet3-form/', views.studentPanelConformeBet3Form, name ="student-panel-conforme-bet3-form"), 
 
-    # Administrator Views
+    path('student/bet3/panel-invitation/logs', views.studentBET3PanelInvitationLogs, name ="student-bet3-panel-invitation-logs"), 
+
+   # Administrator URLS
    path('tupc-admin/profile', views.adminProfile, name ="admin-profile"), 
    path('tupc-admin/dashboard', views.adminDashboard, name ="admin-dashboard"),
 
@@ -47,7 +52,7 @@ urlpatterns = [
    path('tupc-admin/student/edit-course-major/<str:id>', views.adminStudentEditCourseMajor, name ="admin-student-edit-course-major"), 
    path('tupc-admin/student/delete-course-major/<str:id>', views.adminStudentDeleteCourseMajor, name ="admin-student-delete-course-major"),
 
-   # DIT Head Views
+   # DIT Head URLS
    path('dit-head/dashboard', views.ditHeadDashboard, name ="dit-head-dashboard"),
    path('dit-head/profile', views.ditHeadProfile, name ="dit-head-profile"),
 
@@ -55,13 +60,17 @@ urlpatterns = [
    path('dit-head/bet3/panel-invitation/accept/<str:id>', views.ditHeadPanelInvitationBet3Accept, name ="dit-head-panel-invitation-bet-3-accept"),
    path('dit-head/bet3/panel-invitation/decline/<str:id>', views.ditHeadPanelInvitationBet3Decline, name ="dit-head-panel-invitation-bet-3-decline"),
 
+   path('dit-head/bet3/adviser-conforme', views.ditHeadBET3AdviserConforme, name ="dit-head-bet3-adviser-conforme"),
+   path('dit-head/bet3/adviser-conforme/accept/<str:id>', views.ditHeadBET3AdviserConformeAccept, name ="dit-head-bet3-adviser-conforme-accept"),
+   path('dit-head/bet3/adviser-conforme/decline/<str:id>', views.ditHeadBET3AdviserConformeDecline, name ="dit-head-bet3-adviser-conforme-decline"),
+
    path('dit-head-panel-conforme-bet-3/', views.ditHeadPanelConformeBet3, name ="dit-head-panel-conforme-bet-3"),
    path('dit-head-panel-conforme-bet-3-accept/<str:id>', views.ditHeadPanelConformeBet3Accept, name ="dit-head-panel-conforme-bet-3-accept"),  
    path('dit-head-panel-conforme-bet-3-decline/<str:id>', views.ditHeadPanelConformeBet3Decline, name ="dit-head-panel-conforme-bet-3-decline"),  
 
    path('dit-head/bet3/panel-invitation/logs', views.ditHeadBET3PanelInvitationLogs, name ="dit-head-bet3-panel-invitation-logs"),
 
-   # Panel Views
+   # Panel URLS
    path('panel/dashboard', views.panelDashboard, name ="panel-dashboard"),
    path('panel/profile', views.panelProfile, name ="panel-profile"),
 
@@ -83,8 +92,11 @@ urlpatterns = [
 
       
    path('panel/bet3/panel-invitation/logs', views.panelBET3PanelInvitationLogs, name ="panel-bet3-panel-invitation-logs"),
+   path('panel/bet3/title-defense/logs', views.panelBET3TitleDefenseLogs, name ="panel-bet3-title-defense-logs"),
+   path('panel/bet3/title-defense/logs/completed/<str:id>', views.panelBET3TitleDefenseLogCompleted, name ="bet3-title-defense-logs-completed"),
+   path('panel/bet3/title-defense/logs/redefense/<str:id>', views.panelBET3TitleDefenseLogRedefense, name ="bet3-title-defense-logs-redefense"),
 
-   # Subject Teacher Views
+   # Subject Teacher URLS
    path('subject-teacher/dashboard', views.subjectTeacherDashboard, name ="subject-teacher-dashboard"),
    path('subject-teacher/profile', views.subjectTeacherProfile, name ="subject-teacher-profile"),
 
@@ -104,4 +116,14 @@ urlpatterns = [
    path('subject-teacher/title-defense/logs/redefense/<str:id>', views.subjectTeacherBET3TitleDefenseLogRedefense, name ="subject-teacher-bet3-title-defense-logs-redefense"),
 
    path('subject-teacher/title-defense/my-schedule', views.subjectTeacherMyTitleDefenseDashboard, name ="subject-teacher-title-defense-schedule-dashboard"),
+
+   # Advisers URLS
+   path('adviser/dashboard', views.adviserDashboard, name ="adviser-dashboard"),
+   path('adviser/profile', views.adviserProfile, name ="adviser-profile"),
+
+   path('adviser/advisee/dashboard', views.adviserAdviseeDashboard, name ="adviser-advisee-dashboard"),
+
+   path('adviser/bet3/adviser-conforme', views.adviserBET3AdviserConforme, name ="adviser-bet3-adviser-conforme"),
+   path('adviser/bet3/adviser-conforme/accept/<str:id>', views.adviserBET3AdviserConformeAccept, name ="adviser-bet3-adviser-conforme-accept"),
+   path('adviser/bet3/adviser-conforme/decline/<str:id>', views.adviserBET3AdviserConformeDecline, name ="adviser-bet3-adviser-conforme-decline"),
 ]

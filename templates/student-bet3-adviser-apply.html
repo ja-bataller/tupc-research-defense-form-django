@@ -1,0 +1,186 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Student - Adviser Apply</title>
+
+    {% include 'css-main-cdn.html' %}
+  </head>
+
+  <body id="page-top">
+    <div id="wrapper">
+      
+      {% include 'student-sidebar-forms.html' %}
+
+      <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+
+          {% include 'topbar.html'%}
+
+          <div class="container-fluid">
+            <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-0 text-gray-800">Advisee Application</h1>
+              <!-- <div class="float-right">
+                            <button type="button" class="btn btn-success"><i class="fa-solid fa-file-pdf"></i> Download
+                                Form</button>
+                        </div> -->
+            </div>
+
+            <form method="POST">
+              {% csrf_token %}
+
+              <div class="card border-left-info shadow h-100 py-2 mb-3">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Adviser:</h6>
+                      {% if student_leader_data.research_title_defense_date == "" %}
+                      <div class="form-group mb-4">
+                        <select class="custom-select" name="defense_schedule_input" required>
+                          <option value="0" selected>Who is your preferred Adviser?</option>
+                          {% for date in defense_dates %}
+                          <option value="{{date.id}}">{{date.date}} -  {{date.start_time}} to {{date.end_time}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      {% else %}
+                      <div class="form-group mb-4">
+                        <input type="text" class="form-control" value="{{student_leader_data.research_title_defense_date}} - {{student_leader_data.research_title_defense_start_time}} to {{student_leader_data.research_title_defense_end_time}}" name="title_defense_date"  required disabled />
+                      </div>
+                      {% endif %}
+
+                      <!-- Department Head Start -->
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Department of Industrial Technology - Head:</h6>
+                      <div class="form-group mb-4">
+                        <input type="text" class="form-control" value="{{dept_head_name}}" name="dept_head_name_input" style="text-transform: capitalize" required disabled />
+                      </div>
+                      <!-- Department Head End -->
+
+                      <!-- Panel Members Start -->
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Panel Members:</h6>
+
+                      <div class="form-group mb-3">
+                        <select class="custom-select" name="panel_input" required>
+                          <option selected>Choose panel member here...</option>
+                          {% for panel in panel_members %} 
+                          {% if panel.middle_name == "" %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.last_name}}</option>
+                          {% else %}
+                          <option value="{{panel.username}}">{{panel.honorific}} {{panel.first_name}} {{panel.middle_name}} {{panel.last_name}}</option>
+                          {% endif %} 
+                          {% endfor %}
+                        </select>
+                      </div>
+
+                      <!-- Panel Members End -->
+                      <button type="submit" class="btn btn-outline-success w-100">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% include 'alert-validation.html' %}
+
+    {% if response == 'sweet no DIT Head' %}
+    <script>
+      Swal.fire("Uh-oh", "There is no Department Head assigned. Please try again later.", "warning");
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet invalid defense schedule' %}
+    <script>
+      Swal.fire("Invalid", "The Defense Schedule you entered is invalid. Please choose one from the choices given.", "error");
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3-create' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet invalid panel' %}
+    <script>
+      Swal.fire("Invalid", "The Panel you entered is invalid. Please choose one from the choices given.", "error");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet defense schedule not found' %}
+    <script>
+      Swal.fire("Uh-oh", "The Defense Schedule you entered doesn't exist.", "warning");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet Panel not found' %}
+    <script>
+      Swal.fire("Uh-oh", "The Panel Member you entered doesn't exist.", "warning");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet panel invitation exist' %}
+    <script>
+      Swal.fire("Uh-oh", "You have already sent an invitation to {{panel_full_name}}", "info");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet panel invitation accepted exist' %}
+    <script>
+      Swal.fire("Info", "{{panel_full_name}} has already accepted your panel invitation.", "info");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet panel invitation sent' %}
+    <script>
+      Swal.fire("Success", "The Panel Invitation has been sent successfully.", "success");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet no defense schedule' %}
+    <script>
+      Swal.fire("Info", "There are no available defense schedule. Please try again later.", "info");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet subject teacher' %}
+    <script>
+      Swal.fire("Info", "{{panel_full_name}} is your Subject Teacher", "info");
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3-create' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
+  </body>
+</html>

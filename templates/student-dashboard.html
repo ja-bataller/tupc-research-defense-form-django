@@ -5,198 +5,324 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <title>Student - Dashboard</title>
+  <title>Student - Dashboard</title>
 
-    {% include 'css-main-cdn.html' %}
+  {% include 'css-main-cdn.html' %}
 
 </head>
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
 
-        <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center"
-                href="{% url 'student-dashboard' %}">
-                <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%;" alt="">
-            </a>
+      <!-- Sidebar - Brand -->
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'student-dashboard' %}">
+          <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
+          </div>
+        </a>
+      </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'student-dashboard' %}">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Home</span></a>
-            </li>
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'student-dashboard' %}">
+          <i class="fa-solid fa-house"></i>
+          <span>Home</span></a>
+      </li>
 
-            <!-- Nav Item - Group Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGroup"
-                    aria-expanded="true" aria-controls="collapseGroup">
-                    <i class="fa-solid fa-users"></i>
-                    <span>Group</span>
-                </a>
-                <div id="collapseGroup" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{% url 'student-group-members' %}">Members</a> 
-                        <a class="collapse-item" href="{% url 'student-research-titles' %}">Research Titles</a>   
+      <!-- Nav Item - Group Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGroup" aria-expanded="true"
+          aria-controls="collapseGroup">
+          <i class="fa-solid fa-users"></i>
+          <span>Group</span>
+        </a>
+        <div id="collapseGroup" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'student-group-members' %}">Members</a>
+            <a class="collapse-item" href="{% url 'student-research-titles' %}">Research Titles</a>
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Forms Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForms" aria-expanded="true"
+          aria-controls="collapseForms">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Forms</span>
+        </a>
+        <div id="collapseForms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">BET-3</h6>
+            <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Topic - Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
+            <a class="collapse-item" href="{% url 'student-bet3-adviser-dashboard' %}">Adviser Conforme</a>
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">BET-5</h6>
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Logs Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
+          aria-controls="collapseLogs">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Logs</span>
+        </a>
+        <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">BET-3</h6>
+            <a class="collapse-item" href="{% url 'student-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
+            <!-- <a class="collapse-item" href="#">Research Title Defense</a>
+            <a class="collapse-item" href="#">Adviser Conforme</a> -->
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">BET-5</h6>
+          </div>
+        </div>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Nav Item - The Developers -->
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fa-solid fa-code"></i>
+          <span>The Devs</span>
+        </a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        {% include 'topbar.html'%}
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <div class="row">
+            <div class="col-md-8 col-sm-12 mb-3">
+              <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                        Student</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome {{student_leader_data.first_name}}
+                      </div>
                     </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Forms Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForms"
-                    aria-expanded="true" aria-controls="collapseForms">
-                    <i class="fa-solid fa-folder-open"></i>
-                    <span>Forms</span>
-                </a>
-                <div id="collapseForms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">BET-3</h6>
-                        <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Panel Invitation</a>
-                        <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">BET-5</h6>
+                    <div class="col-auto">
+                      <i class="fa-solid fa-face-laugh-beam fa-2x text-danger"></i>
                     </div>
+                  </div>
                 </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Nav Item - The Developers -->
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fa-solid fa-code"></i>
-                    <span>The Devs</span>
-                </a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+              </div>
             </div>
 
-        </ul>
-        <!-- End of Sidebar -->
+            <div class="col-md-4 col-sm-12 mb-3">
+              <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                        Today</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{date_today}}
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fa-solid fa-sun fa-2x text-warning"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+            <div class="col-md-8 col-sm-12 mb-3">
+              <div class="row">
 
-            <!-- Main Content -->
-            <div id="content">
-
-                {% include 'topbar.html'%}
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <div class="row">
-                        <div class="col-md-8 col-sm-12 mb-3">
-                          <div class="card bg-white text-dark shadow">
-                            <div class="card-body">
-                              Welcome {{student_leader_data.first_name}} 
-                              <div class="text-dark-50 small">Student</div>
-                            </div>
+                <div class="col-sm-12 mb-3">
+                  <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Upcoming Defense Schedule</div>
+                          {% if student_leader_data.title_defense_status != "completed" and student_leader_data.research_title_defense_date != "" %}
+                          <div class="h5 mb-0 font-weight-bold text-gray-800">Proposal Defese -
+                            {{student_leader_data.research_title_defense_date}} -
+                            {{student_leader_data.research_title_defense_start_time}} to
+                            {{student_leader_data.research_title_defense_end_time}}
                           </div>
+                          {% else %}
+                          <div class="h5 mb-0 font-weight-bold text-gray-800"> No Upcoming Defense Schedule
+                          </div>
+                          {% endif %}
                         </div>
-          
-                        <div class="col-md-4 col-sm-12 mb-3">
-                          <div class="card bg-white text-dark shadow">
-                            <div class="card-body">
-                              Today:
-                              <div class="text-dark-50 small">{{date_today}}</div>
-                            </div>
-                          </div>
+                        <div class="col-auto">
+                          <i class="fa-solid fa-calendar-day fa-2x text-primary"></i>
                         </div>
                       </div>
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <!-- <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Pending Dashboard</h6>
-                        </div> -->
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Research Title</th>
-                                            <th>Form</th>
-                                            <th>Faculty</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Research Title</th>
-                                            <th>Form</th>
-                                            <th>Faculty</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        {% include 'student-dashboard-panel-invitation-bet-3.html' %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
+                  </div>
                 </div>
-                <!-- /.container-fluid -->
 
+
+              </div>
             </div>
-            <!-- End of Main Content -->
 
-            <!-- Footer -->
-            {% include 'footer.html' %}
-            <!-- End of Footer -->
+            <div class="col-md-4 col-sm-12 mb-3">
+              <div class="row">
+                <div class="col-sm-12 mb-3">
+                  <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Research Forms Progress</div>
+                          <div class="h5 mt-3 mb-2 font-weight-bold text-gray-800">BET-3</div>
+                          {% if student_leader_data.group_members_status == "completed" %}
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>
+                            Group Members</div>
+                          {% else %}
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>
+                            Group Members</div>
+                          {% endif %}
 
+                          {% if student_leader_data.research_titles_status == "completed" %}
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>
+                            Research Titles</div>
+                          {% else %}
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>
+                            Research Titles</div>
+                          {% endif %}
+
+                          {% if student_leader_data.bet3_panel_invitation_status == "completed" %}
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>
+                            Panel Invitation - Topic Defense</div>
+                          {% else %}
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>
+                            Panel Invitation - Topic Defense</div>
+                          {% endif %}
+
+                          {% if student_leader_data.title_defense_status == "completed" %}
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>
+                            Research Title Defense Form</div>
+                          {% else %}
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>
+                            Research itle Defense Form</div>
+                          {% endif %}
+
+                          {% if student_leader_data.adviser_conforme_status == "Completed" %}
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>
+                            Adviser Conforme</div>
+                          {% else %}
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>
+                            Adviser Conforme</div>
+                          {% endif %}
+
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>
+                            Panel Invitation - Proposal Defense</div>
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>
+                            Research Proposal Defense Form</div>
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>
+                            Critique Form</div>
+
+                          <div class="h5 mt-3 mb-2 font-weight-bold text-gray-800">BET-5</div>
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>
+                            Panel Invitation - Research Final Defense</div>
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>
+                            Research Final Defense Form</div>
+
+                        </div>
+                        <div class="col-auto">
+                          <i class="fa-solid fa-list-check fa-2x text-info"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
 
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- End of Content Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+  </div>
+  <!-- End of Page Wrapper -->
 
-    {% include 'logout-modal.html' %}
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
-    {% include 'script-cdn.html' %}
+  {% include 'logout-modal.html' %}
 
-    {% if response == 'sweet panel invitation bet-3 success' %}
-    <script>
-      Swal.fire("Submitted", "Panel Invitation BET-3 submitted.", "success");
-      setTimeout(function () {
-        window.location.replace("{% url 'student-dashboard' %}");
-      }, 2000);
-    </script>
-    {% endif %}
+  {% include 'script-cdn.html' %}
 
-    {% if response == 'sweet no group members' %}
-    <script>
-      Swal.fire("Invalid", "Unable to access this page. Please submit your Group Members information.", "error");
-    </script>
-    {% endif %}
+  {% if response == 'sweet panel invitation bet-3 success' %}
+  <script>
+    Swal.fire("Submitted", "Panel Invitation BET-3 submitted.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'student-dashboard' %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no group members' %}
+  <script>
+    Swal.fire("Invalid", "Unable to access this page. Please submit your Group Members information.", "error");
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet incomplete title defense' %}
+  <script>
+    Swal.fire("Uh-oh", "Title Defense is incomplete.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'student-dashboard' %}");
+    }, 2000);
+  </script>
+  {% endif %}
 
 </body>
 

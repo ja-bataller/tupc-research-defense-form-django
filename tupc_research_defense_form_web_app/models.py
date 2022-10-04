@@ -31,6 +31,9 @@ class User(AbstractUser):
 
     is_faculty_member = models.BooleanField(default=False)
 
+    advisee_count = models.IntegerField(default=0)
+    advisee_limit = models.IntegerField(default=0)
+
     USERNAME_FIELD = 'username'
 
 
@@ -60,15 +63,16 @@ class StudentLeader(models.Model):
 
     group_count = models.IntegerField()
 
-    bet3_subject_teacher_username = models.CharField(
-        max_length=256, blank=False)
+    bet3_subject_teacher_username = models.CharField(max_length=256, blank=False)
     bet3_subject_teacher_name = models.CharField(max_length=256, blank=False)
     bet3_status = models.CharField(max_length=256, blank=False)
 
-    bet5_subject_teacher_username = models.CharField(
-        max_length=256, blank=True)
+    bet5_subject_teacher_username = models.CharField(max_length=256, blank=True)
     bet5_subject_teacher_name = models.CharField(max_length=256, blank=True)
     bet5_status = models.CharField(max_length=256, blank=True)
+
+    adviser_username = models.CharField(max_length=256, blank=True)
+    adviser_name = models.CharField(max_length=256, blank=True)
 
     current_subject = models.CharField(max_length=256, blank=False)
 
@@ -84,6 +88,7 @@ class StudentLeader(models.Model):
     research_titles_status = models.CharField(max_length=256, blank=True)
     bet3_panel_invitation_status = models.CharField(max_length=256, blank=True)
     title_defense_status = models.CharField(max_length=256, blank=True)
+    adviser_conforme_status = models.CharField(max_length=256, blank=True)
 
     request_limit = models.IntegerField(blank=True)
 
@@ -122,6 +127,9 @@ class ResearchTitle(models.Model):
     revise_title = models.IntegerField(default=0)
     suggested_title =  models.CharField(max_length=256, blank=True)
     old_research_title = models.CharField(max_length=256, blank=True)
+
+    title_defense_status = models.CharField(max_length=256, blank=True)
+    proposal_defense_status = models.CharField(max_length=256, blank=True)
 
     def __str__(self) -> str:
         return self.research_title
@@ -218,6 +226,31 @@ class BET3ResearchTitleVote(models.Model):
         return self.student_leader_username
 
 
+# BET-3 Adviser Conforme
+class BET3AdviserConforme(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    course = models.CharField(max_length=256)
+
+    research_title = models.CharField(max_length=256, blank=True)
+
+    form_date_submitted = models.CharField(max_length=256)
+
+    dit_head_username = models.CharField(max_length=256)
+    dit_head_name = models.CharField(max_length=256)
+    dit_head_response = models.CharField(max_length=256)
+    dit_head_response_date = models.CharField(max_length=256)
+
+    adviser_username = models.CharField(max_length=256)
+    adviser_name = models.CharField(max_length=256)
+    adviser_response = models.CharField(max_length=256)
+    adviser_response_date = models.CharField(max_length=256)
+    form_status = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
+
 class FilePath(models.Model):
     student_leader_username = models.CharField(max_length=256)
     file_path = models.CharField(max_length=256)
@@ -247,8 +280,12 @@ class ResearchTitleLog(models.Model):
 
     defense_date = models.CharField(max_length=256, blank=True)
 
+    title_defense_status = models.CharField(max_length=256, blank=True)
+    proposal_defense_status = models.CharField(max_length=256, blank=True)
+
     def __str__(self) -> str:
         return self.research_title
+
 
 # Defense Schedule Logs
 class DefenseScheduleLog(models.Model):
@@ -265,6 +302,7 @@ class DefenseScheduleLog(models.Model):
 
     def __str__(self) -> str:
         return self.username
+
 
 # BET-3 Panel Invitation Logs
 class BET3PanelInvitationLog(models.Model):
@@ -322,6 +360,31 @@ class BET3ResearchTitleDefenseFormLog(models.Model):
     defense_date = models.CharField(max_length=256, blank=True)
     defense_start_time = models.CharField(max_length=256, blank=True)
     defense_end_time = models.CharField(max_length=256, blank=True)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
+
+# BET-3 Research Adviser Conforme Logs
+class BET3AdviserConformeLog(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    course = models.CharField(max_length=256)
+
+    research_title = models.CharField(max_length=256, blank=True)
+
+    form_date_submitted = models.CharField(max_length=256)
+
+    dit_head_username = models.CharField(max_length=256)
+    dit_head_name = models.CharField(max_length=256)
+    dit_head_response = models.CharField(max_length=256)
+    dit_head_response_date = models.CharField(max_length=256)
+
+    adviser_username = models.CharField(max_length=256)
+    adviser_name = models.CharField(max_length=256)
+    adviser_response = models.CharField(max_length=256)
+    adviser_response_date = models.CharField(max_length=256)
+    form_status = models.CharField(max_length=256)
 
     def __str__(self) -> str:
         return self.student_leader_username

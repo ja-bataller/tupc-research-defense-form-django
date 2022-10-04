@@ -135,7 +135,7 @@
                 <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
                   <div class="float-right">DIT Head</div>
                 </span>
-                <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
+                <img class="img-profile rounded-circle" src="{% static 'img/user-profile.png' %}" />
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -232,6 +232,7 @@
                     {% for panel_invitation in panel_invitations_2 %}
                     {% if panel_invitation.dit_head_response == "accepted" %}
                     <tr>
+                      <td>{{panel_invitation.id}}</td>
                       <td>{{panel_invitation.student_leader_username}}</td>
                       <td>{{panel_invitation.student_leader_full_name}}</td>
                       <td>{{panel_invitation.course_major_abbr}}</td>
@@ -246,6 +247,7 @@
                     </tr>
                     {% elif panel_invitation.dit_head_response == "declined" %}
                     <tr>
+                      <td>{{panel_invitation.id}}</td>
                       <td>{{panel_invitation.student_leader_username}}</td>
                       <td>{{panel_invitation.student_leader_full_name}}</td>
                       <td>{{panel_invitation.course_major_abbr}}</td>

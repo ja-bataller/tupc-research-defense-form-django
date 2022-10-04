@@ -50,8 +50,6 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
-            <a class="collapse-item" href="{% url 'panel-research-title-defense-dashboard' %}">Research Title
-              Defense</a>
             <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
             <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
@@ -76,7 +74,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Panel Invitation</a>
-            <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
+            <a class="collapse-item" href="{% url 'panel-bet3-title-defense-logs' %}">Research Title Defense</a>
             <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
             <div class="collapse-divider"></div>
@@ -88,13 +86,6 @@
           </div>
         </div>
       </li>
-
-      <!-- Nav Item - Tables -->
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span>History</span></a>
-    </li> -->
 
       <!-- Divider -->
       <hr class="sidebar-divider" />
@@ -137,7 +128,7 @@
                 <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
                   <div class="float-right">Panel</div>
                 </span>
-                <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
+                <img class="img-profile rounded-circle" src="{% static 'img/user-profile.png' %}" />
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

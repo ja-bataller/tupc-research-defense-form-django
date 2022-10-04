@@ -100,7 +100,7 @@
 
           <div class="col-sm-12 col-md-6 col-lg-3 text-center">
             <label for="radio-card-4" class="radio-card">
-              <input type="radio" name="radio-card" id="radio-card-4" />
+              <input type="radio" name="radio-card" id="radio-card-4" onclick="adviser()" />
               <div class="card-content-wrapper">
                 <span class="check-icon"></span>
                 <div class="card-content">
@@ -141,7 +141,7 @@
 
           <div class="col-sm-12 col-md-6 col-lg-4 text-center">
             <label for="radio-card-4" class="radio-card">
-              <input type="radio" name="radio-card" id="radio-card-4" />
+              <input type="radio" name="radio-card" onclick="adviser()" id="radio-card-4" />
               <div class="card-content-wrapper">
                 <span class="check-icon"></span>
                 <div class="card-content">
@@ -196,6 +196,10 @@
 
       function subjectTeacher() {
         window.location.replace("{% url 'subject-teacher-dashboard' %}");
+      }
+
+      function adviser() {
+        window.location.replace("{% url 'adviser-dashboard' %}");
       }
     </script>
   </body>

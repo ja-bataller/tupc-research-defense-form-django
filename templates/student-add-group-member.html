@@ -2,579 +2,599 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
 
-    <title>Student - Add Group Members</title>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
 
-    {% include 'css-main-cdn.html' %}
-  </head>
+  <title>Student - Add Group Members</title>
 
-  <body id="page-top">
-    <div id="wrapper">
-      
-      <!-- Sidebar -->
-      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-        <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'student-dashboard' %}">
-          <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
-        </a>
+  {% include 'css-main-cdn.html' %}
+</head>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
+<body id="page-top">
+  <div id="wrapper">
 
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'student-dashboard' %}">
-            <i class="fa-solid fa-house"></i>
-            <span>Home</span></a
-          >
-        </li>
+    {% include 'student-sidebar-group.html' %}
 
-        <!-- Nav Item - Group Collapse Menu -->
-        <li class="nav-item active">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGroup" aria-expanded="true" aria-controls="collapseGroup">
-            <i class="fa-solid fa-users"></i>
-            <span>Group</span>
-          </a>
-          <div id="collapseGroup" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="{% url 'student-group-members' %}">Members</a>
-              <a class="collapse-item" href="{% url 'student-research-titles' %}">Research Titles</a>
-            </div>
-          </div>
-        </li>
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
 
-        <!-- Nav Item - Forms Collapse Menu -->
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForms" aria-expanded="true" aria-controls="collapseForms">
-            <i class="fa-solid fa-folder-open"></i>
-            <span>Forms</span>
-          </a>
-          <div id="collapseForms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">BET-3</h6>
-              <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Panel Invitation</a>
-              <div class="collapse-divider"></div>
-              <h6 class="collapse-header">BET-5</h6>
-            </div>
-          </div>
-        </li>
+        {% include 'topbar.html'%}
 
-        <!-- Divider -->
-        <hr class="sidebar-divider" />
+        <div class="container-fluid">
+          <form id="group_member_form" method="POST">
+            {% csrf_token %}
 
-        <!-- Nav Item - The Developers -->
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fa-solid fa-code"></i>
-            <span>The Devs</span>
-          </a>
-        </li>
+            <div class="card border-left-info shadow h-100 py-2 mb-3">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <h6 class="h4 mb-0 text-gray-800 mb-2">Group Member:</h6>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block" />
+                    <h6 class="h6 mb-0 text-gray-800 mb-2">How many members are you in a group?</h6>
+                    <select id="student_member_count" name="group_member_count" class="custom-select mb-4">
+                      <option selected value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
 
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-          <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
-      </ul>
-      <!-- End of Sidebar -->
+                    <div class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - TUPC ID No. :</h6>
+                      <input type="text" id="student_username_1" class="form-control" name="student_username_1"
+                        value="{{student_leader_data.username}}" onkeyup="this.value = this.value.toUpperCase();"
+                        disabled />
+                    </div>
 
-      <div id="content-wrapper" class="d-flex flex-column">
-        <div id="content">
-          
-          {% include 'topbar.html'%}
+                    <div class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - First Name:</h6>
+                      <input type="text" id="student_first_name_1" class="form-control" name="student_first_name_1"
+                        style="text-transform: capitalize" value="{{student_leader_data.first_name}}" disabled />
+                    </div>
 
-          <div class="container-fluid">
-            <form method="POST">
-              {% csrf_token %}
+                    <div class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Middle Name:</h6>
+                      <input type="text" id="student_middle_name_1" class="form-control" name="student_middle_name_1"
+                        style="text-transform: capitalize" value="{{student_leader_data.middle_name}}" disabled />
+                    </div>
 
-              <div class="card border-left-info shadow h-100 py-2 mb-3">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <h6 class="h4 mb-0 text-gray-800 mb-2">Group Member:</h6>
+                    <div class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Last Name:</h6>
+                      <input type="text" id="student_last_name_1" class="form-control" name="student_last_name_1"
+                        style="text-transform: capitalize" value="{{student_leader_data.last_name}}" disabled />
+                    </div>
 
-                      <h6 class="h6 mb-0 text-gray-800 mb-2">How many members are you in a group?</h6>
-                      <select id="student_member_count" name="group_member_count" class="custom-select mb-4">
-                        <option selected value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                      </select>
+                    <div class="form-group mb-3">
+                      <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Suffix:</h6>
+                      <input type="text" id="student_suffix_1" class="form-control" name="student_suffix_1"
+                        style="text-transform: capitalize" value="{{student_leader_data.suffix}}" disabled />
+                    </div>
+
+                    <div id="student_member_2" style="display: None">
+                      <hr class="mt-5 mb-5" />
 
                       <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - TUPC ID No. :</h6>
-                        <input type="text" id="student_username_1" class="form-control" name="student_username_1" value="{{student_leader_data.username}}" onkeyup="this.value = this.value.toUpperCase();" disabled />
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - TUPC ID No. :</h6>
+                        <input type="text" id="student_username_2" class="form-control" name="student_username_2"
+                          onkeyup="this.value = this.value.toUpperCase();" />
                       </div>
 
                       <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - First Name:</h6>
-                        <input type="text" id="student_first_name_1" class="form-control" name="student_first_name_1" style="text-transform: capitalize" value="{{student_leader_data.first_name}}" disabled />
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - First Name:</h6>
+                        <input type="text" id="student_first_name_2" class="form-control"
+                          style="text-transform: capitalize" name="student_first_name_2" />
                       </div>
 
                       <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Middle Name:</h6>
-                        <input type="text" id="student_middle_name_1" class="form-control" name="student_middle_name_1" style="text-transform: capitalize" value="{{student_leader_data.middle_name}}" disabled />
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - Middle Name:</h6>
+                        <input type="text" id="student_middle_name_2" class="form-control"
+                          style="text-transform: capitalize" name="student_middle_name_2" />
                       </div>
 
                       <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Last Name:</h6>
-                        <input type="text" id="student_last_name_1" class="form-control" name="student_last_name_1" style="text-transform: capitalize" value="{{student_leader_data.last_name}}" disabled />
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - Last Name:</h6>
+                        <input type="text" id="student_last_name_2" class="form-control"
+                          style="text-transform: capitalize" name="student_last_name_2" />
+                      </div>
+
+                      <div class="form-group mb-5">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - Suffix:</h6>
+                        <select id="student_suffix_2" class="custom-select" name="student_suffix_2">
+                          <option selected value="">None</option>
+                          <option value="Sr.">Sr.</option>
+                          <option value="Jr.">Jr.</option>
+                          <option value="I">I</option>
+                          <option value="II">II</option>
+                          <option value="III">III</option>
+                          <option value="IV">IV</option>
+                          <option value="V">V</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div id="student_member_3" style="display: None">
+                      <hr class="mt-5 mb-5" />
+
+                      <div class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - TUPC ID No. :</h6>
+                        <input type="text" id="student_username_3" class="form-control" name="student_username_3"
+                          onkeyup="this.value = this.value.toUpperCase();" />
                       </div>
 
                       <div class="form-group mb-3">
-                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 1 - Suffix:</h6>
-                        <input type="text" id="student_suffix_1" class="form-control" name="student_suffix_1" style="text-transform: capitalize" value="{{student_leader_data.suffix}}" disabled />
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - First Name:</h6>
+                        <input type="text" id="student_first_name_3" class="form-control"
+                          style="text-transform: capitalize" name="student_first_name_3" />
                       </div>
 
-                      <div id="student_member_2" style="display: None">
-                        <hr class="mt-5 mb-5" />
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - TUPC ID No. :</h6>
-                          <input type="text" id="student_username_2" class="form-control" name="student_username_2" onkeyup="this.value = this.value.toUpperCase();" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - First Name:</h6>
-                          <input type="text" id="student_first_name_2" class="form-control" style="text-transform: capitalize" name="student_first_name_2" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - Middle Name:</h6>
-                          <input type="text" id="student_middle_name_2" class="form-control" style="text-transform: capitalize" name="student_middle_name_2" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - Last Name:</h6>
-                          <input type="text" id="student_last_name_2" class="form-control" style="text-transform: capitalize" name="student_last_name_2" />
-                        </div>
-
-                        <div class="form-group mb-5">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 2 - Suffix:</h6>
-                          <select id="student_suffix_2" class="custom-select" name="student_suffix_2">
-                            <option selected value="">None</option>
-                            <option value="Sr.">Sr.</option>
-                            <option value="Jr.">Jr.</option>
-                            <option value="I">I</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
-                          </select>
-                        </div>
+                      <div class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - Middle Name:</h6>
+                        <input type="text" id="student_middle_name_3" class="form-control"
+                          style="text-transform: capitalize" name="student_middle_name_3" />
                       </div>
 
-                      <div id="student_member_3" style="display: None">
-                        <hr class="mt-5 mb-5" />
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - TUPC ID No. :</h6>
-                          <input type="text" id="student_username_3" class="form-control" name="student_username_3" onkeyup="this.value = this.value.toUpperCase();" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - First Name:</h6>
-                          <input type="text" id="student_first_name_3" class="form-control" style="text-transform: capitalize" name="student_first_name_3" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - Middle Name:</h6>
-                          <input type="text" id="student_middle_name_3" class="form-control" style="text-transform: capitalize" name="student_middle_name_3" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - Last Name:</h6>
-                          <input type="text" id="student_last_name_3" class="form-control" style="text-transform: capitalize" name="student_last_name_3" />
-                        </div>
-
-                        <div class="form-group mb-5">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - Suffix:</h6>
-                          <select id="student_suffix_3" class="custom-select" name="student_suffix_3">
-                            <option selected value="">None</option>
-                            <option value="Sr.">Sr.</option>
-                            <option value="Jr.">Jr.</option>
-                            <option value="I">I</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
-                          </select>
-                        </div>
+                      <div class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - Last Name:</h6>
+                        <input type="text" id="student_last_name_3" class="form-control"
+                          style="text-transform: capitalize" name="student_last_name_3" />
                       </div>
 
-                      <div id="student_member_4" style="display: None">
-                        <hr class="mt-5 mb-5" />
+                      <div class="form-group mb-5">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 3 - Suffix:</h6>
+                        <select id="student_suffix_3" class="custom-select" name="student_suffix_3">
+                          <option selected value="">None</option>
+                          <option value="Sr.">Sr.</option>
+                          <option value="Jr.">Jr.</option>
+                          <option value="I">I</option>
+                          <option value="II">II</option>
+                          <option value="III">III</option>
+                          <option value="IV">IV</option>
+                          <option value="V">V</option>
+                        </select>
+                      </div>
+                    </div>
 
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - TUPC ID No. :</h6>
-                          <input type="text" id="student_username_4" class="form-control" name="student_username_4" onkeyup="this.value = this.value.toUpperCase();" />
-                        </div>
+                    <div id="student_member_4" style="display: None">
+                      <hr class="mt-5 mb-5" />
 
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - First Name:</h6>
-                          <input type="text" id="student_first_name_4" class="form-control" style="text-transform: capitalize" name="student_first_name_4" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - Middle Name:</h6>
-                          <input type="text" id="student_middle_name_4" class="form-control" style="text-transform: capitalize" name="student_middle_name_4" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - Last Name:</h6>
-                          <input type="text" id="student_last_name_4" class="form-control" style="text-transform: capitalize" name="student_last_name_4" />
-                        </div>
-
-                        <div class="form-group mb-5">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - Suffix:</h6>
-                          <select id="student_suffix_4" class="custom-select" name="student_suffix_4">
-                            <option selected value="">None</option>
-                            <option value="Sr.">Sr.</option>
-                            <option value="Jr.">Jr.</option>
-                            <option value="I">I</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
-                          </select>
-                        </div>
+                      <div class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - TUPC ID No. :</h6>
+                        <input type="text" id="student_username_4" class="form-control" name="student_username_4"
+                          onkeyup="this.value = this.value.toUpperCase();" />
                       </div>
 
-                      <div id="student_member_5" style="display: None">
-                        <hr class="mt-5 mb-5" />
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - TUPC ID No. :</h6>
-                          <input type="text" id="student_username_5" class="form-control" name="student_username_5" onkeyup="this.value = this.value.toUpperCase();" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - First Name:</h6>
-                          <input type="text" id="student_first_name_5" class="form-control" style="text-transform: capitalize" name="student_first_name_5" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - Middle Name:</h6>
-                          <input type="text" id="student_middle_name_5" class="form-control" style="text-transform: capitalize" name="student_middle_name_5" />
-                        </div>
-
-                        <div class="form-group mb-3">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - Last Name:</h6>
-                          <input type="text" id="student_last_name_5" class="form-control" style="text-transform: capitalize" name="student_last_name_5" />
-                        </div>
-
-                        <div class="form-group mb-5">
-                          <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - Suffix:</h6>
-                          <select id="student_suffix_5" class="custom-select" name="student_suffix_5">
-                            <option selected value="">None</option>
-                            <option value="Sr.">Sr.</option>
-                            <option value="Jr.">Jr.</option>
-                            <option value="I">I</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
-                          </select>
-                        </div>
+                      <div class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - First Name:</h6>
+                        <input type="text" id="student_first_name_4" class="form-control"
+                          style="text-transform: capitalize" name="student_first_name_4" />
                       </div>
 
-                      <!-- Panel Members End -->
-                      <button type="submit" class="btn btn-outline-success w-100">Submit</button>
+                      <div class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - Middle Name:</h6>
+                        <input type="text" id="student_middle_name_4" class="form-control"
+                          style="text-transform: capitalize" name="student_middle_name_4" />
+                      </div>
+
+                      <div class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - Last Name:</h6>
+                        <input type="text" id="student_last_name_4" class="form-control"
+                          style="text-transform: capitalize" name="student_last_name_4" />
+                      </div>
+
+                      <div class="form-group mb-5">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 4 - Suffix:</h6>
+                        <select id="student_suffix_4" class="custom-select" name="student_suffix_4">
+                          <option selected value="">None</option>
+                          <option value="Sr.">Sr.</option>
+                          <option value="Jr.">Jr.</option>
+                          <option value="I">I</option>
+                          <option value="II">II</option>
+                          <option value="III">III</option>
+                          <option value="IV">IV</option>
+                          <option value="V">V</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div id="student_member_5" style="display: None">
+                      <hr class="mt-5 mb-5" />
+
+                      <div class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - TUPC ID No. :</h6>
+                        <input type="text" id="student_username_5" class="form-control" name="student_username_5"
+                          onkeyup="this.value = this.value.toUpperCase();" />
+                      </div>
+
+                      <div class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - First Name:</h6>
+                        <input type="text" id="student_first_name_5" class="form-control"
+                          style="text-transform: capitalize" name="student_first_name_5" />
+                      </div>
+
+                      <div class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - Middle Name:</h6>
+                        <input type="text" id="student_middle_name_5" class="form-control"
+                          style="text-transform: capitalize" name="student_middle_name_5" />
+                      </div>
+
+                      <div class="form-group mb-3">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - Last Name:</h6>
+                        <input type="text" id="student_last_name_5" class="form-control"
+                          style="text-transform: capitalize" name="student_last_name_5" />
+                      </div>
+
+                      <div class="form-group mb-5">
+                        <h6 class="h6 mb-0 text-gray-800 mb-2">Student 5 - Suffix:</h6>
+                        <select id="student_suffix_5" class="custom-select" name="student_suffix_5">
+                          <option selected value="">None</option>
+                          <option value="Sr.">Sr.</option>
+                          <option value="Jr.">Jr.</option>
+                          <option value="I">I</option>
+                          <option value="II">II</option>
+                          <option value="III">III</option>
+                          <option value="IV">IV</option>
+                          <option value="V">V</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- Panel Members End -->
+                    <!-- <button type="submit" class="btn btn-outline-success w-100">Submit</button> -->
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-outline-success w-100" onclick="validateGroupMemberForm()">
+                      Submit
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="groupMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Submit Group Member/s?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group mb-4">
+                              <h6 class="h6 mb-0 text-gray-800 mb-2">Student Leader:</h6>
+                              <h4 class="h4 mb-0 text-gray-800 mb-2">{{student_leader_data.username}} -
+                                {{student_leader_data.first_name}}
+                                {{student_leader_data.middle_name}} {{student_leader_data.last_name}}
+                                {{student_leader_data.suffix}}</h4>
+                            </div>
+
+                            <div class="form-group mb-4">
+                              <h6 class="h6 mb-0 text-gray-800 mb-2">Group Member #2:</h6>
+                              <h4 class="h4 mb-0 text-gray-800 mb-2" id="groupMember2" style="text-transform: capitalize;"></h4>
+
+                              <h6 class="h6 mb-0 text-gray-800 mb-2">Group Member #3:</h6>
+                              <h4 class="h4 mb-0 text-gray-800 mb-2" id="groupMember3" style="text-transform: capitalize;"></h4>
+
+                              <h6 class="h6 mb-0 text-gray-800 mb-2">Group Member #4:</h6>
+                              <h4 class="h4 mb-0 text-gray-800 mb-2" id="groupMember4" style="text-transform: capitalize;"></h4>
+
+                              <h6 class="h6 mb-0 text-gray-800 mb-2">Group Member #5:</h6>
+                              <h4 class="h4 mb-0 text-gray-800 mb-2" id="groupMember5" style="text-transform: capitalize;"></h4>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No</button>
+                            <button type="submmit" class="btn btn-outline-success">Yes</button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </form>
-          </div>
-          <!-- /.container-fluid -->
+            </div>
+          </form>
         </div>
-        <!-- End of Main Content -->
-
-        <!-- Footer -->
-        {% include 'footer.html' %}
-        <!-- End of Footer -->
+        <!-- /.container-fluid -->
       </div>
-      <!-- End of Content Wrapper -->
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
     </div>
+    <!-- End of Content Wrapper -->
+  </div>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fas fa-angle-up"></i>
-    </a>
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
-    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% include 'alert-validation.html' %}
+  {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% include 'alert-validation.html' %}
 
-    <script>
-      let student_member_count = document.querySelector("#student_member_count");
-      let student_member_2 = document.querySelector("#student_member_2");
-      let student_member_3 = document.querySelector("#student_member_3");
-      let student_member_4 = document.querySelector("#student_member_4");
-      let student_member_5 = document.querySelector("#student_member_5");
+  <script>
+    let student_member_count = document.querySelector("#student_member_count");
+    let student_member_2 = document.querySelector("#student_member_2");
+    let student_member_3 = document.querySelector("#student_member_3");
+    let student_member_4 = document.querySelector("#student_member_4");
+    let student_member_5 = document.querySelector("#student_member_5");
 
-      let student_username_2 = document.querySelector("#student_username_2");
-      let student_first_name_2 = document.querySelector("#student_first_name_2");
-      let student_middle_name_2 = document.querySelector("#student_middle_name_2");
-      let student_last_name_2 = document.querySelector("#student_last_name_2");
-      let student_suffix_2 = document.querySelector("#student_suffix_2");
+    let student_username_2 = document.querySelector("#student_username_2");
+    let student_first_name_2 = document.querySelector("#student_first_name_2");
+    let student_middle_name_2 = document.querySelector("#student_middle_name_2");
+    let student_last_name_2 = document.querySelector("#student_last_name_2");
+    let student_suffix_2 = document.querySelector("#student_suffix_2");
 
-      let student_username_3 = document.querySelector("#student_username_3");
-      let student_first_name_3 = document.querySelector("#student_first_name_3");
-      let student_middle_name_3 = document.querySelector("#student_middle_name_3");
-      let student_last_name_3 = document.querySelector("#student_last_name_3");
-      let student_suffix_3 = document.querySelector("#student_suffix_3");
+    let student_username_3 = document.querySelector("#student_username_3");
+    let student_first_name_3 = document.querySelector("#student_first_name_3");
+    let student_middle_name_3 = document.querySelector("#student_middle_name_3");
+    let student_last_name_3 = document.querySelector("#student_last_name_3");
+    let student_suffix_3 = document.querySelector("#student_suffix_3");
 
-      let student_username_4 = document.querySelector("#student_username_4");
-      let student_first_name_4 = document.querySelector("#student_first_name_4");
-      let student_middle_name_4 = document.querySelector("#student_middle_name_4");
-      let student_last_name_4 = document.querySelector("#student_last_name_4");
-      let student_suffix_4 = document.querySelector("#student_suffix_4");
+    let student_username_4 = document.querySelector("#student_username_4");
+    let student_first_name_4 = document.querySelector("#student_first_name_4");
+    let student_middle_name_4 = document.querySelector("#student_middle_name_4");
+    let student_last_name_4 = document.querySelector("#student_last_name_4");
+    let student_suffix_4 = document.querySelector("#student_suffix_4");
 
-      let student_username_5 = document.querySelector("#student_username_5");
-      let student_first_name_5 = document.querySelector("#student_first_name_5");
-      let student_middle_name_5 = document.querySelector("#student_middle_name_5");
-      let student_last_name_5 = document.querySelector("#student_last_name_5");
-      let student_suffix_5 = document.querySelector("#student_suffix_5");
+    let student_username_5 = document.querySelector("#student_username_5");
+    let student_first_name_5 = document.querySelector("#student_first_name_5");
+    let student_middle_name_5 = document.querySelector("#student_middle_name_5");
+    let student_last_name_5 = document.querySelector("#student_last_name_5");
+    let student_suffix_5 = document.querySelector("#student_suffix_5");
 
-      student_member_count.addEventListener("change", (event) => {
-        if (student_member_count.value == "1") {
-          student_member_2.style.display = "none";
-          student_member_3.style.display = "none";
-          student_member_4.style.display = "none";
-          student_member_5.style.display = "none";
+    student_member_count.addEventListener("change", (event) => {
+      if (student_member_count.value == "1") {
+        student_member_2.style.display = "none";
+        student_member_3.style.display = "none";
+        student_member_4.style.display = "none";
+        student_member_5.style.display = "none";
 
-          student_username_2.removeAttribute("required");
-          student_first_name_2.removeAttribute("required");
-          student_last_name_2.removeAttribute("required");
+        student_username_2.removeAttribute("required");
+        student_first_name_2.removeAttribute("required");
+        student_last_name_2.removeAttribute("required");
 
-          student_username_2.value = "";
-          student_first_name_2.value = "";
-          student_middle_name_2.value = "";
-          student_last_name_2.value = "";
-          student_suffix_2.selectedIndex = 0;
+        student_username_2.value = "";
+        student_first_name_2.value = "";
+        student_middle_name_2.value = "";
+        student_last_name_2.value = "";
+        student_suffix_2.selectedIndex = 0;
 
-          student_username_3.removeAttribute("required");
-          student_first_name_3.removeAttribute("required");
-          student_last_name_3.removeAttribute("required");
+        student_username_3.removeAttribute("required");
+        student_first_name_3.removeAttribute("required");
+        student_last_name_3.removeAttribute("required");
 
-          student_username_3.value = "";
-          student_first_name_3.value = "";
-          student_middle_name_3.value = "";
-          student_last_name_3.value = "";
-          student_suffix_3.selectedIndex = 0;
+        student_username_3.value = "";
+        student_first_name_3.value = "";
+        student_middle_name_3.value = "";
+        student_last_name_3.value = "";
+        student_suffix_3.selectedIndex = 0;
 
-          student_username_4.removeAttribute("required");
-          student_first_name_4.removeAttribute("required");
-          student_last_name_4.removeAttribute("required");
+        student_username_4.removeAttribute("required");
+        student_first_name_4.removeAttribute("required");
+        student_last_name_4.removeAttribute("required");
 
-          student_username_4.value = "";
-          student_first_name_4.value = "";
-          student_middle_name_4.value = "";
-          student_last_name_4.value = "";
-          student_suffix_4.selectedIndex = 0;
+        student_username_4.value = "";
+        student_first_name_4.value = "";
+        student_middle_name_4.value = "";
+        student_last_name_4.value = "";
+        student_suffix_4.selectedIndex = 0;
 
-          student_username_5.removeAttribute("required");
-          student_first_name_5.removeAttribute("required");
-          student_last_name_5.removeAttribute("required");
+        student_username_5.removeAttribute("required");
+        student_first_name_5.removeAttribute("required");
+        student_last_name_5.removeAttribute("required");
 
-          student_username_5.value = "";
-          student_first_name_5.value = "";
-          student_middle_name_5.value = "";
-          student_last_name_5.value = "";
-          student_suffix_5.selectedIndex = 0;
-        } else if (student_member_count.value == "2") {
-          student_member_2.style.display = "block";
-          student_member_3.style.display = "none";
-          student_member_4.style.display = "none";
-          student_member_5.style.display = "none";
+        student_username_5.value = "";
+        student_first_name_5.value = "";
+        student_middle_name_5.value = "";
+        student_last_name_5.value = "";
+        student_suffix_5.selectedIndex = 0;
+      } else if (student_member_count.value == "2") {
+        student_member_2.style.display = "block";
+        student_member_3.style.display = "none";
+        student_member_4.style.display = "none";
+        student_member_5.style.display = "none";
 
-          student_username_2.required = true;
-          student_first_name_2.required = true;
-          student_last_name_2.required = true;
+        student_username_2.required = true;
+        student_first_name_2.required = true;
+        student_last_name_2.required = true;
 
-          student_username_3.removeAttribute("required");
-          student_first_name_3.removeAttribute("required");
-          student_last_name_3.removeAttribute("required");
+        student_username_3.removeAttribute("required");
+        student_first_name_3.removeAttribute("required");
+        student_last_name_3.removeAttribute("required");
 
-          student_username_3.value = "";
-          student_first_name_3.value = "";
-          student_middle_name_3.value = "";
-          student_last_name_3.value = "";
-          student_suffix_3.selectedIndex = 0;
+        student_username_3.value = "";
+        student_first_name_3.value = "";
+        student_middle_name_3.value = "";
+        student_last_name_3.value = "";
+        student_suffix_3.selectedIndex = 0;
 
-          student_username_4.removeAttribute("required");
-          student_first_name_4.removeAttribute("required");
-          student_last_name_4.removeAttribute("required");
+        student_username_4.removeAttribute("required");
+        student_first_name_4.removeAttribute("required");
+        student_last_name_4.removeAttribute("required");
 
-          student_username_4.value = "";
-          student_first_name_4.value = "";
-          student_middle_name_4.value = "";
-          student_last_name_4.value = "";
-          student_suffix_4.selectedIndex = 0;
+        student_username_4.value = "";
+        student_first_name_4.value = "";
+        student_middle_name_4.value = "";
+        student_last_name_4.value = "";
+        student_suffix_4.selectedIndex = 0;
 
-          student_username_5.removeAttribute("required");
-          student_first_name_5.removeAttribute("required");
-          student_last_name_5.removeAttribute("required");
+        student_username_5.removeAttribute("required");
+        student_first_name_5.removeAttribute("required");
+        student_last_name_5.removeAttribute("required");
 
-          student_username_5.value = "";
-          student_first_name_5.value = "";
-          student_middle_name_5.value = "";
-          student_last_name_5.value = "";
-          student_suffix_5.selectedIndex = 0;
-        } else if (student_member_count.value == "3") {
-          student_member_2.style.display = "block";
-          student_member_3.style.display = "block";
-          student_member_4.style.display = "none";
-          student_member_5.style.display = "none";
+        student_username_5.value = "";
+        student_first_name_5.value = "";
+        student_middle_name_5.value = "";
+        student_last_name_5.value = "";
+        student_suffix_5.selectedIndex = 0;
+      } else if (student_member_count.value == "3") {
+        student_member_2.style.display = "block";
+        student_member_3.style.display = "block";
+        student_member_4.style.display = "none";
+        student_member_5.style.display = "none";
 
-          student_username_2.required = true;
-          student_first_name_2.required = true;
-          student_last_name_2.required = true;
+        student_username_2.required = true;
+        student_first_name_2.required = true;
+        student_last_name_2.required = true;
 
-          student_username_3.required = true;
-          student_first_name_3.required = true;
-          student_last_name_3.required = true;
+        student_username_3.required = true;
+        student_first_name_3.required = true;
+        student_last_name_3.required = true;
 
-          student_username_4.removeAttribute("required");
-          student_first_name_4.removeAttribute("required");
-          student_last_name_4.removeAttribute("required");
+        student_username_4.removeAttribute("required");
+        student_first_name_4.removeAttribute("required");
+        student_last_name_4.removeAttribute("required");
 
-          student_username_4.value = "";
-          student_first_name_4.value = "";
-          student_middle_name_4.value = "";
-          student_last_name_4.value = "";
-          student_suffix_4.selectedIndex = 0;
+        student_username_4.value = "";
+        student_first_name_4.value = "";
+        student_middle_name_4.value = "";
+        student_last_name_4.value = "";
+        student_suffix_4.selectedIndex = 0;
 
-          student_username_5.removeAttribute("required");
-          student_first_name_5.removeAttribute("required");
-          student_last_name_5.removeAttribute("required");
+        student_username_5.removeAttribute("required");
+        student_first_name_5.removeAttribute("required");
+        student_last_name_5.removeAttribute("required");
 
-          student_username_5.value = "";
-          student_first_name_5.value = "";
-          student_middle_name_5.value = "";
-          student_last_name_5.value = "";
-          student_suffix_5.selectedIndex = 0;
-        } else if (student_member_count.value == "4") {
-          student_member_2.style.display = "block";
-          student_member_3.style.display = "block";
-          student_member_4.style.display = "block";
-          student_member_5.style.display = "none";
+        student_username_5.value = "";
+        student_first_name_5.value = "";
+        student_middle_name_5.value = "";
+        student_last_name_5.value = "";
+        student_suffix_5.selectedIndex = 0;
+      } else if (student_member_count.value == "4") {
+        student_member_2.style.display = "block";
+        student_member_3.style.display = "block";
+        student_member_4.style.display = "block";
+        student_member_5.style.display = "none";
 
-          student_username_2.required = true;
-          student_first_name_2.required = true;
-          student_last_name_2.required = true;
+        student_username_2.required = true;
+        student_first_name_2.required = true;
+        student_last_name_2.required = true;
 
-          student_username_3.required = true;
-          student_first_name_3.required = true;
-          student_last_name_3.required = true;
+        student_username_3.required = true;
+        student_first_name_3.required = true;
+        student_last_name_3.required = true;
 
-          student_username_4.required = true;
-          student_first_name_4.required = true;
-          student_last_name_4.required = true;
+        student_username_4.required = true;
+        student_first_name_4.required = true;
+        student_last_name_4.required = true;
 
-          student_username_5.removeAttribute("required");
-          student_first_name_5.removeAttribute("required");
-          student_last_name_5.removeAttribute("required");
+        student_username_5.removeAttribute("required");
+        student_first_name_5.removeAttribute("required");
+        student_last_name_5.removeAttribute("required");
 
-          student_username_5.value = "";
-          student_first_name_5.value = "";
-          student_middle_name_5.value = "";
-          student_last_name_5.value = "";
-          student_suffix_5.selectedIndex = 0;
-        } else if (student_member_count.value == "5") {
-          student_member_2.style.display = "block";
-          student_member_3.style.display = "block";
-          student_member_4.style.display = "block";
-          student_member_5.style.display = "block";
+        student_username_5.value = "";
+        student_first_name_5.value = "";
+        student_middle_name_5.value = "";
+        student_last_name_5.value = "";
+        student_suffix_5.selectedIndex = 0;
+      } else if (student_member_count.value == "5") {
+        student_member_2.style.display = "block";
+        student_member_3.style.display = "block";
+        student_member_4.style.display = "block";
+        student_member_5.style.display = "block";
 
-          student_username_2.required = true;
-          student_first_name_2.required = true;
-          student_last_name_2.required = true;
+        student_username_2.required = true;
+        student_first_name_2.required = true;
+        student_last_name_2.required = true;
 
-          student_username_3.required = true;
-          student_first_name_3.required = true;
-          student_last_name_3.required = true;
+        student_username_3.required = true;
+        student_first_name_3.required = true;
+        student_last_name_3.required = true;
 
-          student_username_4.required = true;
-          student_first_name_4.required = true;
-          student_last_name_4.required = true;
+        student_username_4.required = true;
+        student_first_name_4.required = true;
+        student_last_name_4.required = true;
 
-          student_username_5.required = true;
-          student_first_name_5.required = true;
-          student_last_name_5.required = true;
-        } else {
-          Swal.fire("Invalid", "You entered an invalid Group Member Count.", "error");
+        student_username_5.required = true;
+        student_first_name_5.required = true;
+        student_last_name_5.required = true;
+      } else {
+        Swal.fire("Invalid", "You entered an invalid Group Member Count.", "error");
 
-          setTimeout(function () {
-            location.reload();
-          }, 2000);
-        }
-      });
-    </script>
+        setTimeout(function () {
+          location.reload();
+        }, 2000);
+      }
+    });
 
-    {% if response == 'sweet group member is a student leader' %}
-    <script>
-      Swal.fire("Invalid", "{{existing_username}} can't be a Group Member. (Faculty Member / Student Leader)", "error");
 
-      setTimeout(function () {
-        window.location.replace("{% url 'student-add-group-members' %}");
-      }, 2000);
-    </script>
-    {% endif %} {% if response == 'sweet group member has same username' %}
-    <script>
-      Swal.fire("Invalid", "You entered a TUPC ID No. same with the other group members.", "error");
+    function validateGroupMemberForm() {
+      document.querySelector("#groupMember2").innerHTML = student_username_2.value + " - " + student_first_name_2
+        .value + " " + student_middle_name_2.value + " " + student_last_name_2.value + " " + student_suffix_2.value
+      document.querySelector("#groupMember3").innerHTML = student_username_3.value + " - " + student_first_name_3
+        .value + " " + student_middle_name_3.value + " " + student_last_name_3.value + " " + student_suffix_3.value
+      document.querySelector("#groupMember4").innerHTML = student_username_4.value + " - " + student_first_name_4
+        .value + " " + student_middle_name_4.value + " " + student_last_name_4.value + " " + student_suffix_4.value
+      document.querySelector("#groupMember5").innerHTML = student_username_5.value + " - " + student_first_name_5
+        .value + " " + student_middle_name_5.value + " " + student_last_name_5.value + " " + student_suffix_5.value
+      $("#groupMemberModal").modal();
+    }
 
-      setTimeout(function () {
-        window.location.replace("{% url 'student-add-group-members' %}");
-      }, 2000);
-    </script>
-    {% endif %} {% if response == 'sweet already a group member' %}
-    <script>
-      Swal.fire("Invalid", "{{existing_username }} is already a Group Member.", "error");
+    function submitGroupMemberForm() {
+      document.getElementById('group_member_form').submit();
+    }
+  </script>
 
-      setTimeout(function () {
-        window.location.replace("{% url 'student-add-group-members' %}");
-      }, 2000);
-    </script>
-    {% endif %}
 
-    {% if response == 'sweet incomplete group members' %}
-    <script>
-      Swal.fire("Unauthorized", "You can't access this page. Please submit the list of your Group Members.", "error");
 
-      setTimeout(function () {
-        window.location.replace("{% url 'student-add-group-members' %}");
-      }, 2000);
-      
-    </script>
-    {% endif %}
+  {% if response == 'sweet group member is a student leader' %}
+  <script>
+    Swal.fire("Invalid", "{{existing_username}} can't be a Group Member. (Faculty Member / Student Leader)", "error");
 
-    {% if response == 'sweet invalid username' %}
-    <script>
-      Swal.fire("Invalid", "You entered an invalid TUPC ID No. in some input field.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'student-add-group-members' %}");
+    }, 2000);
+  </script>
+  {% endif %} {% if response == 'sweet group member has same username' %}
+  <script>
+    Swal.fire("Invalid", "You entered a TUPC ID No. same with the other group members.", "error");
 
-      setTimeout(function () {
-        window.location.replace("{% url 'student-add-group-members' %}");
-      }, 2000);
-    </script>
-    {% endif %}
+    setTimeout(function () {
+      window.location.replace("{% url 'student-add-group-members' %}");
+    }, 2000);
+  </script>
+  {% endif %} {% if response == 'sweet already a group member' %}
+  <script>
+    Swal.fire("Invalid", "{{existing_username }} is already a Group Member.", "error");
 
-    {% if response == 'sweet invalid suffix' %}
-    <script>
-      Swal.fire("Invalid", "You entered an invalid suffix in some input field.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'student-add-group-members' %}");
+    }, 2000);
+  </script>
+  {% endif %}
 
-      setTimeout(function () {
-        window.location.replace("{% url 'student-add-group-members' %}");
-      }, 2000);
-    </script>
-    {% endif %}
-  </body>
+  {% if response == 'sweet incomplete group members' %}
+  <script>
+    Swal.fire("Unauthorized", "You can't access this page. Please submit the list of your Group Members.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'student-add-group-members' %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet invalid username' %}
+  <script>
+    Swal.fire("Invalid", "You entered an invalid TUPC ID No. in some input field.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'student-add-group-members' %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet invalid suffix' %}
+  <script>
+    Swal.fire("Invalid", "You entered an invalid suffix in some input field.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'student-add-group-members' %}");
+    }, 2000);
+  </script>
+  {% endif %}
+</body>
+
 </html>

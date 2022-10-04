@@ -18,7 +18,8 @@
   <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-      {% include 'student-forms-sidebar.html' %}
+      
+      {% include 'student-sidebar-forms.html' %}
 
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
@@ -31,7 +32,7 @@
             <!-- Page Heading -->
             <div class="row">
               <div class="col-lg-9 col-md-12 mb-3">
-                <h1 class="h3 mb-0 text-gray-800">BET-3 - Panel Invitation</h1>
+                <h1 class="h3 mb-0 text-gray-800">BET-3 - Panel Invitation - Forms </h1>
               </div>
               
               {% if student_leader_data.bet3_panel_invitation_status != "completed" %}
@@ -52,7 +53,7 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <table class="table table-bordered text-center" id="bet3PanelInvitation" width="100%" cellspacing="0">
                     <thead>
                       <tr>
                         <th>Ref No.</th>
@@ -199,7 +200,7 @@
         })
           .type("Loading...", { delay: 500 })
           .delete(10)
-          .type("Extracting data...", { delay: 500 })
+          .type("Extracting Data...", { delay: 500 })
           .delete(18)
           .type("Generating PDF...", { delay: 500 })
           .go();
@@ -212,7 +213,9 @@
 
       // window.open("{{download_link}}", '_blank').focus();
     </script>
-    {% endif %} {% if response == 'sweet request limit exceed' %}
+    {% endif %} 
+    
+    {% if response == 'sweet request limit exceed' %}
     <script>
       Swal.fire("Uh-oh", "You have reached the Panel Invitation request limit.", "error");
       setTimeout(function () {
@@ -247,5 +250,16 @@
       }, 2000);
     </script>
     {% endif %}
+
+    <script>
+      $(document).ready(function () {
+        $('#bet3PanelInvitation').DataTable({
+          order: [
+            [0, 'desc']
+          ],
+        });
+      });
+    </script>
+
   </body>
 </html>

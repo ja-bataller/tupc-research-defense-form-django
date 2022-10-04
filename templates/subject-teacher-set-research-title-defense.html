@@ -40,7 +40,7 @@
                     >{{currently_loggedin_user_full_name}} <br />
                     <div class="float-right">Subject Teacher</div>
                   </span>
-                  <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}" />
+                  <img class="img-profile rounded-circle" src="{% static 'img/user-profile.png' %}" />
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -195,7 +195,7 @@
 
     {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% include 'alert-validation.html' %}
 
-    <script>
+    <!-- <script>
       let today = new Date();
       let dd = today.getDate() + 5; // +7 to enable the date 1 week from todays date
       let mm = today.getMonth() + 1; //January is 0 so need to add 1 to make it 1
@@ -210,7 +210,7 @@
 
       min_date = yyyy + "-" + mm + "-" + dd;
       document.getElementById("defense_date").setAttribute("min", min_date);
-    </script>
+    </script> -->
 
     <script>
       const picker = document.getElementById("defense_date");

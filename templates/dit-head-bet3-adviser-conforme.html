@@ -1,0 +1,231 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>DIT Head - BET-3 Adviser Conforme</title>
+
+  {% include 'css-main-cdn.html' %}
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    {% include 'dit-head-sidebar-forms.html' %}
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+          <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
+                  <div class="float-right">DIT Head</div>
+                </span>
+                <img class="img-profile rounded-circle" src="{% static 'img/user-profile.png' %}" />
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="{% url 'dit-head-profile' %}">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-3">
+            <h1 class="h3 mb-0 text-gray-800">BET-3 - Adviser Conforme</h1>
+          </div>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <!-- <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Pending Dashboard</h6>
+                </div> -->
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Ref No.</th>
+                      <th>Student ID No.</th>
+                      <th>Student Name</th>
+                      <th>Course</th>
+                      <th>Adviser ID No.</th>
+                      <th>Adviser Name</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Ref No.</th>
+                      <th>Student ID No.</th>
+                      <th>Student Name</th>
+                      <th>Course</th>
+                      <th>Adviser ID No.</th>
+                      <th>Adviser Name</th>
+                      <th>Action</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    {% for adviser_conforme in adviser_conformes %}
+                    <tr>
+                      <td>{{adviser_conforme.id}}</td>
+                      <td>{{adviser_conforme.student_leader_username}}</td>
+                      <td>{{adviser_conforme.student_leader_full_name}}</td>
+                      <td>{{adviser_conforme.course}}</td>
+                      <td>{{adviser_conforme.adviser_username}}</td>
+                      <td>{{adviser_conforme.adviser_name}}</td>
+                      <td class="text-center">
+                        <a id="accept_{{adviser_conforme.id}}" data-id="{{adviser_conforme.id}}"
+                          class="btn btn-outline-success mb-2" type="button"
+                          href="#">Accept</a>
+                        <a id="decline_{{adviser_conforme.id}}" data-id="{{adviser_conforme.id}}"
+                          class="btn btn-outline-danger mb-2" type="button"
+                          href="#">Decline</a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Accept Modal -->
+  <div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="acceptModal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to accept <span id="student_name_accept"></span> BET-3 Adviser Conforme request?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+          <a id="accept_btn" class="btn btn-outline-success" type="button" href="#">Yes - Accept</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decline Modal -->
+  <div class="modal fade" id="declineModal" tabindex="-1" aria-labelledby="declineModal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Decline Request?</h5>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to decline <span id="student_name_decline"></span> BET-3 Adviser Conforme request?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+          <a id="decline_btn" class="btn btn-outline-danger" type="button" href="#">Yes - Decline</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  {% include 'logout-modal.html' %}
+  {% include 'script-cdn.html' %}
+  <!-- Sweetalert 2 CDN -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  {% for adviser_conforme in adviser_conformes %}
+  <script>
+    document.getElementById('accept_' + '{{adviser_conforme.id}}').addEventListener("click", function () {
+      data_id = $(document.getElementById('accept_' + '{{adviser_conforme.id}}')).attr("data-id")
+
+      document.getElementById('student_name_accept').textContent = "{{adviser_conforme.student_leader_full_name}}";
+      document.getElementById("accept_btn").href = "{% url 'dit-head-bet3-adviser-conforme-accept' id=0 %}"
+        .replace(/0/, data_id);
+      $("#acceptModal").modal()
+    });
+
+    document.getElementById('decline_' + '{{adviser_conforme.id}}').addEventListener("click", function () {
+      data_id = $(document.getElementById('decline_' + '{{adviser_conforme.id}}')).attr("data-id")
+
+      document.getElementById('student_name_decline').textContent = "{{adviser_conforme.student_leader_full_name}}";
+      document.getElementById("decline_btn").href = "{% url 'dit-head-bet3-adviser-conforme-decline' id=0 %}"
+        .replace(/0/, data_id);
+      $("#declineModal").modal()
+    });
+  </script>
+  {% endfor %}
+
+  {% if response == 'sweet bet-3 adviser conforme accepted' %}
+  <script>
+    Swal.fire("Accepted", "The Adviser Conforme request of {{accepted_student_member_name}} is accepted.",
+      "success");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'dit-head-bet3-adviser-conforme' %}");
+    }, 1500);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet bet-3 adviser conforme declined' %}
+  <script>
+    Swal.fire("Declined", "The Adviser Conforme request of {{declined_student_member_name}} is declined.", "info");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'dit-head-bet3-adviser-conforme' %}");
+    }, 1500);
+  </script>
+  {% endif %}
+
+</body>
+
+</html>
