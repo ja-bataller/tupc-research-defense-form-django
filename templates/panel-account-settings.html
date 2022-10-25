@@ -10,23 +10,20 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>DIT Head - Dashboard</title>
+  <title>Panel - Account Settings</title>
 
   {% include 'css-main-cdn.html' %}
-
 </head>
 
 <body id="page-top">
-
   <!-- Page Wrapper -->
   <div id="wrapper">
 
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-     
       <!-- Sidebar - Brand -->
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
+        <a class="nav-link" href="{% url 'panel-dashboard' %}">
           <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
           </div>
         </a>
@@ -36,8 +33,8 @@
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'panel-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
       </li>
@@ -45,7 +42,7 @@
       <!-- Divider -->
       <!-- <hr class="sidebar-divider"> -->
 
-      <!-- Nav Item - Forms Collapse Menu -->
+      <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
           aria-controls="collapsePages">
@@ -55,9 +52,8 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'dit-head-panel-invitation-bet-3' %}">Topic - Panel Invitation</a>
-            <a class="collapse-item" href="{% url 'dit-head-bet3-adviser-conforme' %}">Research Adviser Conforme</a>
-            <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
+            <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
+            <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
             <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
             <div class="collapse-divider"></div>
@@ -70,7 +66,7 @@
         </div>
       </li>
 
-      <!-- Nav Item - Logs Collapse Menu -->
+      <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
           aria-controls="collapseLogs">
@@ -80,7 +76,8 @@
         <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'dit-head-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'panel-bet3-title-defense-logs' %}">Research Title Defense</a>
             <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
             <div class="collapse-divider"></div>
@@ -92,13 +89,6 @@
           </div>
         </div>
       </li>
-
-      <!-- Nav Item - Tables -->
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span>History</span></a>
-    </li> -->
 
       <!-- Divider -->
       <hr class="sidebar-divider" />
@@ -125,57 +115,54 @@
       <!-- Main Content -->
       <div id="content">
 
-        {% include 'dit-head-topbar.html' %}
+        {% include 'panel-topbar.html' %}
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <div class="row">
-            <div class="col-md-8 col-sm-12 mb-3">
-              <div class="card border-left-danger shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                        Department of Industrial Technology - Head</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome
-                        {{currently_loggedin_user_data.honorific}} {{currently_loggedin_user_data.last_name}}
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fa-solid fa-face-laugh-beam fa-2x text-danger"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-3">
+            <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-gears"></i> Account Settings</h1>
+          </div>
 
-            <div class="col-md-4 col-sm-12 mb-3">
-              <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                        Today</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{date_today}}
-                      </div>
+          <!-- User Profile Start -->
+          <div class="card border-left-warning shadow h-100 py-2 mb-3">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                      <label>Current Password</label>
+                      <input type="password" class="form-control" name="current_password_input" required />
                     </div>
-                    <div class="col-auto">
-                      <i class="fa-solid fa-sun fa-2x text-warning"></i>
+
+                    <div class="form-group">
+                      <label>New Password</label>
+                      <input type="password" class="form-control" name="new_password_input" required />
                     </div>
-                  </div>
+
+                    <div class="form-group">
+                      <label>Confirm New Password</label>
+                      <input type="password" class="form-control" name="confirm_new_password_input" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-success w-100"><i class="fa-solid fa-lock"></i> Change
+                      Password</button>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
-          
+          <!-- User Profile End -->
         </div>
         <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      {% include 'footer.html' %}
+      {% include 'footer.html'%}
       <!-- End of Footer -->
     </div>
     <!-- End of Content Wrapper -->
@@ -187,9 +174,37 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  {% include 'logout-modal.html' %}
-
-  {% include 'script-cdn.html' %}
+  {% include 'logout-modal.html' %} 
+  {% include 'script-cdn.html' %} 
+  
+  {% if response == 'current password is incorrect' %}
+  <script>
+    iziToast.error({
+      title: "Invalid.",
+      message: "The Password you entered is incorrect.",
+      position: "topCenter",
+      timeout: 5000,
+    });
+  </script>
+  {% endif %} {% if response == 'new password and confirm new password doesnt match' %}
+  <script>
+    iziToast.error({
+      title: "Invalid.",
+      message: "The New Password and Confirm Password you entered doesn't match.",
+      position: "topCenter",
+      timeout: 5000,
+    });
+  </script>
+  {% endif %} {% if response == 'current password and new password is same' %}
+  <script>
+    iziToast.error({
+      title: "Invalid.",
+      message: "The Current Password and New Password you entered is the same.",
+      position: "topCenter",
+      timeout: 5000,
+    });
+  </script>
+  {% endif %}
 </body>
 
 </html>

@@ -28,3 +28,4 @@ class SignUpForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'type': 'email', 'class': 'form-control mb-3', 'name': 'email_address', 'autocomplete': 'off', 'required': 'on'}),
             'password': forms.PasswordInput(attrs={'type': 'password', 'class': 'form-control', 'name': 'passwordForm', 'autocomplete': 'off', 'required': 'on'}),
         }
+

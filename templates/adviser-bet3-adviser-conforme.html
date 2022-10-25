@@ -24,15 +24,18 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'adviser-dashboard' %}">
-        <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
-      </a>
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'adviser-dashboard' %}">
+          <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
+          </div>
+        </a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'adviser-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
@@ -42,7 +45,7 @@
       <!-- <hr class="sidebar-divider"> -->
 
       <!-- Nav Item - Forms Collapse Menu -->
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
           aria-controls="collapsePages">
           <i class="fa-solid fa-folder-open"></i>

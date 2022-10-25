@@ -31,11 +31,14 @@ urlpatterns = [
    path('student/bet3/adviser/dashboard', views.studentBET3AdviserDashboard, name ="student-bet3-adviser-dashboard"),
    path('student/bet3/adviser-conforme/download', views.studentBET3AdviserConformeDownload, name ="student-bet3-adviser-conforme-download"),
 
+   path('student/bet3/proposal-panel-invitation', views.studentBET3ProposalPanelInvitation, name ="student-bet3-propsal-panel-invitation"),
+   # path('student/bet3/proposal-panel-invitation/create', views.studentBET3ProposalPanelInvitationCreate, name ="student-bet3-proposal-panel-invitation-create"), 
+
    path('student-panel-conforme-bet3/', views.studentPanelConformeBet3, name ="student-panel-conforme-bet3"), 
    path('student-panel-conforme-bet3-create/', views.studentPanelConformeBet3Create, name ="student-panel-conforme-bet3-create"),
    path('student-panel-conforme-bet3-form/', views.studentPanelConformeBet3Form, name ="student-panel-conforme-bet3-form"), 
 
-    path('student/bet3/panel-invitation/logs', views.studentBET3PanelInvitationLogs, name ="student-bet3-panel-invitation-logs"), 
+   path('student/bet3/panel-invitation/logs', views.studentBET3PanelInvitationLogs, name ="student-bet3-panel-invitation-logs"), 
 
    # Administrator URLS
    path('tupc-admin/profile', views.adminProfile, name ="admin-profile"), 
@@ -56,6 +59,12 @@ urlpatterns = [
    path('dit-head/dashboard', views.ditHeadDashboard, name ="dit-head-dashboard"),
    path('dit-head/profile', views.ditHeadProfile, name ="dit-head-profile"),
 
+   path('dit-head/create/e-signature', views.ditHeadCreateESignature, name ="dit-head-create-esignature"),
+   path('dit-head/upload/e-signature', views.ditHeadUploadESignature, name ="dit-head-upload-esignature"),
+   path('dit-head/delete/e-signature', views.ditHeadDeleteESignature, name ="dit-head-delete-esignature"),
+
+   # path('panel/account-settings', views.panelAccountSettings, name ="panel-account-settings"),
+
    path('dit-head/bet3/panel-invitation', views.ditHeadPanelInvitationBet3, name ="dit-head-panel-invitation-bet-3"),
    path('dit-head/bet3/panel-invitation/accept/<str:id>', views.ditHeadPanelInvitationBet3Accept, name ="dit-head-panel-invitation-bet-3-accept"),
    path('dit-head/bet3/panel-invitation/decline/<str:id>', views.ditHeadPanelInvitationBet3Decline, name ="dit-head-panel-invitation-bet-3-decline"),
@@ -73,6 +82,12 @@ urlpatterns = [
    # Panel URLS
    path('panel/dashboard', views.panelDashboard, name ="panel-dashboard"),
    path('panel/profile', views.panelProfile, name ="panel-profile"),
+
+   path('panel/create/e-signature', views.panelCreateESignature, name ="panel-create-esignature"),
+   path('panel/upload/e-signature', views.panelUploadESignature, name ="panel-upload-esignature"),
+   path('panel/delete/e-signature', views.panelDeleteESignature, name ="panel-delete-esignature"),
+
+   path('panel/account-settings', views.panelAccountSettings, name ="panel-account-settings"),
 
    path('panel/title-defense-day/<str:id>', views.panelTitleDefenseDay, name ="panel-title-defense-day"),
    path('panel/title/accept/<str:id>', views.panelAcceptTitle, name ="panel-accept-title"),

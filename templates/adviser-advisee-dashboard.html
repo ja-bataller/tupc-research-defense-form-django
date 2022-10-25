@@ -24,19 +24,30 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'adviser-dashboard' %}">
-        <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
-      </a>
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'adviser-dashboard' %}">
+          <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
+          </div>
+        </a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'adviser-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
       </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'adviser-advisee-dashboard' %}">
+          <i class="fa-solid fa-user-graduate"></i>
+          <span>Advisee</span></a>
+      </li>
+
+      
 
       <!-- Divider -->
       <!-- <hr class="sidebar-divider"> -->
@@ -51,7 +62,7 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="#">Research Adviser Conforme</a>
+            <a class="collapse-item" href="{% url 'adviser-bet3-adviser-conforme' %}">Research Adviser Conforme</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
             <!-- <a class="collapse-item" href="#">New Form</a>

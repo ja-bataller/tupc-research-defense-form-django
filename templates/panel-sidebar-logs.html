@@ -3,9 +3,12 @@
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'panel-dashboard' %}">
-      <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
-    </a>
+    <li class="nav-item active">
+      <a class="nav-link" href="{% url 'panel-dashboard' %}">
+        <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
+        </div>
+      </a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0" />
@@ -30,7 +33,7 @@
       <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">BET-3</h6>
-          <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
+          <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Topic - Panel Invitation</a>
           <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
           <!-- <a class="collapse-item" href="">Research Title Defense</a>
                       <a class="collapse-item" href="">Research Adviser Conforme</a> -->
@@ -54,7 +57,7 @@
       <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">BET-3</h6>
-          <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Panel Invitation</a>
+          <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
           <a class="collapse-item" href="{% url 'panel-bet3-title-defense-logs' %}">Research Title Defense</a>
           <!-- <a class="collapse-item" href="">Research Title Defense</a>
                       <a class="collapse-item" href="">Research Adviser Conforme</a> -->

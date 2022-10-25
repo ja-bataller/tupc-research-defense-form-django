@@ -3,8 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
-from pyparsing import empty
-from .forms import SignUpForm
+from .forms import *
 from .models import *
 # Import Date & Time
 from datetime import date
@@ -15,6 +14,9 @@ from docx.shared import Inches
 import qrcode
 import os
 import subprocess
+import base64
+from django.core.files.storage import FileSystemStorage
+import cv2
 
 today = date.today()
 date_today = today.strftime("%B %d, %Y")
@@ -364,6 +366,30 @@ def logout_user(request):
             i + 1
         
         FilePath.objects.all().filter(student_leader_username = currently_loggedin_user.username).delete()
+
+    if currently_loggedin_user.is_department_head == 1:
+        # Check if E-Sign Exist
+        if os.path.exists("static/signatures/"+str(currently_loggedin_user)+".png"):
+            os.remove("static/signatures/"+str(currently_loggedin_user)+".png")
+            print("E-Sign Deleted")
+
+    if currently_loggedin_user.is_panel == 1:
+        # Check if E-Sign Exist
+        if os.path.exists("static/signatures/"+str(currently_loggedin_user)+".png"):
+            os.remove("static/signatures/"+str(currently_loggedin_user)+".png")
+            print("E-Sign Deleted")
+
+    if currently_loggedin_user.is_adviser == 1:
+        # Check if E-Sign Exist
+        if os.path.exists("static/signatures/"+str(currently_loggedin_user)+".png"):
+            os.remove("static/signatures/"+str(currently_loggedin_user)+".png")
+            print("E-Sign Deleted")
+
+    if currently_loggedin_user.is_subject_teacher == 1:
+        # Check if E-Sign Exist
+        if os.path.exists("static/signatures/"+str(currently_loggedin_user)+".png"):
+            os.remove("static/signatures/"+str(currently_loggedin_user)+".png")
+            print("E-Sign Deleted")
         
     logout(request)
     return redirect('index')
@@ -2837,7 +2863,6 @@ def studentBET3AdviserDashboard(request):
 
     get_advisers = User.objects.all().filter(is_adviser = 1)
 
-
     # Student = Check Adviser Conforme
     try:
         check_adviser_conforme = BET3AdviserConforme.objects.get(student_leader_username = current_user.username)
@@ -2948,10 +2973,16 @@ def studentBET3AdviserDashboard(request):
             return render(request, 'student-bet3-adviser-dashboard.html', context)
 
         print("Research Title:", research_title)
+
+        # Student Leader Full Name
+        if get_student_leader_data.middle_name == "":
+            student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+        else:
+            student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
         
         save_adviser_conforme = BET3AdviserConforme(
             student_leader_username = current_user.username,
-            student_leader_full_name = currently_loggedin_user_full_name,
+            student_leader_full_name = student_leader_full_name,
             course = get_student_leader_data.course_major_abbr,
             research_title = research_title,
             form_date_submitted = date_today,
@@ -2995,6 +3026,66 @@ def studentBET3AdviserDashboard(request):
         }
 
     return render(request, 'student-bet3-adviser-dashboard.html', context)
+
+
+# Student - BET-3 - Proposal Defense - Panel Invitation
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_student, login_url='index')
+def studentBET3ProposalPanelInvitation(request):
+    current_user = (request.user)
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username = current_user.username)
+    except:
+        return redirect ('index')
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'response': "sweet incomplete group members"
+        }
+
+        return render(request, 'student-add-group-member.html', context)
+    
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account' : currently_loggedin_user_account,
+
+        'response': "sweet incomplete research titles"
+        }
+
+        return render(request, 'student-add-research-title.html', context)
+    ############## PAGE VALIDATION ##############
+
+    # get_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username)
+    # get_accepted_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username, form_status = "accepted")
+    # get_pending_panel_invitations = BET3PanelInvitation.objects.all().filter(student_leader_username = current_user.username, form_status = "pending")
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'currently_loggedin_user_account': currently_loggedin_user_account,
+
+        'student_leader_data': get_student_leader_data,
+
+        # 'panel_invitations': get_panel_invitations,
+        # 'accepted_panel_invitations': get_accepted_panel_invitations.count(),
+        # 'pending_panel_invitations': get_pending_panel_invitations.count(),
+        }
+
+    return render(request, 'student-bet3-proposal-defense-panel-invitation-dashboard.html', context)
+
 
 # Student - BET-3 Adviser Conforme - Download
 @login_required(login_url='index')
@@ -5999,43 +6090,155 @@ def ditHeadProfile(request):
         currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
         currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
 
+    # Check if E-Sign Exist
+    if os.path.exists("static/signatures/"+str(currently_loggedin_user)+".png"):
+        esignature_exist = 'True'
+        print('E-sign exist')
+
+    else:
+        esignature_exist = 'False'
+        print("E-sign doesn't exist.")
+
     context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+            'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+            'currently_loggedin_user_data': currently_loggedin_user,
+
+            'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+            'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+            'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+            'currently_loggedin_user_department' : currently_loggedin_user.department,
+            'currently_loggedin_username':  currently_loggedin_user.username, 
+            'currently_loggedin_user_email': currently_loggedin_user.email,
+
+            'esignature_exist': esignature_exist,
         }
     
+    return render(request, 'dit-head-profile.html', context)
 
-    context = {
-                'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
 
-                'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
-                'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
-                'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
-                'currently_loggedin_user_department' : currently_loggedin_user.department,
-                'currently_loggedin_username':  currently_loggedin_user.username, 
-                'currently_loggedin_user_email': currently_loggedin_user.email,
-                }   
+# Panel - Dashboard Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_department_head, login_url='index')
+def ditHeadCreateESignature(request):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
 
     if request.method == 'POST':
-        current_password_input = request.POST.get('current_password_input')
-        new_password_input = request.POST.get('new_password_input')
-        confirm_new_password_input = request.POST.get('confirm_new_password_input')
+        signature_url = request.POST.get('signature_link')
 
-        if current_password_input == currently_loggedin_user.password:
+        # Separate the metadata from the image data
+        head, data = signature_url.split(',', 1)
 
-            if current_password_input != new_password_input:
+        # Get the file extension (gif, jpeg, png)
+        file_ext = head.split(';')[0].split('/')[1]
 
-                if new_password_input == confirm_new_password_input:
+        # Decode the image data
+        plain_data = base64.b64decode(data)
 
-                    User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
+        # # Write the image to a file
+        with open('static/signatures/'+currently_loggedin_user.username + "." + file_ext, 'wb') as f:
+            f.write(plain_data)
 
-                    context = {                        
-                        "response": "changed password"
-                        }
-                    return render(request, 'index.html', context)
+        return redirect("dit-head-profile")
 
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'date_today': today.strftime("%B %d, %Y"),
+        }
+
+    return render(request, 'dit-head-signature-pad.html', context)
+
+
+# Panel - Upload E-Signature
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_department_head, login_url='index')
+def ditHeadUploadESignature(request):
+    currently_loggedin_user = (request.user)
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+
+    # Check if E-Sign Exist
+    if os.path.exists("static/signatures/"+str(currently_loggedin_user)+".png"):
+        esignature_exist = 'True'
+        print('E-sign exist')
+
+    else:
+        esignature_exist = 'False'
+        print("E-sign doesn't exist.")
+
+
+    if request.method == 'POST':
+        esignature = request.FILES['esignature']
+        print(esignature.name)
+        
+        get_file_extensions = os.path.splitext(esignature.name)
+        print(get_file_extensions[1])
+        
+
+        if get_file_extensions[1] == '.png':
+            print("Valid")
+
+            if os.path.exists("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1]):
+                os.remove("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1])
+
+                fs = FileSystemStorage()
+        
+                filename = fs.save(str(currently_loggedin_user)+get_file_extensions[1], esignature)
+                uploaded_file_url = fs.url(filename)
+                print(uploaded_file_url)
+
+                esignature_size = cv2.imread("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1])
+                h, w, c = esignature_size.shape
+                
+                print('width:  ', w)
+                print('height: ', h)
+                print('channel:', c)
+
+                if w == 300 and h == 100:
+                    print("Valid Size")
                 else:
+                    print("Invalid Size")
+                    # Invalid - Delete E-Signature
+                    os.remove("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1])
+
+                return redirect('dit-head-profile')
+            else:
+                print("The file does not exist")
+
+                fs = FileSystemStorage()
+        
+                filename = fs.save(str(currently_loggedin_user)+get_file_extensions[1], esignature)
+                uploaded_file_url = fs.url(filename)
+                print(uploaded_file_url)
+
+                esignature_size = cv2.imread("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1])
+                h, w, c = esignature_size.shape
+
+                if w == 300 and h == 100:
+                    print("Valid Size")
+                else:
+                    print("Invalid Size")
+                    # Invalid - Delete E-Signature
+                    os.remove("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1])
+
                     context = {
                         'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                        'currently_loggedin_user_data': currently_loggedin_user,
 
                         'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
                         'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
@@ -6044,30 +6247,20 @@ def ditHeadProfile(request):
                         'currently_loggedin_username':  currently_loggedin_user.username, 
                         'currently_loggedin_user_email': currently_loggedin_user.email,
 
-                        "response": "new password and confirm new password doesnt match"
-                        }
+                        'esignature_exist': esignature_exist,
 
+                        'response': 'sweet invalid size'
+                        } 
+                    
                     return render(request, 'dit-head-profile.html', context)
 
-            else:
-                context = {
-                    'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
-
-                    'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
-                    'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
-                    'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
-                    'currently_loggedin_user_department' : currently_loggedin_user.department,
-                    'currently_loggedin_username':  currently_loggedin_user.username, 
-                    'currently_loggedin_user_email': currently_loggedin_user.email,
-
-                    "response": "current password and new password is same"
-                    }
-
-                return render(request, 'dit-head-profile.html', context)
-
+                return redirect('dit-head-profile')
+            
         else:
             context = {
                 'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                'currently_loggedin_user_data': currently_loggedin_user,
 
                 'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
                 'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
@@ -6076,13 +6269,23 @@ def ditHeadProfile(request):
                 'currently_loggedin_username':  currently_loggedin_user.username, 
                 'currently_loggedin_user_email': currently_loggedin_user.email,
 
-                "response": "current password is incorrect"
-                }
+                'esignature_exist': esignature_exist,
 
+                'response': 'sweet not png'
+                } 
+            
             return render(request, 'dit-head-profile.html', context)
 
 
-    return render(request, 'dit-head-profile.html', context)
+# DIT Head - Remove E-Signature
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_department_head, login_url='index')
+def ditHeadDeleteESignature(request):
+    currently_loggedin_user = (request.user)
+
+    if os.path.exists("static/signatures/"+str(currently_loggedin_user)+".png"):
+        os.remove("static/signatures/"+str(currently_loggedin_user)+".png")
+        return redirect('dit-head-profile')
 
 
 # DIT Head - Panel Invitation  BET-3 Page
@@ -6741,13 +6944,20 @@ def panelProfile(request):
         currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
         currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
 
-    context = {
-        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
-        }
-    
+    # Check if E-Sign Exist
+    if os.path.exists("static/signatures/"+str(currently_loggedin_user)+".png"):
+        esignature_exist = 'True'
+        print('E-sign exist')
+
+    else:
+        esignature_exist = 'False'
+        print("E-sign doesn't exist.")
+
 
     context = {
                 'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                'currently_loggedin_user_data': currently_loggedin_user,
 
                 'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
                 'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
@@ -6755,7 +6965,211 @@ def panelProfile(request):
                 'currently_loggedin_user_department' : currently_loggedin_user.department,
                 'currently_loggedin_username':  currently_loggedin_user.username, 
                 'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                'esignature_exist': esignature_exist,
                 }   
+
+    return render(request, 'panel-profile.html', context)
+
+# Panel - Upload E-Signature
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
+def panelUploadESignature(request):
+    currently_loggedin_user = (request.user)
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+
+    # Check if E-Sign Exist
+    if os.path.exists("static/signatures/"+str(currently_loggedin_user)+".png"):
+        esignature_exist = 'True'
+        print('E-sign exist')
+
+    else:
+        esignature_exist = 'False'
+        print("E-sign doesn't exist.")
+
+
+    if request.method == 'POST':
+        esignature = request.FILES['esignature']
+        print(esignature.name)
+        
+        get_file_extensions = os.path.splitext(esignature.name)
+        print(get_file_extensions[1])
+        
+
+        if get_file_extensions[1] == '.png':
+            print("Valid")
+
+            if os.path.exists("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1]):
+                os.remove("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1])
+
+                fs = FileSystemStorage()
+        
+                filename = fs.save(str(currently_loggedin_user)+get_file_extensions[1], esignature)
+                uploaded_file_url = fs.url(filename)
+                print(uploaded_file_url)
+
+                esignature_size = cv2.imread("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1])
+                h, w, c = esignature_size.shape
+                
+                print('width:  ', w)
+                print('height: ', h)
+                print('channel:', c)
+
+                if w == 300 and h == 100:
+                    print("Valid Size")
+                else:
+                    print("Invalid Size")
+                    # Invalid - Delete E-Signature
+                    os.remove("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1])
+
+                return redirect('panel-profile')
+            else:
+                print("The file does not exist")
+
+                fs = FileSystemStorage()
+        
+                filename = fs.save(str(currently_loggedin_user)+get_file_extensions[1], esignature)
+                uploaded_file_url = fs.url(filename)
+                print(uploaded_file_url)
+
+                esignature_size = cv2.imread("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1])
+                h, w, c = esignature_size.shape
+
+                if w == 300 and h == 100:
+                    print("Valid Size")
+                else:
+                    print("Invalid Size")
+                    # Invalid - Delete E-Signature
+                    os.remove("static/signatures/"+str(currently_loggedin_user)+get_file_extensions[1])
+
+                    context = {
+                        'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                        'currently_loggedin_user_data': currently_loggedin_user,
+
+                        'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                        'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                        'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                        'currently_loggedin_user_department' : currently_loggedin_user.department,
+                        'currently_loggedin_username':  currently_loggedin_user.username, 
+                        'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                        'esignature_exist': esignature_exist,
+
+                        'response': 'sweet invalid size'
+                        } 
+                    
+                    return render(request, 'panel-profile.html', context)
+
+                return redirect('panel-profile')
+            
+        else:
+            context = {
+                'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+
+                'currently_loggedin_user_data': currently_loggedin_user,
+
+                'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
+                'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
+                'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
+                'currently_loggedin_user_department' : currently_loggedin_user.department,
+                'currently_loggedin_username':  currently_loggedin_user.username, 
+                'currently_loggedin_user_email': currently_loggedin_user.email,
+
+                'esignature_exist': esignature_exist,
+
+                'response': 'sweet not png'
+                } 
+            
+            return render(request, 'panel-profile.html', context)
+
+
+# Panel - Remove E-Signature
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
+def panelDeleteESignature(request):
+    currently_loggedin_user = (request.user)
+
+    if os.path.exists("static/signatures/"+str(currently_loggedin_user)+".png"):
+        os.remove("static/signatures/"+str(currently_loggedin_user)+".png")
+        return redirect('panel-profile')
+
+# Panel - Dashboard Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
+def panelCreateESignature(request):
+    currently_loggedin_user = (request.user)
+
+    topbar_data = topbarProcess(request);
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username = currently_loggedin_user.username)
+    except:
+        return redirect('index')
+
+    if request.method == 'POST':
+        signature_url = request.POST.get('signature_link')
+
+        # Separate the metadata from the image data
+        head, data = signature_url.split(',', 1)
+
+        # Get the file extension (gif, jpeg, png)
+        file_ext = head.split(';')[0].split('/')[1]
+
+        # Decode the image data
+        plain_data = base64.b64decode(data)
+
+        # # Write the image to a file
+        with open('static/signatures/'+currently_loggedin_user.username + "." + file_ext, 'wb') as f:
+            f.write(plain_data)
+
+        return redirect("panel-profile")
+
+    context = {
+        'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
+        'date_today': today.strftime("%B %d, %Y"),
+
+        'panel_data': get_panel_data,
+        }
+
+    return render(request, 'panel-signature-pad.html', context)
+
+
+# Panel - Acount Settings Page
+@login_required(login_url='index')
+@user_passes_test(lambda u: u.is_panel, login_url='index')
+def panelAccountSettings(request):
+    currently_loggedin_user = (request.user)
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+       currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+
+    context = {
+                'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
+                'currently_loggedin_user_data': currently_loggedin_user,
+            }   
 
     if request.method == 'POST':
         current_password_input = request.POST.get('current_password_input')
@@ -6779,53 +7193,31 @@ def panelProfile(request):
                     context = {
                         'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
 
-                        'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
-                        'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
-                        'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
-                        'currently_loggedin_user_department' : currently_loggedin_user.department,
-                        'currently_loggedin_username':  currently_loggedin_user.username, 
-                        'currently_loggedin_user_email': currently_loggedin_user.email,
-
                         "response": "new password and confirm new password doesnt match"
                         }
 
-                    return render(request, 'panel-profile.html', context)
+                    return render(request, 'panel-account-settings.html', context)
 
             else:
                 context = {
                     'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
 
-                    'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
-                    'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
-                    'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
-                    'currently_loggedin_user_department' : currently_loggedin_user.department,
-                    'currently_loggedin_username':  currently_loggedin_user.username, 
-                    'currently_loggedin_user_email': currently_loggedin_user.email,
-
                     "response": "current password and new password is same"
                     }
 
-                return render(request, 'panel-profile.html', context)
+                return render(request, 'panel-account-settings.html', context)
 
         else:
             context = {
                 'currently_loggedin_user_full_name' : currently_loggedin_user_full_name,
 
-                'currently_loggedin_user_first_name': currently_loggedin_user.first_name,
-                'currently_loggedin_user_middle_name' : currently_loggedin_user.middle_name,
-                'currently_loggedin_user_last_name' : currently_loggedin_user.last_name,
-                'currently_loggedin_user_department' : currently_loggedin_user.department,
-                'currently_loggedin_username':  currently_loggedin_user.username, 
-                'currently_loggedin_user_email': currently_loggedin_user.email,
-
                 "response": "current password is incorrect"
                 }
 
-            return render(request, 'panel-profile.html', context)
+            return render(request, 'panel-account-settings.html', context)
 
 
-    return render(request, 'panel-profile.html', context)
-
+    return render(request, 'panel-account-settings.html', context)
 
 # Panel - Panel Invitation  BET-3 Page
 @login_required(login_url='index')
@@ -7227,6 +7619,8 @@ def panelBET3TitleDefenseLogRedefense(request, id):
         }
     
     return render(request, 'panel-bet3-research-title-defense-data.html', context)
+
+
 ##########################################################################################################################
 
 # Subject Teacher - Dashboard Page
@@ -7244,7 +7638,13 @@ def subjectTeacherDashboard(request):
     except:
         return redirect('index')
 
-    get_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = date_today)
+    # try:
+    #     get_available_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = date_today, status = "Available")
+    # except:
+    #     pass
+
+    get_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = date_today, status = "Reserved")
+    get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = date_today, status = "Completed")
     
     context = {
         'currently_loggedin_user_full_name': currently_loggedin_user_full_name,
@@ -7252,6 +7652,7 @@ def subjectTeacherDashboard(request):
 
         'subject_teacher_data': get_subject_teacher_data,
         'today_defense_schedule': get_today_defense_schedule,
+        'completed_today_defense_schedule': get_completed_today_defense_schedule,
         }
 
     return render(request, 'subject-teacher-dashboard.html', context)

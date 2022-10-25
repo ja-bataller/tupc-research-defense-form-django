@@ -34,6 +34,8 @@ class User(AbstractUser):
     advisee_count = models.IntegerField(default=0)
     advisee_limit = models.IntegerField(default=0)
 
+    e_signature = models.ImageField(null=True, blank=True, upload_to = "static/signatures/")
+
     USERNAME_FIELD = 'username'
 
 
