@@ -139,15 +139,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-# STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
-
 STATIC_URL = 'static/'
-MEDIA_URL = '/signatures/'
-
 STATICFILES_DIRS = [BASE_DIR / 'static']
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/signatures')
-
 # STATIC_ROOT = '/home/johnanthonybataller/tupc-research-defense-form-django/static'
+
+MEDIA_URL = 'uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

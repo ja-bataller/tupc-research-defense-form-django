@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Student - BET-3 Panel Invitation</title>
+    <title>Student - BET-3 Topic Defense - Panel Invitation</title>
 
     {% include 'css-main-cdn.html' %}
     <link href="{% static 'css/file-loader.css' %}" rel="stylesheet" />
@@ -32,7 +32,7 @@
             <!-- Page Heading -->
             <div class="row">
               <div class="col-lg-9 col-md-12 mb-3">
-                <h1 class="h3 mb-0 text-gray-800">BET-3 - Topic Defense - Panel Invitation Forms </h1>
+                <h1 class="h3 mb-0 text-gray-800">BET-3 - Topic Defense - Panel Invitation - Forms </h1>
               </div>
               
               {% if student_leader_data.bet3_panel_invitation_status != "completed" %}
@@ -80,7 +80,7 @@
                         <th>Action</th>
                       </tr>
                     </tfoot>
-                    <tbody>
+                    <tbody class="text-dark">
                       {% for panel_invitation in panel_invitations %}
                       <tr>
                         <td>{{panel_invitation.id}}</td>
@@ -88,23 +88,25 @@
                         <td>{{panel_invitation.dit_head_full_name}}</td>
 
                         {% if panel_invitation.dit_head_response == "accepted" %}
-                        <td class="text-success">{{panel_invitation.dit_head_response}}</td>
+                          <td class="text-success">{{panel_invitation.dit_head_response}}</td>
                         {% elif panel_invitation.dit_head_response == "declined"%}
-                        <td class="text-danger">{{panel_invitation.dit_head_response}}</td>
+                          <td class="text-danger">{{panel_invitation.dit_head_response}}</td>
                         {% else %}
-                        <td>{{panel_invitation.dit_head_response}}</td>
+                          <td>{{panel_invitation.dit_head_response}}</td>
                         {% endif %}
 
                         <td>{{panel_invitation.panel_username}}</td>
                         <td>{{panel_invitation.panel_full_name}}</td>
 
                         {% if panel_invitation.panel_response == "accepted" %}
-                        <td class="text-success">{{panel_invitation.panel_response}}</td>
+                          <td class="text-success">{{panel_invitation.panel_response}}</td>
                         {% elif panel_invitation.panel_response == "declined"%}
-                        <td class="text-danger">{{panel_invitation.panel_response}}</td>
+                          <td class="text-danger">{{panel_invitation.panel_response}}</td>
                         {% else %}
-                        <td>{{panel_invitation.panel_response}}</td>
-                        {% endif %} {% if panel_invitation.form_status == "accepted" %}
+                          <td>{{panel_invitation.panel_response}}</td>
+                        {% endif %} 
+                        
+                        {% if panel_invitation.form_status == "accepted" %}
                         <td class="text-success">{{panel_invitation.form_status}}</td>
                         {% elif panel_invitation.form_status == "declined - DIT Head" or panel_invitation.form_status == "declined" %}
                         <td class="text-danger">{{panel_invitation.form_status}}</td>
@@ -260,6 +262,17 @@
         });
       });
     </script>
+
+
+  {% if response == 'sweet faculty member no signature' %}
+    <script>
+      Swal.fire("Error", "The Faculty Member might have remove his or her signature. Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
+      }, 2000);
+    </script>
+    {% endif %}
 
   </body>
 </html>

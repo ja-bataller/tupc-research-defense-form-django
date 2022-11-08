@@ -10,10 +10,9 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>Panel - Dashboard</title>
+  <title>Adviser - Account Settings</title>
 
   {% include 'css-main-cdn.html' %}
-  <link rel="stylesheet" href="{% static 'css/signature-pad.css' %}">
 </head>
 
 <body id="page-top">
@@ -24,7 +23,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'panel-dashboard' %}">
+        <a class="nav-link" href="{% url 'adviser-dashboard' %}">
           <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
           </div>
         </a>
@@ -34,16 +33,23 @@
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'panel-dashboard' %}">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'adviser-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
       </li>
 
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'adviser-advisee-dashboard' %}">
+          <i class="fa-solid fa-user-graduate"></i>
+          <span>Advisee</span></a>
+      </li>
+
+    
       <!-- Divider -->
       <!-- <hr class="sidebar-divider"> -->
 
-      <!-- Nav Item - Pages Collapse Menu -->
+      <!-- Nav Item - Forms Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
           aria-controls="collapsePages">
@@ -53,8 +59,29 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Topic - Panel Invitation</a>
-            <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
+            <a class="collapse-item" href="{% url 'adviser-bet3-adviser-conforme' %}">Research Adviser Conforme</a>
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">BET-5</h6>
+            <!-- <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a> -->
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Logs Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
+          aria-controls="collapseLogs">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Logs</span>
+        </a>
+        <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">BET-3</h6>
+            <a class="collapse-item" href="#">Research Adviser Conforme</a>
+            <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
             <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
             <div class="collapse-divider"></div>
@@ -67,29 +94,12 @@
         </div>
       </li>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
-          aria-controls="collapseLogs">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          <span>Logs</span>
-        </a>
-        <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
-            <a class="collapse-item" href="{% url 'panel-bet3-title-defense-logs' %}">Research Title Defense</a>
-            <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
-          </div>
-        </div>
-      </li>
+      <!-- Nav Item - Tables -->
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="tables.html">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>History</span></a>
+    </li> -->
 
       <!-- Divider -->
       <hr class="sidebar-divider" />
@@ -116,38 +126,54 @@
       <!-- Main Content -->
       <div id="content">
 
-        {% include 'panel-topbar.html' %}
+        {% include 'adviser-topbar.html' %}
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-          <form id="signatureForm" class="signature-pad-form" action="#" method="POST">
-            {% csrf_token %}
 
-            <h4 class="text-center">Create E-Signature</h4>
-            <canvas id="main_pad" height="100" width="300" class="signature-pad"></canvas>
-            <canvas id="hidden_pad" height="100" width="300" class="signature-pad" hidden></canvas>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-3">
+            <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-gears"></i> Account Settings</h1>
+          </div>
 
-            <div class="form-group form-check">
-              <input type="checkbox" class="form-check-input" id="signature_agreement_checkbox" required>
-              <label class="form-check-label" for="signature_agreement_checkbox">I agree to attach my signature, and use it to this web app.</label>
+          <!-- User Profile Start -->
+          <div class="card border-left-warning shadow h-100 py-2 mb-3">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                      <label>Current Password</label>
+                      <input type="password" class="form-control" name="current_password_input" required />
+                    </div>
+
+                    <div class="form-group">
+                      <label>New Password</label>
+                      <input type="password" class="form-control" name="new_password_input" required />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Confirm New Password</label>
+                      <input type="password" class="form-control" name="confirm_new_password_input" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-success w-100"><i class="fa-solid fa-lock"></i> Change
+                      Password</button>
+                  </form>
+                </div>
+              </div>
             </div>
-
-            <input id="signature_url" type="text" class="form-control" name="signature_link" value="" hidden/>
-            <a class="btn btn-outline-secondary w-100" href="{% url 'panel-profile' %}">BACK</a>
-            <button class="clear-button btn btn-outline-danger mt-2 mb-2 w-100" type="click">CLEAR</button>
-            <button class="submit-button btn btn-outline-success w-100" type="click">SUBMIT</button>
-
-          </form>
-
+          </div>
+          <!-- User Profile End -->
         </div>
-
-
         <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      {% include 'footer.html' %}
+      {% include 'footer.html'%}
       <!-- End of Footer -->
     </div>
     <!-- End of Content Wrapper -->
@@ -159,47 +185,37 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
-
-  <script src="{% static 'js/signature-pad.js' %}"></script>
-
-  {% if response == 'sweet title accepted' %}
+  {% include 'logout-modal.html' %} 
+  {% include 'script-cdn.html' %} 
+  
+  {% if response == 'current password is incorrect' %}
   <script>
-    Swal.fire("Accepted", "{{accepted_research_title}} is marked as accepted", "success");
-    setTimeout(function () {
-      window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 2000);
+    iziToast.error({
+      title: "Invalid.",
+      message: "The Password you entered is incorrect.",
+      position: "topCenter",
+      timeout: 5000,
+    });
+  </script>
+  {% endif %} {% if response == 'new password and confirm new password doesnt match' %}
+  <script>
+    iziToast.error({
+      title: "Invalid.",
+      message: "The New Password and Confirm Password you entered doesn't match.",
+      position: "topCenter",
+      timeout: 5000,
+    });
+  </script>
+  {% endif %} {% if response == 'current password and new password is same' %}
+  <script>
+    iziToast.error({
+      title: "Invalid.",
+      message: "The Current Password and New Password you entered is the same.",
+      position: "topCenter",
+      timeout: 5000,
+    });
   </script>
   {% endif %}
-
-  {% if response == 'sweet title deferred' %}
-  <script>
-    Swal.fire("Deferred", "{{deferred_research_title}} is marked as deferred", "info");
-    setTimeout(function () {
-      window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 2000);
-  </script>
-  {% endif %}
-
-  {% if response == 'sweet revise title' %}
-  <script>
-    Swal.fire("Revise", "{{revise_research_title}} is marked for title revision.", "info");
-    setTimeout(function () {
-      window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 2000);
-  </script>
-  {% endif %}
-
-  {% if response == 'sweet mark as done' %}
-  <script>
-    Swal.fire("Done", "You have mark your reponse as done.", "success");
-    setTimeout(function () {
-      window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 2000);
-  </script>
-  {% endif %}
-
-
 </body>
 
 </html>

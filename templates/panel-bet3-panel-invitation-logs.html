@@ -53,6 +53,7 @@
                       <th>Panel Name</th>
                       <th>Date & Time of Defense</th>
                       <th>Response</th>
+                      <th>Signature</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -64,6 +65,7 @@
                       <th>Panel Name</th>
                       <th>Date & Time of Defense</th>
                       <th>Response</th>
+                      <th>Signature</th>
                     </tr>
                   </tfoot>
                   <tbody>
@@ -81,6 +83,11 @@
                       <td class="text-success">
                         {{panel_invitation.panel_response}}
                       </td>
+                      {% if panel_invitation.panel_signature == True %}
+                        <td>E-Signature</td>
+                      {% else %}
+                        <td>Personal Signature</td>
+                      {% endif %}
                     </tr>
                     {% elif panel_invitation.panel_response == "declined" %}
                     <tr>
@@ -95,6 +102,11 @@
                       <td class="text-danger">
                         {{panel_invitation.panel_response}}
                       </td>
+                      {% if panel_invitation.panel_signature == True %}
+                        <td>E-Signature</td>
+                      {% else %}
+                        <td>Personal Signature</td>
+                      {% endif %}
                     </tr>
                     {% endif %}
                     {% endfor %}
@@ -113,6 +125,11 @@
                       <td class="text-success">
                         {{panel_invitation.dit_head_response}}
                       </td>
+                      {% if panel_invitation.panel_signature == True %}
+                        <td>E-Signature</td>
+                      {% else %}
+                        <td>Personal Signature</td>
+                      {% endif %}
                     </tr>
                     {% elif panel_invitation.dit_head_response == "declined" %}
                     <tr>
@@ -127,6 +144,11 @@
                       <td class="text-danger">
                         {{panel_invitation.dit_head_response}}
                       </td>
+                      {% if panel_invitation.panel_signature == True %}
+                        <td>E-Signature</td>
+                      {% else %}
+                        <td>Personal Signature</td>
+                      {% endif %}
                     </tr>
                     {% endif %}
                     {% endfor %}

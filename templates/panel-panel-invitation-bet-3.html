@@ -25,7 +25,7 @@
     <div id="content-wrapper" class="d-flex flex-column">
       <!-- Main Content -->
       <div id="content">
-        
+
         {% include 'panel-topbar.html' %}
 
         <!-- Begin Page Content -->
@@ -76,9 +76,7 @@
                       <td>{{panel_invitation.course_major_abbr}}</td>
                       <td>{{panel_invitation.panel_username}}</td>
                       <td>{{panel_invitation.panel_full_name}}</td>
-                      <td>{{panel_invitation.research_title_defense_date}} -
-                        {{panel_invitation.research_title_defense_start_time}} to
-                        {{panel_invitation.research_title_defense_end_time}}</td>
+                      <td>{{panel_invitation.research_title_defense_date}} - {{panel_invitation.research_title_defense_start_time}} to {{panel_invitation.research_title_defense_end_time}}</td>
                       <td class="text-center">
                         <a id="accept_{{panel_invitation.id}}" data-id="{{panel_invitation.id}}"
                           class="btn btn-outline-success mb-2" type="button" href="#">Accept</a>
@@ -111,7 +109,7 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Accept Modal -->
+  <!-- Accept Response Modal -->
   <div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="acceptModal" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
@@ -120,30 +118,53 @@
           <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
           </button>
         </div>
-        <div class="modal-body">Are you sure you want to accept <span id="student_name_accept"></span> BET-3 Panel
-          Invitation request?</div>
+        <div class="modal-body">Are you sure you want to accept
+          <span id="student_name_accept"></span><br>
+          BET-3 Panel Invitation request?
+          <br>
+          <br>
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required>
+            <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+          </div>
+          <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Accept -
+            Attach Signature</a>
+          <hr>
+          <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept -
+            Personal Signature</a>
+          <hr>
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-          <a id="accept_btn" class="btn btn-outline-success" type="button" href="#">Yes - Accept</a>
+          <button id="btn_cancel_a" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Decline Modal -->
+  <!-- Decline Response Modal -->
   <div class="modal fade" id="declineModal" tabindex="-1" aria-labelledby="declineModal" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Decline Request?</h5>
-          </button>
         </div>
-        <div class="modal-body">Are you sure you want to decline <span id="student_name_decline"></span> BET-3 Panel
-          Invitation request?</div>
+        <div class="modal-body">
+          Are you sure you want to decline <span id="student_name_decline"></span> <br />
+          BET-3 Panel Invitation request?
+          <br />
+          <br />
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="checkbox_agreement_d" required />
+            <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+          </div>
+          <a id="btn_decline_signed" class="submit-button btn btn-outline-danger w-100" type="button" href="#">Decline - Attach Signature</a>
+          <hr />
+          <a id="btn_decline" class="btn btn-outline-warning w-100" type="button" href="#">Decline - Personal Signature</a>
+          <hr />
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-          <a id="decline_btn" class="btn btn-outline-danger" type="button" href="#">Yes - Decline</a>
+          <button id="btn_cancel_d" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
@@ -157,25 +178,58 @@
 
   {% for panel_invitation in panel_invitations %}
   <script>
+    // Accept Response - Personal Signature
     document.getElementById('accept_' + '{{panel_invitation.id}}').addEventListener("click", function () {
       data_id = $(document.getElementById('accept_' + '{{panel_invitation.id}}')).attr("data-id")
 
       document.getElementById('student_name_accept').textContent = "{{panel_invitation.student_leader_full_name}}";
-      document.getElementById("accept_btn").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}"
-        .replace(/0/, data_id);
+      document.getElementById("btn_accept").href = "{% url 'panel-panel-invitation-bet-3-accept' id=0 %}".replace(/0/, data_id);
       $("#acceptModal").modal()
     });
 
+    // Decline Response - Personal Signature
     document.getElementById('decline_' + '{{panel_invitation.id}}').addEventListener("click", function () {
       data_id = $(document.getElementById('decline_' + '{{panel_invitation.id}}')).attr("data-id")
 
       document.getElementById('student_name_decline').textContent = "{{panel_invitation.student_leader_full_name}}";
-      document.getElementById("decline_btn").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}"
-        .replace(/0/, data_id);
+      document.getElementById("btn_decline").href = "{% url 'panel-panel-invitation-bet-3-decline' id=0 %}".replace(/0/, data_id);
       $("#declineModal").modal()
     });
   </script>
   {% endfor %}
+
+  <!-- Modal - Accept - Attach Signature -->
+  <script>
+    document.getElementById('btn_accept_signed').addEventListener("click", function () {
+      if (document.getElementById('checkbox_agreement_a').checked) {
+        document.getElementById("btn_accept_signed").href = "{% url 'panel-bet3-topic-panel-invitation-accept-sign' id=0 %}".replace(/0/, data_id);
+      } else {
+        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+      }
+    });
+  </script>
+
+  <!-- Modal - Decline - Attach Signature -->
+  <script>
+    document.getElementById("btn_decline_signed").addEventListener("click", function () {
+      if (document.getElementById("checkbox_agreement_d").checked) {
+        document.getElementById("btn_decline_signed").href = "{% url 'panel-bet3-topic-panel-invitation-decline-sign' id=0 %}".replace(/0/, data_id);
+      } else {
+        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+      }
+    });
+  </script>
+
+  <!-- Modal - Cancel Button -->
+  <script>
+    document.getElementById("btn_cancel_a").addEventListener("click", function () {
+      document.getElementById("checkbox_agreement_a").checked = false;
+    });
+
+    document.getElementById("btn_cancel_d").addEventListener("click", function () {
+      document.getElementById("checkbox_agreement_d").checked = false;
+    });
+  </script>
 
   {% if response == 'sweet panel invitation bet-3 accepted' %}
   <script>
@@ -184,6 +238,7 @@
     setTimeout(function () {
       window.location.replace("{% url 'panel-panel-invitation-bet-3' %}");
     }, 2000);
+
   </script>
   {% endif %}
 
@@ -204,6 +259,16 @@
     setTimeout(function () {
       window.location.replace("{% url 'panel-panel-conforme-bet-3' %}");
     }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no esign' %}
+  <script>
+    Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-panel-invitation-bet-3' %}");
+    }, 2300);
   </script>
   {% endif %}
 

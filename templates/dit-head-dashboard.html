@@ -2,194 +2,179 @@
 
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
+    <title>DIT Head - Dashboard</title>
 
-  <title>DIT Head - Dashboard</title>
+    {% include 'css-main-cdn.html' %}
+  </head>
 
-  {% include 'css-main-cdn.html' %}
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
+            <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%" alt="" /></div>
+          </a>
+        </li>
 
-</head>
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
 
-<body id="page-top">
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span></a
+          >
+        </li>
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+        <!-- Divider -->
+        <!-- <hr class="sidebar-divider"> -->
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-     
-      <!-- Sidebar - Brand -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
-          <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
-          </div>
-        </a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0" />
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
-          <i class="fa-solid fa-house"></i>
-          <span>Home</span></a>
-      </li>
-
-      <!-- Divider -->
-      <!-- <hr class="sidebar-divider"> -->
-
-      <!-- Nav Item - Forms Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-          aria-controls="collapsePages">
-          <i class="fa-solid fa-folder-open"></i>
-          <span>Forms</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'dit-head-panel-invitation-bet-3' %}">Topic - Panel Invitation</a>
-            <a class="collapse-item" href="{% url 'dit-head-bet3-adviser-conforme' %}">Research Adviser Conforme</a>
-            <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
-            <!-- <a class="collapse-item" href="">Research Title Defense</a>
+        <!-- Nav Item - Forms Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>Forms</span>
+          </a>
+          <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">BET-3</h6>
+              <a class="collapse-item" href="{% url 'dit-head-panel-invitation-bet-3' %}">Topic - Panel Invitation</a>
+              <a class="collapse-item" href="{% url 'dit-head-bet3-adviser-conforme' %}">Research Adviser Conforme</a>
+              <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
+              <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
+              <div class="collapse-divider"></div>
+              <h6 class="collapse-header">BET-5</h6>
+              <!-- <a class="collapse-item" href="#">New Form</a>
                         <a class="collapse-item" href="#">New Form</a>
                         <a class="collapse-item" href="#">New Form</a>
                         <a class="collapse-item" href="#">New Form</a> -->
+            </div>
           </div>
-        </div>
-      </li>
+        </li>
 
-      <!-- Nav Item - Logs Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
-          aria-controls="collapseLogs">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          <span>Logs</span>
-        </a>
-        <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'dit-head-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
-            <!-- <a class="collapse-item" href="">Research Title Defense</a>
+        <!-- Nav Item - Logs Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true" aria-controls="collapseLogs">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Logs</span>
+          </a>
+          <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">BET-3</h6>
+              <a class="collapse-item" href="{% url 'dit-head-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
+              <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
+              <div class="collapse-divider"></div>
+              <h6 class="collapse-header">BET-5</h6>
+              <!-- <a class="collapse-item" href="#">New Form</a>
                         <a class="collapse-item" href="#">New Form</a>
                         <a class="collapse-item" href="#">New Form</a>
                         <a class="collapse-item" href="#">New Form</a> -->
+            </div>
           </div>
-        </div>
-      </li>
+        </li>
 
-      <!-- Nav Item - Tables -->
-      <!-- <li class="nav-item">
+        <!-- Nav Item - Tables -->
+        <!-- <li class="nav-item">
         <a class="nav-link" href="tables.html">
             <i class="fa-solid fa-clock-rotate-left"></i>
             <span>History</span></a>
     </li> -->
 
-      <!-- Divider -->
-      <hr class="sidebar-divider" />
+        <!-- Divider -->
+        <hr class="sidebar-divider" />
 
-      <!-- Nav Item - The Developers -->
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fa-solid fa-code"></i>
-          <span>The Devs</span></a>
-      </li>
+        <!-- Nav Item - The Developers -->
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fa-solid fa-code"></i>
+            <span>The Devs</span></a
+          >
+        </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block" />
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block" />
 
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
-    </ul>
-    <!-- End of Sidebar -->
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+          <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+      </ul>
+      <!-- End of Sidebar -->
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-      <!-- Main Content -->
-      <div id="content">
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          {% include 'dit-head-topbar.html' %}
 
-        {% include 'dit-head-topbar.html' %}
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-
-          <div class="row">
-            <div class="col-md-8 col-sm-12 mb-3">
-              <div class="card border-left-danger shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                        Department of Industrial Technology - Head</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome
-                        {{currently_loggedin_user_data.honorific}} {{currently_loggedin_user_data.last_name}}
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-8 col-sm-12 mb-3">
+                <div class="card border-left-danger shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Department of Industrial Technology - Head</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          Welcome {{currently_loggedin_user_data.honorific}} {{currently_loggedin_user_data.last_name}}
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fa-solid fa-face-laugh-beam fa-2x text-danger"></i>
+                      <div class="col-auto">
+                        <i class="fa-solid fa-face-laugh-beam fa-2x text-danger"></i>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="col-md-4 col-sm-12 mb-3">
-              <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                        Today</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{date_today}}
+              <div class="col-md-4 col-sm-12 mb-3">
+                <div class="card border-left-warning shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Today</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{date_today}}</div>
                       </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fa-solid fa-sun fa-2x text-warning"></i>
+                      <div class="col-auto">
+                        <i class="fa-solid fa-sun fa-2x text-warning"></i>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          
+          <!-- /.container-fluid -->
         </div>
-        <!-- /.container-fluid -->
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <!-- End of Footer -->
       </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      {% include 'footer.html' %}
-      <!-- End of Footer -->
+      <!-- End of Content Wrapper -->
     </div>
-    <!-- End of Content Wrapper -->
-  </div>
-  <!-- End of Page Wrapper -->
+    <!-- End of Page Wrapper -->
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
 
-  {% include 'logout-modal.html' %}
-
-  {% include 'script-cdn.html' %}
-</body>
-
+    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+  </body>
 </html>

@@ -58,6 +58,7 @@ urlpatterns = [
    # DIT Head URLS
    path('dit-head/dashboard', views.ditHeadDashboard, name ="dit-head-dashboard"),
    path('dit-head/profile', views.ditHeadProfile, name ="dit-head-profile"),
+   path('dit-head/account-settings', views.ditHeadAccountSettings, name ="dit-head-account-settings"),
 
    path('dit-head/create/e-signature', views.ditHeadCreateESignature, name ="dit-head-create-esignature"),
    path('dit-head/upload/e-signature', views.ditHeadUploadESignature, name ="dit-head-upload-esignature"),
@@ -66,6 +67,10 @@ urlpatterns = [
    # path('panel/account-settings', views.panelAccountSettings, name ="panel-account-settings"),
 
    path('dit-head/bet3/panel-invitation', views.ditHeadPanelInvitationBet3, name ="dit-head-panel-invitation-bet-3"),
+
+   path('dit-head/bet3/topic-panel-invitation/accept/sign/<str:id>', views.ditHeadBET3TopicPanelInvitationAcceptSignature, name ="dit-head-bet3-topic-panel-invitation-accept-sign"),
+   path('dit-head/bet3/topic-panel-invitation/decline/sign/<str:id>', views.ditHeadBET3TopicPanelInvitationDeclineSignature, name ="dit-head-bet3-topic-panel-invitation-decline-sign"),
+
    path('dit-head/bet3/panel-invitation/accept/<str:id>', views.ditHeadPanelInvitationBet3Accept, name ="dit-head-panel-invitation-bet-3-accept"),
    path('dit-head/bet3/panel-invitation/decline/<str:id>', views.ditHeadPanelInvitationBet3Decline, name ="dit-head-panel-invitation-bet-3-decline"),
 
@@ -96,6 +101,10 @@ urlpatterns = [
    path('panel/title-defense-day/done/<str:id>', views.panelTitleDefenseMarkDone, name ="panel-title-defense-mark-done"),
 
    path('panel/bet3/panel-invitation', views.panelPanelInvitationBet3, name ="panel-panel-invitation-bet-3"),
+   
+   path('panel/bet3/topic-panel-invitation/accept/sign/<str:id>', views.panelBET3TopicPanelInvitationAcceptSignature, name ="panel-bet3-topic-panel-invitation-accept-sign"),
+   path('panel/bet3/topic-panel-invitation/decline/sign/<str:id>', views.panelBET3TopicPanelInvitationDeclineSignature, name ="panel-bet3-topic-panel-invitation-decline-sign"),
+
    path('panel/bet3/panel-invitation/accept/<str:id>', views.panelPanelInvitationBet3Accept, name ="panel-panel-invitation-bet-3-accept"),
    path('panel/bet3/panel-invitation/decline/<str:id>', views.panelPanelInvitationBet3Decline, name ="panel-panel-invitation-bet-3-decline"),
    
@@ -105,7 +114,6 @@ urlpatterns = [
    # path('panel-panel-conforme-bet-3-accept/<str:id>/', views.panelPanelConformeBet3Accept, name ="panel-panel-conforme-bet-3-accept"),
    # path('panel-panel-conforme-bet-3-decline/<str:id>/', views.panelPanelConformeBet3Decline, name ="panel-panel-conforme-bet-3-decline"),
 
-      
    path('panel/bet3/panel-invitation/logs', views.panelBET3PanelInvitationLogs, name ="panel-bet3-panel-invitation-logs"),
    path('panel/bet3/title-defense/logs', views.panelBET3TitleDefenseLogs, name ="panel-bet3-title-defense-logs"),
    path('panel/bet3/title-defense/logs/completed/<str:id>', views.panelBET3TitleDefenseLogCompleted, name ="bet3-title-defense-logs-completed"),
@@ -114,6 +122,12 @@ urlpatterns = [
    # Subject Teacher URLS
    path('subject-teacher/dashboard', views.subjectTeacherDashboard, name ="subject-teacher-dashboard"),
    path('subject-teacher/profile', views.subjectTeacherProfile, name ="subject-teacher-profile"),
+
+   path('subject-teacher/create/e-signature', views.subjectTeacherCreateESignature, name ="subject-teacher-create-esignature"),
+   path('subject-teacher/upload/e-signature', views.subjectTeacherUploadESignature, name ="subject-teacher-upload-esignature"),
+   path('subject-teacher/delete/e-signature', views.subjectTeacherDeleteESignature, name ="subject-teacher-delete-esignature"),
+
+   path('subject-teacher/account-settings', views.subjectTeacherAccountSettings, name ="subject-teacher-account-settings"),
 
    path('subject-teacher/title-defense-day/<str:id>', views.subjectTeacherTitleDefenseDay, name ="subject-teacher-title-defense-day"),
    path('subject-teacher/title-defense-day/present/<str:id>', views.subjectTeacherTitleDefenseDayPresent, name ="subject-teacher-title-defense-day-present"),
@@ -135,6 +149,12 @@ urlpatterns = [
    # Advisers URLS
    path('adviser/dashboard', views.adviserDashboard, name ="adviser-dashboard"),
    path('adviser/profile', views.adviserProfile, name ="adviser-profile"),
+
+   path('adviser/create/e-signature', views.adviserCreateESignature, name ="adviser-create-esignature"),
+   path('adviser/upload/e-signature', views.adviserUploadESignature, name ="adviser-upload-esignature"),
+   path('adviser/delete/e-signature', views.adviserDeleteESignature, name ="adviser-delete-esignature"),
+
+   path('adviser/account-settings', views.adviserAccountSettings, name ="adviser-account-settings"),
 
    path('adviser/advisee/dashboard', views.adviserAdviseeDashboard, name ="adviser-advisee-dashboard"),
 

@@ -55,7 +55,7 @@
                       <th>Status</th>
                     </tr>
                   </tfoot>
-                  <tbody>
+                  <tbody class="text-dark">
                     {% for research_title in research_titles %}
                     <tr>
                       <td>{{research_title.research_title}}</td>
@@ -66,7 +66,7 @@
                       {% elif research_title.status == "Title Defense - Deferred" %}
                       <td class="text-danger">{{research_title.status}}</td>
                       {% elif research_title.status == "Title Defense - Pending" %}
-                      <td class="text-secondary">{{research_title.status}}</td>
+                      <td class="text-dark">{{research_title.status}}</td>
                       {% endif %}
                     </tr>
                     {% endfor %}

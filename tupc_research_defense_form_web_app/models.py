@@ -48,6 +48,7 @@ class StudentCourseMajor(models.Model):
     def __str__(self) -> str:
         return self.course_major_abbr
 
+
 # Student Leaders
 class StudentLeader(models.Model):
     username = models.EmailField(unique=True)
@@ -97,6 +98,7 @@ class StudentLeader(models.Model):
     def __str__(self) -> str:
         return self.username
 
+
 # Student Group Member
 class StudentGroupMember(models.Model):
     student_leader_username = models.CharField(max_length=256)
@@ -109,6 +111,7 @@ class StudentGroupMember(models.Model):
 
     def __str__(self) -> str:
         return self.student_leader_username
+
 
 # Research Title
 class ResearchTitle(models.Model):
@@ -136,6 +139,7 @@ class ResearchTitle(models.Model):
     def __str__(self) -> str:
         return self.research_title
 
+
 # Defense Schedule
 class DefenseSchedule(models.Model):
     username = models.CharField(max_length=256)
@@ -152,6 +156,7 @@ class DefenseSchedule(models.Model):
     def __str__(self) -> str:
         return self.username
 
+
 # Panel Invitation - BET-3
 class BET3PanelInvitation(models.Model):
     student_leader_username = models.CharField(max_length=256)
@@ -162,11 +167,13 @@ class BET3PanelInvitation(models.Model):
     dit_head_full_name = models.CharField(max_length=256)
     dit_head_response = models.CharField(max_length=256)
     dit_head_response_date = models.CharField(max_length=256)
+    dit_head_signature = models.BooleanField(default=False)
 
     panel_username = models.CharField(max_length=256)
     panel_full_name = models.CharField(max_length=256)
     panel_response = models.CharField(max_length=256)
     panel_response_date = models.CharField(max_length=256)
+    panel_signature = models.BooleanField(default=False)
     panel_attendance = models.CharField(max_length=256, blank=True)
 
     research_title_defense_date = models.CharField(max_length=256, blank=True)
@@ -185,6 +192,7 @@ class BET3PanelInvitation(models.Model):
 
     def __str__(self) -> str:
         return self.student_leader_username
+
 
 # Research Title Defense - BET-3
 class BET3ResearchTitleDefenseForm(models.Model):
@@ -210,6 +218,7 @@ class BET3ResearchTitleDefenseForm(models.Model):
 
     def __str__(self) -> str:
         return self.student_leader_username
+
 
 # Research Title Vote - BET-3
 class BET3ResearchTitleVote(models.Model):
@@ -259,6 +268,7 @@ class FilePath(models.Model):
 
     def __str__(self) -> str:
         return self.student_leader_username
+
 
 # Research Title Logs
 class ResearchTitleLog(models.Model):
@@ -316,11 +326,13 @@ class BET3PanelInvitationLog(models.Model):
     dit_head_full_name = models.CharField(max_length=256)
     dit_head_response = models.CharField(max_length=256)
     dit_head_response_date = models.CharField(max_length=256)
+    dit_head_signature = models.BooleanField(default=False)
 
     panel_username = models.CharField(max_length=256)
     panel_full_name = models.CharField(max_length=256)
     panel_response = models.CharField(max_length=256)
     panel_response_date = models.CharField(max_length=256)
+    panel_signature = models.BooleanField(default=False)
     panel_attendance = models.CharField(max_length=256, blank=True)
 
     research_title_defense_date = models.CharField(max_length=256, blank=True)

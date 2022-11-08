@@ -14,6 +14,7 @@
 
   {% include 'css-main-cdn.html' %}
   <link rel="stylesheet" href="{% static 'css/signature-pad.css' %}">
+
 </head>
 
 <body id="page-top">
@@ -135,11 +136,16 @@
             <canvas id="main_pad" height="100" width="300" class="signature-pad"></canvas>
             <canvas id="hidden_pad" height="100" width="300" class="signature-pad" hidden></canvas>
 
-            <input id="signature_url" type="text" class="form-control" name="signature_link" value="" hidden />
-            <a  class="btn btn-outline-secondary w-100" href="{% url 'panel-profile' %}">BACK</a>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="signature_agreement_checkbox" required>
+              <label class="form-check-label" for="signature_agreement_checkbox">I agree to attach my signature, and use it to this web app.</label>
+            </div>
+
+            <input id="signature_url" type="text" class="form-control" name="signature_link" value="" hidden/>
+            <a class="btn btn-outline-secondary w-100" href="{% url 'dit-head-profile' %}">BACK</a>
             <button class="clear-button btn btn-outline-danger mt-2 mb-2 w-100" type="click">CLEAR</button>
             <button class="submit-button btn btn-outline-success w-100" type="click">SUBMIT</button>
-            
+
           </form>
 
         </div>

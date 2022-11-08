@@ -134,32 +134,27 @@
 
                       <div class="form-group">
                         <label>Honorific:</label>
-                        <input type="text" class="form-control" value="{{request.user.honorific}}"
-                          disabled />
+                        <input type="text" class="form-control" value="{{request.user.honorific}}" disabled />
                       </div>
 
                       <div class="form-group">
                         <label>First Name:</label>
-                        <input type="text" class="form-control" value="{{request.user.first_name}}"
-                          disabled />
+                        <input type="text" class="form-control" value="{{request.user.first_name}}" disabled />
                       </div>
 
                       <div class="form-group">
                         <label>Middle Name:</label>
-                        <input type="text" class="form-control" value="{{request.user.middle_name}}"
-                          disabled />
+                        <input type="text" class="form-control" value="{{request.user.middle_name}}" disabled />
                       </div>
 
                       <div class="form-group">
                         <label>Last Name:</label>
-                        <input type="text" class="form-control" value="{{request.user.last_name}}"
-                          disabled />
+                        <input type="text" class="form-control" value="{{request.user.last_name}}" disabled />
                       </div>
 
                       <div class="form-group">
                         <label>Suffix:</label>
-                        <input type="text" class="form-control" value="{{request.user.suffix}}"
-                          disabled />
+                        <input type="text" class="form-control" value="{{request.user.suffix}}" disabled />
                       </div>
 
                       <div class="form-group">
@@ -190,7 +185,7 @@
                       {% if esignature_exist == 'True' %}
 
                       <div class="text-center mt-5 mb-5">
-                        <img id="esignature_img" src="{% static 'signatures/' %}{{currently_loggedin_username}}.png"
+                        <img id="esignature_img" src="/uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/{{currently_loggedin_username}}.png"
                           alt="">
                       </div>
 
@@ -201,7 +196,7 @@
                       <div class="text-center mt-5 mb-5">
                         <h3>No Signature Uploaded <br>
                           H 100 x W 300
-                          
+
                         </h3>
                       </div>
 
@@ -214,6 +209,10 @@
                           <label>Upload Signature</label>
                           <input type="file" class="form-control-file mb-2" id="esignature" name="esignature"
                             accept="image/png" required>
+                          <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                            <label class="form-check-label" for="exampleCheck1">I agree to attach my signature, and use it to this web app.</label>
+                          </div>
                           <button type="submit" class="btn btn-outline-primary w-100">Upload Signature</button>
                         </div>
                       </form>
@@ -225,6 +224,10 @@
                           <label>Upload Signature</label>
                           <input type="file" class="form-control-file mb-2" id="esignature" name="esignature"
                             accept="image/png" required>
+                          <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                            <label class="form-check-label" for="exampleCheck1">I agree to update my signature, and use it to this web app.</label>
+                          </div>
                           <button type="submit" class="btn btn-outline-info w-100">Update Signature</button>
                         </div>
                       </form>
@@ -270,14 +273,14 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  {% include 'logout-modal.html' %} 
+  {% include 'logout-modal.html' %}
   {% include 'script-cdn.html' %}
-  
+
   <script src="{% static 'js/signature-pad.js' %}"></script>
 
   {% if response == 'sweet not png' %}
   <script>
-    Swal.fire("Invalid", "The Image File you uploaded is not a PNG File.", "error");
+    Swal.fire("Invalid", "The File you uploaded is not a PNG image file.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-profile' %}");
     }, 2000);
