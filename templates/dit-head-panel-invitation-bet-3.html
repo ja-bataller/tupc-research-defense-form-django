@@ -249,7 +249,9 @@
         window.location.replace("{% url 'dit-head-panel-conforme-bet-3' %}");
       }, 1500);
     </script>
-    {% endif %} {% if response == 'sweet no esign' %}
+    {% endif %} 
+    
+    {% if response == 'sweet no esign' %}
     <script>
       Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
 
@@ -258,5 +260,6 @@
       }, 2300);
     </script>
     {% endif %}
+    
   </body>
 </html>

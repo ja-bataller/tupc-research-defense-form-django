@@ -281,6 +281,16 @@
   </script>
   {% endif %}
 
+  {% if response == 'sweet faculty member no signature' %}
+    <script>
+      Swal.fire("Error", "The Faculty Member might have remove his or her signature. Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-bet3-research-title-defense' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
 </body>
 
 </html>

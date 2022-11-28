@@ -129,6 +129,36 @@
                       <td></td>
                     </tr>
                     {% endfor %}
+
+                    {% for present_reschedule_title_defense in present_reschedule_title_defense %}
+                    <tr>
+                      <td>{{present_reschedule_title_defense.id}}</td>
+                      <td>{{present_reschedule_title_defense.subject_teacher_full_name}}</td>
+                      <td>{{present_reschedule_title_defense.student_leader_full_name}}</td>
+                      <td>{{present_reschedule_title_defense.course_major_abbr}}</td>
+                      <td>Research Title Defense</td>
+                      <td>{{present_reschedule_title_defense.research_title_defense_date}}</td>
+                      <td>{{present_reschedule_title_defense.research_title_defense_start_time}} to
+                        {{present_reschedule_title_defense.research_title_defense_end_time}}</td>
+                      <td class="text-info">{{present_reschedule_title_defense.panel_attendance}}</td>
+                      <td></td>
+                    </tr>
+                    {% endfor %}
+
+                    {% for absent_reschedule_title_defense in absent_reschedule_title_defense %}
+                    <tr>
+                      <td>{{absent_reschedule_title_defense.id}}</td>
+                      <td>{{absent_reschedule_title_defense.subject_teacher_full_name}}</td>
+                      <td>{{absent_reschedule_title_defense.student_leader_full_name}}</td>
+                      <td>{{absent_reschedule_title_defense.course_major_abbr}}</td>
+                      <td>Research Title Defense</td>
+                      <td>{{absent_reschedule_title_defense.research_title_defense_date}}</td>
+                      <td>{{absent_reschedule_title_defense.research_title_defense_start_time}} to
+                        {{absent_reschedule_title_defense.research_title_defense_end_time}}</td>
+                      <td class="text-info">{{absent_reschedule_title_defense.panel_attendance}}</td>
+                      <td></td>
+                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>

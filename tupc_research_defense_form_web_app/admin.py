@@ -10,14 +10,14 @@ admin.site.register(ResearchTitle)
 
 admin.site.register(DefenseSchedule)
 
-admin.site.register(BET3PanelInvitation)
-admin.site.register(BET3ResearchTitleDefenseForm)
-admin.site.register(BET3ResearchTitleVote)
-admin.site.register(BET3AdviserConforme)
+admin.site.register(TitlePanelInvitation)
+admin.site.register(TitleDefenseForm)
+admin.site.register(TitleVote)
+admin.site.register(AdviserConforme)
 
 admin.site.register(FilePath)
 
 admin.site.register(DefenseScheduleLog)
-admin.site.register(BET3PanelInvitationLog)
-admin.site.register(BET3ResearchTitleDefenseFormLog)
-admin.site.register(BET3AdviserConformeLog)
+admin.site.register(TitlePanelInvitationLog)
+admin.site.register(TitleDefenseFormLog)
+admin.site.register(AdviserConformeLog)

@@ -106,7 +106,7 @@
                 <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
                   <div class="float-right">Subject Teacher</div>
                 </span>
-                <img class="img-profile rounded-circle" src="{% static 'img/user-profile.png' %}" />
+                <img class="img-profile rounded-circle" src="{% static 'img/user.png' %}" />
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -250,6 +250,7 @@
                       <th>Panel ID No.</th>
                       <th>Panel Name</th>
                       <th>Attendance</th>
+                      <th>Signature</th>
                       <th>Vote Status</th>
                       <th>Action</th>
                     </tr>
@@ -259,6 +260,7 @@
                       <th>Panel ID No.</th>
                       <th>Panel Name</th>
                       <th>Attendance</th>
+                      <th>Signature</th>
                       <th>Vote Status</th>
                       <th>Action</th>
                     </tr>
@@ -305,13 +307,34 @@
                       <td>{{panel_member.panel_username}}</td>
                       <td>{{panel_member.panel_full_name}}</td>
                       {% if panel_member.is_panel_chairman == 1 %}
-                      <td class="text-success">
-                        Present - Panel Chairman
-                      </td>
-                      {% else %}
-                      <td class="text-success">
-                        Present
-                      </td>
+                        <td class="text-success">
+                          Present - Panel Chairman
+                        </td>
+                        {% if panel_member.panel_signature_response == 1 %}
+                          {% if panel_member.panel_signature_attach == 1 %}
+                            <td class="text-success">E-Signature</td>
+                          {% else %}
+                            <td class="text-primary">Live Signature</td>
+                          {% endif %}
+                        {% else %}
+                          <td>Pending</td>
+                        {% endif %}
+
+                        {% else %}
+                        <td class="text-success">
+                          Present
+                        </td>
+
+                        {% if panel_member.panel_signature_response == 1 %}
+                          {% if panel_member.panel_signature_attach == 1 %}
+                            <td class="text-success">E-Signature</td>
+                          {% else %}
+                            <td class="text-primary">Live Signature</td>
+                          {% endif %}
+                        {% else %}
+                          <td>Pending</td>
+                        {% endif %}
+
                       {% endif %}
                       {% if panel_member.form_status == "completed" %}
                       <td class="text-success">
@@ -360,10 +383,17 @@
             </div>
           </div>
 
+          {% if not pending_signature_response %}
+          {% if not start_voting %}
+          <a class="btn btn-outline-success mb-2 w-100"
+            href="{% url 'subject-teacher-title-defense-day-start-vote' student_leader_data.username %}">Start Title Voting</a>
+          {% endif %}
+          {% endif %}
+
           {% if not panel_members %}
           {% if not pending_title_defense_vote %}
           {% if has_accepted_title == None and research_title_revise == None and research_title_all_deferred == 0 %}
-          <a data-id="{{panel_member.id}}" class="btn btn-outline-danger mb-2 w-100"
+          <a class="btn btn-outline-danger mb-2 w-100"
             href="{% url 'subject-teacher-title-defense-day-close-vote' student_leader_data.username %}">Close Title
             Voting</a>
           {% endif %}

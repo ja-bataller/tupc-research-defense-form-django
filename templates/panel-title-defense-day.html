@@ -112,41 +112,7 @@
       <!-- Main Content -->
       <div id="content">
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-          <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
-          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
-          </button>
-
-          <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
-            <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
-                  <div class="float-right">Panel</div>
-                </span>
-                <img class="img-profile rounded-circle" src="{% static 'img/user-profile.png' %}" />
-              </a>
-              <!-- Dropdown - User Information -->
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="{% url 'panel-profile' %}">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
-                </a>
-              </div>
-            </li>
-          </ul>
-        </nav>
-        <!-- End of Topbar -->
+        {% include 'panel-topbar.html' %}
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -274,6 +240,16 @@
 
           </div>
 
+          {% if response_signature == 1 %}
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required>
+            <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+          </div>
+          <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature</a>
+          <hr>
+          <a id="btn_accept_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Personal Signature</a>
+          {% endif %}
+
           <!-- DataTales Example -->
           <div class="card shadow mb-2">
             <div class="card-body">
@@ -325,6 +301,7 @@
                       {% endif %}
                       
                     
+                      {% if start_voting.start_voting == 1 %}
                       {% if title.panel_response == "" %}
                       <td class="text-center text-success">
                         <a id="accepted_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-success w-100 mb-2"
@@ -334,6 +311,9 @@
                         <a id="revise_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-secondary w-100 mb-2"
                           >Revise Title</a>
                       </td>
+                      {% endif %}
+                      {% else %}
+                      <td>Waiting for Subject Teacher</td>
                       {% endif %}
                     </tr>
                     {% endfor %}
@@ -348,6 +328,7 @@
             href="{% url 'panel-title-defense-mark-done' current_panel_title_defense.id %}">Mark as Done</a>
           {% endif %}
           {% endif %}
+          
           </div>
 
         <!-- /.container-fluid -->
@@ -424,38 +405,56 @@
     </div>
   </div>
 
-  {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+  {% include 'logout-modal.html' %} 
+  {% include 'script-cdn.html' %}
+
+  <script>
+    document.getElementById('btn_accept_signed').addEventListener("click", function () {
+      if (document.getElementById('checkbox_agreement_a').checked) {
+        document.getElementById("btn_accept_signed").href = "{% url 'panel-title-defense-day-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+      } else {
+        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");''
+      }
+    });
+  </script>
+
+  <script>
+    document.getElementById('btn_accept_live').addEventListener("click", function () {
+      document.getElementById("btn_accept_live").href = "{% url 'panel-title-defense-day-live-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+    });
+  </script>
+  
+  {% for title in research_titles %}
+  <script>
+    document.getElementById("accepted_" + "{{title.id}}").addEventListener("click", function () {
+      data_id = $(document.getElementById("accepted_" + "{{title.id}}")).attr("data-id");
+  
+      document.getElementById("accepted_research_title").textContent = "{{title.research_title}}";
+      document.getElementById("accept_title_btn").href = "{% url 'panel-accept-title' id=0 %}"
+        .replace(/0/, data_id);
+      $("#acceptedTitleModal").modal();
+    });
+  
+    document.getElementById("deferred_" + "{{title.id}}").addEventListener("click", function () {
+      data_id = $(document.getElementById("deferred_" + "{{title.id}}")).attr("data-id");
+  
+      document.getElementById("deferred_research_title").textContent = "{{title.research_title}}";
+      document.getElementById("defer_title_btn").href = "{% url 'panel-defer-title' id=0 %}"
+        .replace(/0/, data_id);
+      $("#deferredTitleModal").modal();
+    });
+  
+    document.getElementById("revise_" + "{{title.id}}").addEventListener("click", function () {
+      data_id = $(document.getElementById("revise_" + "{{title.id}}")).attr("data-id");
+  
+      document.getElementById("revise_research_title").textContent = "{{title.research_title}}";
+      document.getElementById("revise_title_btn").href = "{% url 'panel-revise-title' id=0 %}"
+        .replace(/0/, data_id);
+      $("#reviseTitleModal").modal();
+    });
+  </script>
+  {% endfor %}
+
 </body>
-
-{% for title in research_titles %}
-<script>
-  document.getElementById("accepted_" + "{{title.id}}").addEventListener("click", function () {
-    data_id = $(document.getElementById("accepted_" + "{{title.id}}")).attr("data-id");
-
-    document.getElementById("accepted_research_title").textContent = "{{title.research_title}}";
-    document.getElementById("accept_title_btn").href = "{% url 'panel-accept-title' id=0 %}"
-      .replace(/0/, data_id);
-    $("#acceptedTitleModal").modal();
-  });
-
-  document.getElementById("deferred_" + "{{title.id}}").addEventListener("click", function () {
-    data_id = $(document.getElementById("deferred_" + "{{title.id}}")).attr("data-id");
-
-    document.getElementById("deferred_research_title").textContent = "{{title.research_title}}";
-    document.getElementById("defer_title_btn").href = "{% url 'panel-defer-title' id=0 %}"
-      .replace(/0/, data_id);
-    $("#deferredTitleModal").modal();
-  });
-
-  document.getElementById("revise_" + "{{title.id}}").addEventListener("click", function () {
-    data_id = $(document.getElementById("revise_" + "{{title.id}}")).attr("data-id");
-
-    document.getElementById("revise_research_title").textContent = "{{title.research_title}}";
-    document.getElementById("revise_title_btn").href = "{% url 'panel-revise-title' id=0 %}"
-      .replace(/0/, data_id);
-    $("#reviseTitleModal").modal();
-  });
-</script>
-{% endfor %}
 
 </html>

@@ -340,7 +340,7 @@
 
   {% if response == 'sweet Adviser not found' %}
   <script>
-    Swal.fire("Invalid", "The Adviser you entered doesn't exist.", "error");
+    Swal.fire("Invalid", "Please choose a Adviser that is on the list.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'student-bet3-adviser-dashboard' %}");
     }, 2000);
@@ -372,6 +372,16 @@
       window.location.replace("{% url 'student-bet3-adviser-dashboard' %}");
     }, 2000);
   </script>
+  {% endif %}
+
+  {% if response == 'sweet faculty member no signature' %}
+    <script>
+      Swal.fire("Error", "The Faculty Member might have remove his or her signature. Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-bet3-adviser-dashboard' %}");
+      }, 2000);
+    </script>
   {% endif %}
 
 </body>

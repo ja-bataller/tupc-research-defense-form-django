@@ -41,7 +41,7 @@
                     >{{currently_loggedin_user_full_name}} <br />
                     <div class="float-right">Subject Teacher</div>
                   </span>
-                  <img class="img-profile rounded-circle" src="{% static 'img/user-profile.png' %}" />
+                  <img class="img-profile rounded-circle" src="{% static 'img/user.png' %}" />
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -128,6 +128,20 @@
                         <td>{{redefense_schedule.start_time}} to {{redefense_schedule.end_time}}</td>
                         <td class="text-danger">{{redefense_schedule.status}}</td>
                         <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-title-defense-logs-redefense' redefense_schedule.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
+                      </tr>
+                      {% endfor %}
+
+                      {% for reschedule_schedule in reschedule_defense_schedule %} 
+                      <tr>
+                        <td>{{reschedule_schedule.id}}</td>
+                        <td>{{reschedule_schedule.student_leader_username}}</td>
+                        <td>{{reschedule_schedule.student_leader_name}}</td>
+                        <td>{{reschedule_schedule.course}}</td>
+                        <td>{{reschedule_schedule.form}}</td>
+                        <td>{{reschedule_schedule.date}}</td>
+                        <td>{{reschedule_schedule.start_time}} to {{reschedule_schedule.end_time}}</td>
+                        <td class="text-info">{{reschedule_schedule.status}}</td>
+                        <td></td>
                       </tr>
                       {% endfor %}
                     </tbody>

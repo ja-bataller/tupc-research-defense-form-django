@@ -138,7 +138,7 @@
                 <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
                   <div class="float-right">Adviser</div>
                 </span>
-                <img class="img-profile rounded-circle" src="{% static 'img/user-profile.png' %}" />
+                <img class="img-profile rounded-circle" src="{% static 'img/user.png' %}" />
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -237,11 +237,22 @@
           <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
           </button>
         </div>
-        <div class="modal-body">Are you sure you want to accept <span id="student_name_accept"></span> BET-3 Adviser
-          Conforme request?</div>
+        <div class="modal-body">
+          Are you sure you want to accept <span id="student_name_accept"></span><br />
+          BET-3 Adviser Conforme request?
+          <br />
+          <br />
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required />
+            <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+          </div>
+          <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Accept - Attach Signature</a>
+          <hr />
+          <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept - Personal Signature</a>
+          <hr />
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-          <a id="accept_btn" class="btn btn-outline-success" type="button" href="#">Yes - Accept</a>
+          <button id="btn_cancel_a" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
@@ -256,11 +267,22 @@
           <h5 class="modal-title" id="exampleModalLabel">Decline Request?</h5>
           </button>
         </div>
-        <div class="modal-body">Are you sure you want to decline <span id="student_name_decline"></span> BET-3 Adviser
-          Conforme request?</div>
+        <div class="modal-body">
+          Are you sure you want to decline <span id="student_name_decline"></span> <br />
+          BET-3 Adviser Conforme request?
+          <br />
+          <br />
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="checkbox_agreement_d" required />
+            <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+          </div>
+          <a id="btn_decline_signed" class="submit-button btn btn-outline-danger w-100" type="button" href="#">Decline - Attach Signature</a>
+          <hr />
+          <a id="decline_btn" class="btn btn-outline-warning w-100" type="button" href="#">Decline - Personal Signature</a>
+          <hr />
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-          <a id="decline_btn" class="btn btn-outline-danger" type="button" href="#">Yes - Decline</a>
+          <button id="btn_cancel_d" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
@@ -282,8 +304,7 @@
       data_id = $(document.getElementById('accept_' + '{{adviser_conforme.id}}')).attr("data-id")
 
       document.getElementById('student_name_accept').textContent = "{{adviser_conforme.student_leader_full_name}}";
-      document.getElementById("accept_btn").href = "{% url 'adviser-bet3-adviser-conforme-accept' id=0 %}"
-        .replace(/0/, data_id);
+      document.getElementById("btn_accept").href = "{% url 'adviser-bet3-adviser-conforme-accept' id=0 %}".replace(/0/, data_id);
       $("#acceptModal").modal()
     });
 
@@ -291,12 +312,45 @@
       data_id = $(document.getElementById('decline_' + '{{adviser_conforme.id}}')).attr("data-id")
 
       document.getElementById('student_name_decline').textContent = "{{adviser_conforme.student_leader_full_name}}";
-      document.getElementById("decline_btn").href = "{% url 'adviser-bet3-adviser-conforme-decline' id=0 %}"
-        .replace(/0/, data_id);
+      document.getElementById("decline_btn").href = "{% url 'adviser-bet3-adviser-conforme-decline' id=0 %}".replace(/0/, data_id);
       $("#declineModal").modal()
     });
   </script>
   {% endfor %}
+
+
+  <!-- Modal - Accept- Attach Signature -->
+  <script>
+    document.getElementById("btn_accept_signed").addEventListener("click", function () {
+      if (document.getElementById("checkbox_agreement_a").checked) {
+        document.getElementById("btn_accept_signed").href = "{% url 'adviser-bet3-adviser-conforme-accept-sign' id=0 %}".replace(/0/, data_id);
+      } else {
+        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+      }
+    });
+  </script>
+
+  <!-- Modal - Decline - Attach Signature -->
+  <script>
+    document.getElementById("btn_decline_signed").addEventListener("click", function () {
+      if (document.getElementById("checkbox_agreement_d").checked) {
+        document.getElementById("btn_decline_signed").href = "{% url 'adviser-bet3-adviser-conforme-decline-sign' id=0 %}".replace(/0/, data_id);
+      } else {
+        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+      }
+    });
+  </script>
+
+  <!-- Modal - Cancel Button -->
+  <script>
+    document.getElementById("btn_cancel_a").addEventListener("click", function () {
+      document.getElementById("checkbox_agreement_a").checked = false;
+    });
+
+    document.getElementById("btn_cancel_d").addEventListener("click", function () {
+      document.getElementById("checkbox_agreement_d").checked = false;
+    });
+  </script>
 
   {% if response == 'sweet bet-3 adviser conforme accepted' %}
   <script>
@@ -316,6 +370,16 @@
     setTimeout(function () {
       window.location.replace("{% url 'adviser-bet3-adviser-conforme' %}");
     }, 1500);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no esign' %}
+  <script>
+    Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-panel-invitation-bet-3' %}");
+    }, 2300);
   </script>
   {% endif %}
 

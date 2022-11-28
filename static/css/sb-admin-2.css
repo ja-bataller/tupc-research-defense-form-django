@@ -11279,3 +11279,12 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+.tup-colorway{
+  color: #c41e3a !important;
+}
+
+.tup-colorway-secondary{
+  color: #d66275 !important;
+}
+

@@ -53,15 +53,11 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Topic - Panel Invitation</a>
-            <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
-            <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+            <a class="collapse-item" href="{% url 'panel-bet3-proposal-defense-panel-invitation-dashboard' %}">Proposal - Panel Invitation</a>
+
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
+
           </div>
         </div>
       </li>
@@ -161,15 +157,11 @@
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
-            {% if not today_title_defense and not today_title_defense_present and not completed_title_defense%}
+
             <div class="card-header">
-              <h6 class="m-0 mt-2 text-secondary">No Ongoing Defense Schedule for Today</span></h6>
+              <h6 class="m-0 mt-2 text-secondary">Defense Schedule for Today</span></h6>
             </div>
-            {% else %}
-            <div class="card-header">
-              <h6 class="m-0 mt-2 text-secondary">Ongoing Defense Schedule for Today</span></h6>
-            </div>
-            {% endif %}
+
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
@@ -235,6 +227,45 @@
                             class="fa-solid fa-eye"></i></a></td>
                     </tr>
                     {% endfor %}
+
+                    {% for today_defense in today_proposal_defense %}
+                    <tr>
+                      <td>{{today_defense.id}}</td>
+                      <td>{{today_defense.subject_teacher_full_name}}</td>
+                      <td>{{today_defense.student_leader_full_name}}</td>
+                      <td>{{today_defense.course_major_abbr}}</td>
+                      <td>Research Proposal Defense</td>
+                      <td>{{today_defense.research_proposal_defense_date}}</td>
+                      <td>{{today_defense.research_proposal_defense_start_time}} to {{today_defense.research_proposal_defense_end_time}}</td>
+                      <td>Waiting for Subject Teacher</td>
+                      <td class="text-center"></td>
+                    </tr>
+                    {% endfor %}
+
+                    {% for today_defense in today_proposal_defense_present %}
+                    <tr>
+                      <td>{{today_defense.id}}</td>
+                      <td>{{today_defense.subject_teacher_full_name}}</td>
+                      <td>{{today_defense.student_leader_full_name}}</td>
+                      <td>{{today_defense.course_major_abbr}}</td>
+                      <td>Research Proposal Defense</td>
+                      <td>{{today_defense.research_proposal_defense_date}}</td>
+                      <td>{{today_defense.research_proposal_defense_start_time}} to {{today_defense.research_proposal_defense_end_time}}</td>
+
+                      {% if today_defense.is_completed %}
+                      <td class="text-success">Completed</td>
+                      {% else %}
+                      <td class="text-secondary">Pending</td>
+                      {% endif %}
+                      <td class="text-center">
+                        <a class="btn btn-outline-primary"
+                          href="{% url 'panel-bet3-proposal-defense-day' today_defense.student_leader_username %}">
+                          <i class="fa-solid fa-eye"></i>
+                          </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
                   </tbody>
                 </table>
               </div>
@@ -294,6 +325,214 @@
     Swal.fire("Done", "You have mark your reponse as done.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-title-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet attach signature respond' %}
+  <script>
+    Swal.fire("Success", "You have successfully attached your signature to this form.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-title-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet live signature respond' %}
+  <script>
+    Swal.fire("Info", "You have marked this form for live signature.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-title-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet signature already respond' %}
+  <script>
+    Swal.fire("Uh-oh", "You have have already respond for you signature attachment.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-title-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no esign' %}
+  <script>
+    Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-title-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal defense attach signature respond' %}
+  <script>
+    Swal.fire("Success", "You have successfully attached your signature to this form.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal defense live signature respond' %}
+  <script>
+    Swal.fire("Info", "You have marked this form for live signature.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal defense signature already respond' %}
+  <script>
+    Swal.fire("Uh-oh", "You have have already respond for you signature attachment.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal defense no esign' %}
+  <script>
+    Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal defense critique saved' %}
+  <script>
+    Swal.fire("Saved", "Your critique has been saved.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal defense critique deleted' %}
+  <script>
+    Swal.fire("Deleted", "The Critique has been deleted.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal defense critique not found' %}
+  <script>
+    Swal.fire("Uh-oh", "The Critique you are trying to delete doesn't exist.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet critique panel chairman esign' %}
+  <script>
+    Swal.fire("Success", "You have attached your signature to this Critique Form.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet critique panel esign' %}
+  <script>
+    Swal.fire("Success", "You have attached your signature to this Critique Form.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet critique panel chairman live sign' %}
+  <script>
+    Swal.fire("Success", "You have marked this Critique Form for live signature.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet critique panel live sign' %}
+  <script>
+    Swal.fire("Success", "You have marked this Critique Form for live signature.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+
+  {% if response == 'sweet proposal defense accepted with revision' %}
+  <script>
+    Swal.fire("Accepted with Revision", "You have marked the Proposal Defense as Accepted with Revision.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal defense deferred with revision' %}
+  <script>
+    Swal.fire("Deferred with Revision", "You have marked the Proposal Defense as Deferred with Revision.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal defense not accepted' %}
+  <script>
+    Swal.fire("Not Accepted", "You have marked the Proposal Defense as Not Accepted.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal panel chairman esign' %}
+  <script>
+    Swal.fire("E-Sign Attached", "You have attached your e-signature to the Proposal Defense Form.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal panel esign' %}
+  <script>
+    Swal.fire("E-Sign Attached", "You have attached your e-signature to the Proposal Defense Form.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal panel chairman live sign' %}
+  <script>
+    Swal.fire("Live Signature", "You have marked the Proposal Defense Form for live signature.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet proposal panel live sign' %}
+  <script>
+    Swal.fire("Live Signature", "You have marked the Proposal Defense Form for live signature.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet critique form has ended' %}
+  <script>
+    Swal.fire("Uh-oh", "The Critique Form has already ended.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
     }, 2000);
   </script>
   {% endif %}

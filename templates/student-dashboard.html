@@ -67,10 +67,12 @@
         </a>
         <div id="collapseForms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="#">Consultation Form</a>
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Topic - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
             <a class="collapse-item" href="{% url 'student-bet3-adviser-dashboard' %}">Adviser Conforme</a>
+            <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation' %}">Proposal - Panel Invitation</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
           </div>
@@ -88,6 +90,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'student-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation-logs' %}">Proposal - Panel Invitation</a>
             <!-- <a class="collapse-item" href="#">Research Title Defense</a>
             <a class="collapse-item" href="#">Adviser Conforme</a> -->
             <div class="collapse-divider"></div>
@@ -131,17 +134,17 @@
 
           <div class="row">
             <div class="col-md-8 col-sm-12 mb-3">
-              <div class="card border-left-danger shadow h-100 py-2">
+              <div class="card border-left-dark shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                      <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                         Student</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome {{student_leader_data.first_name}}
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fa-solid fa-face-laugh-beam fa-2x text-danger"></i>
+                      <i class="fa-solid fa-face-laugh-beam fa-2x tup-colorway-secondary"></i>
                     </div>
                   </div>
                 </div>
@@ -149,17 +152,17 @@
             </div>
 
             <div class="col-md-4 col-sm-12 mb-3">
-              <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card border-left-dark shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                      <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                         Today</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">{{date_today}}
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fa-solid fa-sun fa-2x text-warning"></i>
+                      <i class="fa-solid fa-sun fa-2x tup-colorway-secondary"></i>
                     </div>
                   </div>
                 </div>
@@ -170,17 +173,23 @@
               <div class="row">
 
                 <div class="col-sm-12 mb-3">
-                  <div class="card border-left-primary shadow h-100 py-2">
+                  <div class="card border-left-dark shadow h-100 py-2">
                     <div class="card-body">
                       <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                          <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                             Upcoming Defense Schedule</div>
                           {% if student_leader_data.title_defense_status != "completed" and student_leader_data.research_title_defense_date != "" %}
-                          <div class="h5 mb-0 font-weight-bold text-gray-800">Proposal Defese -
+                          <div class="h5 mb-0 font-weight-bold text-gray-800">Title Defense -
                             {{student_leader_data.research_title_defense_date}} -
                             {{student_leader_data.research_title_defense_start_time}} to
                             {{student_leader_data.research_title_defense_end_time}}
+                          </div>
+                          {% elif student_leader_data.bet3_proposal_defense_status != "completed" and student_leader_data.research_proposal_defense_date != "" %}
+                          <div class="h5 mb-0 font-weight-bold text-gray-800">Proposal Defense -
+                            {{student_leader_data.research_proposal_defense_date}} -
+                            {{student_leader_data.research_proposal_defense_start_time}} to
+                            {{student_leader_data.research_proposal_defense_end_time}}
                           </div>
                           {% else %}
                           <div class="h5 mb-0 font-weight-bold text-gray-800"> No Upcoming Defense Schedule
@@ -188,7 +197,7 @@
                           {% endif %}
                         </div>
                         <div class="col-auto">
-                          <i class="fa-solid fa-calendar-day fa-2x text-primary"></i>
+                          <i class="fa-solid fa-calendar-day fa-2x tup-colorway-secondary"></i>
                         </div>
                       </div>
                     </div>
@@ -202,11 +211,11 @@
             <div class="col-md-4 col-sm-12 mb-3">
               <div class="row">
                 <div class="col-sm-12 mb-3">
-                  <div class="card border-left-info shadow h-100 py-2">
+                  <div class="card border-left-dark shadow h-100 py-2">
                     <div class="card-body">
                       <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                          <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                          <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                             Research Forms Progress</div>
                           <div class="h5 mt-3 mb-2 font-weight-bold text-gray-800">BET-3</div>
                           {% if student_leader_data.group_members_status == "completed" %}
@@ -259,15 +268,35 @@
                             <hr class="m-1">
                           {% endif %}
 
+                          {% if student_leader_data.bet3_proposal_defense_panel_invitation_status == "completed" %}
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
+                            Panel Invitation - Proposal Defense</div>
+                            <hr class="m-1">
+                          {% else %}
                           <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
                             Panel Invitation - Proposal Defense</div>
                             <hr class="m-1">
-                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
-                            Research Proposal Defense Form</div>
-                            <hr class="m-1">
-                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
+                          {% endif %}
+
+                          {% if student_leader_data.bet3_proposal_defense_status == "completed" %}
+                            <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
                             Critique Form</div>
                             <hr class="m-1">
+
+                            <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
+                            Research Proposal Defense Form</div>
+                            <hr class="m-1">
+                          
+                          {% else %}
+                         
+                            <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
+                            Critique Form</div>
+                            <hr class="m-1">
+                            <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
+                            Research Proposal Defense Form</div>
+                            <hr class="m-1">
+                          {% endif %}
+
 
                           <div class="h5 mt-3 mb-2 font-weight-bold text-gray-800">BET-5</div>
                           <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
@@ -276,10 +305,13 @@
                           <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
                             Research Final Defense Form</div>
                             <hr class="m-1">
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
+                            Acknowledgement Receipt</div>
+                            <hr class="m-1">
 
                         </div>
                         <div class="col-auto">
-                          <i class="fa-solid fa-list-check fa-2x text-info"></i>
+                          <i class="fa-solid fa-list-check fa-2x tup-colorway-secondary"></i>
                         </div>
                       </div>
                     </div>
