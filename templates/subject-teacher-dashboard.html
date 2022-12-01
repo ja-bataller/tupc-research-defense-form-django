@@ -209,7 +209,7 @@
                       <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-title-defense-day' today_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
                       {% endif %}
 
-                      {% if today_defense.form == "Research Proposal Defense" %}
+                      {% if today_defense.form == "Research Proposal Defense" and today_defense.student_leader_username %}
                       <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-proposal-defense-day' today_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
                       {% endif %}
                     </tr>

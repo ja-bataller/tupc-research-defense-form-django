@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Student - Panel Invitation</title>
+    <title>Student - Proposal - Panel Invitation</title>
 
     {% include 'css-main-cdn.html' %}
   </head>
@@ -25,7 +25,7 @@
 
           <div class="container-fluid">
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-gray-800">BET-3 - Proposal Defense - Topic Invitation - Create</h1>
+              <h1 class="h3 mb-0 text-gray-800">BET-3 - Proposal Defense - Panel Invitation</h1>
               <!-- <div class="float-right">
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-file-pdf"></i> Download
                                 Form</button>
@@ -35,7 +35,7 @@
             <form method="POST">
               {% csrf_token %}
 
-              <div class="card border-left-info shadow h-100 py-2 mb-3">
+              <div class="card border-left-dark shadow h-100 py-2 mb-3">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -71,7 +71,7 @@
                       {% endfor %}
 
                        <!-- Previous Panel Members End -->
-                      <button type="submit" class="btn btn-outline-success w-100">Send Invitation</button>
+                      <button type="submit" class="btn btn-outline-success w-100">Send</button>
                     </div>
                   </div>
                 </div>
@@ -98,7 +98,7 @@
 
     {% if response == 'sweet no DIT Head' %}
     <script>
-      Swal.fire("Uh-oh", "There is no Department Head assigned. Please try again later.", "warning");
+      Swal.fire("Uh-oh", "There's no Department Head assigned. <br> Please try again later.", "warning");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
       }, 2000);
@@ -107,7 +107,7 @@
 
     {% if response == 'sweet invalid defense schedule' %}
     <script>
-      Swal.fire("Invalid", "The Defense Schedule you entered is invalid. Please choose one from the choices given.", "error");
+      Swal.fire("Invalid", "The Defense Schedule you entered is invalid. <br> Please choose from the given choices.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation-create-panel' %}");
       }, 2000);
@@ -116,25 +116,25 @@
 
     {% if response == 'sweet invalid panel' %}
     <script>
-      Swal.fire("Invalid", "The Panel you entered is invalid. Please choose one from the choices given.", "error");
+      Swal.fire("Invalid", "The Panel you entered is invalid. <br> Please choose from the given choices.", "error");
     </script>
     {% endif %}
 
     {% if response == 'sweet defense schedule not found' %}
     <script>
-      Swal.fire("Uh-oh", "The Defense Schedule you entered doesn't exist.", "warning");
+      Swal.fire("Uh-oh", "The Proposal Defense Schedule you entered doesn't exist.", "error");
     </script>
     {% endif %}
 
     {% if response == 'sweet Panel not found' %}
     <script>
-      Swal.fire("Uh-oh", "The Panel Member you entered doesn't exist.", "warning");
+      Swal.fire("Uh-oh", "The Panel Member you entered doesn't exist.", "error");
     </script>
     {% endif %}
 
     {% if response == 'sweet panel invitation exist' %}
     <script>
-      Swal.fire("Uh-oh", "You have already sent an invitation to {{panel_full_name}}", "info");
+      Swal.fire("Info", "You have already sent an invitation to {{panel_full_name}}", "info");
     </script>
     {% endif %}
 
@@ -146,7 +146,7 @@
 
     {% if response == 'sweet panel invitation sent' %}
     <script>
-      Swal.fire("Success", "The Panel Invitation has been sent successfully.", "success");
+      Swal.fire("Sent", "The Panel Invitation for Proposal Defense has been sent.", "success");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
@@ -156,7 +156,7 @@
 
     {% if response == 'sweet no defense schedule' %}
     <script>
-      Swal.fire("Info", "There are no available defense schedule. Please try again later.", "info");
+      Swal.fire("Uh-oh", "There are No Available Proposal Defense Schedule. <br> Please try again later.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");

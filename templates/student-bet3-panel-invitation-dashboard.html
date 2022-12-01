@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Student - BET-3 Topic Defense - Panel Invitation</title>
+    <title>Student - BET-3 - Topic Defense - Panel Invitation</title>
 
     {% include 'css-main-cdn.html' %}
     <link href="{% static 'css/file-loader.css' %}" rel="stylesheet" />
@@ -32,7 +32,7 @@
             <!-- Page Heading -->
             <div class="row">
               <div class="col-lg-9 col-md-12 mb-3">
-                <h1 class="h3 mb-0 text-gray-800">BET-3 - Topic Defense - Panel Invitation - Forms </h1>
+                <h1 class="h3 mb-0 text-gray-800">BET-3 - Topic Defense - Panel Invitation</h1>
               </div>
               
               {% if student_leader_data.bet3_panel_invitation_status != "completed" %}
@@ -46,9 +46,9 @@
             <div class="card shadow mb-2">
               <div class="card-header py-3">
                 {% if student_leader_data.research_title_defense_date %}
-                <h6 class="m-0 font-weight-bold">Title Defense Schedule: {{student_leader_data.research_title_defense_date}} - {{student_leader_data.research_title_defense_start_time}} to {{student_leader_data.research_title_defense_end_time}}</h6>
+                <h6 class="m-0 font-weight-bold">Topic Defense Schedule: {{student_leader_data.research_title_defense_date}} - {{student_leader_data.research_title_defense_start_time}} to {{student_leader_data.research_title_defense_end_time}}</h6>
                 {% else %}
-                <h6 class="m-0 font-weight-bold">Title Defense Schedule: No Schedule</h6>
+                <h6 class="m-0 font-weight-bold">Topic Defense Schedule: No Schedule</h6>
                 {% endif %}
               </div>
               <div class="card-body">
@@ -129,7 +129,7 @@
               </div>
             </div>
             {% if student_leader_data.bet3_panel_invitation_status != "completed" %} {% if accepted_panel_invitations >= 3 and pending_panel_invitations == 0 %}
-            <a class="btn btn-outline-success mb-2 w-100" type="button" href="{% url 'student-panel-invitation-bet3-save' %}">Mark as Done</a>
+            <a class="btn btn-outline-success mb-2 w-100" type="button" href="{% url 'student-panel-invitation-bet3-save' %}">Mark as Completed</a>
             {% endif %} {% endif %}
           </div>
           <!-- /.container-fluid -->
@@ -188,7 +188,8 @@
       <i class="fas fa-angle-up"></i>
     </a>
 
-    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+    {% include 'logout-modal.html' %} 
+    {% include 'script-cdn.html' %}
 
     <script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
     <script>
@@ -211,9 +212,11 @@
 
     {% if response == 'sweet downloaded' %}
     <script>
-      Swal.fire("Downloaded", "The Panel Invitation Form has been downloaded.", "success");
+      Swal.fire("Downloaded", "The Panel Invitation for Topic Defense has been downloaded.", "success");
 
-      // window.open("{{download_link}}", '_blank').focus();
+      if ("{{download_link}}") {
+        window.open("{{download_link}}", '_blank').focus();
+      }
     </script>
     {% endif %} 
     
@@ -224,9 +227,10 @@
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
       }, 3000);
     </script>
-    {% endif %} {% if response == 'sweet bet-3 panel invitation saved' %}
+    {% endif %} 
+    {% if response == 'sweet bet-3 panel invitation saved' %}
     <script>
-      Swal.fire("Completed", "BET-3 Panel Invitation completed.", "success");
+      Swal.fire("Completed", "Panel Invitation for Topic Defense completed..", "success");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
       }, 3000);
@@ -235,21 +239,21 @@
 
     {% if response == 'sweet incomplete bet3 panel invitation' %}
     <script>
-      Swal.fire("Unathorized", "You can't access this page. Please complete the BET-3 Panel Invitation Form.", "error");
+      Swal.fire("Invalid", "You can't access this page. <br> Please complete the Panel Invitation for Topic Defense.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 2000);
+      }, 3000);
     </script>
     {% endif %}
 
     {% if response == 'sweet no defense schedule' %}
     <script>
-      Swal.fire("Uh-oh", "There are No Available Title Defense Schedule. Please try again later.", "error");
+      Swal.fire("Uh-oh", "There are No Available Title Defense Schedule. <br> Please try again later.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 2000);
+      }, 3000);
     </script>
     {% endif %}
 
@@ -266,11 +270,11 @@
 
   {% if response == 'sweet faculty member no signature' %}
     <script>
-      Swal.fire("Error", "The Faculty Member might have remove his or her signature. Please try again later.", "error");
+      Swal.fire("Uh-oh", "The Faculty Member might have remove his or her signature. <br> Please try again later.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 2000);
+      }, 3000);
     </script>
     {% endif %}
 

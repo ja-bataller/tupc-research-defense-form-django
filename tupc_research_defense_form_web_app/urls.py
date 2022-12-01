@@ -37,6 +37,12 @@ urlpatterns = [
    path('student/bet3/proposal-defense/panel-invitation/save', views.studentBET3ProposalDefensePanelInvitationSave, name ="student-bet3-proposal-defense-panel-invitation-save"),
    path('student/bet3/proposal-defense/panel-invitation/download/<str:id>', views.studentBET3ProposalDefensePanelInvitationDownload, name ="student-bet3-proposal-defense-panel-invitation-download"),
 
+   path('student/bet3/critique-form', views.studentBET3CritiqueForm, name ="student-bet3-critique-form"),
+   path('student/bet3/critique-form/download', views.studentBET3CritiqueFormDownload, name ="student-bet3-critique-form-download"),
+
+   path('student/bet3/research-proposal-defense', views.studentBET3ResearchProposalDefenseForm, name ="student-bet3-research-proposal-defense"),
+   path('student/bet3/research-proposal-defense-form/download', views.studentBET3ResearchProposalDefenseFormDownload, name ="student-bet3-research-proposal-defense-form-download"),
+
    path('student-panel-conforme-bet3/', views.studentPanelConformeBet3, name ="student-panel-conforme-bet3"), 
    path('student-panel-conforme-bet3-create/', views.studentPanelConformeBet3Create, name ="student-panel-conforme-bet3-create"),
    path('student-panel-conforme-bet3-form/', views.studentPanelConformeBet3Form, name ="student-panel-conforme-bet3-form"), 

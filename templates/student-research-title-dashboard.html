@@ -67,6 +67,15 @@
                       <td class="text-danger">{{research_title.status}}</td>
                       {% elif research_title.status == "Title Defense - Pending" %}
                       <td class="text-dark">{{research_title.status}}</td>
+
+                      {% elif research_title.status == "Proposal Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Proposal Defense - Deferred with Revision" %}
+                      <td class="text-info">{{research_title.status}}</td>
+                      {% elif research_title.status == "Propsal Defense - Not Accepted" %}
+                      <td class="text-danger">{{research_title.status}}</td>
+                      {% elif research_title.status == "Proposal Defense - Pending" %}
+                      <td class="text-dark">{{research_title.status}}</td>
                       {% endif %}
                     </tr>
                     {% endfor %}
@@ -98,7 +107,7 @@
 
   {% if response == 'sweet research title saved' %}
   <script>
-    Swal.fire("Success", "Research Title/s has been saved successfully.", "success");
+    Swal.fire("Saved", "Research Title/s has been saved.", "success");
 
     setTimeout(function () {
       window.location.replace("{% url 'student-research-title-dashboard' %}");
@@ -108,7 +117,7 @@
 
   {% if response == 'sweet unauthorize to add research titles' %}
   <script>
-    Swal.fire("Invalid", "You can't add Research Titles anymore.", "error");
+    Swal.fire("Invalid", "You can't add Research Title/s anymore.", "error");
 
     setTimeout(function () {
       window.location.replace("{% url 'student-research-title-dashboard' %}");

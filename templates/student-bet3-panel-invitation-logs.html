@@ -34,12 +34,6 @@
               <div class="col-lg-9 col-md-12 mb-3">
                 <h1 class="h3 mb-0 text-gray-800">BET-3 - Panel Invitation - Logs </h1>
               </div>
-              
-              {% if student_leader_data.bet3_panel_invitation_status != "completed" %}
-              <div class="col-lg-3 col-md-12 mb-3">
-                <a href="{% url 'student-panel-invitation-bet3-create' %}" type="button" class="btn btn-outline-success w-100"><i class="fa-solid fa-file-signature"></i> Create Form</a>
-              </div>
-              {% endif %}
             </div>
 
             <!-- DataTales Example -->
@@ -127,7 +121,7 @@
               </div>
             </div>
             {% if student_leader_data.bet3_panel_invitation_status != "completed" %} {% if accepted_panel_invitations >= 3 and pending_panel_invitations == 0 %}
-            <a class="btn btn-outline-success mb-2 w-100" type="button" href="{% url 'student-panel-invitation-bet3-save' %}">Mark as Done</a>
+            <a class="btn btn-outline-success mb-2 w-100" type="button" href="{% url 'student-panel-invitation-bet3-save' %}">Mark as Completed</a>
             {% endif %} {% endif %}
           </div>
           <!-- /.container-fluid -->

@@ -50,7 +50,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
-            <!-- <a class="collapse-item" href="{% url 'panel-panel-conforme-bet-3' %}">Panel Conforme</a> -->
+            <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
             <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
             <div class="collapse-divider"></div>
@@ -325,7 +325,7 @@
           {% if not check_panel_complete_response %}
           {% if check_panel_mark_done %}
           <a class="btn btn-outline-success w-100 mb-2"
-            href="{% url 'panel-title-defense-mark-done' current_panel_title_defense.id %}">Mark as Done</a>
+            href="{% url 'panel-title-defense-mark-done' current_panel_title_defense.id %}">Mark as Completed</a>
           {% endif %}
           {% endif %}
           

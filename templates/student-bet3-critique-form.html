@@ -10,7 +10,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>Student - BET-3 - Research Title Defense Form</title>
+  <title>Student - BET-3 - Critique Form</title>
 
   {% include 'css-main-cdn.html' %}
   <link href="{% static 'css/file-loader.css' %}" rel="stylesheet" />
@@ -32,14 +32,27 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <div class="d-sm-flex align-items-center justify-content-between">
-            <h1 class="h3 text-gray-800">BET-3 - Research Title Defense Form</h1>
+            <h1 class="h3 text-gray-800">BET-3 - Critique Form</h1>
           </div>
-          <h1 class="h6 mb-0 text-gray-800 mb-2">{{student_leader_data.research_title_defense_date}} -
-            {{student_leader_data.research_title_defense_start_time}} to
-            {{student_leader_data.research_title_defense_end_time}}</h1>
 
           <div class="row">
-            <div class="col-md-4 col-sm-12 mb-3">
+
+            <div class="col-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 mt-2">
+                     <h6>Research Title:</h6>
+                    </div>
+                    <div class="col-sm-12">
+                      <h4>{{student_research_title}}</h4>
+                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mb-3">
               <div class="card bg-white text-dark shadow">
                 <div class="card-body">
 
@@ -71,79 +84,7 @@
               </div>
             </div>
 
-            <div class="col-md-4 col-sm-12 mb-3">
-              <div class="card bg-white text-dark shadow">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-12 font-weight-bold">
-                      Research Titles:
-                    </div>
-
-                    {% if student_research_titles %}
-                    {% for research_title in student_research_titles %}
-
-                    {% if research_title.title_defense_status == "Accepted" %}
-                    <div class="col-sm-12">
-                      - {{research_title.research_title}} - <span class="text-success">Accepted</span>
-                    </div>
-                    {% endif %}
-
-                    {% if research_title.title_defense_status == "Deferred" %}
-                    <div class="col-sm-12">
-                      - {{research_title.research_title}} - <span class="text-danger">Deferred</span>
-                    </div>
-                    {% endif %}
-
-                    {% if research_title.title_defense_status == "Revise Title" %}
-                    <div class="col-sm-12">
-                      - {{research_title.research_title}} - <span class="text-info">Accepted - Revise Title</span>
-                    </div>
-                    {% endif %}
-
-                    {% if research_title.title_defense_status == None %}
-                    <div class="col-sm-12">
-                      - {{research_title.research_title}}
-                    </div>
-                    {% endif %}
-
-                    {% endfor %}
-                    {% endif %}
-
-                    {% if student_accepted_research_title %}
-                    <div class="col-sm-12 mt-4 font-weight-bold">
-                      Accepted Title:
-                    </div>
-
-                    <div class="col-sm-12">
-                      {{student_accepted_research_title}}
-                    </div>
-                    {% endif %}
-
-                    {% if student_revise_research_title %}
-                    <div class="col-sm-12 mt-4 font-weight-bold">
-                      Accepted - Revise Title:
-                    </div>
-
-                    <div class="col-sm-12">
-                      {{student_revise_research_title}}
-                    </div>
-
-                    <div class="col-sm-12 mt-4 font-weight-bold">
-                      Suggested Title:
-                    </div>
-
-                    <div class="col-sm-12">
-                      {{student_revise_research_title.suggested_title}}
-                    </div>
-                    {% endif %}
-
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-4 col-sm-12 mb-3">
+            <div class="col-md-6 col-sm-12 mb-3">
               <div class="card bg-white text-dark shadow">
                 <div class="card-body">
                   <div class="row">
@@ -151,8 +92,8 @@
                       Panel Members:
                     </div>
 
-                    {% if panel_research_title_defense_form %}
-                    {% for panel_member in panel_research_title_defense_form %}
+                    {% if proposal_defense_form %}
+                    {% for panel_member in proposal_defense_form %}
 
                     {% if panel_member.is_panel_chairman == 1 %}
                     <div class="col-sm-12">
@@ -179,7 +120,33 @@
                 </div>
               </div>
             </div>
-            <a href="{% url 'student-download-bet3-research-title-defense-form' %}" onclick="generatingForm()"
+
+            <div class="col-md-12 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">
+                      Critiques:
+                    </div>
+
+                    {% if critiques %}
+                    {% for critique in critiques %}
+
+                    {% if critique.critique %}
+                    <div class="col-sm-12">
+                      - {{critique.critique}}
+                    </div>
+                    {% endif %}
+ 
+
+                    {% endfor %}
+                    {% endif %}
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a href="{% url 'student-bet3-critique-form-download' %}" onclick="generatingForm()"
               class="btn btn-outline-success w-100">DOWNLOAD FORM</a>
           </div>
         </div>
@@ -272,21 +239,21 @@
 
   {% if response == 'sweet downloaded' %}
   <script>
-    Swal.fire("Downloaded", "The Research Title Defense Form has been downloaded.", "success");
+    Swal.fire("Downloaded", "The Critique Form has been downloaded.", "success");
     // window.open("{{download_link}}", '_blank').focus();
 
     setTimeout(function () {
-        window.location.replace("{% url 'student-bet3-research-title-defense' %}");
+        window.location.replace("{% url 'student-bet3-critique-form' %}");
       }, 2000);
   </script>
   {% endif %}
 
   {% if response == 'sweet faculty member no signature' %}
     <script>
-      Swal.fire("Error", "The Faculty Member might have remove his or her signature. Please try again later.", "error");
+      Swal.fire("Uh-oh", "The Faculty Member might have remove his or her signature. Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'student-bet3-research-title-defense' %}");
+        window.location.replace("{% url 'student-bet3-critique-form' %}");
       }, 2000);
     </script>
     {% endif %}

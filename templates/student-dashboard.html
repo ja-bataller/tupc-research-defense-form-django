@@ -11,7 +11,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Student - Dashboard</title>
+  <title>Student - Home</title>
 
   {% include 'css-main-cdn.html' %}
 
@@ -73,8 +73,13 @@
             <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
             <a class="collapse-item" href="{% url 'student-bet3-adviser-dashboard' %}">Adviser Conforme</a>
             <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation' %}">Proposal - Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'student-bet3-critique-form' %}">Critique Form</a>
+            <a class="collapse-item" href="#">Research Proposal Defense</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
+            <a class="collapse-item" href="#">Final - Panel Invitation</a>
+            <a class="collapse-item" href="#">Research Final Defense</a>
+            <a class="collapse-item" href="#">Acknowledgement Receipt</a>
           </div>
         </div>
       </li>
@@ -90,11 +95,15 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'student-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'student-bet3-panel-invitation-logs' %}">Research Title Defense</a>
+            <a class="collapse-item" href="#">Adviser Conforme</a>
             <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation-logs' %}">Proposal - Panel Invitation</a>
-            <!-- <a class="collapse-item" href="#">Research Title Defense</a>
-            <a class="collapse-item" href="#">Adviser Conforme</a> -->
+            <a class="collapse-item" href="#">Critique Form</a>
+            <a class="collapse-item" href="#">Research Proposal Defense</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
+            <a class="collapse-item" href="#">Final - Panel Invitation</a>
+            <a class="collapse-item" href="#">Research Final Defense</a>
           </div>
         </div>
       </li>
@@ -364,7 +373,7 @@
 
   {% if response == 'sweet incomplete title defense' %}
   <script>
-    Swal.fire("Uh-oh", "Title Defense is incomplete.", "error");
+    Swal.fire("Uh-oh", "Unable to access this page. <br> Research Title Defense is incomplete.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'student-dashboard' %}");
     }, 2000);

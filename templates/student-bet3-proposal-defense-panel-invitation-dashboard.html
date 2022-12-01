@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Student - BET-3 - Proposal - Panel Invitation</title>
+    <title>Student - BET-3 - Proposal Defense - Panel Invitation</title>
 
     {% include 'css-main-cdn.html' %}
     <link href="{% static 'css/file-loader.css' %}" rel="stylesheet" />
@@ -32,7 +32,7 @@
             <!-- Page Heading -->
             <div class="row">
               <div class="col-lg-9 col-md-12 mb-3">
-                <h1 class="h3 mb-0 text-gray-800">BET-3 - Proposal Defense - Panel Invitation Forms </h1>
+                <h1 class="h3 mb-0 text-gray-800">BET-3 - Proposal Defense - Panel Invitation</h1>
               </div>
               
               {% if not student_leader_data.research_proposal_defense_date %}
@@ -66,7 +66,7 @@
                   <table class="table table-bordered text-center" id="bet3PanelInvitation" width="100%" cellspacing="0">
                     <thead>
                       <tr>
-                        <th>Ref No.</th>
+                        <th hidden>Ref No.</th>
                         <th>DIT Head ID No.</th>
                         <th>DIT Head Name</th>
                         <th>DIT Head Response</th>
@@ -79,7 +79,7 @@
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Ref No.</th>
+                        <th hidden>Ref No.</th>
                         <th>DIT Head ID No.</th>
                         <th>DIT Head Name</th>
                         <th>DIT Head Response</th>
@@ -90,10 +90,10 @@
                         <th>Action</th>
                       </tr>
                     </tfoot>
-                    <tbody>
+                    <tbody class="text-dark">
                       {% for panel_invitation in panel_invitations %}
                       <tr>
-                        <td>{{panel_invitation.id}}</td>
+                        <td hidden>{{panel_invitation.id}}</td>
                         <td>{{panel_invitation.dit_head_username}}</td>
                         <td>{{panel_invitation.dit_head_full_name}}</td>
 
@@ -140,7 +140,7 @@
             </div>
             {% if student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed" %} 
             {% if accepted_panel_invitations >= 3 and pending_panel_invitations == 0 %}
-            <a class="btn btn-outline-success mb-2 w-100" type="button" href="{% url 'student-bet3-proposal-defense-panel-invitation-save' %}">Mark as Done</a>
+            <a class="btn btn-outline-success mb-2 w-100" type="button" href="{% url 'student-bet3-proposal-defense-panel-invitation-save' %}">Mark as Completed</a>
             {% endif %} 
             {% endif %}
           </div>
@@ -223,7 +223,7 @@
 
     {% if response == 'sweet downloaded' %}
     <script>
-      Swal.fire("Downloaded", "The Panel Invitation Form has been downloaded.", "success");
+      Swal.fire("Downloaded", "The Panel Invitation for Proposal Defense has been downloaded.", "success");
 
       // window.open("{{download_link}}", '_blank').focus();
     </script>
@@ -238,7 +238,7 @@
     </script>
     {% endif %} {% if response == 'sweet bet-3 panel invitation saved' %}
     <script>
-      Swal.fire("Completed", "BET-3 Panel Invitation completed.", "success");
+      Swal.fire("Completed", "Panel Invitation for Proposal Defense completed.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
       }, 3000);
@@ -247,7 +247,7 @@
 
     {% if response == 'sweet incomplete bet3 panel invitation' %}
     <script>
-      Swal.fire("Unathorized", "You can't access this page. Please complete the BET-3 Panel Invitation Form.", "error");
+      Swal.fire("Invalid", "You can't access this page. <br> Please complete Panel Invitation for Proposal Defense.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
@@ -257,7 +257,7 @@
 
     {% if response == 'sweet no defense schedule' %}
     <script>
-      Swal.fire("Uh-oh", "There are No Available Proposal Defense Schedule. Please try again later.", "error");
+      Swal.fire("Uh-oh", "There are No Available Proposal Defense Schedule. <br> Please try again later.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");

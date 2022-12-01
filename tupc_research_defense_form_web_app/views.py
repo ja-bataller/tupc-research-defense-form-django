@@ -1218,7 +1218,7 @@ def studentPanelInvitationBet3Create(request):
 
     panel_members = User.objects.all().filter(is_panel=1)
 
-    defense_dates = DefenseSchedule.objects.all().filter(course=get_student_leader_data.course_major_abbr, username=get_student_leader_data.bet3_subject_teacher_username, status="Available")
+    defense_dates = DefenseSchedule.objects.all().filter(course=get_student_leader_data.course_major_abbr, username=get_student_leader_data.bet3_subject_teacher_username, status="Available", form = "Research Title Defense")
 
     if get_student_leader_data.research_title_defense_date != "":
         pass
@@ -1817,13 +1817,13 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
     try:
         title_1 = get_research_titles[0].research_title
 
-        if get_research_titles[0].status == "Title Defense - Accepted":
+        if get_research_titles[0].title_defense_status == "Accepted":
             comment_1 = "Accepted"
             accepted_title = get_research_titles[0].research_title
-        elif get_research_titles[0].status == "Title Defense - Revise Title":
+        elif get_research_titles[0].title_defense_status == "Revise Title":
             comment_1 = "Revise Title"
             revise_title = get_research_titles[0].research_title
-        elif get_research_titles[0].status == "Title Defense - Deferred":
+        elif get_research_titles[0].title_defense_status == "Deferred":
             comment_1 = "Deferred"
 
     except:
@@ -1833,13 +1833,13 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
     try:
         title_2 = get_research_titles[1].research_title
 
-        if get_research_titles[1].status == "Title Defense - Accepted":
+        if get_research_titles[1].title_defense_status == "Accepted":
             comment_2 = "Accepted"
             accepted_title = get_research_titles[1].research_title
-        elif get_research_titles[1].status == "Title Defense - Revise Title":
+        elif get_research_titles[1].title_defense_status == "Revise Title":
             comment_2 = "Revise Title"
             revise_title = get_research_titles[1].research_title
-        elif get_research_titles[1].status == "Title Defense - Deferred":
+        elif get_research_titles[1].title_defense_status == "Deferred":
             comment_2 = "Deferred"
 
     except:
@@ -1849,12 +1849,12 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
     try:
         title_3 = get_research_titles[2].research_title
 
-        if get_research_titles[2].status == "Title Defense - Accepted":
+        if get_research_titles[2].title_defense_status == "Accepted":
             comment_3 = "Accepted"
             accepted_title = get_research_titles[2].research_title
-        elif get_research_titles[2].status == "Title Defense - Revise Title":
+        elif get_research_titles[2].title_defense_status == "Revise Title":
             revise_title = get_research_titles[2].research_title
-        elif get_research_titles[2].status == "Title Defense - Deferred":
+        elif get_research_titles[2].title_defense_status == "Deferred":
             comment_3 = "Deferred"
 
     except:
@@ -1864,13 +1864,13 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
     try:
         title_4 = get_research_titles[3].research_title
 
-        if get_research_titles[3].status == "Title Defense - Accepted":
+        if get_research_titles[3].title_defense_status == "Accepted":
             comment_4 = "Accepted"
             accepted_title = get_research_titles[3].research_title
-        elif get_research_titles[3].status == "Title Defense - Revise Title":
+        elif get_research_titles[3].title_defense_status == "Revise Title":
             comment_4 = "Revise Title"
             revise_title = get_research_titles[3].research_title
-        elif get_research_titles[3].status == "Title Defense - Deferred":
+        elif get_research_titles[3].title_defense_status == "Deferred":
             comment_4 = "Deferred"
 
     except:
@@ -1880,13 +1880,13 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
     try:
         title_5 = get_research_titles[4].research_title
 
-        if get_research_titles[4].status == "Title Defense - Accepted":
+        if get_research_titles[4].title_defense_status == "Accepted":
             comment_5 = "Accepted"
             accepted_title = get_research_titles[4].research_title
-        elif get_research_titles[4].status == "Title Defense - Revise Title":
+        elif get_research_titles[4].title_defense_status == "Revise Title":
             comment_5 = "Revise Title"
             revise_title = get_research_titles[4].research_title
-        elif get_research_titles[4].status == "Title Defense - Deferred":
+        elif get_research_titles[4].title_defense_status == "Deferred":
             comment_5 = "Deferred"
 
     except:
@@ -3760,6 +3760,923 @@ def studentBET3ProposalDefensePanelInvitationDownload(request, id):
     return render(request, "student-bet3-proposal-defense-panel-invitation-dashboard.html", context)
 
 
+# Student - BET3 - Critique Form - Page
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentBET3CritiqueForm(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+
+    if get_student_leader_data.bet3_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
+
+        return render(request, "student-bet3-panel-invitation-dashboard.html", context)
+
+    if get_student_leader_data.title_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
+
+        return render(request, "student-dashboard.html", context)
+    ############## PAGE VALIDATION ##############
+
+    # Get Student Group Members
+    try:
+        get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+    except:
+        get_student_group_members = None
+
+    # Get Student Proposal Defense Accepted with Revision
+    try:
+        get_accepted_proposal_title = ResearchTitle.objects.get(student_leader_username=current_user.username, proposal_defense_status = "Accepted with Revision")
+    except:
+        print("pass research titles")
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.group_members_status != "completed" and get_student_leader_data.research_titles_status != "completed" and get_student_leader_data.bet3_panel_invitation_status != "completed":
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+    get_critique_form = ProposalDefenseCritique.objects.all().filter(student_leader_username=current_user.username)
+    get_proposal_defense_form = ProposalDefenseForm.objects.all().filter(student_leader_username=current_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "student_group_members": get_student_group_members,
+        "student_research_title": get_accepted_proposal_title,
+        "critiques": get_critique_form,
+        "proposal_defense_form": get_proposal_defense_form,
+    }
+
+    return render(request, "student-bet3-critique-form.html", context)
+
+
+# Student - BET3 - Critique Form - Download
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentBET3CritiqueFormDownload(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    # Get Student Group Members
+    try:
+        get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+    except:
+        get_student_group_members = None
+
+    # Get Student Proposal Defense Accepted with Revision
+    try:
+        get_accepted_proposal_title = ResearchTitle.objects.get(student_leader_username=current_user.username, proposal_defense_status = "Accepted with Revision")
+    except:
+        print("pass research titles")
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.group_members_status != "completed" and get_student_leader_data.research_titles_status != "completed" and get_student_leader_data.bet3_panel_invitation_status != "completed":
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+    get_critique_form = ProposalDefenseCritique.objects.all().filter(student_leader_username=current_user.username, defense_date = get_student_leader_data.research_proposal_defense_date)
+    get_proposal_defense_form = ProposalDefenseForm.objects.all().filter(student_leader_username=current_user.username, defense_date = get_student_leader_data.research_proposal_defense_date)
+
+    get_critique_form_panel_data = ProposalDefenseCritique.objects.all().filter(student_leader_username=current_user.username, critique = "", is_panel_chairman = False, defense_date = get_student_leader_data.research_proposal_defense_date)
+    get_critique_form_panel_chair_data = ProposalDefenseCritique.objects.filter(student_leader_username=current_user.username, critique = "", is_panel_chairman = True, defense_date = get_student_leader_data.research_proposal_defense_date)
+
+    doc = Document("static/forms/5-CRITIQUE-FORM.docx")
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/5-CRITIQUE-FORM.docx')
+    
+    paragraph = doc.add_paragraph()
+
+    for i in range(len(get_critique_form)):
+        if get_critique_form[i].critique:
+            paragraph.add_run("● " + get_critique_form[i].critique)
+            run = paragraph.add_run()
+            run.add_break()
+        i + 1
+    
+
+    panel_1 = doc.tables[1]
+    panel_chair = doc.tables[2]
+    panel_3 = doc.tables[3]
+    panel_4 = doc.tables[5]
+    panel_5 = doc.tables[6]
+    panel_table_1 = doc.tables[4]
+    panel_table_2 = doc.tables[9]
+    qr_code_box = doc.tables[7]
+    date_table = doc.tables[8]
+
+    # Date of the Form
+    date_table.cell(0, 1).text = get_critique_form_panel_chair_data[0].defense_date
+
+    # Panel Chairman
+    if get_critique_form_panel_chair_data[0]:
+        panel_table_1.cell(1, 2).paragraphs[0].runs[0].text = get_critique_form_panel_chair_data[0].panel_full_name
+        if get_critique_form_panel_chair_data[0].panel_chairman_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_chair_data[0].panel_username) + ".png"):
+                panel_table_1.cell(0, 2).text = ""
+                panel_chair_sign = panel_chair.cell(0, 0).add_paragraph()
+                panel_chair_sign_run = panel_chair_sign.add_run()
+                panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+
+    # Panel 1
+    if get_critique_form_panel_data[0]:
+        panel_table_1.cell(1, 0).paragraphs[0].runs[0].text = get_critique_form_panel_data[0].panel_full_name
+        if get_critique_form_panel_data[0].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[0].panel_username) + ".png"):
+                panel_table_1.cell(0, 0).text = ""
+                panel_sign = panel_1.cell(0, 0).add_paragraph()
+                panel_sign_run = panel_sign.add_run()
+                panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+    
+    # Panel 2
+    if get_critique_form_panel_data[1]:
+        panel_table_1.cell(1, 4).paragraphs[0].runs[0].text = get_critique_form_panel_data[1].panel_full_name
+        if get_critique_form_panel_data[1].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[1].panel_username) + ".png"):
+                panel_table_1.cell(0, 4).text = ""
+                panel_sign = panel_3.cell(0, 0).add_paragraph()
+                panel_sign_run = panel_sign.add_run()
+                panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[1].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+    
+    # Panel 3
+    if get_critique_form_panel_data[2]:
+        panel_table_2.cell(1, 0).paragraphs[0].runs[0].text = get_critique_form_panel_data[2].panel_full_name
+        if get_critique_form_panel_data[2].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[2].panel_username) + ".png"):
+                panel_table_2.cell(0, 0).text = ""
+                panel_sign = panel_4.cell(0, 0).add_paragraph()
+                panel_sign_run = panel_sign.add_run()
+                panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[2].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+
+    # Panel 4
+    if get_critique_form_panel_data[3]:
+        panel_table_2.cell(1, 4).paragraphs[0].runs[0].text = get_critique_form_panel_data[3].panel_full_name
+        if get_critique_form_panel_data[1].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[3].panel_username) + ".png"):
+                panel_table_2.cell(0, 4).text = ""
+                panel_sign = panel_5.cell(0, 0).add_paragraph()
+                panel_sign_run = panel_sign.add_run()
+                panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[3].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+
+
+    # Create - QR Code
+    auth_qr_code = qrcode.make('Critique Form\nDate:' + get_student_leader_data.research_proposal_defense_date)
+    type(auth_qr_code)  
+    auth_qr_code.save(current_user.username + "-BET3-CRITIQUE-FORM-QR.png")
+
+    # INSERT IMAGE
+    qr_code = qr_code_box.cell(0, 0).add_paragraph()
+    qr_code_run = qr_code.add_run()
+    qr_code_run.add_picture(current_user.username + "-BET3-CRITIQUE-FORM-QR.png", width=Inches(1), height=Inches(1))
+
+    doc.save(current_user.username + "-BET3-CRITIQUE-FORM.docx")
+    convert(current_user.username + "-BET3-CRITIQUE-FORM.docx")
+
+    filePath = FilePath(
+        student_leader_username=current_user.username, 
+        file_path=current_user.username + "-BET3-CRITIQUE-FORM.pdf"
+        )
+    filePath.save()
+
+    os.startfile(current_user.username + "-BET3-CRITIQUE-FORM.pdf")
+
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+
+    # filePath =  FilePath(
+    #     student_leader_username = current_user.username,
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    # )
+    # filePath.save()
+
+    qr_code_path = current_user.username + "-BET3-CRITIQUE-FORM-QR.png"
+
+    if os.path.isfile(qr_code_path):
+        os.remove(qr_code_path)
+        print("QR Code has been deleted")
+    else:
+        print("QR Code does not exist")
+
+    delete_critique_form = current_user.username + "-BET3-CRITIQUE-FORM.docx"
+    # delete_critique_form = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx')
+
+    if os.path.isfile(delete_critique_form):
+        os.remove(delete_critique_form)
+        print("Critique Form has been deleted")
+    else:
+        print("Critique Form does not exist")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "student_group_members": get_student_group_members,
+        "student_research_title": get_accepted_proposal_title,
+        "critiques": get_critique_form,
+        "proposal_defense_form": get_proposal_defense_form,
+        "response": "sweet downloaded"
+    }
+
+    return render(request, "student-bet3-critique-form.html", context)
+
+# Student - BET3 - Research Proposal Defense Form - Page
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentBET3ResearchProposalDefenseForm(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+
+    if get_student_leader_data.bet3_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
+
+        return render(request, "student-bet3-panel-invitation-dashboard.html", context)
+
+    if get_student_leader_data.title_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
+
+        return render(request, "student-dashboard.html", context)
+    ############## PAGE VALIDATION ##############
+
+    # Get Student Group Members
+    try:
+        get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+    except:
+        get_student_group_members = None
+
+    # Get Student Proposal Defense Accepted with Revision
+    try:
+        get_accepted_proposal_title = ResearchTitle.objects.get(student_leader_username=current_user.username, proposal_defense_status = "Accepted with Revision")
+    except:
+        print("pass research titles")
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.group_members_status != "completed" and get_student_leader_data.research_titles_status != "completed" and get_student_leader_data.bet3_panel_invitation_status != "completed":
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+    get_proposal_defense_form = ProposalDefenseForm.objects.all().filter(student_leader_username=current_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "student_group_members": get_student_group_members,
+        "student_research_title": get_accepted_proposal_title,
+        "proposal_defense_form": get_proposal_defense_form,
+    }
+
+    return render(request, "student-bet3-research-proposal-defense.html", context)
+
+
+# Student - BET3 - Critique Form - Download
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentBET3ResearchProposalDefenseFormDownload(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    # Get Student Group Members
+    try:
+        get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+    except:
+        get_student_group_members = None
+
+    # Get Student Proposal Defense Accepted with Revision
+    try:
+        get_accepted_proposal_title = ResearchTitle.objects.get(student_leader_username=current_user.username, proposal_defense_status = "Accepted with Revision")
+    except:
+        print("pass research titles")
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.group_members_status != "completed" and get_student_leader_data.research_titles_status != "completed" and get_student_leader_data.bet3_panel_invitation_status != "completed":
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+    get_critique_form = ProposalDefenseCritique.objects.all().filter(student_leader_username=current_user.username, defense_date = get_student_leader_data.research_proposal_defense_date)
+    get_proposal_defense_form = ProposalDefenseForm.objects.all().filter(student_leader_username=current_user.username, defense_date = get_student_leader_data.research_proposal_defense_date)
+    get_panel_chair_proposal_defense_form = ProposalDefenseForm.objects.filter(student_leader_username=current_user.username, defense_date = get_student_leader_data.research_proposal_defense_date, is_panel_chairman = True)
+
+    get_critique_form_panel_data = ProposalDefenseCritique.objects.all().filter(student_leader_username=current_user.username, critique = "", is_panel_chairman = False, defense_date = get_student_leader_data.research_proposal_defense_date)
+    get_critique_form_panel_chair_data = ProposalDefenseCritique.objects.filter(student_leader_username=current_user.username, critique = "", is_panel_chairman = True, defense_date = get_student_leader_data.research_proposal_defense_date)
+
+    get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+
+    doc = Document("static/forms/6-RESEARCH-PROPOSAL-DEFENSE-FORM.docx")
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/5-CRITIQUE-FORM.docx')
+    
+    paragraph = doc.add_paragraph()
+   
+    examinee_table = doc.tables[0]
+    panel_table = doc.tables[1]
+    panelchair_table = doc.tables[2]
+    qrcodebox_table = doc.tables[3]
+
+    # Student Leader
+    examinee_table.cell(0, 2).text = get_proposal_defense_form[0].student_leader_full_name
+
+    # Student 2
+    if get_group_members[0]:
+        examinee_table.cell(1, 2).text = get_group_members[0].student_member_full_name
+
+    # Student 3
+    if get_group_members[1]:
+        examinee_table.cell(2, 2).text = get_group_members[1].student_member_full_name
+
+    # Student 4
+    if get_group_members[2]:
+        examinee_table.cell(3, 2).text = get_group_members[2].student_member_full_name
+
+    # Student 5
+    if get_group_members[3]:
+        examinee_table.cell(4, 2).text = get_group_members[3].student_member_full_name
+    
+    # Degree
+    examinee_table.cell(6, 2).text = get_student_leader_data.course_major_abbr
+
+    # Title of Research
+    examinee_table.cell(8, 2).text = get_accepted_proposal_title.research_title
+
+    # Defense Date
+    examinee_table.cell(9, 2).text = get_proposal_defense_form[0].defense_date
+
+    # Defense Time
+    examinee_table.cell(10, 2).text = get_proposal_defense_form[0].defense_start_time + " - " + get_proposal_defense_form[0].defense_end_time
+
+    # Thesis Adviser name
+    examinee_table.cell(12, 2).text = get_student_leader_data.adviser_name
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    
+    # Panel 1
+    if get_proposal_defense_form[0]:
+        panel_table.cell(1, 0).text = ""
+        panel_name = panel_table.cell(1, 0).add_paragraph(get_proposal_defense_form[0].panel_full_name)
+        panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if get_proposal_defense_form[0].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_proposal_defense_form[0].panel_username) + ".png"):
+                if get_proposal_defense_form[0].proposal_defense_response == "Accepted with Revision":
+                    panel_table.cell(1, 1).text = ""
+                    panel_table.cell(1, 2).text = ""
+                    panel_table.cell(1, 3).text = ""
+                    panel_sign = panel_table.cell(1, 1).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                
+                elif get_proposal_defense_form[0].proposal_defense_response == "Deferred with Revision":
+                    panel_table.cell(1, 1).text = ""
+                    panel_table.cell(1, 2).text = ""
+                    panel_table.cell(1, 3).text = ""
+                    panel_sign = panel_table.cell(1, 2).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+                elif get_proposal_defense_form[0].proposal_defense_response == "Not Accepted":
+                    panel_table.cell(1, 1).text = ""
+                    panel_table.cell(1, 2).text = ""
+                    panel_table.cell(1, 3).text = ""
+                    panel_sign = panel_table.cell(1, 3).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+        else:
+            if get_proposal_defense_form[0].proposal_defense_response == "Accepted with Revision":
+                panel_table.cell(1, 2).text = ""
+                panel_table.cell(1, 3).text = ""
+                
+            elif get_proposal_defense_form[0].proposal_defense_response == "Deferred with Revision":
+                panel_table.cell(1, 1).text = ""
+                panel_table.cell(1, 3).text = "" 
+
+            elif get_proposal_defense_form[0].proposal_defense_response == "Not Accepted":
+                panel_table.cell(1, 1).text = ""
+                panel_table.cell(1, 2).text = ""   
+
+
+    # Panel 2
+    if get_proposal_defense_form[1]:
+        panel_table.cell(2, 0).text = ""
+        panel_name = panel_table.cell(2, 0).add_paragraph(get_proposal_defense_form[1].panel_full_name)
+        panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if get_proposal_defense_form[1].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_proposal_defense_form[1].panel_username) + ".png"):
+                if get_proposal_defense_form[1].proposal_defense_response == "Accepted with Revision":
+                    panel_table.cell(2, 1).text = ""
+                    panel_table.cell(2, 2).text = ""
+                    panel_table.cell(2, 3).text = ""
+                    panel_sign = panel_table.cell(2, 1).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[1].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                
+                elif get_proposal_defense_form[1].proposal_defense_response == "Deferred with Revision":
+                    panel_table.cell(2, 1).text = ""
+                    panel_table.cell(2, 2).text = ""
+                    panel_table.cell(2, 3).text = ""
+                    panel_sign = panel_table.cell(2, 2).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[1].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+                elif get_proposal_defense_form[1].proposal_defense_response == "Not Accepted":
+                    panel_table.cell(2, 1).text = ""
+                    panel_table.cell(2, 2).text = ""
+                    panel_table.cell(2, 3).text = ""
+                    panel_sign = panel_table.cell(2, 3).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[1].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    
+
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+        else:
+            if get_proposal_defense_form[1].proposal_defense_response == "Accepted with Revision":
+                panel_table.cell(2, 2).text = ""
+                panel_table.cell(2, 3).text = ""
+                
+            elif get_proposal_defense_form[1].proposal_defense_response == "Deferred with Revision":
+                panel_table.cell(2, 1).text = ""
+                panel_table.cell(2, 3).text = "" 
+
+            elif get_proposal_defense_form[1].proposal_defense_response == "Not Accepted":
+                panel_table.cell(2, 1).text = ""
+                panel_table.cell(2, 2).text = ""    
+
+
+    # Panel 3
+    if get_proposal_defense_form[2]:
+        panel_table.cell(3, 0).text = ""
+        panel_name = panel_table.cell(3, 0).add_paragraph(get_proposal_defense_form[2].panel_full_name)
+        panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if get_proposal_defense_form[2].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_proposal_defense_form[2].panel_username) + ".png"):
+                if get_proposal_defense_form[2].proposal_defense_response == "Accepted with Revision":
+                    panel_table.cell(3, 1).text = ""
+                    panel_table.cell(3, 2).text = ""
+                    panel_table.cell(3, 3).text = ""
+                    panel_sign = panel_table.cell(3, 1).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[2].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                
+                elif get_proposal_defense_form[2].proposal_defense_response == "Deferred with Revision":
+                    panel_table.cell(3, 1).text = ""
+                    panel_table.cell(3, 2).text = ""
+                    panel_table.cell(3, 3).text = ""
+                    panel_sign = panel_table.cell(3, 2).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[2].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+                elif get_proposal_defense_form[2].proposal_defense_response == "Not Accepted":
+                    panel_table.cell(3, 1).text = ""
+                    panel_table.cell(3, 2).text = ""
+                    panel_table.cell(3, 3).text = ""
+                    panel_sign = panel_table.cell(3, 3).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[2].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    
+
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+        else:
+            if get_proposal_defense_form[2].proposal_defense_response == "Accepted with Revision":
+                panel_table.cell(3, 2).text = ""
+                panel_table.cell(3, 3).text = ""
+                
+            elif get_proposal_defense_form[2].proposal_defense_response == "Deferred with Revision":
+                panel_table.cell(3, 1).text = ""
+                panel_table.cell(3, 3).text = "" 
+
+            elif get_proposal_defense_form[2].proposal_defense_response == "Not Accepted":
+                panel_table.cell(3, 1).text = ""
+                panel_table.cell(3, 2).text = ""
+
+
+    # Panel 4
+    if get_proposal_defense_form[3]:
+        panel_table.cell(4, 0).text = ""
+        panel_name = panel_table.cell(4, 0).add_paragraph(get_proposal_defense_form[3].panel_full_name)
+        panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if get_proposal_defense_form[3].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_proposal_defense_form[3].panel_username) + ".png"):
+                if get_proposal_defense_form[3].proposal_defense_response == "Accepted with Revision":
+                    panel_table.cell(4, 1).text = ""
+                    panel_table.cell(4, 2).text = ""
+                    panel_table.cell(4, 3).text = ""
+                    panel_sign = panel_table.cell(4, 1).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[3].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                
+                elif get_proposal_defense_form[3].proposal_defense_response == "Deferred with Revision":
+                    panel_table.cell(4, 1).text = ""
+                    panel_table.cell(4, 2).text = ""
+                    panel_table.cell(4, 3).text = ""
+                    panel_sign = panel_table.cell(4, 2).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[3].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+                elif get_proposal_defense_form[3].proposal_defense_response == "Not Accepted":
+                    panel_table.cell(4, 1).text = ""
+                    panel_table.cell(4, 2).text = ""
+                    panel_table.cell(4, 3).text = ""
+                    panel_sign = panel_table.cell(4, 3).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[3].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    
+
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+        else:
+            if get_proposal_defense_form[3].proposal_defense_response == "Accepted with Revision":
+                panel_table.cell(4, 2).text = ""
+                panel_table.cell(4, 3).text = ""
+                
+            elif get_proposal_defense_form[3].proposal_defense_response == "Deferred with Revision":
+                panel_table.cell(4, 1).text = ""
+                panel_table.cell(4, 3).text = "" 
+
+            elif get_proposal_defense_form[3].proposal_defense_response == "Not Accepted":
+                panel_table.cell(4, 1).text = ""
+                panel_table.cell(4, 2).text = ""        
+    
+
+    # Panel 5
+    if get_proposal_defense_form[4]:
+        panel_table.cell(5, 0).text = ""
+        panel_name = panel_table.cell(5, 0).add_paragraph(get_proposal_defense_form[4].panel_full_name)
+        panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if get_proposal_defense_form[4].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_proposal_defense_form[4].panel_username) + ".png"):
+                if get_proposal_defense_form[4].proposal_defense_response == "Accepted with Revision":
+                    panel_table.cell(5, 1).text = ""
+                    panel_table.cell(5, 2).text = ""
+                    panel_table.cell(5, 3).text = ""
+                    panel_sign = panel_table.cell(5, 1).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[4].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                
+                elif get_proposal_defense_form[4].proposal_defense_response == "Deferred with Revision":
+                    panel_table.cell(5, 1).text = ""
+                    panel_table.cell(5, 2).text = ""
+                    panel_table.cell(5, 3).text = ""
+                    panel_sign = panel_table.cell(5, 2).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[4].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+                elif get_proposal_defense_form[4].proposal_defense_response == "Not Accepted":
+                    panel_table.cell(5, 1).text = ""
+                    panel_table.cell(5, 2).text = ""
+                    panel_table.cell(5, 3).text = ""
+                    panel_sign = panel_table.cell(5, 3).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[4].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    
+
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+        else:
+            if get_proposal_defense_form[4].proposal_defense_response == "Accepted with Revision":
+                panel_table.cell(5, 2).text = ""
+                panel_table.cell(5, 3).text = ""
+                
+            elif get_proposal_defense_form[4].proposal_defense_response == "Deferred with Revision":
+                panel_table.cell(5, 1).text = ""
+                panel_table.cell(5, 3).text = "" 
+
+            elif get_proposal_defense_form[4].proposal_defense_response == "Not Accepted":
+                panel_table.cell(5, 1).text = ""
+                panel_table.cell(5, 2).text = ""  
+    
+
+    # Panel 1
+    if get_panel_chair_proposal_defense_form[0]:
+        panelchair_table.cell(1, 0).text = ""
+        panel_name = panelchair_table.cell(1, 0).add_paragraph(get_panel_chair_proposal_defense_form[0].panel_full_name)
+        panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if get_panel_chair_proposal_defense_form[0].panel_chairman_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_chair_proposal_defense_form[0].panel_username) + ".png"):
+                panelchair_table.cell(0, 0).text = ""
+                panel_sign = panelchair_table.cell(0, 0).add_paragraph()
+                panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                panel_sign_run = panel_sign.add_run()
+                panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_chair_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+
+    # Create - QR Code
+    auth_qr_code = qrcode.make('Research Proposal Defense Form\nDate:' + get_student_leader_data.research_proposal_defense_date)
+    type(auth_qr_code)  
+    auth_qr_code.save(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM-QR.png")
+
+    # INSERT IMAGE
+    qr_code = qrcodebox_table.cell(0, 0).add_paragraph()
+    qr_code_run = qr_code.add_run()
+    qr_code_run.add_picture(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM-QR.png", width=Inches(1), height=Inches(1))
+
+    doc.save(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.docx")
+    convert(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.docx")
+
+    filePath = FilePath(
+        student_leader_username=current_user.username, 
+        file_path=current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.pdf"
+        )
+    filePath.save()
+
+    os.startfile(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.pdf")
+
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+
+    # filePath =  FilePath(
+    #     student_leader_username = current_user.username,
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    # )
+    # filePath.save()
+
+    #qr_code_path = current_user.username + "-BET3-CRITIQUE-FORM-QR.png"
+
+    # if os.path.isfile(qr_code_path):
+    #     os.remove(qr_code_path)
+    #     print("QR Code has been deleted")
+    # else:
+    #     print("QR Code does not exist")
+
+    #delete_critique_form = current_user.username + "-BET3-CRITIQUE-FORM.docx"
+    # delete_critique_form = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx')
+
+    # if os.path.isfile(delete_critique_form):
+    #     os.remove(delete_critique_form)
+    #     print("Critique Form has been deleted")
+    # else:
+    #     print("Critique Form does not exist")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "student_group_members": get_student_group_members,
+        "student_research_title": get_accepted_proposal_title,
+        "critiques": get_critique_form,
+        "proposal_defense_form": get_proposal_defense_form,
+        "response": "sweet downloaded"
+    }
+
+    return render(request, "student-bet3-research-proposal-defense.html", context)
+
 # Student - Panel Conforme BET-3 Process
 @login_required(login_url="index")
 @user_passes_test(lambda u: u.is_student, login_url="index")
@@ -3793,7 +4710,6 @@ def studentPanelConformeBet3(request):
 
         print("Panel Conforme - BET-3 Create")
         return redirect("student-panel-conforme-bet3-create")
-
 
 # Student - Panel Conforme BET-3 Create Page
 @login_required(login_url="index")
@@ -4594,6 +5510,7 @@ def studentBET3ProposalDefensePanelInvitationLogs(request):
     }
 
     return render(request, "student-bet3-proposal-defense-panel-invitation-logs.html", context)
+
 
 ##########################################################################################################################
 
@@ -7929,6 +8846,11 @@ def panelBET3ProposalDefenseDaySaveCritique(request, id):
     except:
         get_student_proposal_defense_form = None
     
+    try:
+        get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
+    except:
+        return redirect("subject-teacher-dashboard")
+
     if request.method == "POST":
         critique = request.POST.get("critique_input")
         print("Critique: ", critique)
@@ -7983,6 +8905,8 @@ def panelBET3ProposalDefenseDaySaveCritique(request, id):
                 defense_date = get_student_proposal_defense_form.defense_date,
                 defense_start_time = get_student_proposal_defense_form.defense_start_time,
                 defense_end_time = get_student_proposal_defense_form.defense_end_time,
+
+                research_title = get_accepted_research_title.research_title,
                 )
             save_critique.save()
 
@@ -8595,7 +9519,7 @@ def panelBET3ProposalDefenseDayNotAccepted(request, id):
 
     
     try:
-        ProposalDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user, start_voting=True, proposal_defense_response="").update(proposal_defense_response = "Not Accpeted")
+        ProposalDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user, start_voting=True, proposal_defense_response="").update(proposal_defense_response = "Not Accepted")
 
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -11919,6 +12843,7 @@ def subjectTeacherBET3ProposalDefenseDayEndVoting(request, id):
         print("Not Accepted")
         for i in range(len(get_student_proposal_defense_form)):
             get_student_proposal_defense_form[i].form_status = "Not Accepted"
+            get_student_proposal_defense_form[i].end_voting = True
             get_student_proposal_defense_form[i].save()
             i + 1
         
@@ -12007,6 +12932,9 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
         get_student_proposal_panel_invitation = ProposalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Proposal Defense Panel Invitation", research_proposal_defense_date=date_today, panel_attendance="present")
         get_student_proposal_defense_schedule = DefenseSchedule.objects.filter(username = request.user, student_leader_username=id, form = "Research Proposal Defense")
         get_student_proposal_defense_forms = ProposalDefenseForm.objects.all().filter(student_leader_username=id, subject_teacher_username = request.user, defense_date=date_today)
+
+        get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
+        get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
 
         # Proposal Panel Invitation Logs
         for i in range (len(get_student_proposal_panel_invitation)):
@@ -12127,9 +13055,13 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
         get_student_title_panel_invitation = TitlePanelInvitation.objects.all().filter(student_leader_username=id)
         get_student_title_defense_schedule = DefenseSchedule.objects.all().filter(student_leader_username=id, form = "Research Title Defense")
         get_student_title_defense_form = TitleDefenseForm.objects.all().filter(student_leader_username=id)
+        get_student_adviser_conforme = AdviserConforme.objects.filter(student_leader_username=id)
         get_student_proposal_panel_invitation = ProposalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Proposal Defense Panel Invitation", research_proposal_defense_date=date_today, panel_attendance="present")
         get_student_proposal_defense_schedule = DefenseSchedule.objects.filter(username = request.user, student_leader_username=id, form = "Research Proposal Defense")
         get_student_proposal_defense_forms = ProposalDefenseForm.objects.all().filter(student_leader_username=id, subject_teacher_username = request.user, defense_date=date_today)
+
+        get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
+        get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
 
         # Research Title Log
         for i in range(len(get_student_research_titles)):
@@ -12151,9 +13083,6 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
                 revise_title = get_student_research_titles[i].revise_title ,
                 suggested_title =  get_student_research_titles[i].suggested_title ,
                 old_research_title = get_student_research_titles[i].old_research_title ,
-
-                defense_date = get_student_research_titles[i].defense_date ,
-
                 title_defense_status = get_student_research_titles[i].title_defense_status ,
                 proposal_defense_status = get_student_research_titles[i].proposal_defense_status ,
             )
@@ -12245,6 +13174,35 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
             log_title_defense_form.save()
             i + 1
         print("Title Defense Form - Log - Successfully")
+
+        # Adviser Conforme Log
+        for i in range(len(get_student_adviser_conforme)):
+            log_adviser_conforme = AdviserConformeLog(
+                student_leader_username = get_student_adviser_conforme[i].student_leader_username,
+                student_leader_full_name = get_student_adviser_conforme[i].student_leader_full_name,
+                course = get_student_adviser_conforme[i].course,
+
+                research_title = get_student_adviser_conforme[i].research_title,
+
+                form_date_submitted = get_student_adviser_conforme[i].form_date_submitted,
+
+                dit_head_username = get_student_adviser_conforme[i].dit_head_username,
+                dit_head_name = get_student_adviser_conforme[i].dit_head_name,
+                dit_head_response = get_student_adviser_conforme[i].dit_head_response,
+                dit_head_response_date = get_student_adviser_conforme[i].dit_head_response_date,
+                dit_head_signature = get_student_adviser_conforme[i].dit_head_signature,
+
+                adviser_username = get_student_adviser_conforme[i].adviser_username,
+                adviser_name = get_student_adviser_conforme[i].adviser_name,
+                adviser_response = get_student_adviser_conforme[i].adviser_response,
+                adviser_response_date = get_student_adviser_conforme[i].adviser_response_date,
+                adviser_signature = get_student_adviser_conforme[i].adviser_signature,
+
+                form_status = get_student_adviser_conforme[i].form_status,
+            )
+            log_adviser_conforme.save()
+            i + 1
+        print("Adviser Conforme - Log - Successfully")
 
         # Proposal Panel Invitation Logs
         for i in range (len(get_student_proposal_panel_invitation)):
@@ -12347,9 +13305,15 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
         get_student_title_panel_invitation.delete()
         get_student_title_defense_schedule.delete()
         get_student_title_defense_form.delete()
+        get_student_title_defense_form.delete()
+       
         get_student_proposal_panel_invitation.delete()
         get_student_proposal_defense_schedule.delete()
         get_student_proposal_defense_forms.delete()
+
+        get_adviser_data = User.objects.filter(username=get_student_adviser_conforme[0].adviser_username)
+        get_adviser_data.update(advisee_count = get_adviser_data - 1)
+        get_student_adviser_conforme.delete()
         
         StudentLeader.objects.filter(username=id).update(
             request_limit = 5, 
@@ -12360,6 +13324,10 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
             research_title_defense_date ="", 
             research_title_defense_start_time = "", 
             research_title_defense_end_time = "",
+
+            adviser_username = "",
+            adviser_name = "",
+            adviser_conforme_status = "",
 
             bet3_proposal_defense_panel_invitation_status = "", 
             research_proposal_defense_date ="", 
@@ -12379,6 +13347,7 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
 
         return render(request, "subject-teacher-dashboard.html", context)
         
+
 # Subject Teacher - User Profile -  Page
 @login_required(login_url="index")
 @user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
@@ -13203,7 +14172,7 @@ def subjectTeacherSaveResearchProposalDefenseSchedule(request):
         print(end_time)
 
         try:
-            DefenseSchedule.objects.get(username=currently_loggedin_user.username, date=py_date, start_time=start_time, end_time=end_time)
+            DefenseSchedule.objects.get(username=currently_loggedin_user.username,  form="Research Proposal Defense", date=py_date, start_time=start_time, end_time=end_time)
 
             context = {
                 "currently_loggedin_user_full_name": currently_loggedin_user_full_name,

@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Student - Panel Invitation</title>
+    <title>Student - Topic - Panel Invitation</title>
 
     {% include 'css-main-cdn.html' %}
     <link href="{% static 'css/file-loader.css' %}" rel="stylesheet" />
@@ -369,41 +369,41 @@
 
     {% if response == 'sweet inc form' %}
     <script>
-      Swal.fire("Uh-oh", "Sorry, can't fill-up  form at the moment. \n Please try again later.", "warning");
+      Swal.fire("Uh-oh", "Sorry, can't fill-up  form at the moment. \n Please try again later.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
       }, 3000);
     </script>
     {% endif %} {% if response == 'sweet panel not in the list' %}
     <script>
-      Swal.fire("Uh-oh", "You just entered a Panel Member which is not in the list. Please choose from the choices given.", "warning");
+      Swal.fire("Invalid", "You just entered a Panel Member which is not in the list. Please choose from the choices given.", "error");
     </script>
     {% endif %} {% if response == 'sweet student member exist 2' %}
     <script>
-      Swal.fire("Uh-oh", "Group Member #2 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
+      Swal.fire("Invalid", "Group Member #2 {{username_exist}}, \n already has an account. One Account per group is allowed.", "error");
     </script>
     {% endif %} {% if response == 'sweet student member exist 3' %}
     <script>
-      Swal.fire("Uh-oh", "Group Member #3 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
+      Swal.fire("Invalid", "Group Member #3 {{username_exist}}, \n already has an account. One Account per group is allowed.", "error");
     </script>
     {% endif %} {% if response == 'sweet student member exist 4' %}
     <script>
-      Swal.fire("Uh-oh", "Group Member #4 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
+      Swal.fire("Invalid", "Group Member #4 {{username_exist}}, \n already has an account. One Account per group is allowed.", "error");
     </script>
     {% endif %} {% if response == 'sweet student member exist 5' %}
     <script>
-      Swal.fire("Uh-oh", "Group Member #5 {{username_exist}}, \n already has an account. One Account per group is allowed.", "warning");
+      Swal.fire("Invalid", "Group Member #5 {{username_exist}}, \n already has an account. One Account per group is allowed.", "error");
     </script>
     {% endif %} {% if response == 'sweet no DIT Head' %}
     <script>
-      Swal.fire("Uh-oh", "Can't fill up at the moment. It seems like there is no DIT Head assigned yet. Please try again later.", "warning");
+      Swal.fire("Uh-oh", "There's no DIT Head assigned yet. Please try again later.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
       }, 3000);
     </script>
     {% endif %} {% if response == 'sweet inc panel' %}
     <script>
-      Swal.fire("Uh-oh", "Can't fill up at the moment. It seems like there is not enough Panel assigned yet. Please try again later.", "warning");
+      Swal.fire("Invalid", "There's not enough Panel Member assigned yet. Please try again later.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
       }, 3000);
@@ -412,7 +412,7 @@
     
     {% if response == 'sweet no defense schedule' %}
     <script>
-      Swal.fire("Uh-oh", "Can't fill up at the moment. There is no Defense Schedule available. Please try again later.", "warning");
+      Swal.fire("Uh-oh", "There's no Title Defense Schedule available. Please try again later.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
       }, 3000);
@@ -424,7 +424,7 @@
     </script>
     {% endif %} {% if response == 'sweet invalid suffix' %}
     <script>
-      Swal.fire("Invalid", "You entered a Suffix that is not in the list. Please one from the choices given.", "error");
+      Swal.fire("Invalid", "You entered a Suffix that is not in the list. Please choose from the given choices.", "error");
     </script>
     {% endif %} {% if response == 'sweet same research title' %}
     <script>
@@ -432,7 +432,7 @@
     </script>
     {% endif %} {% if response == 'sweet defense schedule doesnt exist' %}
     <script>
-      Swal.fire("Invalid", "You entered a Defense Schedule that is not in the list. Please one from the choices given.", "error");
+      Swal.fire("Invalid", "You entered a Title Defense Schedule that is not in the list. Please choose from the given choices.", "error");
     </script>
     {% endif %} {% if response == 'sweet same panel' %}
     <script>
@@ -454,24 +454,24 @@
     
     {% if response == 'sweet invalid panel' %}
     <script>
-      Swal.fire("Invalid", "You entered a Panel Member that is not in the list. Please one from the choices given.", "error");
+      Swal.fire("Invalid", "You entered a Panel Member that is not in the list. Please choose from the given choices.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3-form' %}");
       }, 1500);
     </script>
     {% endif %} {% if response == 'sweet group member exist' %}
     <script>
-      Swal.fire("{{existing_member.username}} {{existing_member.student_member_name}}", "It seems that this student is already part of group.", "warning");
+      Swal.fire("{{existing_member.username}} {{existing_member.student_member_name}}", "It seems that this student is already part of group.", "error");
     </script>
     {% endif %} {% if response == 'sweet research title exist' %}
     <script>
-      Swal.fire("{{existing_research_title.research_title}}", "The Research Title you entered already exist.", "warning");
+      Swal.fire("Invalid", 'The Research Title "{{existing_research_title.research_title}}" already exist.', "error");
     </script>
     {% endif %} 
     
     {% if response == 'sweet added new panel' %}
     <script>
-      Swal.fire("Submitted", "Panel Invitation BET-3 submitted.", "success");
+      Swal.fire("Sent", "The Panel Invitation for Topic Defense has been sent.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
       }, 2000);
@@ -481,7 +481,7 @@
     
     {% if response == 'sweet downloaded' %}
     <script>
-      Swal.fire("Success", "The Panel Invitation Form has been generated successfully. You can now download the file.", "success");
+      Swal.fire("Downloaded", "The Panel Invitation for Topic Defense has been downloaded.", "success");
 
       let panel_1_name = document.querySelector("#panel_1_name");
       let panel_2_name = document.querySelector("#panel_2_name");

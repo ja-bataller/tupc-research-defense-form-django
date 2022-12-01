@@ -14,19 +14,13 @@
 
   <!-- Custom fonts for this template-->
   <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css" />
-  <link
-    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
 
   <!-- Fontawesome CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Izitoast 1.4.0 CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"
-    integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet" />
@@ -43,9 +37,12 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'student-dashboard' %}">
-        <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%;" alt="">
-      </a>
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'student-dashboard' %}">
+          <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
+          </div>
+        </a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
@@ -81,16 +78,24 @@
         </a>
         <div id="collapseForms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="#">Consultation Form</a>
             <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Topic - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
             <a class="collapse-item" href="{% url 'student-bet3-adviser-dashboard' %}">Adviser Conforme</a>
+            <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation' %}">Proposal - Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'student-bet3-critique-form' %}">Critique Form</a>
+            <a class="collapse-item" href="#">Research Proposal Defense</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
+            <a class="collapse-item" href="#">Final - Panel Invitation</a>
+            <a class="collapse-item" href="#">Research Final Defense</a>
+            <a class="collapse-item" href="#">Acknowledgement Receipt</a>
           </div>
         </div>
       </li>
 
+      <!-- Nav Item - Logs Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
           aria-controls="collapseLogs">
@@ -101,10 +106,15 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'student-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
-            <a class="collapse-item" href="#">Research Title Defense</a>
-            <a class="collapse-item" href="#">Adviser Conforme</a> -->
+            <a class="collapse-item" href="{% url 'student-bet3-panel-invitation-logs' %}">Research Title Defense</a>
+            <a class="collapse-item" href="#">Adviser Conforme</a>
+            <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation-logs' %}">Proposal - Panel Invitation</a>
+            <a class="collapse-item" href="#">Critique Form</a>
+            <a class="collapse-item" href="#">Research Proposal Defense</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
+            <a class="collapse-item" href="#">Final - Panel Invitation</a>
+            <a class="collapse-item" href="#">Research Final Defense</a>
           </div>
         </div>
       </li>
@@ -141,11 +151,13 @@
         <div class="container-fluid">
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-3">
-            <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-user"></i> User Profile</h1>
+            <h1 class="h3 mb-0 text-gray-800 d-inline mr-2"><i class="fa-solid fa-user"></i> User Profile</h1>
+            <button type="button" class="btn btn-outline-primary d-inline" data-toggle="modal" data-target="#btn_info"><i class="fa-solid fa-circle-info"></i></button>
+
           </div>
 
           <!-- User Profile Start -->
-          <div class="card border-left-info shadow h-100 py-2 mb-3">
+          <div class="card border-left-dark shadow h-100 py-2 mb-3">
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
@@ -199,8 +211,8 @@
             <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-gears"></i> Account Settings</h1>
           </div>
 
-          <!-- User Profile Start -->
-          <div class="card border-left-warning shadow h-100 py-2 mb-3">
+          <!-- Account Settings Start -->
+          <div class="card border-left-danger shadow h-100 py-2 mb-3">
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
@@ -229,11 +241,31 @@
               </div>
             </div>
           </div>
-          <!-- User Profile End -->
+          <!-- Account Settings End -->
         </div>
         <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
+
+      <!-- Modal -->
+      <div class="modal fade" id="btn_info" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content text-center">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">User Profile Edit</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center">
+              Your User Profile Information can only be edited or updated by the Admin. <br> Please proceed to UITC if you wish update to your Profile Information. Thank you.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Footer -->
       {% include 'footer.html'%}
@@ -251,7 +283,7 @@
   {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% if response == 'current password is incorrect' %}
   <script>
     iziToast.error({
-      title: "Incorrect Password.",
+      title: "Invalid",
       message: "The Password you entered is incorrect.",
       position: "topCenter",
       timeout: 5000,
@@ -260,7 +292,7 @@
   {% endif %} {% if response == 'new password and confirm new password doesnt match' %}
   <script>
     iziToast.error({
-      title: "New Password and Confirm Password doesn't match.",
+      title: "Invalid",
       message: "The New Password and Confirm Password you entered doesn't match.",
       position: "topCenter",
       timeout: 5000,
@@ -269,7 +301,7 @@
   {% endif %} {% if response == 'current password and new password is same' %}
   <script>
     iziToast.error({
-      title: "Current Password and New Password is the same.",
+      title: "Invalid",
       message: "The Current Password and New Password you entered is the same.",
       position: "topCenter",
       timeout: 5000,
