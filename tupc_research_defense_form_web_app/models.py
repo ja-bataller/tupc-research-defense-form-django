@@ -89,13 +89,23 @@ class StudentLeader(models.Model):
     research_proposal_defense_start_time = models.CharField(max_length=256, blank=True)
     research_proposal_defense_end_time = models.CharField(max_length=256, blank=True)
 
+    research_final_defense_date = models.CharField(max_length=256, blank=True)
+    research_final_defense_start_time = models.CharField(max_length=256, blank=True)
+    research_final_defense_end_time = models.CharField(max_length=256, blank=True)
+
     group_members_status = models.CharField(max_length=256, blank=True)
     research_titles_status = models.CharField(max_length=256, blank=True)
+    
     bet3_panel_invitation_status = models.CharField(max_length=256, blank=True)
     title_defense_status = models.CharField(max_length=256, blank=True)
+
     adviser_conforme_status = models.CharField(max_length=256, blank=True)
+
     bet3_proposal_defense_panel_invitation_status = models.CharField(max_length=256, blank=True)
     bet3_proposal_defense_status = models.CharField(max_length=256, blank=True)
+
+    bet5_final_defense_panel_invitation_status = models.CharField(max_length=256, blank=True)
+    bet5_final_defense_status = models.CharField(max_length=256, blank=True)
 
     request_limit = models.IntegerField(blank=True)
 
@@ -139,6 +149,7 @@ class ResearchTitle(models.Model):
 
     title_defense_status = models.CharField(max_length=256, blank=True)
     proposal_defense_status = models.CharField(max_length=256, blank=True)
+    final_defense_status = models.CharField(max_length=256, blank=True)
 
     def __str__(self) -> str:
         return self.research_title
@@ -613,6 +624,156 @@ class ProposalDefenseFormLog(models.Model):
 
     critique_sign_response = models.BooleanField(default=False)
     proposal_defense_response = models.CharField(max_length=256, blank=True)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
+
+##### Final DEFENSE #####
+
+#  BET-5 - Final Defense - Panel Invitation
+class FinalPanelInvitation(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256, blank=True)
+    
+    dit_head_username= models.CharField(max_length=256)
+    dit_head_full_name = models.CharField(max_length=256)
+    dit_head_response = models.CharField(max_length=256)
+    dit_head_response_date = models.CharField(max_length=256)
+    dit_head_signature = models.BooleanField(default=False)
+
+    panel_username = models.CharField(max_length=256)
+    panel_full_name = models.CharField(max_length=256)
+    panel_response = models.CharField(max_length=256)
+    panel_response_date = models.CharField(max_length=256)
+    panel_signature = models.BooleanField(default=False)
+    panel_attendance = models.CharField(max_length=256, blank=True)
+
+    research_final_defense_date = models.CharField(max_length=256, blank=True)
+    research_final_defense_start_time = models.CharField(max_length=256, blank=True)
+    research_final_defense_end_time = models.CharField(max_length=256, blank=True)
+
+    form_date_sent = models.CharField(max_length=256)
+
+    form_status = models.CharField(max_length=256)
+    form = models.CharField(max_length=256)
+
+    subject_teacher_username = models.CharField(max_length=256, blank=True)
+    subject_teacher_full_name = models.CharField(max_length=256, blank=True)
+
+    is_completed = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
+
+#  BET-5 - Final Defense - Panel Invitation - Logs
+class FinalPanelInvitationLog(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256, blank=True)
+    
+    dit_head_username= models.CharField(max_length=256)
+    dit_head_full_name = models.CharField(max_length=256)
+    dit_head_response = models.CharField(max_length=256)
+    dit_head_response_date = models.CharField(max_length=256)
+    dit_head_signature = models.BooleanField(default=False)
+
+    panel_username = models.CharField(max_length=256)
+    panel_full_name = models.CharField(max_length=256)
+    panel_response = models.CharField(max_length=256)
+    panel_response_date = models.CharField(max_length=256)
+    panel_signature = models.BooleanField(default=False)
+    panel_attendance = models.CharField(max_length=256, blank=True)
+
+    research_final_defense_date = models.CharField(max_length=256, blank=True)
+    research_final_defense_start_time = models.CharField(max_length=256, blank=True)
+    research_final_defense_end_time = models.CharField(max_length=256, blank=True)
+
+    form_date_sent = models.CharField(max_length=256)
+
+    form_status = models.CharField(max_length=256)
+    form = models.CharField(max_length=256)
+
+    subject_teacher_username = models.CharField(max_length=256, blank=True)
+    subject_teacher_full_name = models.CharField(max_length=256, blank=True)
+
+    is_completed = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
+
+# BET-5 -  Final Defense Form
+class FinalDefenseForm(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256, blank=True)
+
+    panel_username = models.CharField(max_length=256)
+    panel_full_name = models.CharField(max_length=256)
+    panel_attendance = models.CharField(max_length=256)
+    panel_signature_response = models.BooleanField(default=False)
+    panel_signature_attach = models.BooleanField(default=False)
+
+    is_panel_chairman = models.BooleanField(default=False)
+    panel_chairman_signature_response = models.BooleanField(default=False)
+    panel_chairman_signature_attach = models.BooleanField(default=False)
+
+    form_date = models.CharField(max_length=256)
+
+    start_voting = models.BooleanField(default=False)
+    end_voting = models.BooleanField(default=False)
+
+    form_status = models.CharField(max_length=256)
+    form = models.CharField(max_length=256)
+
+    subject_teacher_username = models.CharField(max_length=256, blank=True)
+    subject_teacher_full_name = models.CharField(max_length=256, blank=True)
+
+    defense_date = models.CharField(max_length=256, blank=True)
+    defense_start_time = models.CharField(max_length=256, blank=True)
+    defense_end_time = models.CharField(max_length=256, blank=True)
+
+    final_defense_response = models.CharField(max_length=256, blank=True)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
+
+# BET-5 - Final Defense Form - Log
+class FinalDefenseFormLog(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256, blank=True)
+
+    panel_username = models.CharField(max_length=256)
+    panel_full_name = models.CharField(max_length=256)
+    panel_attendance = models.CharField(max_length=256)
+    panel_signature_response = models.BooleanField(default=False)
+    panel_signature_attach = models.BooleanField(default=False)
+
+    is_panel_chairman = models.BooleanField(default=False)
+    panel_chairman_signature_response = models.BooleanField(default=False)
+    panel_chairman_signature_attach = models.BooleanField(default=False)
+
+    form_date = models.CharField(max_length=256)
+
+    start_voting = models.BooleanField(default=False)
+    end_voting = models.BooleanField(default=False)
+
+    form_status = models.CharField(max_length=256)
+    form = models.CharField(max_length=256)
+
+    subject_teacher_username = models.CharField(max_length=256, blank=True)
+    subject_teacher_full_name = models.CharField(max_length=256, blank=True)
+
+    defense_date = models.CharField(max_length=256, blank=True)
+    defense_start_time = models.CharField(max_length=256, blank=True)
+    defense_end_time = models.CharField(max_length=256, blank=True)
+
+    final_defense_response = models.CharField(max_length=256, blank=True)
 
     def __str__(self) -> str:
         return self.student_leader_username

@@ -245,9 +245,9 @@
     </script>
     {% endif %}
 
-    {% if response == 'sweet incomplete bet3 panel invitation' %}
+    {% if response == 'sweet incomplete proposal panel invitation' %}
     <script>
-      Swal.fire("Invalid", "You can't access this page. <br> Please complete Panel Invitation for Proposal Defense.", "error");
+      Swal.fire("Uh-oh", "You can't access this page. <br> Please complete Panel Invitation for Proposal Defense.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");

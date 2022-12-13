@@ -57,7 +57,7 @@
 
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
-
+            <a class="collapse-item" href="{% url 'panel-bet5-final-defense-panel-invitation-dashboard' %}">Final - Panel Invitation</a>
           </div>
         </div>
       </li>
@@ -260,6 +260,44 @@
                       <td class="text-center">
                         <a class="btn btn-outline-primary"
                           href="{% url 'panel-bet3-proposal-defense-day' today_defense.student_leader_username %}">
+                          <i class="fa-solid fa-eye"></i>
+                          </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    {% for today_defense in today_final_defense %}
+                    <tr>
+                      <td>{{today_defense.id}}</td>
+                      <td>{{today_defense.subject_teacher_full_name}}</td>
+                      <td>{{today_defense.student_leader_full_name}}</td>
+                      <td>{{today_defense.course_major_abbr}}</td>
+                      <td>Research Final Defense</td>
+                      <td>{{today_defense.research_final_defense_date}}</td>
+                      <td>{{today_defense.research_final_defense_start_time}} to {{today_defense.research_final_defense_end_time}}</td>
+                      <td>Waiting for Subject Teacher</td>
+                      <td class="text-center"></td>
+                    </tr>
+                    {% endfor %}
+
+                    {% for today_defense in today_final_defense_present %}
+                    <tr>
+                      <td>{{today_defense.id}}</td>
+                      <td>{{today_defense.subject_teacher_full_name}}</td>
+                      <td>{{today_defense.student_leader_full_name}}</td>
+                      <td>{{today_defense.course_major_abbr}}</td>
+                      <td>Research Final Defense</td>
+                      <td>{{today_defense.research_final_defense_date}}</td>
+                      <td>{{today_defense.research_final_defense_start_time}} to {{today_defense.research_final_defense_end_time}}</td>
+
+                      {% if today_defense.is_completed %}
+                      <td class="text-success">Completed</td>
+                      {% else %}
+                      <td class="text-secondary">Pending</td>
+                      {% endif %}
+                      <td class="text-center">
+                        <a class="btn btn-outline-primary"
+                          href="{% url 'panel-bet5-final-defense-day' today_defense.student_leader_username %}">
                           <i class="fa-solid fa-eye"></i>
                           </a>
                         </td>
@@ -537,6 +575,105 @@
   </script>
   {% endif %}
 
+  {% if response == 'sweet final defense attach signature respond' %}
+  <script>
+    Swal.fire("Success", "You have successfully attached your signature to this form.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final defense live signature respond' %}
+  <script>
+    Swal.fire("Info", "You have marked this form for live signature.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final defense signature already respond' %}
+  <script>
+    Swal.fire("Uh-oh", "You have have already respond for you signature attachment.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final defense no esign' %}
+  <script>
+    Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+
+  {% if response == 'sweet final defense accepted with revision' %}
+  <script>
+    Swal.fire("Accepted with Revision", "You have marked the Final Defense as Accepted with Revision.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final defense deferred with revision' %}
+  <script>
+    Swal.fire("Deferred with Revision", "You have marked the Final Defense as Deferred with Revision.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final defense not accepted' %}
+  <script>
+    Swal.fire("Not Accepted", "You have marked the Final Defense as Not Accepted.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final panel chairman esign' %}
+  <script>
+    Swal.fire("E-Sign Attached", "You have attached your e-signature to the Final Defense Form.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final panel esign' %}
+  <script>
+    Swal.fire("E-Sign Attached", "You have attached your e-signature to the Final Defense Form.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final panel chairman live sign' %}
+  <script>
+    Swal.fire("Live Signature", "You have marked the Final Defense Form for live signature.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final panel live sign' %}
+  <script>
+    Swal.fire("Live Signature", "You have marked the Final Defense Form for live signature.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
 
 </body>
 

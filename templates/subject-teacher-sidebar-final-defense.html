@@ -38,7 +38,7 @@
     </div>
   </li>
 
-  <li class="nav-item active">
+  <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProposalDefense" aria-expanded="true" aria-controls="collapseProposalDefense">
       <i class="fa-solid fa-folder-open"></i>
       <span>Proposal Defense</span>
@@ -49,6 +49,22 @@
         <a class="collapse-item" href="{% url 'subject-teacher-students-proposal-defense-schedule-dashboard' %}">Students Schedule</a>
         <a class="collapse-item" href="{% url 'subject-teacher-set-research-proposal-defense-schedule' %}">Set Schedule</a>
         <!-- <a class="collapse-item" href="">Logs</a> -->
+      </div>
+    </div>
+  </li>
+
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item active">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinalDefense" aria-expanded="true" aria-controls="collapseFinalDefense">
+      <i class="fa-solid fa-folder-open"></i>
+      <span>Final Defense</span>
+    </a>
+    <div id="collapseFinalDefense" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="#">My Schedule</a>
+        <a class="collapse-item" href="#">Students Schedule</a>
+        <a class="collapse-item" href="#">Set Schedule</a>
+        <a class="collapse-item" href="#">Logs</a>
       </div>
     </div>
   </li>

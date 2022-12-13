@@ -384,6 +384,16 @@
     </script>
   {% endif %}
 
+  {% if response == 'sweet incomplete adviser conforme' %}
+    <script>
+      Swal.fire("Uh-oh", "You can't access this page. Please complete the Adviser Conforme.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-bet3-adviser-dashboard' %}");
+      }, 2000);
+    </script>
+  {% endif %}
+
 </body>
 
 </html>

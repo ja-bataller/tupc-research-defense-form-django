@@ -95,9 +95,15 @@
                     {% endif %}
 
                     {% if research_title.title_defense_status == "Revise Title" %}
-                    <div class="col-sm-12">
-                      - {{research_title.research_title}} - <span class="text-info">Accepted - Revise Title</span>
-                    </div>
+                      {% if research_title.old_research_title%}
+                        <div class="col-sm-12">
+                          - {{research_title.old_research_title}} - <span class="text-info">Accepted - Revise Title</span>
+                        </div>
+                      {% else %}
+                      <div class="col-sm-12">
+                        - {{research_title.research_title}} - <span class="text-info">Accepted - Revise Title</span>
+                      </div>
+                      {% endif %}
                     {% endif %}
 
                     {% if research_title.title_defense_status == None %}
@@ -124,9 +130,17 @@
                       Accepted - Revise Title:
                     </div>
 
+                    {% if student_revise_research_title.old_research_title %}
                     <div class="col-sm-12">
-                      {{student_revise_research_title}}
+                      {{student_revise_research_title.old_research_title}}
                     </div>
+                    {% else %}
+                    <div class="col-sm-12">
+                      {{student_revise_research_title.research_title}}
+                    </div>
+                    {% endif %}
+
+                    
 
                     <div class="col-sm-12 mt-4 font-weight-bold">
                       Suggested Title:

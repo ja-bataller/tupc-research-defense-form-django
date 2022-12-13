@@ -1,0 +1,103 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Student - BET-5 Subject Teacher</title>
+
+  {% include 'css-main-cdn.html' %}
+</head>
+
+<body id="page-top">
+  <div id="wrapper">
+
+    {% include 'student-sidebar-group.html' %}
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        {% include 'topbar.html'%}
+
+        <div class="container-fluid">
+          <!-- <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-0 text-gray-800">Research Title</h1>
+            </div> -->
+
+          <form method="POST">
+            {% csrf_token %}
+
+            <div class="card border-left-dark shadow h-100 py-2 mb-3">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <h6 class="h4 mb-0 text-gray-800 mb-2">BET-3 Subject Teacher:</h6>
+                    <div class="form-group">
+                      <input type="text" class="form-control" id="bet3_subject_teacher" value="{{bet3_subject_teacher}}" disabled>
+                    </div>
+
+                    <h6 class="h4 mb-0 text-gray-800 mb-2">BET5/5L Subject Teacher:</h6>
+                    <select id="input_bet5_subject_teacher" name="input_bet5_subject_teacher" class="custom-select mb-4" required>
+                      <option value="">Who is you BET5/5L Subject Teacher?</option>
+                      {% for faculty in all_faculty %}
+                      <option id="{{faculty.username}}" value="{{faculty.username}}">{{faculty.honorific}} {{faculty.first_name}} {{faculty.middle_name}} {{faculty.last_name}} {{faculty.suffix}}</option>
+                      {% endfor %}
+                    </select>
+
+                    <button type="submit" class="btn btn-outline-success w-100">
+                      Save
+                    </button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  {% include 'logout-modal.html' %} 
+  {% include 'script-cdn.html' %} 
+  {% include 'alert-validation.html' %}
+
+  {% if response == 'sweet subject teacher not found' %}
+  <script>
+    Swal.fire("Invalid", "Subject Teacher is not existing.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'student-bet5-subject-teacher' %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet bet5 subject teacher saved' %}
+  <script>
+    Swal.fire("Saved", "BET5/5L Subject Teacher saved.", "success");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'student-bet5-subject-teacher' %}");
+    }, 2000);
+  </script>
+  {% endif %}
+</body>
+
+</html>

@@ -10,7 +10,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>Subject Teacher - Title Defense Day</title>
+  <title>Subject Teacher - BET-5 - Final Defense Day</title>
 
   {% include 'css-main-cdn.html' %}
 </head>
@@ -21,18 +21,17 @@
 
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
-          <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
-          </div>
-        </a>
-      </li>
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center"
+        href="{% url 'subject-teacher-dashboard' %}">
+        <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
+      </a>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
@@ -43,31 +42,17 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTitleDefense" aria-expanded="true" aria-controls="collapseTitleDefense">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+          aria-controls="collapsePages">
           <i class="fa-solid fa-folder-open"></i>
-          <span>Topic Defense</span>
+          <span>Research Title Defense</span>
         </a>
-        <div id="collapseTitleDefense" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="{% url 'subject-teacher-title-defense-schedule-dashboard' %}">My Schedule</a>
-            <a class="collapse-item" href="{% url 'subject-teacher-students-title-defense-schedule-dashboard' %}">Students Schedule</a>
-            <a class="collapse-item" href="{% url 'subject-teacher-set-research-title-defense-schedule' %}">Set Schedule</a>
-            <a class="collapse-item" href="{% url 'subject-teacher-bet3-title-defense-logs' %}">Logs</a>
-          </div>
-        </div>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProposalDefense" aria-expanded="true" aria-controls="collapseProposalDefense">
-          <i class="fa-solid fa-folder-open"></i>
-          <span>Proposal Defense</span>
-        </a>
-        <div id="collapseProposalDefense" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="{% url 'subject-teacher-proposal-defense-schedule-dashboard' %}">My Schedule</a>
-            <a class="collapse-item" href="{% url 'subject-teacher-students-proposal-defense-schedule-dashboard' %}">Students Schedule</a>
-            <a class="collapse-item" href="{% url 'subject-teacher-set-research-proposal-defense-schedule' %}">Set Schedule</a>
-            <!-- <a class="collapse-item" href="">Logs</a> -->
+            <a class="collapse-item" href="{% url 'subject-teacher-students-title-defense-schedule-dashboard' %}">Schedule
+              Dashboard</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-set-research-title-defense-schedule' %}">Set
+              Schedule</a>
           </div>
         </div>
       </li>
@@ -77,7 +62,7 @@
         <a class="nav-link" href="tables.html">
             <i class="fa-solid fa-clock-rotate-left"></i>
             <span>History</span></a>
-      </li> -->
+    </li> -->
 
       <!-- Divider -->
       <hr class="sidebar-divider" />
@@ -86,7 +71,8 @@
       <li class="nav-item">
         <a class="nav-link" href="#">
           <i class="fa-solid fa-code"></i>
-          <span>The Devs</span></a>
+          <span>The Devs</span>
+        </a>
       </li>
 
       <!-- Divider -->
@@ -143,14 +129,43 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <div class="d-sm-flex align-items-center justify-content-between">
-            <h1 class="h3 text-gra-800">Research Title Defense</h1>
+            <h1 class="h3 text-gray-800">Research Final Defense Day</h1>
           </div>
-          <h1 class="h6 mb-0 text-gray-800 mb-2">{{student_leader_data.research_title_defense_date}} -
-            {{student_leader_data.research_title_defense_start_time}} to
-            {{student_leader_data.research_title_defense_end_time}}</h1>
+          <h1 class="h6 mb-0 text-gray-800 mb-2">{{student_leader_data.research_final_defense_date}} -
+            {{student_leader_data.research_final_defense_start_time}} to
+            {{student_leader_data.research_final_defense_end_time}}</h1>
 
           <div class="row">
-            <div class="col-md-6 col-sm-12 mb-3">
+
+            <div class="col-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 mt-2">
+                     <h6>Research Title:</h6>
+                    </div>
+                    <div class="col-sm-12">
+                      <h4>{{accepted_research_title}}</h4>
+                      {% if end_voting %}
+                        {% if pending_proposal_defense %}
+                          {% if accepted_research_title.proposal_defense_status == "Accepted with Revision" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-success" style="display: inline;">{{accepted_research_title.proposal_defense_status}}</h6></h6>
+                          {% endif %}
+                          {% if accepted_research_title.proposal_defense_status == "Deferred with Revision" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-info" style="display: inline;">{{accepted_research_title.proposal_defense_status}}</h6></h6>
+                          {% endif %}
+                          {% if accepted_research_title.proposal_defense_status == "Not Accepted" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-danger" style="display: inline;">{{accepted_research_title.proposal_defense_status}}</h6></h6>
+                          {% endif %}
+                        {% endif %}
+                      {% endif %}
+                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 mb-3">
               <div class="card bg-white text-dark shadow">
                 <div class="card-body">
 
@@ -181,86 +196,6 @@
                 </div>
               </div>
             </div>
-
-            <div class="col-md-6 col-sm-12 mb-3">
-              <div class="card bg-white text-dark shadow">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-12 font-weight-bold">
-                      Research Titles:
-                    </div>
-
-                    {% if research_titles %}
-                    {% for research_title in research_titles %}
-
-                    {% if research_title.title_defense_status == "Accepted" %}
-                    <div class="col-sm-12">
-                      - {{research_title.research_title}} - <span class="text-success">Accepted</span>
-                    </div>
-                    {% endif %}
-
-                    {% if research_title.title_defense_status == "Deferred" %}
-                    <div class="col-sm-12">
-                      - {{research_title.research_title}} - <span class="text-danger">Deferred</span>
-                    </div>
-                    {% endif %}
-
-                    {% if research_title.title_defense_status == "Revise Title" %}
-                    <div class="col-sm-12">
-                     
-                      {% if research_title_revise.old_research_title %}
-                      - {{research_title.old_research_title}} - <span class="text-info">Revise Title</span>
-                      {% else %}
-                      - {{research_title.research_title}} - <span class="text-info">Revise Title</span>
-                      {% endif %}
-                    </div>
-                    {% endif %}
-
-                    {% if research_title.status == "Title Defense - Pending" %}
-                    <div class="col-sm-12">
-                      - {{research_title.research_title}}
-                    </div>
-                    {% endif %}
-
-                    {% endfor %}
-                    {% endif %}
-
-                    {% if research_title_accepted.research_title %}
-                    <div class="col-sm-12 mt-4 font-weight-bold">
-                      Accepted Title:
-                    </div>
-
-                    <div class="col-sm-12">
-                      {{research_title_accepted.research_title}}
-                    </div>
-
-                    {% elif research_title_revise.research_title %}
-                    <div class="col-sm-12 mt-4 font-weight-bold">
-                      Accepted - Revise Title:
-                    </div>
-
-                    <div class="col-sm-12">
-                      {% if research_title_revise.old_research_title %}
-                      {{research_title_revise.old_research_title}}
-                      {% else %}
-                      {{research_title_revise.research_title }}
-                      {% endif %}
-                    </div>
-
-
-                    <div class="col-sm-12 mt-4 font-weight-bold">
-                      Suggested Title:
-                    </div>
-
-                    <div class="col-sm-12">
-                      {{research_title_revise.suggested_title}}
-                    </div>
-                    {% endif %}
-
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- DataTales Example -->
@@ -273,7 +208,7 @@
                       <th>Panel ID No.</th>
                       <th>Panel Name</th>
                       <th>Attendance</th>
-                      <th>Signature</th>
+                      <th>Final Defense Signature</th>
                       <th>Vote Status</th>
                       <th>Action</th>
                     </tr>
@@ -283,7 +218,7 @@
                       <th>Panel ID No.</th>
                       <th>Panel Name</th>
                       <th>Attendance</th>
-                      <th>Signature</th>
+                      <th>Final Signature</th>
                       <th>Vote Status</th>
                       <th>Action</th>
                     </tr>
@@ -291,43 +226,46 @@
                   <tbody>
 
                     {% if panel_members %}
-                    {% for panel_member in present_panel_members %}
-                    <tr>
-                      <td>{{panel_member.panel_username}}</td>
-                      <td>{{panel_member.panel_full_name}}</td>
-                      <td class="text-center text-success">
-                        Present
-                      </td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    {% endfor %}
+                      {% for panel_member in present_panel_members %}
+                      <tr>
+                        <td>{{panel_member.panel_username}}</td>
+                        <td>{{panel_member.panel_full_name}}</td>
+                        <td class="text-center text-success">
+                          Present
+                        </td>
+                        <td>pending</td>
+                        <td>pending</td>
+                        <td>pending</td>
+                        <td></td>
+                      </tr>
+                      {% endfor %}
 
                     {% else %}
 
-                    {% if not panel_chairman%}
-                    {% for panel_member in present_panel_members_title_defense %}
-                    <tr>
-                      <td>{{panel_member.panel_username}}</td>
-                      <td>{{panel_member.panel_full_name}}</td>
-                      <td class="text-success">
-                        Present
-                      </td>
-                      <td></td>
-                      <td></td>
-                      <td class="text-success">
-                        <a id="panel_chairman_{{panel_member.id}}" data-id="{{panel_member.id}}"
-                          class="btn btn-outline-success mb-2 w-100" href="#}">Set as Panel Chairman</a>
-                      </td>
-                    </tr>
-                    {% endfor %}
-                    {% endif %}
+                      {% if not panel_chairman %}
+                        {% for panel_member in present_panel_members_proposal_defense %}
+                        <tr>
+                          <td>{{panel_member.panel_username}}</td>
+                          <td>{{panel_member.panel_full_name}}</td>
+                          <td class="text-success">
+                            Present
+                          </td>
+                          <td>Pending</td>
+                          <td>Pending</td>
+                          <td>Pending</td>
+                          <td class="text-success">
+                            <a id="panel_chairman_{{panel_member.id}}" data-id="{{panel_member.id}}"
+                              class="btn btn-outline-success mb-2 w-100" href="#">Set as Panel Chairman</a>
+                          </td>
+                          
+                        </tr>
+                        {% endfor %}
+                      {% endif %}
                     {% endif %}
 
 
                     {% if panel_chairman %}
-                    {% for panel_member in present_panel_members_title_defense %}
+                    {% for panel_member in present_panel_members_proposal_defense %}
                     <tr>
                       <td>{{panel_member.panel_username}}</td>
                       <td>{{panel_member.panel_full_name}}</td>
@@ -335,42 +273,32 @@
                         <td class="text-success">
                           Present - Panel Chairman
                         </td>
-                        {% if panel_member.panel_signature_response == 1 %}
-                          {% if panel_member.panel_signature_attach == 1 %}
-                            <td class="text-success">E-Signature</td>
-                          {% else %}
-                            <td class="text-primary">Live Signature</td>
-                          {% endif %}
+
+                        {% if panel_member.panel_signature_response == True and panel_member.panel_chairman_signature_response == True %}
+                          <td class="text-success">Done</td>
                         {% else %}
                           <td>Pending</td>
                         {% endif %}
 
-                        {% else %}
+                      {% else %}
                         <td class="text-success">
                           Present
                         </td>
 
-                        {% if panel_member.panel_signature_response == 1 %}
-                          {% if panel_member.panel_signature_attach == 1 %}
-                            <td class="text-success">E-Signature</td>
-                          {% else %}
-                            <td class="text-primary">Live Signature</td>
-                          {% endif %}
+                        {% if panel_member.panel_signature_response == True %}
+                          <td class="text-success">Done</td>
                         {% else %}
                           <td>Pending</td>
                         {% endif %}
 
                       {% endif %}
-                      {% if panel_member.form_status == "completed" %}
-                      <td class="text-success">
-                        Done
-                      </td>
-                      {% else %}
-                      <td class="text-secondary">
-                        Pending
-                      </td>
-                      {% endif %}
 
+                      {% if not panel_member.final_defense_response %}
+                        <td>Pending</td>
+                      {% else %}
+                        <td class="text-success">Done</td>
+                      {% endif %}
+                      
                       <td></td>
                     </tr>
                     {% endfor %}
@@ -385,7 +313,7 @@
                       <td>pending</td>
                       <td class="text-center">
                         <a id="present_{{panel_member.id}}" data-id="{{panel_member.id}}"
-                          class="btn btn-outline-success mb-2 w-100" href="#}">Present</a>
+                          class="btn btn-outline-success mb-2 w-100" href="#">Present</a>
                         <a id="absent_{{panel_member.id}}" data-id="{{panel_member.id}}"
                           class="btn btn-outline-danger mb-2 w-100" href="#">Absent</a>
                       </td>
@@ -400,7 +328,8 @@
                         Absent
                       </td>
                       <td>N/A</td>
-                      <td></td>
+                      <td>N/A</td>
+                      <td>N/A</td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -408,58 +337,30 @@
               </div>
             </div>
           </div>
-          
-          {% if panel_chairman %}
-            {% if not pending_signature_response %}
-              {% if not start_voting %}
-              <a class="btn btn-outline-success mb-2 w-100"
-                href="{% url 'subject-teacher-title-defense-day-start-vote' student_leader_data.username %}">Start Title Voting</a>
-              {% endif %}
+
+
+          {% if not start_voting %}
+            <a class="btn btn-outline-success mb-2 w-100"
+              href="{% url 'subject-teacher-bet5-final-defense-day-start-voting' student_leader_data.username %}">Start Voting</a>
+          {% endif %}
+
+
+          {% if start_voting %}
+            {% if done_panel_chairman_sign %}
+              {% if not all_pending_panel_signature_response %}
+                  {% if not end_voting %}
+                    <a class="btn btn-outline-success mb-2 w-100" href="{% url 'subject-teacher-bet5-final-defense-day-end-voting' student_leader_data.username %}">End Voting</a>
+                  {% endif %}
+                {% endif %}
             {% endif %}
           {% endif %}
 
-          {% if not panel_members %}
-          {% if not pending_title_defense_vote %}
-          {% if has_accepted_title == None and research_title_revise == None and research_title_all_deferred == 0 %}
-          <a class="btn btn-outline-danger mb-2 w-100"
-            href="{% url 'subject-teacher-title-defense-day-close-vote' student_leader_data.username %}">Close Title
-            Voting</a>
-          {% endif %}
-          {% endif %}
-          {% endif %}
-          
-          {% if has_accepted_title != None %}
-          {% if not title_defense_completed %}
-          <form method="POST">
-            {% csrf_token %}
-            <button class="btn btn-outline-danger mb-2 w-100">End Defense Session</button>
-          </form>
-          {% endif %}
+          {% if end_voting %}
+            {% if pending_proposal_defense %}
+              <a class="btn btn-outline-danger mb-2 w-100" href="{% url 'subject-teacher-bet5-final-defense-day-end-defense' student_leader_data.username %}">End Defense</a>
+            {% endif %}
           {% endif %}
 
-          {% if research_title_revise != None %}
-          {% if not title_defense_completed %}
-          <form method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-              <label for="exampleInputEmail1">Suggested Title:</label>
-              <input type="text" class="form-control" name="suggest_title_input" style="text-transform: capitalize"
-                required>
-              <small class="form-text text-muted">if applicable</small>
-            </div>
-            <button class="btn btn-outline-danger mb-2 w-100">End Defense Session</button>
-          </form>
-          {% endif %}
-          {% endif %}
-
-          {% if research_title_all_deferred != 0 %}
-          {% if not title_defense_completed %}
-          <form method="POST">
-            {% csrf_token %}
-            <button class="btn btn-outline-danger mb-2 w-100">End Defense Session</button>
-          </form>
-          {% endif %}
-          {% endif %}
         </div>
 
         <!-- /.container-fluid -->
@@ -541,7 +442,7 @@
       data_id = $(document.getElementById('present_' + '{{panel_member.id}}')).attr("data-id")
 
       document.getElementById('panel_name_present').textContent = "{{panel_member.panel_full_name}}";
-      document.getElementById("present_btn").href = "{% url 'subject-teacher-title-defense-day-present' id=0 %}"
+      document.getElementById("present_btn").href = "{% url 'subject-teacher-bet5-final-defense-day-present' id=0 %}"
         .replace(/0/, data_id);
       $("#presentModal").modal()
     });
@@ -550,21 +451,21 @@
       data_id = $(document.getElementById('present_' + '{{panel_member.id}}')).attr("data-id")
 
       document.getElementById('panel_name_absent').textContent = "{{panel_member.panel_full_name}}";
-      document.getElementById("absent_btn").href = "{% url 'subject-teacher-title-defense-day-absent' id=0 %}"
+      document.getElementById("absent_btn").href = "{% url 'subject-teacher-bet5-final-defense-day-absent' id=0 %}"
         .replace(/0/, data_id);
       $("#absentModal").modal()
     });
   </script>
   {% endfor %}
 
-  {% for panel_member in present_panel_members_title_defense %}
+  {% for panel_member in present_panel_members_proposal_defense %}
   <script>
     document.getElementById('panel_chairman_' + '{{panel_member.id}}').addEventListener("click", function () {
       data_id = $(document.getElementById('panel_chairman_' + '{{panel_member.id}}')).attr("data-id")
 
       document.getElementById('panel_name').textContent = "{{panel_member.panel_full_name}}";
       document.getElementById("panel_chairman_btn").href =
-        "{% url 'subject-teacher-title-defense-day-panel-chairman' id=0 %}".replace(/0/, data_id);
+        "{% url 'subject-teacher-bet5-final-defense-day-panel-chairman' id=0 %}".replace(/0/, data_id);
       $("#panelChairmanModal").modal()
     });
   </script>

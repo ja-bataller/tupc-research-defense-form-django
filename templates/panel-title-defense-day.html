@@ -155,21 +155,25 @@
                     {% if research_title_data %}
                     {% for research_title in research_title_data %}
 
-                    {% if research_title.status == "Title Defense - Accepted" %}
+                    {% if research_title.title_defense_status == "Accepted" %}
                     <div class="col-sm-12">
                       - {{research_title.research_title}} - <span class="text-success">Accepted</span>
                     </div>
                     {% endif %}
 
-                    {% if research_title.status == "Title Defense - Deferred" %}
+                    {% if research_title.title_defense_status == "Deferred" %}
                     <div class="col-sm-12">
                       - {{research_title.research_title}} - <span class="text-danger">Deferred</span>
                     </div>
                     {% endif %}
 
-                    {% if research_title.status == "Title Defense - Revise Title" %}
+                    {% if research_title.title_defense_status == "Revise Title" %}
                     <div class="col-sm-12">
+                      {% if research_title.old_research_title  %}
+                      - {{research_title.old_research_title}} - <span class="text-info">Revise Title</span>
+                      {% else %}
                       - {{research_title.research_title}} - <span class="text-info">Revise Title</span>
+                      {% endif %}
                     </div>
                     {% endif %}
 
@@ -197,7 +201,11 @@
                     </div>
 
                     <div class="col-sm-12">
-                      {{research_title_revise.research_title}}
+                      {% if research_title_revise.old_research_title %}
+                        {{research_title_revise.old_research_title}}
+                      {% else %}
+                        {{research_title_revise.research_title}}
+                      {% endif %}
                     </div>
 
 

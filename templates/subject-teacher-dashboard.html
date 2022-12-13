@@ -72,6 +72,22 @@
         </div>
       </li>
 
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinalDefense" aria-expanded="true" aria-controls="collapseFinalDefense">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Final Defense</span>
+        </a>
+        <div id="collapseFinalDefense" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="#">My Schedule</a>
+            <a class="collapse-item" href="#">Students Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-set-research-final-defense-schedule' %}">Set Schedule</a>
+            <a class="collapse-item" href="#">Logs</a>
+          </div>
+        </div>
+      </li>
+
       <!-- Nav Item - Tables -->
       <!-- <li class="nav-item">
         <a class="nav-link" href="tables.html">
@@ -111,18 +127,18 @@
 
           <div class="row">
             <div class="col-md-8 col-sm-12 mb-3">
-              <div class="card border-left-danger shadow h-100 py-2">
+              <div class="card border-left-dark shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                      <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                         Subject Teacher</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome
                         {{request.user.honorific}} {{request.user.last_name}}
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fa-solid fa-face-laugh-beam fa-2x text-danger"></i>
+                      <i class="fa-solid fa-face-laugh-beam fa-2x tup-colorway-secondary"></i>
                     </div>
                   </div>
                 </div>
@@ -130,17 +146,17 @@
             </div>
 
             <div class="col-md-4 col-sm-12 mb-3">
-              <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card border-left-dark shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                      <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                         Today</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">{{date_today}}
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fa-solid fa-sun fa-2x text-warning"></i>
+                      <i class="fa-solid fa-sun fa-2x tup-colorway-secondary"></i>
                     </div>
                   </div>
                 </div>
@@ -161,7 +177,7 @@
             {% endif %}
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>Ref No.</th>
@@ -212,6 +228,10 @@
                       {% if today_defense.form == "Research Proposal Defense" and today_defense.student_leader_username %}
                       <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-proposal-defense-day' today_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
                       {% endif %}
+
+                      {% if today_defense.form == "Research Final Defense" and today_defense.student_leader_username %}
+                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet5-final-defense-day' today_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
+                      {% endif %}
                     </tr>
                     {% endfor %}
 
@@ -227,8 +247,12 @@
                       <td>{{completed_today_defense.start_time}} to {{completed_today_defense.end_time}}</td>
 
                       <td class="text-success">{{completed_today_defense.status}}</td>
-
+                      {% if completed_today_defense.form == "Research Title Defense" %}
+                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-title-defense-day' completed_today_defense.student_leader_username%}"><i class="fa-solid fa-eye"></i></a></td>
+                      {% endif %}
+                      {% if completed_today_defense.form == "Research Proposal Defense" %}
                       <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-proposal-defense-day' completed_today_defense.student_leader_username%}"><i class="fa-solid fa-eye"></i></a></td>
+                      {% endif %}
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -453,14 +477,6 @@
   </script>
   {% endif %}
 
-  {% if response == 'sweet proposal defense vote tie' %}
-  <script>
-    Swal.fire("Tie Vote", "The Panel Member's vote is tie. Please vote again.", "info");
-    setTimeout(function () {
-      window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
-  </script>
-  {% endif %}
 
   {% if response == 'sweet proposal defense done' %}
   <script>
@@ -471,7 +487,78 @@
   </script>
   {% endif %}
 
+  {% if response == 'sweet final defense present panel' %}
+  <script>
+    Swal.fire("Present", "{{panel_invitation_data.panel_full_name}} is marked as present", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' panel_invitation_data.student_leader_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
 
+  {% if response == 'sweet final defense absent panel' %}
+  <script>
+    Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' panel_invitation_data.student_leader_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final defense panel chairman assigned' %}
+  <script>
+    Swal.fire("Success", "{{panel_chairman_data.panel_full_name}} is assigned as Panel Chairman", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' panel_chairman_data.student_leader_username %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final defense panel esign incomplete' %}
+  <script>
+    Swal.fire("Info", "Please wait for the Panel Chairman to response for the signature.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
+    }, 3000);
+  </script>
+  {% endif %}
+
+
+  {% if response == 'sweet final defense start voting' %}
+  <script>
+    Swal.fire("Start Vote", "The Verdict voting has started.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
+    }, 3000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final defense end voting' %}
+  <script>
+    Swal.fire("End Vote", "The Verdict voting has ended.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
+    }, 3000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final defense vote tie' %}
+  <script>
+    Swal.fire("Tie Vote", "The Panel Member's vote is tie. Please vote again.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
+    }, 3000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final defense done' %}
+  <script>
+    Swal.fire("Defense Ended", "The Final Defense has ended.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-dashboard' %}");
+    }, 3000);
+  </script>
+  {% endif %}
 </body>
 
 </html>

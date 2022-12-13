@@ -32,11 +32,10 @@
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
           <i class="fa-solid fa-house"></i>
-          <span>Home</span></a
-        >
+          <span>Home</span></a>
       </li>
 
       <!-- Divider -->
@@ -44,11 +43,11 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTitleDefense" aria-expanded="true" aria-controls="collapseTitleDefense">
           <i class="fa-solid fa-folder-open"></i>
-          <span>Research Title Defense</span>
+          <span>Topic Defense</span>
         </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapseTitleDefense" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{% url 'subject-teacher-title-defense-schedule-dashboard' %}">My Schedule</a>
             <a class="collapse-item" href="{% url 'subject-teacher-students-title-defense-schedule-dashboard' %}">Students Schedule</a>
@@ -58,12 +57,27 @@
         </div>
       </li>
 
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProposalDefense" aria-expanded="true" aria-controls="collapseProposalDefense">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Proposal Defense</span>
+        </a>
+        <div id="collapseProposalDefense" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'subject-teacher-proposal-defense-schedule-dashboard' %}">My Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-students-proposal-defense-schedule-dashboard' %}">Students Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-set-research-proposal-defense-schedule' %}">Set Schedule</a>
+            <!-- <a class="collapse-item" href="">Logs</a> -->
+          </div>
+        </div>
+      </li>
+
       <!-- Nav Item - Tables -->
       <!-- <li class="nav-item">
-      <a class="nav-link" href="tables.html">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          <span>History</span></a>
-  </li> -->
+        <a class="nav-link" href="tables.html">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>History</span></a>
+      </li> -->
 
       <!-- Divider -->
       <hr class="sidebar-divider" />
@@ -72,8 +86,7 @@
       <li class="nav-item">
         <a class="nav-link" href="#">
           <i class="fa-solid fa-code"></i>
-          <span>The Devs</span></a
-        >
+          <span>The Devs</span></a>
       </li>
 
       <!-- Divider -->
@@ -102,7 +115,7 @@
           </div>
 
           <!-- User Profile Start -->
-          <div class="card border-left-warning shadow h-100 py-2 mb-3">
+          <div class="card border-left-dark shadow h-100 py-2 mb-3">
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col mr-2">

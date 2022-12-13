@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin - Dashboard</title>
+    <title>Admin - Home</title>
 
     {% include 'css-main-cdn.html' %}
 
@@ -26,10 +26,12 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center"
-                href="{% url 'admin-dashboard' %}">
-                <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%;" alt="">
-            </a>
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'admin-dashboard' %}">
+                    <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
+                    </div>
+                </a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -46,8 +48,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
                     <i class="fa-solid fa-user-gear"></i>
                     <span>Account</span>
                 </a>
@@ -62,7 +63,7 @@
                 </div>
             </li>
 
-            
+
             <!-- Nav Item - Tables -->
             <!-- <li class="nav-item">
                 <a class="nav-link" href="tables.html">
@@ -103,8 +104,80 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 mb-3">
+                            <div class="card border-left-dark shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                                Administrator</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome {{currently_loggedin_user_full_name}}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa-solid fa-face-laugh-beam fa-2x tup-colorway-secondary"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="col-md-6 col-sm-12 mb-3">
+                            <div class="card border-left-dark shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                                Today</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{date_today}}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa-solid fa-sun fa-2x tup-colorway-secondary"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="col-md-6 col-sm-12 mb-3">
+                            <div class="card border-left-dark shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                                Faculty Member</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count_all_faculty}}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa-solid fa-user-tie fa-2x tup-colorway-secondary"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 mb-3">
+                            <div class="card border-left-dark shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                                Students</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count_all_students}}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa-solid fa-graduation-cap fa-2x tup-colorway-secondary"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
 

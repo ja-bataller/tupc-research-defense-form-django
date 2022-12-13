@@ -123,11 +123,11 @@
     
     {% if response == 'sweet incomplete form' %}
     <script>
-      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment. \n Please try again later.", "warning");
+      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> The Faculty Members are incomplete. <br> Please try again later.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'index' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %}
 

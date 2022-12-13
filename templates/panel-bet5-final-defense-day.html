@@ -1,0 +1,377 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Panel - Final Defense Day</title>
+
+  {% include 'css-main-cdn.html' %}
+</head>
+
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'panel-dashboard' %}">
+        <img class="img-fluid" src="{% static 'img/TUP-Logo.png' %}" style="width: 30%" alt="" />
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0" />
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'panel-dashboard' %}">
+          <i class="fa-solid fa-house"></i>
+          <span>Home</span></a>
+      </li>
+
+      <!-- Divider -->
+      <!-- <hr class="sidebar-divider"> -->
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+          aria-controls="collapsePages">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Forms</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">BET-3</h6>
+            <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
+  
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">BET-5</h6>
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
+          aria-controls="collapseLogs">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Logs</span>
+        </a>
+        <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">BET-3</h6>
+            <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'panel-bet3-title-defense-logs' %}">Research Title Defense</a>
+            <!-- <a class="collapse-item" href="">Research Title Defense</a>
+                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">BET-5</h6>
+            <!-- <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a>
+                        <a class="collapse-item" href="#">New Form</a> -->
+          </div>
+        </div>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider" />
+
+      <!-- Nav Item - The Developers -->
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fa-solid fa-code"></i>
+          <span>The Devs</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block" />
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+
+        {% include 'panel-topbar.html' %}
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <div class="d-sm-flex align-items-center justify-content-between">
+            <h1 class="h3 text-gra-800">Research Final Defense</h1>
+          </div>
+          <h1 class="h6 mb-0 text-gray-800 mb-2">{{student_leader_data.research_final_defense_date}} -
+            {{student_leader_data.research_final_defense_start_time}} to
+            {{student_leader_data.research_final_defense_end_time}}</h1>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 mt-2">
+                     <h6>Research Title:</h6>
+                    </div>
+                    <div class="col-sm-12">
+                      <h4>{{accepted_research_title}}</h4>
+                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">Group Members:</div>
+                    <div class="col-sm-12">- {{student_leader_full_name}}</div>
+
+                    {% if group_members %} 
+                    {% for group_member in group_members %}
+                    <div class="col-sm-12">- {{group_member.student_member_full_name}}</div>
+                    {% endfor %} 
+                    {% endif %}
+
+                    <div class="col-sm-12 mt-4 font-weight-bold">Course:</div>
+                    <div class="col-sm-12">{{student_leader_data.course_major_abbr}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">Panel Members:</div>
+
+                    {% if present_panel_members_proposal_defense %}
+                    {% for panel_member in present_panel_members_proposal_defense %}
+                    {% if panel_member.is_panel_chairman == 1 %}
+                    <div class="col-sm-12">- {{panel_member.panel_full_name}} -<span class="text-success">Panel Chairman</span></div>
+                    {% else %}
+                    <div class="col-sm-12">- {{panel_member.panel_full_name}}</div>
+                    {% endif %}
+                    {% endfor %} 
+                    {% endif %}
+
+                    <div class="col-sm-12 mt-4 font-weight-bold">Subject Teacher:</div>
+
+                    <div class="col-sm-12">{{student_leader_data.bet3_subject_teacher_name}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Proposal Defense Signature -->
+          {% if start_voting %}
+            {% if start_voting.final_defense_response %}
+              {% if start_voting.is_panel_chairman == True and start_voting.panel_chairman_signature_response == False %}
+                <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="checkbox_proposal_agreement_pc" required>
+                  <label class="form-check-label">I agree to attach my uploaded signature as a Panel Chairman in this Final Defense Form.</label>
+                </div>
+                <a id="btn_proposal_panel_chairman_esign" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature - Panel Chairman</a>
+                <hr>
+                <a id="btn_proposal_panel_chairman_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Personal Signature - Panel Chairman</a>
+                <hr>
+              {% endif %}
+              
+              {% if start_voting.panel_signature_response == False %}
+                <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="checkbox_proposal_agreement_p" required>
+                  <label class="form-check-label">I agree to attach my uploaded signature as a Panel in this Final Defense Form.</label>
+                </div>
+                <a id="btn_proposal_panel_esign" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature - Panel</a>
+                <hr>
+                <a id="btn_proposal_panel_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Personal Signature - Panel</a>
+              {% endif %}
+            {% endif %}
+
+          {% endif %}
+
+          {% if start_voting %}
+            {% if not start_voting.final_defense_response %}
+              <button id="btn_accept_proposal_defense" class="btn btn-outline-success w-100 mb-2">Accept with Revision</button>
+              <button id="btn_deferred_proposal_defense" class="btn btn-outline-info w-100 mb-2">Deferred with Revision</button>
+              <button id="btn_not_accepted_proposal_defense" class="btn btn-outline-danger w-100 mb-2">Not Accepted</button>
+            {% endif %}
+          {% endif %}
+
+          {% if start_voting.proposal_defense_response %}
+            {% if not start_tie_vote %}
+              <div class="form-group">
+                <label for="exampleInputEmail1">Your Vote Response:</label>
+                <input type="text" class="form-control" value="{{start_voting.proposal_defense_response}}" disabled>
+              </div>
+            {% endif %}
+          {% endif %}     
+          
+          </div>
+
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Accept Title Modal -->
+  <div class="modal fade" id="acceptedTitleModal" tabindex="-1" aria-labelledby="acceptedTitleModal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Accept with Revision</h5>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to mark this Final Defense "<span
+            id="accepted_research_title"></span>" as Accepted with Revision?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+          <a id="accept_title_btn" class="btn btn-outline-success" type="button" href="#">Confirm - Accept with Revision</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deferred Title Modal -->
+  <div class="modal fade" id="deferredTitleModal" tabindex="-1" aria-labelledby="deferredTitleModal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Deferred with Revision</h5>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to mark this Final Defense "<span
+            id="deferred_research_title"></span>" as Deferred with Revision?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+          <a id="defer_title_btn" class="btn btn-outline-info" type="button" href="#">Confirm - Deferred with Revision</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revise Title Modal -->
+  <div class="modal fade" id="reviseTitleModal" tabindex="-1" aria-labelledby="reviseTitleModal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Not Accepted</h5>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to mark this Final Defense "<span
+            id="revise_research_title"></span>" Not Accepted?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+          <a id="revise_title_btn" class="btn btn-outline-danger" type="button" href="#">Confirm - Not Accepted</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include 'logout-modal.html' %}
+  {% include 'script-cdn.html' %}
+
+   <!-- Proposal Defense Form - Panel Chairman e-sign -->
+  <script>
+    document.getElementById('btn_proposal_panel_chairman_esign').addEventListener("click", function () {
+      if (document.getElementById('checkbox_proposal_agreement_pc').checked) {
+        document.getElementById("btn_proposal_panel_chairman_esign").href = "{% url 'panel-bet5-final-defense-day-panel-chairman-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+      } else {
+        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+      }
+    });
+  </script>
+
+  <!-- Proposal Defense Form - Panel e-sign -->
+  <script>
+    document.getElementById('btn_proposal_panel_esign').addEventListener("click", function () {
+      if (document.getElementById('checkbox_proposal_agreement_p').checked) {
+        document.getElementById("btn_proposal_panel_esign").href = "{% url 'panel-bet5-final-defense-day-panel-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+      } else {
+        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+      }
+    });
+  </script>
+
+  <!-- Proposal Defense Form - Panel Chairman Live Signature -->
+  <script>
+    document.getElementById('btn_proposal_panel_chairman_live').addEventListener("click", function () {
+      document.getElementById("btn_proposal_panel_chairman_live").href = "{% url 'panel-bet5-final-defense-day-panel-chairman-live-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+    });
+  </script>
+
+  <!-- Proposal Defense Form - Panel Live Signature -->
+  <script>
+    document.getElementById('btn_proposal_panel_live').addEventListener("click", function () {
+      document.getElementById("btn_proposal_panel_live").href = "{% url 'panel-bet5-final-defense-day-panel-live-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+    });
+  </script>
+
+  <!-- Proposal Defense Form - Vote -->
+  <script>
+    document.getElementById("btn_accept_proposal_defense").addEventListener("click", function () {
+      data_id = "{{student_username}}";
+      document.getElementById("accepted_research_title").textContent = "{{accepted_research_title}}";
+      document.getElementById("accept_title_btn").href = "{% url 'panel-bet5-final-defense-day-accepted' id=0 %}".replace(/0/, data_id);
+      $("#acceptedTitleModal").modal();
+    });
+  
+    document.getElementById("btn_deferred_proposal_defense").addEventListener("click", function () {
+      data_id = "{{student_username}}";
+  
+      document.getElementById("deferred_research_title").textContent = "{{accepted_research_title}}";
+      document.getElementById("defer_title_btn").href = "{% url 'panel-bet5-final-defense-day-deferred' id=0 %}"
+        .replace(/0/, data_id);
+      $("#deferredTitleModal").modal();
+    });
+  
+    document.getElementById("btn_not_accepted_proposal_defense").addEventListener("click", function () {
+      data_id = "{{student_username}}";
+  
+      document.getElementById("revise_research_title").textContent = "{{accepted_research_title}}";
+      document.getElementById("revise_title_btn").href = "{% url 'panel-bet5-final-defense-day-not-accepted' id=0 %}".replace(/0/, data_id);
+      $("#reviseTitleModal").modal();
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $("#critiqueTable").DataTable({
+        order: [[0, "desc"]],
+      });
+    });
+  </script>
+
+</body>
+
+</html>

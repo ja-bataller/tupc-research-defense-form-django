@@ -19,6 +19,7 @@ urlpatterns = [
    path('student/research-titles', views.studentResearchTitleProcess, name ="student-research-titles"),
    path('student/research-titles/add', views.studentAddResearchTitle, name ="student-add-research-titles"),
    path('student/research-title-dashboard', views.studentResearchTitleDashboard, name ="student-research-title-dashboard"),
+   path('student/research-title/update', views.studentResearchTitleUpdate, name ="student-research-title-update"),
 
    path('student/bet3/panel-invitation', views.studentPanelInvitationBet3, name ="student-panel-invitation-bet3"), 
    path('student/bet3/panel-invitation/create', views.studentPanelInvitationBet3Create, name ="student-panel-invitation-bet3-create"),
@@ -42,6 +43,14 @@ urlpatterns = [
 
    path('student/bet3/research-proposal-defense', views.studentBET3ResearchProposalDefenseForm, name ="student-bet3-research-proposal-defense"),
    path('student/bet3/research-proposal-defense-form/download', views.studentBET3ResearchProposalDefenseFormDownload, name ="student-bet3-research-proposal-defense-form-download"),
+
+   path('student/bet5/subject-teacher', views.studentBET5SubjectTeacher, name ="student-bet5-subject-teacher"),
+
+   path('student/bet5/final-defense/panel-invitation', views.studentBET5FinalDefensePanelInvitation, name ="student-bet5-final-defense-panel-invitation"),
+   path('student/bet5/final-defense/panel-invitation/create/prev', views.studentBET5FinalDefensePanelInvitationCreatePanel, name ="student-bet5-final-defense-panel-invitation-create-panel"),
+   path('student/bet5/final-defense/panel-invitation/create', views.studentBET5FinalDefensePanelInvitationCreate, name ="student-bet5-final-defense-panel-invitation-create"),
+   path('student/bet5/final-defense/panel-invitation/save', views.studentBET5FinalDefensePanelInvitationSave, name ="student-bet5-final-defense-panel-invitation-save"),
+   path('student/bet5/final-defense/panel-invitation/download/<str:id>', views.studentBET5FinalDefensePanelInvitationDownload, name ="student-bet5-final-defense-panel-invitation-download"),
 
    path('student-panel-conforme-bet3/', views.studentPanelConformeBet3, name ="student-panel-conforme-bet3"), 
    path('student-panel-conforme-bet3-create/', views.studentPanelConformeBet3Create, name ="student-panel-conforme-bet3-create"),
@@ -84,7 +93,6 @@ urlpatterns = [
    path('dit-head/bet3/proposal-defense/panel-invitation', views.ditHeadBET3ProposalDefensePanelInvitationDashboard, name ="dit-head-bet3-proposal-defense-panel-invitation-dashboard"),
    path('dit-head/bet3/proposal-defense/panel-invitation/accept/sign/<str:id>', views.ditHeadBET3ProposalPanelInvitationAcceptSignature, name ="dit-head-bet3-proposal-panel-invitation-accept-sign"),
    path('dit-head/bet3/proposal-defense/panel-invitation/decline/sign/<str:id>', views.ditHeadBET3ProposalPanelInvitationDeclineSignature, name ="dit-head-bet3-proposal-panel-invitation-decline-sign"),
-
    path('dit-head/bet3/proposal-defense/panel-invitation/accept/<str:id>', views.ditHeadBET3ProposalPanelInvitationAccept, name ="dit-head-bet3-proposal-panel-invitation-accept"),
    path('dit-head/bet3/proposal-defense/panel-invitation/decline/<str:id>', views.ditHeadBET3ProposalPanelInvitationDecline, name ="dit-head-bet3-proposal-panel-invitation-decline"),
 
@@ -95,6 +103,12 @@ urlpatterns = [
 
    path('dit-head/bet3/adviser-conforme/accept/<str:id>', views.ditHeadBET3AdviserConformeAccept, name ="dit-head-bet3-adviser-conforme-accept"),
    path('dit-head/bet3/adviser-conforme/decline/<str:id>', views.ditHeadBET3AdviserConformeDecline, name ="dit-head-bet3-adviser-conforme-decline"),  
+
+   path('dit-head/bet5/final-defense/panel-invitation', views.ditHeadBET5FinalDefensePanelInvitationDashboard, name ="dit-head-bet5-final-defense-panel-invitation-dashboard"),
+   path('dit-head/bet5/final-defense/panel-invitation/accept/sign/<str:id>', views.ditHeadBET5FinalPanelInvitationAcceptSignature, name ="dit-head-bet5-final-panel-invitation-accept-sign"),
+   path('dit-head/bet5/final-defense/panel-invitation/decline/sign/<str:id>', views.ditHeadBET5FinalPanelInvitationDeclineSignature, name ="dit-head-bet5-final-panel-invitation-decline-sign"),
+   path('dit-head/bet5/final-defense/panel-invitation/accept/<str:id>', views.ditHeadBET5FinalPanelInvitationAccept, name ="dit-head-bet5-final-panel-invitation-accept"),
+   path('dit-head/bet5/final-defense/panel-invitation/decline/<str:id>', views.ditHeadBET5FinalPanelInvitationDecline, name ="dit-head-bet5-final-panel-invitation-decline"),
 
    path('dit-head/bet3/topic-defense/panel-invitation/logs', views.ditHeadBET3PanelInvitationLogs, name ="dit-head-bet3-panel-invitation-logs"),
 
@@ -133,6 +147,17 @@ urlpatterns = [
    path('panel/bet3/proposal-defense-day/panel-chairman/live-sign/<str:id>', views.panelBET3ProposalDefenseDayPanelChairmanLiveSignature, name ="panel-bet3-proposal-defense-day-panel-chairman-live-signature"),
    path('panel/bet3/proposal-defense-day/panel/live-sign/<str:id>', views.panelBET3ProposalDefenseDayPanelLiveSignature, name ="panel-bet3-proposal-defense-day-panel-live-signature"),
 
+
+   path('panel/bet5/final-defense-day/<str:id>', views.panelBET5FinalDefenseDay, name ="panel-bet5-final-defense-day"),
+   path('panel/bet5/final-defense-day/verdict/accept/<str:id>', views.panelBET5FinalDefenseDayAccepted, name ="panel-bet5-final-defense-day-accepted"),
+   path('panel/bet5/final-defense-day/verdict/deferred/<str:id>', views.panelBET5FinalDefenseDayDeferred, name ="panel-bet5-final-defense-day-deferred"),
+   path('panel/bet5/final-defense-day/verdict/not-accepted/<str:id>', views.panelBET5FinalDefenseDayNotAccepted, name ="panel-bet5-final-defense-day-not-accepted"),
+   path('panel/bet5/final-defense-day/panel-chairman/attach-sign/<str:id>', views.panelBET5FinalDefenseDayPanelChairmanAttachSignature, name ="panel-bet5-final-defense-day-panel-chairman-attach-signature"),
+   path('panel/bet5/final-defense-day/panel/attach-sign/<str:id>', views.panelBET5FinalDefenseDayPanelAttachSignature, name ="panel-bet5-final-defense-day-panel-attach-signature"),
+   path('panel/bet5/final-defense-day/panel-chairman/live-sign/<str:id>', views.panelBET5FinalDefenseDayPanelChairmanLiveSignature, name ="panel-bet5-final-defense-day-panel-chairman-live-signature"),
+   path('panel/bet5/final-defense-day/panel/live-sign/<str:id>', views.panelBET5FinalDefenseDayPanelLiveSignature, name ="panel-bet5-final-defense-day-panel-live-signature"),
+
+
    path('panel/bet3/panel-invitation', views.panelPanelInvitationBet3, name ="panel-panel-invitation-bet-3"),
    path('panel/bet3/topic-panel-invitation/accept/sign/<str:id>', views.panelBET3TopicPanelInvitationAcceptSignature, name ="panel-bet3-topic-panel-invitation-accept-sign"),
    path('panel/bet3/topic-panel-invitation/decline/sign/<str:id>', views.panelBET3TopicPanelInvitationDeclineSignature, name ="panel-bet3-topic-panel-invitation-decline-sign"),
@@ -146,6 +171,12 @@ urlpatterns = [
    path('panel/bet3/proposal-defense/panel-invitation/decline/sign/<str:id>', views.panelBET3ProposalPanelInvitationDeclineSignature, name ="panel-bet3-proposal-defense-panel-invitation-decline-sign"),
    path('panel/bet3/proposal-defense/panel-invitation/accept/<str:id>', views.panelBET3ProposalPanelInvitationAccept, name ="panel-bet3-proposal-defense-panel-invitation-accept"),
    path('panel/bet3/proposal-defense/panel-invitation/decline/<str:id>', views.panelBET3ProposalPanelInvitationDecline, name ="panel-bet3-proposal-defense-panel-invitation-decline"),
+
+   path('panel/bet5/final-defense/panel-invitation', views.panelBET5FinalDefensePanelInvitationDashboard, name ="panel-bet5-final-defense-panel-invitation-dashboard"),
+   path('panel/bet5/final-defense/panel-invitation/accept/sign/<str:id>', views.panelBET5FinalPanelInvitationAcceptSignature, name ="panel-bet5-final-defense-panel-invitation-accept-sign"),
+   path('panel/bet5/final-defense/panel-invitation/decline/sign/<str:id>', views.panelBET5FinalPanelInvitationDeclineSignature, name ="panel-bet5-final-defense-panel-invitation-decline-sign"),
+   path('panel/bet5/final-defense/panel-invitation/accept/<str:id>', views.panelBET5FinalPanelInvitationAccept, name ="panel-bet5-final-defense-panel-invitation-accept"),
+   path('panel/bet5/final-defense/panel-invitation/decline/<str:id>', views.panelBET5FinalPanelInvitationDecline, name ="panel-bet5-final-defense-panel-invitation-decline"),
 
    path('panel/bet3/panel-invitation/logs', views.panelBET3PanelInvitationLogs, name ="panel-bet3-panel-invitation-logs"),
    path('panel/bet3/title-defense/logs', views.panelBET3TitleDefenseLogs, name ="panel-bet3-title-defense-logs"),
@@ -179,15 +210,19 @@ urlpatterns = [
    path('subject-teacher/bet3/proposal-defense-day/end-voting/<str:id>', views.subjectTeacherBET3ProposalDefenseDayEndVoting, name ="subject-teacher-bet3-proposal-defense-day-end-voting"),
    path('subject-teacher/bet3/proposal-defense-day/end-defense/<str:id>', views.subjectTeacherBET3ProposalDefenseDayEndDefense, name ="subject-teacher-bet3-proposal-defense-day-end-defense"),
 
+   path('subject-teacher/bet5/final-defense-day/<str:id>', views.subjectTeacherBET5FinalDefenseDay, name ="subject-teacher-bet5-final-defense-day"),
+   path('subject-teacher/bet5/final-defense-day/present/<str:id>', views.subjectTeacherBET5FinalDefensePresent, name ="subject-teacher-bet5-final-defense-day-present"),
+   path('subject-teacher/bet5/final-defense-day/absent/<str:id>', views.subjectTeacherBET5FinalDefenseAbsent, name ="subject-teacher-bet5-final-defense-day-absent"),
+   path('subject-teacher/bet5/final-defense-day/set-panel-chairman/<str:id>', views.subjectTeacherBET5FinalDefenseDaySetPanelChairman, name ="subject-teacher-bet5-final-defense-day-panel-chairman"),
+   path('subject-teacher/bet5/final-defense-day/start-voting/<str:id>', views.subjectTeacherBET5FinalDefenseDayStartVoting, name ="subject-teacher-bet5-final-defense-day-start-voting"),
+   path('subject-teacher/bet5/final-defense-day/end-voting/<str:id>', views.subjectTeacherBET5FinalDefenseDayEndVoting, name ="subject-teacher-bet5-final-defense-day-end-voting"),
+   path('subject-teacher/bet5/final-defense-day/end-defense/<str:id>', views.subjectTeacherBET5FinalDefenseDayEndDefense, name ="subject-teacher-bet5-final-defense-day-end-defense"),
+
    path('subject-teacher/title-defense/my-schedule', views.subjectTeacherMyTitleDefenseDashboard, name ="subject-teacher-title-defense-schedule-dashboard"),
    path('subject-teacher/title-defense/schedule/students', views.subjectTeacherStudentsTitleDefenseDashboard, name ="subject-teacher-students-title-defense-schedule-dashboard"),
    path('subject-teacher/title-defense/set-schedule', views.subjectTeacherSetResearchTitleDefenseSchedule, name ="subject-teacher-set-research-title-defense-schedule"),
    path('subject-teacher/title-defense/save-schedule', views.subjectTeacherSaveResearchTitleDefenseSchedule, name ="subject-teacher-save-research-title-defense-schedule"),
    path('subject-teacher/title-defense/delete-schedule/<str:id>', views.subjectTeacherDeleteResearchTitleDefenseSchedule, name ="subject-teacher-delete-research-title-defense-schedule"),
-
-   path('subject-teacher/title-defense/logs', views.subjectTeacherBET3TitleDefenseLogs, name ="subject-teacher-bet3-title-defense-logs"),
-   path('subject-teacher/title-defense/logs/completed/<str:id>', views.subjectTeacherBET3TitleDefenseLogCompleted, name ="subject-teacher-bet3-title-defense-logs-completed"),
-   path('subject-teacher/title-defense/logs/redefense/<str:id>', views.subjectTeacherBET3TitleDefenseLogRedefense, name ="subject-teacher-bet3-title-defense-logs-redefense"),
 
    path('subject-teacher/proposal-defense/my-schedule', views.subjectTeacherMyProposalDefenseDashboard, name ="subject-teacher-proposal-defense-schedule-dashboard"),
    path('subject-teacher/proposal-defense/schedule/students', views.subjectTeacherStudentsProposalDefenseDashboard, name ="subject-teacher-students-proposal-defense-schedule-dashboard"),
@@ -195,6 +230,15 @@ urlpatterns = [
    path('subject-teacher/proposal-defense/save-schedule', views.subjectTeacherSaveResearchProposalDefenseSchedule, name ="subject-teacher-save-research-proposal-defense-schedule"),
    path('subject-teacher/proposal-defense/delete-schedule/<str:id>', views.subjectTeacherDeleteResearchProposalDefenseSchedule, name ="subject-teacher-delete-research-proposal-defense-schedule"),
 
+   #path('subject-teacher/final-defense/my-schedule', views.subjectTeacherMyFinalDefenseDashboard, name ="subject-teacher-final-defense-schedule-dashboard"),
+   #path('subject-teacher/final-defense/schedule/students', views.subjectTeacherStudentsFinalDefenseDashboard, name ="subject-teacher-students-final-defense-schedule-dashboard"),
+   path('subject-teacher/final-defense/set-schedule', views.subjectTeacherSetResearchFinalDefenseSchedule, name ="subject-teacher-set-research-final-defense-schedule"),
+   path('subject-teacher/final-defense/save-schedule', views.subjectTeacherSaveResearchFinalDefenseSchedule, name ="subject-teacher-save-research-final-defense-schedule"),
+   path('subject-teacher/final-defense/delete-schedule/<str:id>', views.subjectTeacherDeleteResearchFinalDefenseSchedule, name ="subject-teacher-delete-research-final-defense-schedule"),
+
+   path('subject-teacher/title-defense/logs', views.subjectTeacherBET3TitleDefenseLogs, name ="subject-teacher-bet3-title-defense-logs"),
+   path('subject-teacher/title-defense/logs/completed/<str:id>', views.subjectTeacherBET3TitleDefenseLogCompleted, name ="subject-teacher-bet3-title-defense-logs-completed"),
+   path('subject-teacher/title-defense/logs/redefense/<str:id>', views.subjectTeacherBET3TitleDefenseLogRedefense, name ="subject-teacher-bet3-title-defense-logs-redefense"),
    # Advisers URLS
    path('adviser/dashboard', views.adviserDashboard, name ="adviser-dashboard"),
    path('adviser/profile', views.adviserProfile, name ="adviser-profile"),

@@ -1,0 +1,264 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>DIT Head - BET5 - Final Defense - Panel Inviation - Dashboard</title>
+
+    <link rel="stylesheet" href="{% static 'css/signature-pad-modal.css' %}" />
+
+    {% include 'css-main-cdn.html' %}
+
+  </head>
+
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+      {% include 'dit-head-sidebar-forms.html' %}
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+          {% include 'dit-head-topbar.html' %}
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-0 text-gray-800">BET5 - Final Defense - Panel Invitation - Requests</h1>
+            </div>
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+              <!-- <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Pending Dashboard</h6>
+                </div> -->
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Ref No.</th>
+                        <th>Student ID No.</th>
+                        <th>Student Name</th>
+                        <th>Course</th>
+                        <th>Panel ID No.</th>
+                        <th>Panel Name</th>
+                        <th>Date & Time of Defense</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Ref No.</th>
+                        <th>Student ID No.</th>
+                        <th>Student Name</th>
+                        <th>Course</th>
+                        <th>Panel ID No.</th>
+                        <th>Panel Name</th>
+                        <th>Date & Time of Defense</th>
+                        <th>Action</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      {% for panel_invitation in panel_invitations %}
+                      <tr>
+                        <td>{{panel_invitation.id}}</td>
+                        <td>{{panel_invitation.student_leader_username}}</td>
+                        <td>{{panel_invitation.student_leader_full_name}}</td>
+                        <td>{{panel_invitation.course_major_abbr}}</td>
+                        <td>{{panel_invitation.panel_username}}</td>
+                        <td>{{panel_invitation.panel_full_name}}</td>
+                        <td>
+                          {{panel_invitation.research_final_defense_date}} - {{panel_invitation.research_final_defense_start_time}} to
+                          {{panel_invitation.research_final_defense_end_time}}
+                        </td>
+                        <td class="text-center">
+                          <a id="accept_{{panel_invitation.id}}" data-id="{{panel_invitation.id}}" class="btn btn-outline-success mb-2" type="button" href="#"
+                            >Accept</a
+                          >
+                          <a id="decline_{{panel_invitation.id}}" data-id="{{panel_invitation.id}}" class="btn btn-outline-danger mb-2" type="button" href="#"
+                            >Decline</a
+                          >
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Accept Modal -->
+    <div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="acceptModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to accept <span id="student_name_accept"></span><br />
+            BET-5 Final Defense Panel Invitation request?
+            <br />
+            <br />
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required />
+              <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+            </div>
+            <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Accept - Attach Signature</a>
+            <hr />
+            <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept - Personal Signature</a>
+            <hr />
+          </div>
+          <div class="modal-footer">
+            <button id="btn_cancel_a" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decline Modal -->
+    <div class="modal fade" id="declineModal" tabindex="-1" aria-labelledby="declineModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Decline Request?</h5>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to decline <span id="student_name_decline"></span> <br />
+            BET-5 Final Defense Panel Invitation request?
+            <br />
+            <br />
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="checkbox_agreement_d" required />
+              <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+            </div>
+            <a id="btn_decline_signed" class="submit-button btn btn-outline-danger w-100" type="button" href="#">Decline - Attach Signature</a>
+            <hr />
+            <a id="decline_btn" class="btn btn-outline-warning w-100" type="button" href="#">Decline - Personal Signature</a>
+            <hr />
+          </div>
+          <div class="modal-footer">
+            <button id="btn_cancel_d" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+
+    <!-- Sweetalert 2 CDN -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {% for panel_invitation in panel_invitations %}
+    <script>
+      document.getElementById("accept_" + "{{panel_invitation.id}}").addEventListener("click", function () {
+        data_id = $(document.getElementById("accept_" + "{{panel_invitation.id}}")).attr("data-id");
+
+        document.getElementById("student_name_accept").textContent = "{{panel_invitation.student_leader_full_name}}";
+        document.getElementById("btn_accept").href = "{% url 'dit-head-bet5-final-panel-invitation-accept' id=0 %}".replace(/0/, data_id);
+        $("#acceptModal").modal();
+      });
+
+      document.getElementById("decline_" + "{{panel_invitation.id}}").addEventListener("click", function () {
+        data_id = $(document.getElementById("decline_" + "{{panel_invitation.id}}")).attr("data-id");
+
+        document.getElementById("student_name_decline").textContent = "{{panel_invitation.student_leader_full_name}}";
+        document.getElementById("decline_btn").href = "{% url 'dit-head-bet5-final-panel-invitation-decline' id=0 %}".replace(/0/, data_id);
+        $("#declineModal").modal();
+      });
+    </script>
+    {% endfor %}
+
+    <!-- Modal - Accept- Attach Signature -->
+    <script>
+      document.getElementById("btn_accept_signed").addEventListener("click", function () {
+        if (document.getElementById("checkbox_agreement_a").checked) {
+          document.getElementById("btn_accept_signed").href = "{% url 'dit-head-bet5-final-panel-invitation-accept-sign' id=0 %}".replace(/0/, data_id);
+        } else {
+          Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+        }
+      });
+    </script>
+
+    <!-- Modal - Decline - Attach Signature -->
+    <script>
+      document.getElementById("btn_decline_signed").addEventListener("click", function () {
+        if (document.getElementById("checkbox_agreement_d").checked) {
+          document.getElementById("btn_decline_signed").href = "{% url 'dit-head-bet5-final-panel-invitation-decline-sign' id=0 %}".replace(/0/, data_id);
+        } else {
+          Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+        }
+      });
+    </script>
+
+    <!-- Modal - Cancel Button -->
+    <script>
+      document.getElementById("btn_cancel_a").addEventListener("click", function () {
+        document.getElementById("checkbox_agreement_a").checked = false;
+      });
+
+      document.getElementById("btn_cancel_d").addEventListener("click", function () {
+        document.getElementById("checkbox_agreement_d").checked = false;
+      });
+    </script>
+
+    {% if response == 'sweet panel invitation bet-3 accepted' %}
+    <script>
+      Swal.fire("Accepted", "The Panel Invitation request of {{accepted_student_member_name}} is accepted.", "success");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'dit-head-bet5-final-defense-panel-invitation-dashboard' %}");
+      }, 1500);
+    </script>
+    {% endif %} {% if response == 'sweet panel invitation bet-3 declined' %}
+    <script>
+      Swal.fire("Declined", "The Panel Invitation request of {{declined_student_member_name}} is declined.", "info");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'dit-head-bet5-final-defense-panel-invitation-dashboard' %}");
+      }, 1500);
+    </script>
+    {% endif %} 
+    
+    
+    {% if response == 'sweet no esign' %}
+    <script>
+      Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'dit-head-bet5-final-defense-panel-invitation-dashboard' %}");
+      }, 2300);
+    </script>
+    {% endif %}
+    
+  </body>
+</html>
