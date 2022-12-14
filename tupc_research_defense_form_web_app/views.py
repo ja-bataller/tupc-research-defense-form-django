@@ -8185,6 +8185,26 @@ def adminAdviseeLimit(request):
 
     return render(request, "admin-advisee-limit.html", context)
 
+# Admin
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_administrator, login_url="index")
+def adminTheDevs(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+    }
+
+    return render(request, "admin-the-devs.html", context)
 ##########################################################################################################################
 
 # DIT Head - Dashboard Page

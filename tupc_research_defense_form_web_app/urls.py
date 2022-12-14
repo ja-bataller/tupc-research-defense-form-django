@@ -79,6 +79,8 @@ urlpatterns = [
    path('tupc-admin/student/edit-course-major/<str:id>', views.adminStudentEditCourseMajor, name ="admin-student-edit-course-major"), 
    path('tupc-admin/student/delete-course-major/<str:id>', views.adminStudentDeleteCourseMajor, name ="admin-student-delete-course-major"),
 
+   path('tupc-admin/the-devs', views.adminTheDevs, name ="admin-the-devs"),
+
   
 
    # DIT Head URLS

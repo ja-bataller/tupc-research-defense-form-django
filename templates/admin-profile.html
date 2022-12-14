@@ -38,10 +38,10 @@
 
       <!-- Sidebar - Brand -->
       <li class="nav-item">
-          <a class="nav-link" href="{% url 'admin-dashboard' %}">
-              <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
-              </div>
-          </a>
+        <a class="nav-link" href="{% url 'admin-dashboard' %}">
+          <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
+          </div>
+        </a>
       </li>
 
       <!-- Divider -->
@@ -49,36 +49,36 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-          <a class="nav-link" href="{% url 'admin-dashboard' %}">
-              <i class="fa-solid fa-house"></i>
-              <span>Home</span></a>
+        <a class="nav-link" href="{% url 'admin-dashboard' %}">
+          <i class="fa-solid fa-house"></i>
+          <span>Home</span></a>
       </li>
 
       <!-- Divider -->
       <!-- <hr class="sidebar-divider"> -->
 
       <li class="nav-item">
-          <a class="nav-link" href="{% url 'admin-research-titles' %}">
-              <i class="fa-solid fa-book"></i>
-              <span>Research Titles</span></a>
+        <a class="nav-link" href="{% url 'admin-research-titles' %}">
+          <i class="fa-solid fa-book"></i>
+          <span>Research Titles</span></a>
       </li>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-              <i class="fa-solid fa-user-gear"></i>
-              <span>Account</span>
-          </a>
-          <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-              <div class="bg-white py-2 collapse-inner rounded">
-                  <h6 class="collapse-header">Faculty</h6>
-                  <a class="collapse-item" href="{% url 'admin-faculty-member-acc' %}">Faculty Member</a>
-                  <a class="collapse-item" href="{% url 'admin-advisee-limit' %}">Advisee Limit</a>
-                  <h6 class="collapse-header">Student</h6>
-                  <a class="collapse-item" href="{% url 'admin-student-account' %}">Students</a>
-                  <a class="collapse-item" href="{% url 'admin-student-course-major' %}">Course</a>
-              </div>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+          <i class="fa-solid fa-user-gear"></i>
+          <span>Account</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Faculty</h6>
+            <a class="collapse-item" href="{% url 'admin-faculty-member-acc' %}">Faculty Member</a>
+            <a class="collapse-item" href="{% url 'admin-advisee-limit' %}">Advisee Limit</a>
+            <h6 class="collapse-header">Student</h6>
+            <a class="collapse-item" href="{% url 'admin-student-account' %}">Students</a>
+            <a class="collapse-item" href="{% url 'admin-student-course-major' %}">Course</a>
           </div>
+        </div>
       </li>
 
 
@@ -93,10 +93,11 @@
       <hr class="sidebar-divider">
 
       <!-- Nav Item - The Developers -->
+      <!-- Nav Item - The Developers -->
       <li class="nav-item">
-          <a class="nav-link" href="#">
-              <i class="fa-solid fa-code"></i>
-              <span>The Devs</span></a>
+        <a class="nav-link" href="{% url 'admin-the-devs' %}">
+          <i class="fa-solid fa-code"></i>
+          <span>The Devs</span></a>
       </li>
 
       <!-- Divider -->
@@ -105,11 +106,11 @@
 
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
-          <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
       </div>
 
 
-  </ul>
+    </ul>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">

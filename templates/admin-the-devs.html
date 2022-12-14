@@ -15,6 +15,9 @@
 
     {% include 'css-main-cdn.html' %}
 
+    <link rel="stylesheet" href="{% static 'css/the-devs-card.css' %}">
+
+
 </head>
 
 <body id="page-top">
@@ -37,7 +40,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'admin-dashboard' %}">
                     <i class="fa-solid fa-house"></i>
                     <span>Home</span></a>
@@ -82,8 +85,8 @@
             <hr class="sidebar-divider">
 
             <!-- Nav Item - The Developers -->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'admin-the-devs' %}">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">
                     <i class="fa-solid fa-code"></i>
                     <span>The Devs</span></a>
             </li>
@@ -110,79 +113,66 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between">
+                        <h1 class="h3 mb-0 text-gray-800">The Devs</h1>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam reiciendis pariatur repellendus! Aut quae odit tempore vel consequuntur nulla qui dolor! Aliquam reiciendis repellat, modi nam pariatur eaque. Quasi, cumque. <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum vero optio, soluta natus provident hic commodi sapiente culpa accusantium et totam cupiditate eveniet doloremque numquam ipsa mollitia praesentium unde a.</p>
+
                     <div class="row">
-                        <div class="col-sm-12 col-md-6 mb-3">
-                            <div class="card border-left-dark shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-                                                Administrator</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome {{currently_loggedin_user_full_name}}
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fa-solid fa-face-laugh-beam fa-2x tup-colorway-secondary"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="col-sm-12">
+                            <div class="d-flex justify-content-center">
+                                <figure class="snip0078 hover red">
+                                    <img src="{% static './img/default.jpg' %}" alt="sampl45" />
+                                    <figcaption>
+                                        <h6>Bataller <br> John Anthony B.</h6>
+                                        <p style="font-size: 0.6rem;">BET-COET</p>
+                                    </figcaption>
+                                    <a href="#"></a>
+                                </figure>
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-12 mb-3">
-                            <div class="card border-left-dark shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-                                                Today</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{date_today}}
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fa-solid fa-sun fa-2x tup-colorway-secondary"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col">
+                            <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample50" />
+                                <figcaption>
+                                    <h6>Jasa <br> Mary Chris O.</h6>
+                                    <p style="font-size: 0.6rem;">BET-COET</p>
+                                </figcaption>
+                                <a href="#"></a>
+                            </figure>
                         </div>
 
-                        <div class="col-md-6 col-sm-12 mb-3">
-                            <div class="card border-left-dark shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-                                                Faculty Member</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count_all_faculty}}
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fa-solid fa-user-tie fa-2x tup-colorway-secondary"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col">
+                            <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample46" />
+                                <figcaption>
+                                    <h6>Nazaire <br> Alliah Faith S.</h6>
+                                    <p style="font-size: 0.6rem;">BET-COET</p>
+                                </figcaption>
+                                <a href="#"></a>
+                            </figure>
                         </div>
 
-                        <div class="col-md-6 col-sm-12 mb-3">
-                            <div class="card border-left-dark shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-                                                Students</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count_all_students}}
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fa-solid fa-graduation-cap fa-2x tup-colorway-secondary"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col">
+                            <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample46" />
+                                <figcaption>
+                                    <h6>Taccad <br> Kyle Nicole R.</h6>
+                                    <p style="font-size: 0.6rem;">BET-COET</p>
+                                </figcaption>
+                                <a href="#"></a>
+                            </figure>
                         </div>
 
+                        <div class="col">
+                            <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample46" />
+                                <figcaption>
+                                    <h6>Tulabot <br> Vanessa B.</h6>
+                                    <p style="font-size: 0.6rem;">BET-COET</p>
+                                </figcaption>
+                                <a href="#"></a>
+                            </figure>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
