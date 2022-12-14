@@ -26,7 +26,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'admin-dashboard' %}">
                     <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
                     </div>
@@ -46,6 +46,12 @@
             <!-- Divider -->
             <!-- <hr class="sidebar-divider"> -->
 
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin-research-titles' %}">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Research Titles</span></a>
+            </li>
+
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
@@ -56,9 +62,10 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Faculty</h6>
                         <a class="collapse-item" href="{% url 'admin-faculty-member-acc' %}">Faculty Member</a>
+                        <a class="collapse-item" href="{% url 'admin-advisee-limit' %}">Advisee Limit</a>
                         <h6 class="collapse-header">Student</h6>
-                        <a class="collapse-item" href="#">Students</a>
-                        <a class="collapse-item" href="{% url 'admin-student-course-major' %}">+ Course & Major</a>
+                        <a class="collapse-item" href="{% url 'admin-student-account' %}">Students</a>
+                        <a class="collapse-item" href="{% url 'admin-student-course-major' %}">Course</a>
                     </div>
                 </div>
             </li>
@@ -66,10 +73,10 @@
 
             <!-- Nav Item - Tables -->
             <!-- <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-                    <span>History</span></a>
-            </li> -->
+        <a class="nav-link" href="tables.html">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>History</span></a>
+    </li> -->
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -92,7 +99,6 @@
 
 
         </ul>
-        <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">

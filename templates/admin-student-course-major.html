@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin - Student Course and Major</title>
+    <title>Admin - Course</title>
 
     {% include 'css-main-cdn.html' %}
 
@@ -41,7 +41,7 @@
                           <h1 class="h3 mb-0 text-gray-800">Student - Course & Major</h1>
                         </div>
                         <div class="col-md-3 col-sm-12 mb-3">
-                          <a href="{% url 'admin-student-add-course-major' %}" type="button" class="btn btn-outline-success w-100"><i class="fa-solid fa-plus"></i> New</a>
+                          <a href="{% url 'admin-student-add-course-major' %}" type="button" class="btn btn-outline-success w-100">Create New Course</a>
                         </div>
                       </div>
 
@@ -52,7 +52,7 @@
                         </div> -->
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Course</th>
@@ -69,13 +69,13 @@
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
-                                    <tbody>
+                                    <tbody class="text-dark">
                                         {% for course in all_course_major %}
                                         <tr>                                       
                                             <td>{{course.course}}</td>
                                             <td>{{course.major}}</td>
                                             <td>{{course.course_major_abbr}}</td>
-                                            <td class="text-center"> <a class="btn btn-outline-info" type="button" href="{% url 'admin-student-edit-course-major' course.id %}"> <i class="fa-solid fa-pen-to-square"></i></a></td>
+                                            <td class="text-center"> <a class="btn btn-outline-primary" type="button" href="{% url 'admin-student-edit-course-major' course.id %}"> <i class="fa-solid fa-pen-to-square"></i></a></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

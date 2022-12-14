@@ -152,7 +152,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "unofficial.tupc.uitc@gmail.com"
-EMAIL_HOST_PASSWORD = "wljovkppayojwlvl"
+EMAIL_HOST_PASSWORD = "pyuhbqjiwogsvdtp"
 EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = False
 

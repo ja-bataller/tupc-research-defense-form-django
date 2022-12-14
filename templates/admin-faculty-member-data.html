@@ -32,23 +32,23 @@
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
               {% if member_department == "DIT Head" %}
-              <h1 class="h3 mb-0 text-gray-800"  style="display: inline;">Department Head Profile</h1>
+              <h1 class="h3 mb-0 text-gray-800"  style="display: inline;"><i class="fa-solid fa-user"></i> Department Head Profile</h1>
               {% endif %}
 
               {% if member_department == "Faculty Member" %}
-              <h1 class="h3 mb-0 text-gray-800">Faculty Member Profile</h1>
+              <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-user"></i> Faculty Member Profile</h1>
               {% endif %}
               
               {% if member_department == "Academic Affairs" %}
-              <h1 class="h3 mb-0 text-gray-800">Academic Affairs Profile</h1>
+              <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-user"></i> Academic Affairs Profile</h1>
               {% endif %}
 
               {% if member_department == "Library" %}
-              <h1 class="h3 mb-0 text-gray-800">Library Profile</h1>
+              <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-user"></i> Library Profile</h1>
               {% endif %}
 
               {% if member_department == "Research & Extension" %}
-              <h1 class="h3 mb-0 text-gray-800">Research & Extension Profile</h1>
+              <h1 class="h3 mb-0 text-gray-800"<i class="fa-solid fa-user"></i> Research & Extension Profile</h1>
               {% endif %}
 
 
@@ -61,7 +61,7 @@
             <form method="POST" onsubmit="savechangesBtnSpinner()">
               {% csrf_token %}
               <!-- User Profile Start -->
-              <div class="card border-left-info shadow h-100 py-2 mb-3">
+              <div class="card border-left-dark shadow h-100 py-2 mb-3">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -149,11 +149,11 @@
 
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 id="account_settings_header" class="h3 mb-0 text-gray-800">Account Settings</h1>
+              <h1 id="account_settings_header" class="h3 mb-0 text-gray-800"><i class="fa-solid fa-gears"></i> Account Settings</h1>
             </div>
 
             <!-- User Account Settings -->
-            <div id="account_settings_form" class="card border-left-warning shadow h-100 py-2 mb-3">
+            <div id="account_settings_form" class="card border-left-danger shadow h-100 py-2 mb-3">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
@@ -181,11 +181,11 @@
                       </div>
 
                       <div class="form-group">
-                        <label>Confirm New Password</label>
+                        <label>Retype New Password</label>
                         <input type="password" class="form-control" name="confirm_new_password_input" required/>
                       </div>
 
-                      <button type="submit" class="btn btn-outline-success w-100"><i class="fa-solid fa-lock"></i> Change Password</button>
+                      <button type="submit" class="btn btn-outline-success w-100"><i class="fa-solid fa-check"></i> Save Changes</button>
                     </form>
 
                     <!-- Account Settings Form -->

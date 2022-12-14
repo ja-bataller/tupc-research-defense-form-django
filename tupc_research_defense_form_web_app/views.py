@@ -1408,12 +1408,11 @@ def studentPanelInvitationBet3Create(request):
                 "Panel Invitation for Topic Defense",
                 "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Topic Defense. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
                 get_student_leader_data.email,
-               ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                 fail_silently=False,
-
             )
-        except:
 
+        except:
             # Check if the entered Defense Scheduled is valid
             if int(defense_schedule_input) not in defense_date_list:
 
@@ -1446,7 +1445,7 @@ def studentPanelInvitationBet3Create(request):
                 get_student_leader_data.research_title_defense_date = save_defense_schedule.date
                 get_student_leader_data.research_title_defense_start_time = save_defense_schedule.start_time
                 get_student_leader_data.research_title_defense_end_time = save_defense_schedule.end_time
-                get_student_leader_data.save()
+                get_student_leader_dakta.save()
                 print("Student Leader Data Updated")
 
                 send_panel_invitation = TitlePanelInvitation(
@@ -1470,7 +1469,14 @@ def studentPanelInvitationBet3Create(request):
                 )
                 send_panel_invitation.save()
                 print("Panel Invitation Sent")
-
+                # Send g-mail notifications
+                send_mail(
+                    "Panel Invitation for Topic Defense",
+                    "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Topic Defense. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+                    get_student_leader_data.email,
+                    ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                    fail_silently=False,
+                )
         context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "dept_head_name": dept_head_name, "panel_members": panel_members, "defense_dates": defense_dates, "response": "sweet panel invitation sent"}
 
         return render(request, "student-panel-invitation-bet-3-create.html", context)
@@ -6832,6 +6838,27 @@ def adminProfile(request):
     return render(request, "admin-profile.html", context)
 
 
+# Admin
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_administrator, login_url="index")
+def adminStudentAccount(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+    }
+
+    return render(request, "admin-student-account.html", context)
+
 # Admin - Student Course and Major Page
 @login_required(login_url="index")
 @user_passes_test(lambda u: u.is_administrator, login_url="index")
@@ -7017,6 +7044,28 @@ def adminStudentDeleteCourseMajor(request, id):
         context = {"response": "sweet course deleted"}
 
         return render(request, "admin-student-course-major.html", context)
+
+
+# Admin
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_administrator, login_url="index")
+def adminResearchTitles(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+    }
+
+    return render(request, "admin-research-titles.html", context)
 
 
 # Admin - Department Head Account Page
@@ -8115,6 +8164,26 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
             return render(request, "admin-faculty-member-account.html", context)
 
+# Admin
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_administrator, login_url="index")
+def adminAdviseeLimit(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+    }
+
+    return render(request, "admin-advisee-limit.html", context)
 
 ##########################################################################################################################
 

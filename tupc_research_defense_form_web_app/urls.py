@@ -63,16 +63,23 @@ urlpatterns = [
    path('tupc-admin/profile', views.adminProfile, name ="admin-profile"), 
    path('tupc-admin/dashboard', views.adminDashboard, name ="admin-dashboard"),
 
-   path('tupc-admin/faculty-member/create', views.adminFacultyMemberCreateAcc, name ="admin-faculty-member-create"), 
+   path('tupc-admin/research-titles', views.adminResearchTitles, name ="admin-research-titles"),  
+
    path('tupc-admin/faculty-member/account', views.adminFacultyMemberAcc, name ="admin-faculty-member-acc"),
+   path('tupc-admin/faculty-member/create', views.adminFacultyMemberCreateAcc, name ="admin-faculty-member-create"), 
    path('tupc-admin/faculty-member/data/<str:id>', views.adminFacultyMemberData, name ="admin-faculty-member-data"),
    path('tupc-admin/faculty-member/change-password/<str:id>', views.adminFacultyMemberChangePassword, name ="admin-faculty-member-change-password"),
    path('tupc-admin/faculty-member/change-user-account/<str:id>', views.adminFacultyMemberChangeUserAccount, name ="admin-faculty-member-change-user-account"),
 
+   path('tupc-admin/advisee-limit', views.adminAdviseeLimit, name ="admin-advisee-limit"),  
+
+   path('tupc-admin/student/account', views.adminStudentAccount, name ="admin-student-account"),  
    path('tupc-admin/student/course-major/', views.adminStudentCourseMajor, name ="admin-student-course-major"),  
    path('tupc-admin/student/add-course-major/', views.adminStudentAddCourseMajor, name ="admin-student-add-course-major"),
    path('tupc-admin/student/edit-course-major/<str:id>', views.adminStudentEditCourseMajor, name ="admin-student-edit-course-major"), 
    path('tupc-admin/student/delete-course-major/<str:id>', views.adminStudentDeleteCourseMajor, name ="admin-student-delete-course-major"),
+
+  
 
    # DIT Head URLS
    path('dit-head/home', views.ditHeadDashboard, name ="dit-head-dashboard"),
