@@ -10,9 +10,11 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>Subject Teacher - Dashboard</title>
+  <title>Subject Teacher - The Devs</title>
 
   {% include 'css-main-cdn.html' %}
+  <link rel="stylesheet" href="{% static 'css/the-devs-card.css' %}">
+
 </head>
 
 <body id="page-top">
@@ -21,7 +23,7 @@
 
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
           <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
           </div>
@@ -32,7 +34,7 @@
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
@@ -98,7 +100,7 @@
       <hr class="sidebar-divider" />
 
       <!-- Nav Item - The Developers -->
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="{% url 'subject-teacher-the-devs' %}">
           <i class="fa-solid fa-code"></i>
           <span>The Devs</span></a>
@@ -124,142 +126,68 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <div class="row">
-            <div class="col-md-8 col-sm-12 mb-3">
-              <div class="card border-left-dark shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-                        Subject Teacher</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome
-                        {{request.user.honorific}} {{request.user.last_name}}
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fa-solid fa-face-laugh-beam fa-2x tup-colorway-secondary"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-4 col-sm-12 mb-3">
-              <div class="card border-left-dark shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-                        Today</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{date_today}}
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fa-solid fa-sun fa-2x tup-colorway-secondary"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between">
+            <h1 class="h3 mb-0 text-gray-800">The Devs</h1>
           </div>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam reiciendis pariatur repellendus! Aut quae odit tempore vel consequuntur nulla qui dolor! Aliquam reiciendis repellat, modi nam pariatur eaque. Quasi, cumque. <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum vero optio, soluta natus provident hic commodi sapiente culpa accusantium et totam cupiditate eveniet doloremque numquam ipsa mollitia praesentium unde a.</p>
 
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
-            {% if not today_defense_schedule %}
-            <div class="card-header">
-              <h6 class="m-0 mt-2 text-secondary">No Defense Schedule for Today</span></h6>
-            </div>
-            {% else %}
-            <div class="card-header">
-              <h6 class="m-0 mt-2 text-secondary">Defense Schedule for Today</span></h6>
-            </div>
-            {% endif %}
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>Ref No.</th>
-                      <th>Student Leader ID</th>
-                      <th>Student Leader Name</th>
-                      <th>Course</th>
-                      <th>Defense</th>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Ref No.</th>
-                      <th>Student Leader ID</th>
-                      <th>Student Leader Name</th>
-                      <th>Course</th>
-                      <th>Defense</th>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    {% for today_defense in today_defense_schedule %}
-                    <tr>
-                      <td>{{today_defense.id}}</td>
-                      <td>{{today_defense.student_leader_username}}</td>
-                      <td>{{today_defense.student_leader_name}}</td>
-                      <td>{{today_defense.course}}</td>
-                      <td>{{today_defense.form}}</td>
-                      <td>{{today_defense.date}}</td>
-
-                      <td>{{today_defense.start_time}} to {{today_defense.end_time}}</td>
-
-
-                      {% if today_defense.status == "Reserved" %}
-                      <td class="text-secondary">Pending</td>
-                      {% endif %}
-
-                      {% if today_defense.form == "Research Title Defense" %}
-                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-title-defense-day' today_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
-                      {% endif %}
-
-                      {% if today_defense.form == "Research Proposal Defense" and today_defense.student_leader_username %}
-                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-proposal-defense-day' today_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
-                      {% endif %}
-
-                      {% if today_defense.form == "Research Final Defense" and today_defense.student_leader_username %}
-                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet5-final-defense-day' today_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
-                      {% endif %}
-                    </tr>
-                    {% endfor %}
-
-                    {% for completed_today_defense in completed_today_defense_schedule %}
-                    <tr>
-                      <td>{{completed_today_defense.id}}</td>
-                      <td>{{completed_today_defense.student_leader_username}}</td>
-                      <td>{{completed_today_defense.student_leader_name}}</td>
-                      <td>{{completed_today_defense.course}}</td>
-                      <td>{{completed_today_defense.form}}</td>
-                      <td>{{completed_today_defense.date}}</td>
-
-                      <td>{{completed_today_defense.start_time}} to {{completed_today_defense.end_time}}</td>
-
-                      <td class="text-success">{{completed_today_defense.status}}</td>
-                      {% if completed_today_defense.form == "Research Title Defense" %}
-                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-title-defense-day' completed_today_defense.student_leader_username%}"><i class="fa-solid fa-eye"></i></a></td>
-                      {% endif %}
-                      {% if completed_today_defense.form == "Research Proposal Defense" %}
-                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-proposal-defense-day' completed_today_defense.student_leader_username%}"><i class="fa-solid fa-eye"></i></a></td>
-                      {% endif %}
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="d-flex justify-content-center">
+                <figure class="snip0078 hover red">
+                  <img src="{% static './img/default.jpg' %}" alt="sampl45" />
+                  <figcaption>
+                    <h6>Bataller <br> John Anthony B.</h6>
+                    <p style="font-size: 0.6rem;">BET-COET</p>
+                  </figcaption>
+                  <a href="#"></a>
+                </figure>
               </div>
+            </div>
+
+            <div class="col">
+              <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample50" />
+                <figcaption>
+                  <h6>Jasa <br> Mary Chris O.</h6>
+                  <p style="font-size: 0.6rem;">BET-COET</p>
+                </figcaption>
+                <a href="#"></a>
+              </figure>
+            </div>
+
+            <div class="col">
+              <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample46" />
+                <figcaption>
+                  <h6>Nazaire <br> Alliah Faith S.</h6>
+                  <p style="font-size: 0.6rem;">BET-COET</p>
+                </figcaption>
+                <a href="#"></a>
+              </figure>
+            </div>
+
+            <div class="col">
+              <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample46" />
+                <figcaption>
+                  <h6>Taccad <br> Kyle Nicole R.</h6>
+                  <p style="font-size: 0.6rem;">BET-COET</p>
+                </figcaption>
+                <a href="#"></a>
+              </figure>
+            </div>
+
+            <div class="col">
+              <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample46" />
+                <figcaption>
+                  <h6>Tulabot <br> Vanessa B.</h6>
+                  <p style="font-size: 0.6rem;">BET-COET</p>
+                </figcaption>
+                <a href="#"></a>
+              </figure>
             </div>
           </div>
         </div>
+        <!-- /.container-fluid -->
 
         <!-- /.container-fluid -->
       </div>

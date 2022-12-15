@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>DIT Head - Panel Invitation BET-3</title>
+    <title>DIT Head - Final Panel Invitation Logs</title>
 
     {% include 'css-main-cdn.html' %}
   </head>
@@ -29,7 +29,7 @@
           <div class="container-fluid">
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-dark">BET-3 - Topic Defense - Panel Invitation - Logs</h1>
+              <h1 class="h3 mb-0 text-dark">Final Defense - Panel Invitation - Logs</h1>
             </div>
 
             <!-- DataTales Example -->
@@ -76,8 +76,8 @@
                         <td>{{panel_invitation.panel_username}}</td>
                         <td>{{panel_invitation.panel_full_name}}</td>
                         <td>
-                          {{panel_invitation.research_title_defense_date}} - {{panel_invitation.research_title_defense_start_time}} to
-                          {{panel_invitation.research_title_defense_end_time}}
+                          {{panel_invitation.research_final_defense_date}} - {{panel_invitation.research_final_defense_start_time}} to
+                          {{panel_invitation.research_final_defense_end_time}}
                         </td>
                         <td class="text-success">{{panel_invitation.dit_head_response}}</td>
                         {% if panel_invitation.dit_head_signature == True %}
@@ -95,8 +95,8 @@
                         <td>{{panel_invitation.panel_username}}</td>
                         <td>{{panel_invitation.panel_full_name}}</td>
                         <td>
-                          {{panel_invitation.research_title_defense_date}} - {{panel_invitation.research_title_defense_start_time}} to
-                          {{panel_invitation.research_title_defense_end_time}}
+                          {{panel_invitation.research_final_defense_date}} - {{panel_invitation.research_final_defense_start_time}} to
+                          {{panel_invitation.research_final_defense_end_time}}
                         </td>
                         <td class="text-danger">{{panel_invitation.dit_head_response}}</td>
                         {% if panel_invitation.dit_head_signature == True %}

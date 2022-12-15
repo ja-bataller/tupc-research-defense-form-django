@@ -59,6 +59,8 @@ urlpatterns = [
    path('student/bet3/topic-defense/panel-invitation/logs', views.studentBET3PanelInvitationLogs, name ="student-bet3-panel-invitation-logs"),
    path('student/bet3/proposal-defense/panel-invitation/logs', views.studentBET3ProposalDefensePanelInvitationLogs, name ="student-bet3-proposal-defense-panel-invitation-logs"),
 
+   path('student/the-devs', views.studentTheDevs, name ="student-the-devs"),
+
    # Administrator URLS
    path('tupc-admin/profile', views.adminProfile, name ="admin-profile"), 
    path('tupc-admin/dashboard', views.adminDashboard, name ="admin-dashboard"),
@@ -81,8 +83,6 @@ urlpatterns = [
 
    path('tupc-admin/the-devs', views.adminTheDevs, name ="admin-the-devs"),
 
-  
-
    # DIT Head URLS
    path('dit-head/home', views.ditHeadDashboard, name ="dit-head-dashboard"),
    path('dit-head/user-profile', views.ditHeadProfile, name ="dit-head-profile"),
@@ -91,6 +91,8 @@ urlpatterns = [
    path('dit-head/user-profile/create/e-signature', views.ditHeadCreateESignature, name ="dit-head-create-esignature"),
    path('dit-head/user-profile/upload/e-signature', views.ditHeadUploadESignature, name ="dit-head-upload-esignature"),
    path('dit-head/user-profile/delete/e-signature', views.ditHeadDeleteESignature, name ="dit-head-delete-esignature"),
+
+   path('dit-head/research-titles', views.ditHeadResearchTitles, name ="dit-head-research-titles"),  
 
    path('dit-head/bet3/topic-defense/panel-invitation', views.ditHeadPanelInvitationBet3, name ="dit-head-panel-invitation-bet-3"),
    path('dit-head/bet3/topic-defense/panel-invitation/accept/sign/<str:id>', views.ditHeadBET3TopicPanelInvitationAcceptSignature, name ="dit-head-bet3-topic-panel-invitation-accept-sign"),
@@ -111,15 +113,25 @@ urlpatterns = [
    path('dit-head/bet3/adviser-conforme/decline/sign/<str:id>', views.ditHeadBET3AdviserConformeDeclineSignature, name ="dit-head-bet3-adviser-conforme-decline-sign"),
 
    path('dit-head/bet3/adviser-conforme/accept/<str:id>', views.ditHeadBET3AdviserConformeAccept, name ="dit-head-bet3-adviser-conforme-accept"),
-   path('dit-head/bet3/adviser-conforme/decline/<str:id>', views.ditHeadBET3AdviserConformeDecline, name ="dit-head-bet3-adviser-conforme-decline"),  
+   path('dit-head/bet3/adviser-conforme/decline/<str:id>', views.ditHeadBET3AdviserConformeDecline, name ="dit-head-bet3-adviser-conforme-decline"),
+
+   path('dit-head/panel-conforme', views.ditHeadPanelConformeDashboard, name ="dit-head-panel-conforme"),
 
    path('dit-head/bet5/final-defense/panel-invitation', views.ditHeadBET5FinalDefensePanelInvitationDashboard, name ="dit-head-bet5-final-defense-panel-invitation-dashboard"),
    path('dit-head/bet5/final-defense/panel-invitation/accept/sign/<str:id>', views.ditHeadBET5FinalPanelInvitationAcceptSignature, name ="dit-head-bet5-final-panel-invitation-accept-sign"),
    path('dit-head/bet5/final-defense/panel-invitation/decline/sign/<str:id>', views.ditHeadBET5FinalPanelInvitationDeclineSignature, name ="dit-head-bet5-final-panel-invitation-decline-sign"),
    path('dit-head/bet5/final-defense/panel-invitation/accept/<str:id>', views.ditHeadBET5FinalPanelInvitationAccept, name ="dit-head-bet5-final-panel-invitation-accept"),
    path('dit-head/bet5/final-defense/panel-invitation/decline/<str:id>', views.ditHeadBET5FinalPanelInvitationDecline, name ="dit-head-bet5-final-panel-invitation-decline"),
+   #path('dit-head/bet5/acknowledgement-receipt', views.ditHeadAcknowledgementReceipt, name ="dit-head-acknowledgement-receipt"),
 
    path('dit-head/bet3/topic-defense/panel-invitation/logs', views.ditHeadBET3PanelInvitationLogs, name ="dit-head-bet3-panel-invitation-logs"),
+   path('dit-head/bet3/adviser-conforme/logs', views.ditHeadBET3AdviserConformeLogs, name ="dit-head-bet3-adviser-conforme-logs"),
+   path('dit-head/bet3/proposal-defense/panel-invitation/logs', views.ditHeadBET3ProposalPanelInvitationLogs, name ="dit-head-bet3-proposal-panel-invitation-logs"),
+   path('dit-head/bet3/panel-conforme/logs', views.ditHeadPanelConformeLogs, name ="dit-head-panel-conforme-logs"),
+   path('dit-head/bet5/final-defense/panel-invitation/logs', views.ditHeadBET5FinalPanelInvitationLogs, name ="dit-head-bet5-final-panel-invitation-logs"),
+   path('dit-head/bet5/final-defense/acknowledgement-receipt/logs', views.ditHeadBET5AcknowledgementReceiptLogs, name ="dit-head-acknowledgement-receipt-logs"),
+
+   path('dit-head/the-devs', views.ditHeadTheDevs, name ="dit-head-the-devs"),
 
    # Panel URLS
    path('panel/home', views.panelDashboard, name ="panel-dashboard"),
@@ -196,6 +208,8 @@ urlpatterns = [
    path('subject-teacher/dashboard', views.subjectTeacherDashboard, name ="subject-teacher-dashboard"),
    path('subject-teacher/profile', views.subjectTeacherProfile, name ="subject-teacher-profile"),
 
+   path('subject-teacher/research-titles', views.subjectTeacherResearchTitles, name ="subject-teacher-research-titles"),
+
    path('subject-teacher/create/e-signature', views.subjectTeacherCreateESignature, name ="subject-teacher-create-esignature"),
    path('subject-teacher/upload/e-signature', views.subjectTeacherUploadESignature, name ="subject-teacher-upload-esignature"),
    path('subject-teacher/delete/e-signature', views.subjectTeacherDeleteESignature, name ="subject-teacher-delete-esignature"),
@@ -239,15 +253,21 @@ urlpatterns = [
    path('subject-teacher/proposal-defense/save-schedule', views.subjectTeacherSaveResearchProposalDefenseSchedule, name ="subject-teacher-save-research-proposal-defense-schedule"),
    path('subject-teacher/proposal-defense/delete-schedule/<str:id>', views.subjectTeacherDeleteResearchProposalDefenseSchedule, name ="subject-teacher-delete-research-proposal-defense-schedule"),
 
-   #path('subject-teacher/final-defense/my-schedule', views.subjectTeacherMyFinalDefenseDashboard, name ="subject-teacher-final-defense-schedule-dashboard"),
-   #path('subject-teacher/final-defense/schedule/students', views.subjectTeacherStudentsFinalDefenseDashboard, name ="subject-teacher-students-final-defense-schedule-dashboard"),
+   path('subject-teacher/final-defense/my-schedule', views.subjectTeacherMyFinalDefenseDashboard, name ="subject-teacher-final-defense-schedule-dashboard"),
+   path('subject-teacher/final-defense/schedule/students', views.subjectTeacherStudentsFinalDefenseDashboard, name ="subject-teacher-students-final-defense-schedule-dashboard"),
    path('subject-teacher/final-defense/set-schedule', views.subjectTeacherSetResearchFinalDefenseSchedule, name ="subject-teacher-set-research-final-defense-schedule"),
    path('subject-teacher/final-defense/save-schedule', views.subjectTeacherSaveResearchFinalDefenseSchedule, name ="subject-teacher-save-research-final-defense-schedule"),
    path('subject-teacher/final-defense/delete-schedule/<str:id>', views.subjectTeacherDeleteResearchFinalDefenseSchedule, name ="subject-teacher-delete-research-final-defense-schedule"),
 
    path('subject-teacher/title-defense/logs', views.subjectTeacherBET3TitleDefenseLogs, name ="subject-teacher-bet3-title-defense-logs"),
+   path('subject-teacher/proposal-defense/logs', views.subjectTeacherBET3ProposalDefenseLogs, name ="subject-teacher-bet3-proposal-defense-logs"),
+   path('subject-teacher/final-defense/logs', views.subjectTeacherBET5FinalDefenseLogs, name ="subject-teacher-bet5-final-defense-logs"),
+
    path('subject-teacher/title-defense/logs/completed/<str:id>', views.subjectTeacherBET3TitleDefenseLogCompleted, name ="subject-teacher-bet3-title-defense-logs-completed"),
    path('subject-teacher/title-defense/logs/redefense/<str:id>', views.subjectTeacherBET3TitleDefenseLogRedefense, name ="subject-teacher-bet3-title-defense-logs-redefense"),
+   
+   path('subject-teacher/the-devs', views.subjectTeacherTheDevs, name ="subject-teacher-the-devs"),
+   
    # Advisers URLS
    path('adviser/dashboard', views.adviserDashboard, name ="adviser-dashboard"),
    path('adviser/profile', views.adviserProfile, name ="adviser-profile"),

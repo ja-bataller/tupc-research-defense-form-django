@@ -10,7 +10,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>DIT Head - Account Settings</title>
+  <title>DIT Head - Research Titles</title>
 
   {% include 'css-main-cdn.html' %}
 </head>
@@ -35,15 +35,13 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
           <i class="fa-solid fa-house"></i>
-          <span>Home</span></a
-        >
+          <span>Home</span></a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="{% url 'dit-head-research-titles' %}">
           <i class="fa-solid fa-book"></i>
-          <span>Research Titles</span></a
-        >
+          <span>Research Titles</span></a>
       </li>
 
       <!-- Divider -->
@@ -106,8 +104,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'dit-head-the-devs' %}">
           <i class="fa-solid fa-code"></i>
-          <span>The Devs</span></a
-        >
+          <span>The Devs</span></a>
       </li>
 
       <!-- Divider -->
@@ -129,49 +126,56 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-
           <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-3">
-            <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-key"></i> Change Password</h1>
+          <div class="row">
+            <div class="col-lg-9 col-md-12 mb-3">
+              <h1 class="h3 mb-0 text-gray-800">Research Titles</h1>
+            </div>
           </div>
 
-          <!-- User Profile Start -->
-          <div class="card border-left-danger shadow h-100 py-2 mb-3">
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <!-- <div class="card-header py-3">
+                              <h6 class="m-0 font-weight-bold text-primary">Pending Dashboard</h6>
+                          </div> -->
             <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <form method="POST">
-                    {% csrf_token %}
-
-                    <div class="form-group">
-                      <label>Current Password:</label>
-                      <input type="password" class="form-control" name="current_password_input" required />
-                    </div>
-
-                    <div class="form-group">
-                      <label>New Password:</label>
-                      <input type="password" class="form-control" name="new_password_input" required />
-                    </div>
-
-                    <div class="form-group">
-                      <label>Retype New Password:</label>
-                      <input type="password" class="form-control" name="confirm_new_password_input" required />
-                    </div>
-
-                    <button type="submit" class="btn btn-outline-success w-100"><i class="fa-solid fa-check"></i> Save Changes</button>
-                  </form>
-                </div>
+              <div class="table-responsive">
+                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Course</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Title</th>
+                      <th>Course</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </tfoot>
+                  <tbody class="text-dark">
+                    <!-- <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr> -->
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
-          <!-- User Profile End -->
         </div>
         <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      {% include 'footer.html'%}
+      {% include 'footer.html' %}
       <!-- End of Footer -->
     </div>
     <!-- End of Content Wrapper -->
@@ -183,37 +187,7 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  {% include 'logout-modal.html' %}
-  {% include 'script-cdn.html' %}
-
-  {% if response == 'current password is incorrect' %}
-  <script>
-    iziToast.error({
-      title: "Invalid.",
-      message: "The Password you entered is incorrect.",
-      position: "topCenter",
-      timeout: 5000,
-    });
-  </script>
-  {% endif %} {% if response == 'new password and confirm new password doesnt match' %}
-  <script>
-    iziToast.error({
-      title: "Invalid.",
-      message: "The New Password and Confirm Password you entered doesn't match.",
-      position: "topCenter",
-      timeout: 5000,
-    });
-  </script>
-  {% endif %} {% if response == 'current password and new password is same' %}
-  <script>
-    iziToast.error({
-      title: "Invalid.",
-      message: "The Current Password and New Password you entered is the same.",
-      position: "topCenter",
-      timeout: 5000,
-    });
-  </script>
-  {% endif %}
+  {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
 </body>
 
 </html>

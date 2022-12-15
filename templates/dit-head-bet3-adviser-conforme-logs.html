@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>DIT Head - Panel Invitation BET-3</title>
+    <title>DIT Head - Adviser Conforme Logs</title>
 
     {% include 'css-main-cdn.html' %}
   </head>
@@ -29,7 +29,7 @@
           <div class="container-fluid">
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-dark">BET-3 - Topic Defense - Panel Invitation - Logs</h1>
+              <h1 class="h3 mb-0 text-dark">BET-3 - Adviser Conforme - Logs</h1>
             </div>
 
             <!-- DataTales Example -->
@@ -46,9 +46,8 @@
                         <th>Student ID No.</th>
                         <th>Student Name</th>
                         <th>Course</th>
-                        <th>Panel ID No.</th>
-                        <th>Panel Name</th>
-                        <th>Date & Time of Defense</th>
+                        <th>Adviser ID No.</th>
+                        <th>Adviser Name</th>
                         <th>Response</th>
                         <th>Signature</th>
                       </tr>
@@ -59,26 +58,21 @@
                         <th>Student ID No.</th>
                         <th>Student Name</th>
                         <th>Course</th>
-                        <th>Panel ID No.</th>
-                        <th>Panel Name</th>
-                        <th>Date & Time of Defense</th>
+                        <th>Adviser ID No.</th>
+                        <th>Adviser Name</th>
                         <th>Response</th>
                         <th>Signature</th>
                       </tr>
                     </tfoot>
                     <tbody class="text-dark">
-                      {% for panel_invitation in panel_invitations %} {% if panel_invitation.dit_head_response == "accepted" %}
+                      {% for panel_invitation in panel_invitations %} {% if panel_invitation.dit_head_response == "Accepted" %}
                       <tr>
                         <td hidden>{{panel_invitation.id}}</td>
                         <td>{{panel_invitation.student_leader_username}}</td>
                         <td>{{panel_invitation.student_leader_full_name}}</td>
-                        <td>{{panel_invitation.course_major_abbr}}</td>
-                        <td>{{panel_invitation.panel_username}}</td>
-                        <td>{{panel_invitation.panel_full_name}}</td>
-                        <td>
-                          {{panel_invitation.research_title_defense_date}} - {{panel_invitation.research_title_defense_start_time}} to
-                          {{panel_invitation.research_title_defense_end_time}}
-                        </td>
+                        <td>{{panel_invitation.course}}</td>
+                        <td>{{panel_invitation.adviser_username}}</td>
+                        <td>{{panel_invitation.adviser_name}}</td>
                         <td class="text-success">{{panel_invitation.dit_head_response}}</td>
                         {% if panel_invitation.dit_head_signature == True %}
                         <td>E-Signature</td>

@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Subject Teacher - Students Proposal Defense Schedule</title>
+    <title>Subject Teacher - My Final Defense Schedule</title>
 
     {% include 'css-main-cdn.html' %}
   </head>
@@ -18,7 +18,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
         
-      {% include 'subject-teacher-sidebar-proposal-defense.html' %}
+      {% include 'subject-teacher-sidebar-final-defense.html' %}
 
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
@@ -31,7 +31,7 @@
           <div class="container-fluid">
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-gray-800">Students Proposal Defense Schedule</h1>
+              <h1 class="h3 mb-0 text-gray-800">My Final Defense Schedule</h1>
             </div>
 
             <form  id="course_available_sched" method="POST">
@@ -57,7 +57,7 @@
                 </div> -->
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <table class="table table-bordered" id="schedule" width="100%" cellspacing="0">
                     <thead>
                       <tr>
                         <th>Ref No.</th>
@@ -66,7 +66,6 @@
                         <th>Course</th>
                         <th>Date</th>
                         <th>Time</th>
-                        <th>Status</th>
                       </tr>
                     </thead>
                     <tfoot>
@@ -77,7 +76,6 @@
                         <th>Course</th>
                         <th>Date</th>
                         <th>Time</th>
-                        <th>Status</th>
                       </tr>
                     </tfoot>
                     <tbody>
@@ -90,25 +88,8 @@
                         <td>{{student_scheduled.course}}</td>
                         <td>{{student_scheduled.date}}</td>
                         <td>{{student_scheduled.start_time}} to {{student_scheduled.end_time}}</td>
-                        <td class="text-success">Scheduled</td>
                       </tr>
                       {% endif %}
-                      {% endfor %}
-
-                      {% for student_unscheduled in student_defense_unscheduled %}
-                      <tr>
-                        <td>None</td>
-                        <td>{{student_unscheduled.username}}</td>
-                        {% if student_unscheduled.middle_name == "" %}
-                        <td>{{student_unscheduled.first_name}} {{student_unscheduled.last_name}} {{student_unscheduled.suffix}}</td>
-                        {% else %}
-                        <td>{{student_unscheduled.first_name}} {{student_unscheduled.middle_name}} {{student_unscheduled.last_name}} {{student_unscheduled.suffix}}</td>
-                        {% endif %}
-                        <td>{{student_unscheduled.course_major_abbr}} </td>
-                        <td>None</td>
-                        <td>None</td>
-                        <td class="text-danger">No Schedule</td>
-                      </tr>
                       {% endfor %}
                     </tbody>
                   </table>
@@ -142,11 +123,21 @@
       course_list.addEventListener("change", (event) => {
         if (course_list.value == "---") {
           console.log("1");
-          window.location.replace("{% url 'subject-teacher-set-research-title-defense-schedule' %}");
+          window.location.replace("{% url 'subject-teacher-set-research-proposal-defense-schedule' %}");
         } else {
           document.getElementById("course_available_sched").submit();
         }
       });
     </script>
+
+<script>
+  $(document).ready(function () {
+    $('#schedule').DataTable({
+      order: [
+        [4, 'asc']
+      ],
+    });
+  });
+</script>
   </body>
 </html>

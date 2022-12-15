@@ -39,14 +39,14 @@
                 {% if student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed" %}
                   {% if previous_panel %}
                   <div class="col-lg-3 col-md-12 mb-3">
-                    <a href="{% url 'student-bet3-proposal-defense-panel-invitation-create-panel' %}" type="button" class="btn btn-outline-success w-100"><i class="fa-solid fa-file-signature"></i> Create Form</a>
+                    <a href="{% url 'student-bet3-proposal-defense-panel-invitation-create-panel' %}" type="button" class="btn btn-outline-success w-100">Create New Form</a>
                   </div>
                   {% endif %}
                 {% endif %}
               {% else %}
                 {% if student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed" %}
                 <div class="col-lg-3 col-md-12 mb-3">
-                  <a href="{% url 'student-bet3-proposal-defense-panel-invitation-create' %}" type="button" class="btn btn-outline-success w-100"><i class="fa-solid fa-file-signature"></i> Create Form</a>
+                  <a href="{% url 'student-bet3-proposal-defense-panel-invitation-create' %}" type="button" class="btn btn-outline-success w-100">Create New Form</a>
                 </div>
                 {% endif %}
               {% endif %}

@@ -23,6 +23,10 @@ import base64
 from django.core.files.storage import FileSystemStorage
 import cv2
 
+# import pythoncom
+# import win32com.client 
+# xl=win32com.client.Dispatch("Excel.Application",pythoncom.CoInitialize())
+
 ##########################################################################################################################
 
 today = date.today()
@@ -1445,7 +1449,7 @@ def studentPanelInvitationBet3Create(request):
                 get_student_leader_data.research_title_defense_date = save_defense_schedule.date
                 get_student_leader_data.research_title_defense_start_time = save_defense_schedule.start_time
                 get_student_leader_data.research_title_defense_end_time = save_defense_schedule.end_time
-                get_student_leader_dakta.save()
+                get_student_leader_data.save()
                 print("Student Leader Data Updated")
 
                 send_panel_invitation = TitlePanelInvitation(
@@ -2092,7 +2096,7 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
     doc.paragraphs[2].runs[1].text = suggested_title
     print(doc.paragraphs[2].runs[1].text)  # SUGGESTEDTITLE
 
-    panel_chair_signature_table = doc.tables[2]
+   
 
     doc.paragraphs[8].runs[0].text = panel_chairman
     print(doc.paragraphs[8].runs[0].text)  # PANELCHAIRMAN
@@ -2108,6 +2112,7 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
     # panel456.cell(0, 2).paragraphs[0].runs[0].text = ""
     # panel456.cell(0, 4).paragraphs[0].runs[0].text = ""
 
+    panel_chair_signature_table = doc.tables[2]
 
     if get_panel_chairman.panel_signature_attach == True:
         # Check if Panel E-Sign Exist
@@ -2141,7 +2146,8 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
                 panel_signature = panel1_sign_box.cell(0, 0).add_paragraph()
                 panel_signature_run = panel_signature.add_run()
                 panel_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_members[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
-                panel_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_members[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                if get_panel_chairman.panel_signature_attach == False:
+                    panel_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_members[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
             else:
                 context = {
                     "response": "sweet faculty member no signature",
@@ -2166,7 +2172,6 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
                 panel2_sign_box.cell(0, 0).text = ''
                 panel_signature = panel2_sign_box.cell(0, 0).add_paragraph()
                 panel_signature_run = panel_signature.add_run()
-                panel_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_members[1].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
                 panel_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_members[1].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
             else:
                 context = {
@@ -4390,20 +4395,33 @@ def studentBET3ResearchProposalDefenseFormDownload(request):
     examinee_table.cell(0, 2).text = get_proposal_defense_form[0].student_leader_full_name
 
     # Student 2
-    if get_group_members[0]:
-        examinee_table.cell(1, 2).text = get_group_members[0].student_member_full_name
+    try:
+        if get_group_members[0]:
+            examinee_table.cell(1, 2).text = get_group_members[0].student_member_full_name
+    except:
+        examinee_table.cell(1, 2).text = ""
+
 
     # Student 3
-    if get_group_members[1]:
-        examinee_table.cell(2, 2).text = get_group_members[1].student_member_full_name
+    try:
+        if get_group_members[1]:
+            examinee_table.cell(2, 2).text = get_group_members[1].student_member_full_name
+    except:
+        examinee_table.cell(2, 2).text = ""
 
     # Student 4
-    if get_group_members[2]:
-        examinee_table.cell(3, 2).text = get_group_members[2].student_member_full_name
+    try:
+        if get_group_members[2]:
+            examinee_table.cell(3, 2).text = get_group_members[2].student_member_full_name
+    except:
+        examinee_table.cell(3, 2).text = ""
 
     # Student 5
-    if get_group_members[3]:
-        examinee_table.cell(4, 2).text = get_group_members[3].student_member_full_name
+    try:
+        if get_group_members[3]:
+            examinee_table.cell(4, 2).text = get_group_members[3].student_member_full_name
+    except:
+         examinee_table.cell(4, 2).text = ""
     
     # Degree
     examinee_table.cell(6, 2).text = get_student_leader_data.course_major_abbr
@@ -6742,6 +6760,26 @@ def studentBET3ProposalDefensePanelInvitationLogs(request):
 
     return render(request, "student-bet3-proposal-defense-panel-invitation-logs.html", context)
 
+# Student
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentTheDevs(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+    }
+
+    return render(request, "student-the-devs.html", context)
 
 ##########################################################################################################################
 
@@ -8205,6 +8243,8 @@ def adminTheDevs(request):
     }
 
     return render(request, "admin-the-devs.html", context)
+
+
 ##########################################################################################################################
 
 # DIT Head - Dashboard Page
@@ -8494,6 +8534,28 @@ def ditHeadAccountSettings(request):
             return render(request, "dit-head-account-settings.html", context)
 
     return render(request, "dit-head-account-settings.html", context)
+
+
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadResearchTitles(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # BET-3 Panel Invitation Logs
+    # get_panel_invitation = FinalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+    # get_panel_invitation_2 = FinalPanelInvitationLog.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        # "panel_invitations": get_panel_invitation,
+        # "panel_invitations_2": get_panel_invitation_2,
+    }
+
+    return render(request, "dit-head-research-titles.html", context)
 
 
 # DIT Head - BET3 - Topic - Panel Invitation
@@ -9464,6 +9526,36 @@ def ditHeadBET3AdviserConformeDecline(request, id):
         return redirect("dit-head-bet3-adviser-conforme")
 
 
+# DIT Head - BET3 - Adviser Conforme - Dashboard
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadPanelConformeDashboard(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # Check if E-Sign Exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        esignature_exist = "True"
+        print("E-sign exist")
+
+    else:
+        esignature_exist = "False"
+        print("E-sign doesn't exist.")
+
+    # PANEL INVITATION BET-3
+    # get_panel_invitation = ProposalPanelInvitation.objects.all().filter(dit_head_response="pending")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        # "panel_invitations": get_panel_invitation,
+        "esignature_exist": esignature_exist,
+    }
+
+    return render(request, "dit-head-panel-conforme.html", context)
+
 
 # DIT Head - BET5 - Final Defense - Panel Invitation - Dashboard
 @login_required(login_url="index")
@@ -9874,6 +9966,139 @@ def ditHeadBET3PanelInvitationLogs(request):
     return render(request, "dit-head-bet3-panel-invitation-logs.html", context)
 
 
+# DIT Head - BET-3 Adviser Conforme Logs
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadBET3AdviserConformeLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # BET-3 Panel Invitation Logs
+    get_panel_invitation = AdviserConforme.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+    get_panel_invitation_2 = AdviserConformeLog.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "panel_invitations": get_panel_invitation,
+        "panel_invitations_2": get_panel_invitation_2,
+    }
+
+    return render(request, "dit-head-bet3-adviser-conforme-logs.html", context)
+
+
+# DIT Head - BET-3 Panel Invitation Logs
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadBET3ProposalPanelInvitationLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # BET-3 Panel Invitation Logs
+    get_panel_invitation = ProposalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+    get_panel_invitation_2 = ProposalPanelInvitationLog.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "panel_invitations": get_panel_invitation,
+        "panel_invitations_2": get_panel_invitation_2,
+    }
+
+    return render(request, "dit-head-bet3-proposal-panel-invitation-logs.html", context)
+
+# DIT Head
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadPanelConformeLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # BET-3 Panel Invitation Logs
+    # get_panel_invitation = ProposalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+    # get_panel_invitation_2 = ProposalPanelInvitationLog.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        # "panel_invitations": get_panel_invitation,
+        # "panel_invitations_2": get_panel_invitation_2,
+    }
+
+    return render(request, "dit-head-panel-conforme-logs.html", context)
+
+
+# DIT Head
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadBET5FinalPanelInvitationLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # BET-3 Panel Invitation Logs
+    get_panel_invitation = FinalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+    get_panel_invitation_2 = FinalPanelInvitationLog.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "panel_invitations": get_panel_invitation,
+        "panel_invitations_2": get_panel_invitation_2,
+    }
+
+    return render(request, "dit-head-bet5-final-panel-invitation-logs.html", context)
+
+# DIT Head
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadBET5AcknowledgementReceiptLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # BET-3 Panel Invitation Logs
+    # get_panel_invitation = FinalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+    # get_panel_invitation_2 = FinalPanelInvitationLog.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        # "panel_invitations": get_panel_invitation,
+        # "panel_invitations_2": get_panel_invitation_2,
+    }
+
+    return render(request, "dit-head-acknowledgement-receipt-logs.html", context)
+
+
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadTheDevs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # BET-3 Panel Invitation Logs
+    # get_panel_invitation = FinalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+    # get_panel_invitation_2 = FinalPanelInvitationLog.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        # "panel_invitations": get_panel_invitation,
+        # "panel_invitations_2": get_panel_invitation_2,
+    }
+
+    return render(request, "dit-head-the-devs.html", context)
 ##########################################################################################################################
 
 
@@ -13384,7 +13609,7 @@ def subjectTeacherTitleDefenseDay(request, id):
     get_start_voting = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username, panel_signature_response = 1, start_voting = 1)
 
     try:
-        check_accepted_title = ResearchTitle.objects.get(student_leader_username=id, status="Title Defense - Accepted")
+        check_accepted_title = ResearchTitle.objects.get(student_leader_username=id, title_defense_status="Accepted")
     except:
         check_accepted_title = None
 
@@ -17140,6 +17365,27 @@ def subjectTeacherAccountSettings(request):
     return render(request, "subject-teacher-account-settings.html", context)
 
 
+# Subject Teacher
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+def subjectTeacherResearchTitles(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+    }
+
+    return render(request, "subject-teacher-research-titles.html", context)
+
 ##### SUBJECT TEACHER - BET-3 - TOPIC DEFENSE #####
 
 # Subject Teacher - Research Title Defense Dashboard Page
@@ -17488,6 +17734,31 @@ def subjectTeacherBET3TitleDefenseLogRedefense(request, id):
     }
 
     return render(request, "subject-teacher-bet3-research-title-defense-data.html", context)
+
+
+# Subject Teacher - BET-3 Research Title Defense Logs Dashboard
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+def subjectTeacherBET3ProposalDefenseLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    get_completed_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, form="Research Proposal Defense", status="Completed")
+    get_redefense_defense_schedule = DefenseScheduleLog.objects.all().filter(username=currently_loggedin_user.username, form="Research Proposal Defense", status="Re-Defense")
+    get_reschedule_defense_schedule = DefenseScheduleLog.objects.all().filter(username=currently_loggedin_user.username, form="Research Proposal Defense",status="Reschedule")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "completed_defense_schedule": get_completed_defense_schedule,
+        "redefense_defense_schedule": get_redefense_defense_schedule,
+        "reschedule_defense_schedule": get_reschedule_defense_schedule,
+    }
+
+    return render(request, "subject-teacher-bet3-research-proposal-defense-logs.html", context)
+
 
 ##### SUBJECT TEACHER - BET-3 - PROPOSAL DEFENSE #####
 
@@ -17913,6 +18184,145 @@ def subjectTeacherDeleteResearchFinalDefenseSchedule(request, id):
         return render(request, "subject-teacher-set-research-final-defense.html", context)
 
 
+# Subject Teacher - Research Final Defense Dashboard Page
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+def subjectTeacherMyFinalDefenseDashboard(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    course_handled_list_unfiltered = []
+
+    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username)
+
+    for course in course_handled:
+        course_handled_list_unfiltered.append(course.course_major_abbr)
+
+    course_handled_list = list(dict.fromkeys(course_handled_list_unfiltered))
+    print(course_handled_list)
+
+    if request.method == "POST":
+        course_input = request.POST.get("course_input")
+        print(course_input)
+
+        try:
+            student_defense_scheduled = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, form="Research Final Defense", course=course_input, status="Reserved")
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "course_handled_list": course_handled_list,
+                "student_defense_scheduled": student_defense_scheduled,
+            }
+
+            return render(request, "subject-teacher-final-defense-schedule-dashboard.html", context)
+
+        except:
+            pass
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "course_handled_list": course_handled_list,
+    }
+
+    return render(request, "subject-teacher-final-defense-schedule-dashboard.html", context)
+
+
+# Subject Teacher - Research Final Defense Dashboard Page
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+def subjectTeacherStudentsFinalDefenseDashboard(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    course_handled_list_unfiltered = []
+
+    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username)
+
+    for course in course_handled:
+        course_handled_list_unfiltered.append(course.course_major_abbr)
+
+    course_handled_list = list(dict.fromkeys(course_handled_list_unfiltered))
+    print(course_handled_list)
+
+    if request.method == "POST":
+        course_input = request.POST.get("course_input")
+        print(course_input)
+
+        try:
+            student_defense_scheduled = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, course=course_input, form = "Research Final Defense", status="Reserved")
+            student_defense_unscheduled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username, course_major_abbr=course_input, research_proposal_defense_date="")
+
+            print(student_defense_unscheduled)
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "course_handled_list": course_handled_list,
+                "student_defense_scheduled": student_defense_scheduled,
+                "student_defense_unscheduled": student_defense_unscheduled,
+            }
+
+            return render(request, "subject-teacher-students-final-defense-schedule-dashboard.html", context)
+
+        except:
+            pass
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "course_handled_list": course_handled_list,
+    }
+
+    return render(request, "subject-teacher-students-final-defense-schedule-dashboard.html", context)
+
+
+# Subject Teacher - BET-3 Research Title Defense Logs Dashboard
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+def subjectTeacherBET5FinalDefenseLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    get_completed_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, form="Research Final Defense", status="Completed")
+    get_redefense_defense_schedule = DefenseScheduleLog.objects.all().filter(username=currently_loggedin_user.username, form="Research Final Defense", status="Re-Defense")
+    get_reschedule_defense_schedule = DefenseScheduleLog.objects.all().filter(username=currently_loggedin_user.username, form="Research Final Defense",status="Reschedule")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "completed_defense_schedule": get_completed_defense_schedule,
+        "redefense_defense_schedule": get_redefense_defense_schedule,
+        "reschedule_defense_schedule": get_reschedule_defense_schedule,
+    }
+
+    return render(request, "subject-teacher-bet5-research-final-defense-logs.html", context)
+
+
+# Subject Teacher
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+def subjectTeacherTheDevs(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    user_middle_name = current_user.middle_name
+    user_middle_initial = None
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+    }
+
+    return render(request, "subject-teacher-the-devs.html", context)
 
 
 # Adviser - Dashboard Page

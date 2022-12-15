@@ -10,7 +10,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>DIT Head - BET-3 Adviser Conforme</title>
+  <title>DIT Head - Panel Conforme</title>
 
   {% include 'css-main-cdn.html' %}
 </head>
@@ -33,7 +33,7 @@
         <div class="container-fluid">
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-3">
-            <h1 class="h3 mb-0 text-gray-800">BET-3 - Adviser Conforme - Requests</h1>
+            <h1 class="h3 mb-0 text-gray-800">Panel Conforme - Requests</h1>
           </div>
 
           <!-- DataTales Example -->
@@ -50,8 +50,8 @@
                       <th>Student ID No.</th>
                       <th>Student Name</th>
                       <th>Course</th>
-                      <th>Adviser ID No.</th>
-                      <th>Adviser Name</th>
+                      <th>Panel ID No.</th>
+                      <th>Panel Name</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -61,13 +61,13 @@
                       <th>Student ID No.</th>
                       <th>Student Name</th>
                       <th>Course</th>
-                      <th>Adviser ID No.</th>
-                      <th>Adviser Name</th>
+                      <th>Panel ID No.</th>
+                      <th>Panel Name</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
                   <tbody class="text-dark">
-                    {% for adviser_conforme in adviser_conformes %}
+                    <!-- {% for adviser_conforme in adviser_conformes %}
                     <tr>
                       <td>{{adviser_conforme.id}}</td>
                       <td>{{adviser_conforme.student_leader_username}}</td>
@@ -84,7 +84,7 @@
                           href="#">Decline</a>
                       </td>
                     </tr>
-                    {% endfor %}
+                    {% endfor %} -->
                   </tbody>
                 </table>
               </div>

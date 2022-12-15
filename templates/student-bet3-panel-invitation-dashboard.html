@@ -37,7 +37,7 @@
               
               {% if student_leader_data.bet3_panel_invitation_status != "completed" %}
               <div class="col-lg-3 col-md-12 mb-3">
-                <a href="{% url 'student-panel-invitation-bet3-create' %}" type="button" class="btn btn-outline-success w-100"><i class="fa-solid fa-file-signature"></i> Create Form</a>
+                <a href="{% url 'student-panel-invitation-bet3-create' %}" type="button" class="btn btn-outline-success w-100">Create New Form</a>
               </div>
               {% endif %}
             </div>
@@ -56,7 +56,7 @@
                   <table class="table table-bordered text-center" id="bet3PanelInvitation" width="100%" cellspacing="0">
                     <thead>
                       <tr>
-                        <th>Ref No.</th>
+                        <th hidden>Ref No.</th>
                         <th>DIT Head ID No.</th>
                         <th>DIT Head Name</th>
                         <th>DIT Head Response</th>
@@ -68,8 +68,8 @@
                       </tr>
                     </thead>
                     <tfoot>
-                      <tr>
-                        <th>Ref No.</th>
+                      <tr >
+                        <th hidden>Ref No.</th>
                         <th>DIT Head ID No.</th>
                         <th>DIT Head Name</th>
                         <th>DIT Head Response</th>
@@ -83,7 +83,7 @@
                     <tbody class="text-dark">
                       {% for panel_invitation in panel_invitations %}
                       <tr>
-                        <td>{{panel_invitation.id}}</td>
+                        <td hidden>{{panel_invitation.id}}</td>
                         <td>{{panel_invitation.dit_head_username}}</td>
                         <td>{{panel_invitation.dit_head_full_name}}</td>
 
