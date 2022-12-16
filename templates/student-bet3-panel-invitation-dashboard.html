@@ -230,7 +230,7 @@
     {% endif %} 
     {% if response == 'sweet bet-3 panel invitation saved' %}
     <script>
-      Swal.fire("Completed", "Panel Invitation for Topic Defense completed..", "success");
+      Swal.fire("Completed", "Panel Invitation for Topic Defense completed.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
       }, 3000);
@@ -239,7 +239,7 @@
 
     {% if response == 'sweet incomplete bet3 panel invitation' %}
     <script>
-      Swal.fire("Invalid", "You can't access this page. <br> Please complete the Panel Invitation for Topic Defense.", "error");
+      Swal.fire("Unauthorized", "You can't access this page. <br> Please complete the Panel Invitation for Topic Defense.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");

@@ -225,28 +225,28 @@
     </script>
     {% endif %} {% if response == 'schedule saved' %}
     <script>
-      Swal.fire("Saved", "The Defense Date has been recorded.", "success");
+      Swal.fire("Saved", "The Defense Date has been saved.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'subject-teacher-set-research-title-defense-schedule' %}");
       }, 2000);
     </script>
     {% endif %} {% if response == 'scheduled date exist' %}
     <script>
-      Swal.fire("Uh-oh", "The Defense Date you entered is already recorded.", "error");
+      Swal.fire("Invalid", "The Defense Date you entered is already recorded.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'subject-teacher-set-research-title-defense-schedule' %}");
       }, 2000);
     </script>
     {% endif %} {% if response == 'schedule deleted' %}
     <script>
-      Swal.fire("Deleted", "The Defense Date has been deleted.", "warning");
+      Swal.fire("Deleted", "The Defense Date has been deleted.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'subject-teacher-set-research-title-defense-schedule' %}");
       }, 2000);
     </script>
     {% endif %} {% if response == 'sweet schedule not found' %}
     <script>
-      Swal.fire("Uh-oh", "The Defense Date you are trying to delete doesn't exist.", "error");
+      Swal.fire("Invalid", "The Defense Date you are trying to delete doesn't exist.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'subject-teacher-set-research-title-defense-schedule' %}");
       }, 2000);

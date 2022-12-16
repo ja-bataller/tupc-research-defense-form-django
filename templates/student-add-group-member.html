@@ -542,7 +542,7 @@
 
   {% if response == 'sweet group member is a student leader' %}
   <script>
-    Swal.fire("Invalid", "{{existing_username}} can't be a Group Member. (Faculty Member / Student Leader)", "error");
+    Swal.fire("Invalid", "{{existing_username}} can't be a Group Member. <br> He/She might be a Student Leader or a Faculty Member.", "error");
 
     setTimeout(function () {
       window.location.replace("{% url 'student-add-group-members' %}");

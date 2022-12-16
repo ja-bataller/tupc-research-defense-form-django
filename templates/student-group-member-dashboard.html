@@ -97,7 +97,7 @@
 
     {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% if response == 'sweet group members added' %}
     <script>
-      Swal.fire("Success", "Group Members has been added successfully.", "success");
+      Swal.fire("Saved", "Group Members has been saved successfully.", "success");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-group-members-dashboard' %}");
@@ -105,7 +105,7 @@
     </script>
     {% endif %} {% if response == 'sweet no group members' %}
     <script>
-      Swal.fire("Info", "You don't have any group members.", "info");
+      Swal.fire("Saved", "You don't have any group members.", "success");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-group-members-dashboard' %}");

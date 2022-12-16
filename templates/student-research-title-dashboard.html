@@ -127,7 +127,7 @@
 
   {% if response == 'sweet revise title success' %}
   <script>
-    Swal.fire("Success", "Research Title has been updated.", "success");
+    Swal.fire("Updated", "Research Title has been updated.", "success");
 
     setTimeout(function () {
       window.location.replace("{% url 'student-research-title-dashboard' %}");

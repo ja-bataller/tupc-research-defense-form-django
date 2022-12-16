@@ -121,9 +121,89 @@
 
     {% include 'alert-validation.html' %} 
     
-    {% if response == 'sweet incomplete form' %}
+    {% if response == 'sweet no course available' %}
     <script>
-      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> The Faculty Members are incomplete. <br> Please try again later.", "error");
+      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no available Course. <br> Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'index' %}");
+      }, 4000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet no dit head assigned' %}
+    <script>
+      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There is no DIT Head assigned. <br> Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'index' %}");
+      }, 4000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet no panel assigned' %}
+    <script>
+      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Panel Members assigned. <br> Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'index' %}");
+      }, 4000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet incomplete panel' %}
+    <script>
+      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> The Panel Members assigned is incomplete. <br> Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'index' %}");
+      }, 4000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet no adviser assigned' %}
+    <script>
+      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Adviser assigned. <br> Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'index' %}");
+      }, 4000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet no subject teacher assigned' %}
+    <script>
+      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Subject Teacher assigned. <br> Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'index' %}");
+      }, 4000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet no academic affairs assigned' %}
+    <script>
+      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Academic Affairs assigned. <br> Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'index' %}");
+      }, 4000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet no library assigned' %}
+    <script>
+      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Library assigned. <br> Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'index' %}");
+      }, 4000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet no research extension assigned' %}
+    <script>
+      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Research & Extension assigned. <br> Please try again later.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'index' %}");
@@ -151,7 +231,7 @@
 
     {% if response == 'sweet user exist' %}
     <script>
-      Swal.fire("{{student_member_check_username}} \n {{student_member_check_name}}", "You're already a part of a Group. One Account per group is allowed.", "error");
+      Swal.fire("{{student_member_check_username}} \n {{student_member_check_name}}", "You're already a part of a Group. <br> One Account per group is allowed.", "error");
     </script>
     {% endif %}
 

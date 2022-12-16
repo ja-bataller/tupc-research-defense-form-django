@@ -145,7 +145,10 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  {% include 'logout-modal.html' %} {% include 'script-cdn.html' %} {% include 'alert-validation.html' %}
+  {% include 'logout-modal.html' %} 
+  {% include 'script-cdn.html' %} 
+  {% include 'alert-validation.html' %}
+  
   {% if response == 'sweet same research title' %}
   <script>
     Swal.fire("Invalid", "You entered a Research Title same with the input field.", "error");
@@ -154,7 +157,9 @@
       window.location.replace("{% url 'student-add-research-titles' %}");
     }, 2000);
   </script>
-  {% endif %} {% if response == 'sweet research title exist' %}
+  {% endif %} 
+  
+  {% if response == 'sweet research title exist' %}
   <script>
     Swal.fire("Invalid", "{{existing_research_title}} already exists.", "error");
 
@@ -173,6 +178,7 @@
     }, 2000);
   </script>
   {% endif %}
+
   <script>
     let research_title_count = document.querySelector("#research_title_count");
     let research_title_1 = document.querySelector("#research_title_1");

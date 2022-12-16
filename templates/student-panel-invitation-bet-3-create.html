@@ -130,25 +130,25 @@
 
     {% if response == 'sweet defense schedule not found' %}
     <script>
-      Swal.fire("Uh-oh", "The Defense Schedule you entered doesn't exist.", "error");
+      Swal.fire("Invalid", "The Defense Schedule you entered doesn't exist.", "error");
     </script>
     {% endif %}
 
     {% if response == 'sweet Panel not found' %}
     <script>
-      Swal.fire("Uh-oh", "The Panel Member you entered doesn't exist.", "error");
+      Swal.fire("Invalid", "The Panel Member you entered doesn't exist.", "error");
     </script>
     {% endif %}
 
     {% if response == 'sweet panel invitation exist' %}
     <script>
-      Swal.fire("Info", "You have already sent a Panel Invitation for Topic Defense to {{panel_full_name}}", "info");
+      Swal.fire("Invalid", "You have already sent a Panel Invitation for Topic Defense to {{panel_full_name}}", "error");
     </script>
     {% endif %}
 
     {% if response == 'sweet panel invitation accepted exist' %}
     <script>
-      Swal.fire("Info", "{{panel_full_name}} has already accepted your Panel Invitation for Topic Defense.", "info");
+      Swal.fire("Invalid", "{{panel_full_name}} has already accepted your Panel Invitation for Topic Defense.", "error");
     </script>
     {% endif %}
 
@@ -164,7 +164,7 @@
 
     {% if response == 'sweet no defense schedule' %}
     <script>
-      Swal.fire("Info", "There are no available Topic Defense schedule. <br> Please try again later.", "info");
+      Swal.fire("Uh-oh", "There are no available Topic Defense schedule. <br> Please try again later.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
@@ -174,7 +174,7 @@
 
     {% if response == 'sweet subject teacher' %}
     <script>
-      Swal.fire("Info", "{{panel_full_name}} is your Subject Teacher.", "info");
+      Swal.fire("Invalid", "{{panel_full_name}} is your Subject Teacher.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3-create' %}");
       }, 2000);

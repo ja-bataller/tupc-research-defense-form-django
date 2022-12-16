@@ -291,7 +291,7 @@
 
   {% if response == 'sweet absent panel' %}
   <script>
-    Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "info");
+    Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' panel_invitation_data.student_leader_username %}");
     }, 2000);
@@ -309,7 +309,7 @@
 
   {% if response == 'sweet panel voting pending' %}
   <script>
-    Swal.fire("Info", "It seems some of the Panel Members is not yet done voting for research title.", "info");
+    Swal.fire("Uh-oh", "It seems some of the Panel Members is not yet done voting for research title.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
     }, 2000);
@@ -318,7 +318,7 @@
 
   {% if response == 'sweet panel voting closed' %}
   <script>
-    Swal.fire("Closed", "You have closed the research title voting.", "info");
+    Swal.fire("Close Voting", "You have closed the research title voting.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
     }, 2000);
@@ -342,55 +342,55 @@
 
   {% if response == 'sweet panel vote again' %}
   <script>
-    Swal.fire("Revote", "The Panel's Vote for {{tie_research_title}} are tied. Please vote again.", "info");
+    Swal.fire("Uh-oh", "The Panel's Vote for {{tie_research_title}} are tied. Please vote again.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 5000);
   </script>
   {% endif %}
 
   {% if response == 'sweet all titles deferred' %}
   <script>
-    Swal.fire("Info", "All the Research Title presented are Deferred.", "info");
+    Swal.fire("Deferred", "All the Research Title presented are Deferred.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet re-defense' %}
   <script>
-    Swal.fire("Info", "The Group of {{student_leader_full_name}} is marked as re-defense.", "info");
+    Swal.fire("Redefense", "The Group of {{student_leader_full_name}} is marked as re-defense.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-dashboard'%}");;
-    }, 3000);
+    }, 5000);
   </script>
   {% endif %}
 
   {% if response == 'sweet re-defense incomplete panel' %}
   <script>
-    Swal.fire("Info", "Incomplete Panel Member. The Group of {{student_leader_full_name}} is marked as reschedule.", "info");
+    Swal.fire("Reschedule", "Incomplete Panel Member. The Group of {{student_leader_full_name}} is marked as reschedule.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-dashboard'%}");
-    }, 3000);
+    }, 5000);
   </script>
   {% endif %}
 
   {% if response == 'sweet panel esign incomplete' %}
   <script>
-    Swal.fire("Info", "Please wait for the Panel to response for their signature.", "info");
+    Swal.fire("Uh-oh", "Please wait for the Panel to response for their signature.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet start voting' %}
   <script>
-    Swal.fire("Sucess", "Panel Members can now vote for the Research Title/s", "success");
+    Swal.fire("Start Voting", "Panel Members can now vote for the Research Title/s", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -406,7 +406,7 @@
 
   {% if response == 'sweet proposal defense absent panel' %}
   <script>
-    Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "info");
+    Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' panel_invitation_data.student_leader_username %}");
     }, 2000);
@@ -424,65 +424,65 @@
 
   {% if response == 'sweet proposal defense panel esign incomplete' %}
   <script>
-    Swal.fire("Info", "Please wait for the Panel Chairman to response for the signature.", "info");
+    Swal.fire("Uh-oh", "Please wait for the Panel Chairman to response for the signature.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet proposal defense start critique' %}
   <script>
-    Swal.fire("Sucess", "The Critique Form has started.", "success");
+    Swal.fire("Start Critique", "The Critique Form has started.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet proposal defense end critique' %}
   <script>
-    Swal.fire("Info", "The Critique Form has ended.", "info");
+    Swal.fire("End Critique", "The Critique Form has ended.", "invalid");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet proposal defense start voting' %}
   <script>
-    Swal.fire("Start Vote", "The Verdict voting has started.", "success");
+    Swal.fire("Start Voting", "The Verdict voting has started.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet proposal defense end voting' %}
   <script>
-    Swal.fire("End Vote", "The Verdict voting has ended.", "info");
+    Swal.fire("Close Voting", "The Verdict voting has ended.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet proposal defense vote tie' %}
   <script>
-    Swal.fire("Tie Vote", "The Panel Member's vote is tie. Please vote again.", "info");
+    Swal.fire("Uh-oh", "The Panel Member's vote is tie. Please vote again.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
 
   {% if response == 'sweet proposal defense done' %}
   <script>
-    Swal.fire("Defense Ended", "The Proposal Defense has ended.", "info");
+    Swal.fire("Completed", "The Proposal Defense has ended.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-dashboard' %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -497,7 +497,7 @@
 
   {% if response == 'sweet final defense absent panel' %}
   <script>
-    Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "info");
+    Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' panel_invitation_data.student_leader_username %}");
     }, 2000);
@@ -515,47 +515,47 @@
 
   {% if response == 'sweet final defense panel esign incomplete' %}
   <script>
-    Swal.fire("Info", "Please wait for the Panel Chairman to response for the signature.", "info");
+    Swal.fire("Uh-oh", "Please wait for the Panel Chairman to response for the signature.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
 
   {% if response == 'sweet final defense start voting' %}
   <script>
-    Swal.fire("Start Vote", "The Verdict voting has started.", "success");
+    Swal.fire("Start Voting", "The Verdict voting has started.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet final defense end voting' %}
   <script>
-    Swal.fire("End Vote", "The Verdict voting has ended.", "info");
+    Swal.fire("End Voting", "The Verdict voting has ended.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet final defense vote tie' %}
   <script>
-    Swal.fire("Tie Vote", "The Panel Member's vote is tie. Please vote again.", "info");
+    Swal.fire("Uh-oh", "The Panel Member's vote is tie. Please vote again.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet final defense done' %}
   <script>
-    Swal.fire("Defense Ended", "The Final Defense has ended.", "info");
+    Swal.fire("Completed", "The Final Defense has ended.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-dashboard' %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 </body>

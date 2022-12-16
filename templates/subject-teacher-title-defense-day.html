@@ -268,7 +268,7 @@
                       <th>Action</th>
                     </tr>
                   </tfoot>
-                  <tbody>
+                  <tbody class="text-dark">
 
                     {% if panel_members %}
                     {% for panel_member in present_panel_members %}
@@ -315,12 +315,9 @@
                         <td class="text-success">
                           Present - Panel Chairman
                         </td>
+
                         {% if panel_member.panel_signature_response == 1 %}
-                          {% if panel_member.panel_signature_attach == 1 %}
-                            <td class="text-success">E-Signature</td>
-                          {% else %}
-                            <td class="text-primary">Live Signature</td>
-                          {% endif %}
+                            <td class="text-success">Done</td>
                         {% else %}
                           <td>Pending</td>
                         {% endif %}
@@ -331,11 +328,7 @@
                         </td>
 
                         {% if panel_member.panel_signature_response == 1 %}
-                          {% if panel_member.panel_signature_attach == 1 %}
-                            <td class="text-success">E-Signature</td>
-                          {% else %}
-                            <td class="text-primary">Live Signature</td>
-                          {% endif %}
+                            <td class="text-success">Done</td>
                         {% else %}
                           <td>Pending</td>
                         {% endif %}
@@ -379,6 +372,7 @@
                       <td class="text-center text-danger">
                         Absent
                       </td>
+                      <td>N/A</td>
                       <td>N/A</td>
                       <td></td>
                     </tr>
@@ -507,7 +501,7 @@
         <div class="modal-body">Are you sure you want to assign <span id="panel_name"></span> as Panel Chairman?</div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No</button>
-          <a id="panel_chairman_btn" class="btn btn-outline-success" type="button" href="#">Yes</a>
+          <a id="panel_chairman_btn" class="btn btn-outline-success" type="button" href="#">Yes - Confirm</a>
         </div>
       </div>
     </div>

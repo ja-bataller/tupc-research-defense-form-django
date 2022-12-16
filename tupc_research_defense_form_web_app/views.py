@@ -129,17 +129,53 @@ def signup(request):
 
     suffix_list = ["", "Sr.", "Jr.", "I", "II", "III", "IV", "V"]
 
+    # Get All Course
     course = StudentCourseMajor.objects.all()
-    subject_teachers = User.objects.all().filter(is_subject_teacher=1)
-
     course_list = []
 
+    # Check if there is DIT Head assigned
+    try:
+        # Get DIT Head
+        get_department_head = User.objects.get(is_department_head=1)
+    except:
+        print("No DIT Head assigned")
+
+        context = {
+            "form": form, 
+            "response": "sweet no dit head assigned"}
+
+        return render(request, "signup.html", context)
+
+    
+
+    # Get All Panel
+    panel_members = User.objects.all().filter(is_panel=1)
+
+    # Get All Adviser
+    adviser = User.objects.all().filter(is_adviser=1)
+
+    # Get All Subject Teachers
+    subject_teachers = User.objects.all().filter(is_subject_teacher=1)
     subject_teacher_list = []
 
+    # Get All Academic Affairs
+    academic_affairs = User.objects.all().filter(is_academic_affairs=1)
+
+    # Get All Library
+    library = User.objects.all().filter(is_library=1)
+
+    # Get All Research & Extension
+    research_extension = User.objects.all().filter(is_research_extension=1)
+
+    print(panel_members.count())
+
+    # Check if there are no available course
     if not course:
         print("No Course Available")
 
-        context = {"form": form, "response": "sweet incomplete form"}
+        context = {
+            "form": form, 
+            "response": "sweet no course available"}
 
         return render(request, "signup.html", context)
 
@@ -147,10 +183,39 @@ def signup(request):
         for course_abbr in course:
             course_list.append(course_abbr.course_major_abbr)
 
-    if not subject_teachers:
-        print("No Subject Teachers Available")
+    # Check if there are no Panel Members assigned
+    if not panel_members:
+        print("No Panel assigned")
 
-        context = {"form": form, "response": "sweet incomplete form"}
+        context = {
+            "form": form, 
+            "response": "sweet no panel assigned"}
+
+        return render(request, "signup.html", context)
+
+    else:
+        pass
+
+    # Check if Panel Members is incomplete
+    if panel_members.count() < 5:
+        print("Incomplete Panel Members")
+
+        context = {
+            "form": form, 
+            "response": "sweet incomplete panel"}
+
+        return render(request, "signup.html", context)
+
+    else:
+        pass
+
+    # Check if there are no subject teacher assigned
+    if not subject_teachers:
+        print("No Subject Teachers assigned")
+
+        context = {
+            "form": form, "response": "sweet no subject teacher assigned"
+            }
 
         return render(request, "signup.html", context)
 
@@ -170,6 +235,60 @@ def signup(request):
         print("Available Subject Teachers: ", subject_teacher_list)
 
         subject_teacher_list.sort()
+
+
+    # Check if there are no Adviser assigned
+    if not adviser:
+        print("No Adviser assigned")
+
+        context = {
+            "form": form, 
+            "response": "sweet no adviser assigned"}
+
+        return render(request, "signup.html", context)
+
+    else:
+        pass
+
+    # Check if there are no Academic Affairs assigned
+    if not academic_affairs:
+        print("No Academic Affairs assigned")
+
+        context = {
+            "form": form, 
+            "response": "sweet no academic affairs assigned"}
+
+        return render(request, "signup.html", context)
+
+    else:
+        pass
+
+    # Check if there are no Library assigned
+    if not library:
+        print("No Library assigned")
+
+        context = {
+            "form": form, 
+            "response": "sweet no library assigned"}
+
+        return render(request, "signup.html", context)
+
+    else:
+        pass
+
+    # Check if there are no Research & Extension assigned
+    if not research_extension:
+        print("No Research & Extension assigned")
+
+        context = {
+            "form": form, 
+            "response": "sweet no research extension assigned"}
+
+        return render(request, "signup.html", context)
+
+    else:
+        pass
+
 
     if request.method == "POST":
         form = SignUpForm(request.POST)
@@ -214,6 +333,7 @@ def signup(request):
 
             user_username_input = user.username
             user_email_input = user.email
+            print(user_username_input)
 
             # Check if the Username is already part of a group
             try:
@@ -225,7 +345,7 @@ def signup(request):
                     "course": course,
                     "subject_teachers": subject_teachers,
                     "student_member_check_username": student_member_check.student_member_username,
-                    "student_member_check_name": student_member_check.student_member_name,
+                    "student_member_check_name": student_member_check.student_member_full_name,
                     "response": "sweet user exist",
                 }
                 return render(request, "signup.html", context)
@@ -1434,8 +1554,8 @@ def studentPanelInvitationBet3Create(request):
             # Send g-mail notifications
             send_mail(
                 "Panel Invitation for Topic Defense",
-                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Topic Defense. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
-                get_student_leader_data.email,
+                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+                "unofficial.tupc.uitc@gmail.com",
                 ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                 fail_silently=False,
             )
@@ -1497,14 +1617,16 @@ def studentPanelInvitationBet3Create(request):
                 )
                 send_panel_invitation.save()
                 print("Panel Invitation Sent")
+
                 # Send g-mail notifications
                 send_mail(
                     "Panel Invitation for Topic Defense",
-                    "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Topic Defense. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
-                    get_student_leader_data.email,
+                    "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+                    "unofficial.tupc.uitc@gmail.com",
                     ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                     fail_silently=False,
                 )
+
         context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "dept_head_name": dept_head_name, "panel_members": panel_members, "defense_dates": defense_dates, "response": "sweet panel invitation sent"}
 
         return render(request, "student-panel-invitation-bet-3-create.html", context)
@@ -2621,7 +2743,7 @@ def studentBET3AdviserDashboard(request):
         # Send g-mail notifications
         send_mail(
             "Adviser Conforme",
-            "Good Day " + dit_head_name + ",\n" + student_leader_full_name +" ("+get_student_leader_data.course_major_abbr+")" + " needs an approval for Adviser Conforme. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + dit_head_name + ",\n" + student_leader_full_name +" ("+get_student_leader_data.course_major_abbr+")" + " needs an approval for Adviser Conforme.\nThank you and Have a nice day.",
             get_student_leader_data.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -3210,6 +3332,15 @@ def studentBET3ProposalDefensePanelInvitationCreatePanel(request):
             "previous_panel": get_previous_panel_members,
 
             "response": "sweet panel invitation sent"}
+        
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Topic Defense",
+            "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
             
         print("Student -  Proposal Defense Panel Invitation - Previous Panel Members - Sent")
         return render(request, "student-bet3-proposal-defense-panel-invitation-create-panel.html", context)
@@ -3501,6 +3632,15 @@ def studentBET3ProposalDefensePanelInvitationCreate(request):
             send_panel_invitation.save()
             print("Panel Invitation Sent")
 
+            # Send g-mail notifications
+            send_mail(
+                "Panel Invitation for Topic Defense",
+                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+                "unofficial.tupc.uitc@gmail.com",
+                ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                fail_silently=False,
+            )
+
         except:
             # Check if the entered Defense Scheduled is valid
             if str(defense_schedule_input) not in defense_date_list:
@@ -3567,6 +3707,15 @@ def studentBET3ProposalDefensePanelInvitationCreate(request):
                 )
                 send_panel_invitation.save()
                 print("Panel Invitation Sent")
+
+                # Send g-mail notifications
+                send_mail(
+                    "Panel Invitation for Topic Defense",
+                    "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+                    "unofficial.tupc.uitc@gmail.com",
+                    ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                    fail_silently=False,
+                )
 
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
@@ -5244,6 +5393,15 @@ def studentBET5FinalDefensePanelInvitationCreatePanel(request):
             "previous_panel": get_previous_panel_members,
 
             "response": "sweet panel invitation sent"}
+
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Topic Defense",
+            "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
             
         print("Student -  Proposal Defense Panel Invitation - Previous Panel Members - Sent")
         return render(request, "student-bet5-final-defense-panel-invitation-create-panel.html", context)
@@ -5535,6 +5693,15 @@ def studentBET5FinalDefensePanelInvitationCreate(request):
             send_panel_invitation.save()
             print("Panel Invitation Sent")
 
+            # Send g-mail notifications
+            send_mail(
+                "Panel Invitation for Topic Defense",
+                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+                "unofficial.tupc.uitc@gmail.com",
+                ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                fail_silently=False,
+            )
+
         except:
             # Check if the entered Defense Scheduled is valid
             if str(defense_schedule_input) not in defense_date_list:
@@ -5601,6 +5768,15 @@ def studentBET5FinalDefensePanelInvitationCreate(request):
                 )
                 send_panel_invitation.save()
                 print("Panel Invitation Sent")
+
+                # Send g-mail notifications
+                send_mail(
+                    "Panel Invitation for Topic Defense",
+                    "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+                    "unofficial.tupc.uitc@gmail.com",
+                    ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                    fail_silently=False,
+                )
 
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
@@ -8334,7 +8510,21 @@ def ditHeadDashboard(request):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
-    context = {"currently_loggedin_user_data": currently_loggedin_user, "currently_loggedin_user_full_name": currently_loggedin_user_full_name, "date_today": date_today}
+    get_pending_topic_panel_invitation = TitlePanelInvitation.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
+    get_pending_proposal_panel_invitation = ProposalPanelInvitation.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
+    get_pending_final_panel_invitation = FinalPanelInvitation.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
+    get_pending_adviser_conforme = AdviserConforme.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
+
+    context = {
+        "currently_loggedin_user_data": currently_loggedin_user, 
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+        "date_today": date_today,
+
+        "pending_topic_panel_invitation": get_pending_topic_panel_invitation.count(),
+        "pending_proposal_panel_invitation": get_pending_proposal_panel_invitation.count(),
+        "pending_final_panel_invitation": get_pending_final_panel_invitation.count(),
+        "pending_adviser_conforme": get_pending_adviser_conforme.count(),
+        }
 
     return render(request, "dit-head-dashboard.html", context)
 
@@ -8622,14 +8812,13 @@ def ditHeadResearchTitles(request):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
-    # BET-3 Panel Invitation Logs
-    # get_panel_invitation = FinalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username)
-    # get_panel_invitation_2 = FinalPanelInvitationLog.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+    get_research_titles = ResearchTitle.objects.all()
+    get_research_title_logs = ResearchTitleLog.objects.all()
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
-        # "panel_invitations": get_panel_invitation,
-        # "panel_invitations_2": get_panel_invitation_2,
+        "research_titles": get_research_titles,
+        "research_title_logs": get_research_title_logs,
     }
 
     return render(request, "dit-head-research-titles.html", context)
@@ -10281,7 +10470,7 @@ def panelTitleDefenseDay(request, id):
         return redirect("panel-dashboard")
 
     get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=id)
-    get_research_titles = TitleVote.objects.all().filter(student_leader_username=id, panel_username=currently_loggedin_user.username)
+    get_research_titles = TitleVote.objects.all().filter(student_leader_username=id, panel_username=currently_loggedin_user.username, panel_response_date = date_today)
 
     get_panel_members = TitlePanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="BET-3 Panel Invitation", panel_attendance="")
 
@@ -12743,8 +12932,8 @@ def panelBET3TopicPanelInvitationAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Topic Defense. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
-            update_student_leader_data.email,
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
 
@@ -12804,6 +12993,16 @@ def panelBET3TopicPanelInvitationDeclineSignature(request, id):
         check_panel_invitation.form_status = "declined"
         check_panel_invitation.save()
 
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Topic Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "declined_student_member_name": check_panel_invitation.student_leader_full_name,
@@ -12845,6 +13044,16 @@ def panelPanelInvitationBet3Accept(request, id):
         update_student_leader_data.request_limit = int(update_student_leader_data.request_limit) - 1
         update_student_leader_data.save()
 
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Topic Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "accepted_student_member_name": check_panel_invitation.student_leader_full_name,
@@ -12881,6 +13090,16 @@ def panelPanelInvitationBet3Decline(request, id):
 
         check_panel_invitation.form_status = "declined"
         check_panel_invitation.save()
+
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Topic Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
 
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -13139,6 +13358,9 @@ def panelBET3TitleDefenseLogCompleted(request, id):
         "research_title_revise": get_research_title_revise,
         "present_panel_members": get_present_panel_members,
         "panel_title_votes": get_panel_title_votes,
+        "defense_date": get_present_panel_members[0].defense_date,
+        "defense_start_time": get_present_panel_members[0].defense_start_time,
+        "defense_end_time": get_present_panel_members[0].defense_end_time,
     }
 
     return render(request, "panel-bet3-research-title-defense-data.html", context)
@@ -13178,6 +13400,9 @@ def panelBET3TitleDefenseLogRedefense(request, id):
         "research_titles": get_research_titles,
         "present_panel_members": get_present_panel_members,
         "panel_title_votes": get_panel_title_votes,
+        "defense_date": get_present_panel_members[0].defense_date,
+        "defense_start_time": get_present_panel_members[0].defense_start_time,
+        "defense_end_time": get_present_panel_members[0].defense_end_time,
     }
 
     return render(request, "panel-bet3-research-title-defense-data.html", context)
@@ -14006,6 +14231,7 @@ def subjectTeacherTitleDefenseDayPresent(request, id):
             research_title=research_title_list[i],
             panel_username=get_panel_invitation_data.panel_username,
             panel_full_name=get_panel_invitation_data.panel_full_name,
+            panel_response_date = date_today
         )
         create_title_voting_sheet.save()
         i + 1
@@ -14823,7 +15049,7 @@ def subjectTeacherTitleDefenseDayCloseVote(request, id):
             update_research_title_data_4 = ResearchTitle.objects.get(id=get_student_research_title_data[4].id)
             update_research_title_data_4.status = "Title Defense - Deferred"
             update_research_title_data_4.title_defense_status = "Deferred"
-            update_research_title_data_3.save()
+            update_research_title_data_4.save()
 
     except:
         pass
@@ -17794,6 +18020,7 @@ def subjectTeacherBET3TitleDefenseLogRedefense(request, id):
     defense_date = get_present_panel_members[0].defense_date
     defense_start_time = get_present_panel_members[0].defense_start_time
     defense_end_time = get_present_panel_members[0].defense_end_time
+
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,

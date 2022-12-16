@@ -248,14 +248,16 @@
 
           </div>
 
-          {% if response_signature == 1 %}
-          <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required>
-            <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
-          </div>
-          <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature</a>
-          <hr>
-          <a id="btn_accept_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Personal Signature</a>
+          {% if panel_chairman %}
+            {% if response_signature == 1 %}
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required>
+              <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+            </div>
+            <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature</a>
+            <hr>
+            <a id="btn_accept_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Personal Signature</a>
+            {% endif %}
           {% endif %}
 
           <!-- DataTales Example -->
@@ -333,7 +335,7 @@
           {% if not check_panel_complete_response %}
           {% if check_panel_mark_done %}
           <a class="btn btn-outline-success w-100 mb-2"
-            href="{% url 'panel-title-defense-mark-done' current_panel_title_defense.id %}">Mark as Completed</a>
+            href="{% url 'panel-title-defense-mark-done' current_panel_title_defense.id %}">Mark as Done</a>
           {% endif %}
           {% endif %}
           

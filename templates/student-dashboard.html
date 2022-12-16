@@ -401,7 +401,7 @@
 
   {% if response == 'sweet incomplete title defense' %}
   <script>
-    Swal.fire("Uh-oh", "Unable to access this page. <br> Research Title Defense is incomplete.", "error");
+    Swal.fire("Unauthorized", "Unable to access this page. <br> Research Title Defense is incomplete.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'student-dashboard' %}");
     }, 2000);
@@ -410,7 +410,16 @@
 
   {% if response == 'sweet incomplete proposal defense' %}
   <script>
-    Swal.fire("Uh-oh", "Unable to access this page. <br> Research Proposal Defense is incomplete.", "error");
+    Swal.fire("Unauthorized", "Unable to access this page. <br> Research Proposal Defense is incomplete.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'student-dashboard' %}");
+    }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet incomplete final defense' %}
+  <script>
+    Swal.fire("Unauthorized", "Unable to access this page. <br> Research Final Defense is incomplete.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'student-dashboard' %}");
     }, 2000);
