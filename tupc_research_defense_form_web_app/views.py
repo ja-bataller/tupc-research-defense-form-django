@@ -81,6 +81,30 @@ def index(request):
                     login(request, user)
 
                     return redirect("login-as")
+                
+                if user_check.is_academic_affairs == True:
+                    print("User: Academic Affairs Office")
+
+                    user = User.objects.get(username=username_input_index_form, password=password_input_index_form)
+                    login(request, user)
+
+                    return redirect("academic-affairs-office-dashboard")
+                
+                if user_check.is_library == True:
+                    print("User: Libary")
+
+                    user = User.objects.get(username=username_input_index_form, password=password_input_index_form)
+                    login(request, user)
+
+                    return redirect("library-dashboard")
+                
+                if user_check.is_research_extension == True:
+                    print("User: Research & Extension")
+
+                    user = User.objects.get(username=username_input_index_form, password=password_input_index_form)
+                    login(request, user)
+
+                    return redirect("research-extension-dashboard")
 
             else:
                 print("The Password is incorrect.")
@@ -8244,7 +8268,60 @@ def adminTheDevs(request):
 
     return render(request, "admin-the-devs.html", context)
 
+##########################################################################################################################
 
+# Academic Affairs Office
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_academic_affairs, login_url="index")
+def academicAffairsOfficeDashboard(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": date_today,
+
+    }
+
+    return render(request, "academic-affairs-office-dashboard.html", context)
+
+# Library
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_library, login_url="index")
+def libraryDashboard(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+          "date_today": date_today,
+    }
+
+    return render(request, "library-dashboard.html", context)
+
+# Research & Extension
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+def researchExtensionDashboard(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": date_today,
+    }
+
+    return render(request, "research-extension-dashboard.html", context)
 ##########################################################################################################################
 
 # DIT Head - Dashboard Page

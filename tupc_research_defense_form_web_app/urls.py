@@ -287,4 +287,9 @@ urlpatterns = [
 
    path('adviser/bet3/adviser-conforme/accept/<str:id>', views.adviserBET3AdviserConformeAccept, name ="adviser-bet3-adviser-conforme-accept"),
    path('adviser/bet3/adviser-conforme/decline/<str:id>', views.adviserBET3AdviserConformeDecline, name ="adviser-bet3-adviser-conforme-decline"),
+
+
+   path('academic-affairs-office/dashboard', views.academicAffairsOfficeDashboard, name ="academic-affairs-office-dashboard"),
+   path('library/dashboard', views.libraryDashboard, name ="library-dashboard"),
+   path('research-extension/dashboard', views.researchExtensionDashboard, name ="research-extension-dashboard"),
 ]

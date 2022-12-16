@@ -118,18 +118,18 @@
 
           <div class="row">
             <div class="col-md-8 col-sm-12 mb-3">
-              <div class="card border-left-danger shadow h-100 py-2">
+              <div class="card border-left-dark shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                      <div class="text-xs font-weight-bold tup-colorway-secondary text-uppercase mb-1">
                         Panel</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome
                         {{panel_data.honorific}} {{panel_data.last_name}}
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fa-solid fa-face-laugh-beam fa-2x text-danger"></i>
+                      <i class="fa-solid fa-face-laugh-beam fa-2x tup-colorway-secondary"></i>
                     </div>
                   </div>
                 </div>
@@ -137,17 +137,17 @@
             </div>
 
             <div class="col-md-4 col-sm-12 mb-3">
-              <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card border-left-dark shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                      <div class="text-xs font-weight-bold tup-colorway-secondary text-uppercase mb-1">
                         Today</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">{{date_today}}
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fa-solid fa-sun fa-2x text-warning"></i>
+                      <i class="fa-solid fa-sun fa-2x tup-colorway-secondary"></i>
                     </div>
                   </div>
                 </div>
@@ -191,7 +191,7 @@
                       <th>Action</th>
                     </tr>
                   </tfoot>
-                  <tbody>
+                  <tbody class="text-dark">
                     {% for today_defense in today_title_defense %}
                     <tr>
                       <td>{{today_defense.id}}</td>

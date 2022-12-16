@@ -10,7 +10,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>Adviser - Dashboard</title>
+  <title>Academic Affairs Office - Dashboard</title>
 
   {% include 'css-main-cdn.html' %}
 
@@ -41,65 +41,6 @@
           <span>Home</span></a>
       </li>
 
-      
-
-      
-
-      <!-- Divider -->
-      <!-- <hr class="sidebar-divider"> -->
-
-      <!-- Nav Item - Forms Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-          aria-controls="collapsePages">
-          <i class="fa-solid fa-folder-open"></i>
-          <span>Forms</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'adviser-bet3-adviser-conforme' %}">Research Adviser Conforme</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Logs Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
-          aria-controls="collapseLogs">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          <span>Logs</span>
-        </a>
-        <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="#">Research Adviser Conforme</a>
-            <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
-            <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Tables -->
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span>History</span></a>
-    </li> -->
-
       <!-- Divider -->
       <hr class="sidebar-divider" />
 
@@ -125,21 +66,62 @@
       <!-- Main Content -->
       <div id="content">
 
-        {% include 'adviser-topbar.html' %}
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+          <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
+                  <div class="float-right">Acadmic Affairs Office</div>
+                </span>
+                <img class="img-profile rounded-circle" src="{% static 'img/user.png' %}" />
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                {% if currently_loggedin_user_account == 'Student' %}
+                <a class="dropdown-item" href="{% url 'student-profile' %}">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+                {% endif %}
+
+                {% if currently_loggedin_user_account == 'Administrator' %}
+                <a class="dropdown-item" href="{% url 'admin-profile' %}">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+                {% endif %}
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
           <div class="row">
-            <div class="col-md-8 col-sm-12 mb-3">
+            <div class="col-sm-12 col-md-6 mb-3">
               <div class="card border-left-dark shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold tup-colorway-secondary text-uppercase mb-1">
-                        Adviser</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome
-                        {{currently_loggedin_user_data.honorific}} {{currently_loggedin_user_data.last_name}}
+                      <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                        Academic Affairs</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome {{user.honorific}} {{user.last_name}} {{user.suffix}}
                       </div>
                     </div>
                     <div class="col-auto">
@@ -150,12 +132,12 @@
               </div>
             </div>
 
-            <div class="col-md-4 col-sm-12 mb-3">
+            <div class="col-md-6 col-sm-12 mb-3">
               <div class="card border-left-dark shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold tup-colorway-secondary text-uppercase mb-1">
+                      <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                         Today</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">{{date_today}}
                       </div>
@@ -168,13 +150,13 @@
               </div>
             </div>
           </div>
-
-
           <!-- DataTales Example -->
+
+          <div class="d-sm-flex align-items-center justify-content-between mt-4">
+            <h1 class="h3 mb-0 text-gray-800">Acknowledgement Receipt - Requests</h1>
+          </div>
+          
           <div class="card shadow mt-3 mb-4">
-            <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-dark">Advisee Dashboard</h6>
-                </div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
@@ -183,7 +165,6 @@
                       <th>Student ID No.</th>
                       <th>Student Leader Name</th>
                       <th>Course</th>
-                      <th>Research Title</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -192,7 +173,6 @@
                       <th>Student ID No.</th>
                       <th>Student Leader Name</th>
                       <th>Course</th>
-                      <th>Research Title</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
@@ -204,8 +184,7 @@
                       <td>{{advisee_data.course}}</td>
                       <td>{{advisee_data.research_title}}</td>
                       <td>
-                        <a id="accept_{{advisee_data.id}}" data-id="{{advisee_data.id}}"
-                          class="btn btn-outline-primary mb-2" type="button" href="#"><i class="fa-solid fa-eye"></i></a>
+                        <a id="accept_{{advisee_data.id}}" data-id="{{advisee_data.id}}" class="btn btn-outline-primary mb-2" type="button" href="#"><i class="fa-solid fa-eye"></i></a>
                       </td>
                     </tr>
                     {% endfor %}
