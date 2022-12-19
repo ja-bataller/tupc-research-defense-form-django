@@ -10,24 +10,23 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>DIT Head - Panel Conforme</title>
+  <title>Panel - Panel Conforme</title>
 
   {% include 'css-main-cdn.html' %}
 </head>
 
 <body id="page-top">
-
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    {% include 'dit-head-sidebar-forms.html' %}
+    {% include 'panel-sidebar-forms.html' %}
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
       <!-- Main Content -->
       <div id="content">
 
-        {% include 'dit-head-topbar.html' %}
+        {% include 'panel-topbar.html' %}
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -53,6 +52,7 @@
                       <th>Form</th>
                       <th>Panel ID No.</th>
                       <th>Panel Name</th>
+                      <th>Date & Time of Defense</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -65,6 +65,7 @@
                       <th>Form</th>
                       <th>Panel ID No.</th>
                       <th>Panel Name</th>
+                      <th>Date & Time of Defense</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
@@ -78,13 +79,10 @@
                       <td>{{panel_conforme.form}}</td>
                       <td>{{panel_conforme.panel_username}}</td>
                       <td>{{panel_conforme.panel_full_name}}</td>
+                      <td>{{panel_conforme.defense_date}} - {{panel_conforme.defense_start_time}} to {{panel_conforme.defense_end_time}}</td>
                       <td class="text-center">
                         <a id="accept_{{panel_conforme.id}}" data-id="{{panel_conforme.id}}"
-                          class="btn btn-outline-success mb-2" type="button"
-                          href="#">Accept</a>
-                        <!-- <a id="decline_{{panel_conforme.id}}" data-id="{{panel_conforme.id}}"
-                          class="btn btn-outline-danger mb-2" type="button"
-                          href="#">Decline</a> -->
+                          class="btn btn-outline-success mb-2" type="button" href="#">Accept</a>
                       </td>
                     </tr>
                     {% endfor %}
@@ -101,12 +99,18 @@
       <!-- Footer -->
       {% include 'footer.html' %}
       <!-- End of Footer -->
+
     </div>
     <!-- End of Content Wrapper -->
   </div>
   <!-- End of Page Wrapper -->
 
-  <!-- Accept Modal -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Accept Response Modal -->
   <div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="acceptModal" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
@@ -115,19 +119,21 @@
           <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
           </button>
         </div>
-        <div class="modal-body">
-          Are you sure you want to accept <span id="student_name_accept"></span><br />
-         Topic - Panel Conforme request?
-          <br />
-          <br />
+        <div class="modal-body">Are you sure you want to accept
+          <span id="student_name_accept"></span><br>
+          Panel Conforme request?
+          <br>
+          <br>
           <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required />
+            <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required>
             <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
           </div>
-          <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Accept - Attach Signature</a>
-          <hr />
-          <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept - Personal Signature</a>
-          <hr />
+          <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Accept -
+            Attach Signature</a>
+          <hr>
+          <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept -
+            Personal Signature</a>
+          <hr>
         </div>
         <div class="modal-footer">
           <button id="btn_cancel_a" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
@@ -136,64 +142,32 @@
     </div>
   </div>
 
-  <!-- Decline Modal -->
-  <div class="modal fade" id="declineModal" tabindex="-1" aria-labelledby="declineModal" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Decline Request?</h5>
-          </button>
-        </div>
-        <div class="modal-body">
-          Are you sure you want to decline <span id="student_name_decline"></span> <br />
-         Topic - Panel Conforme request?
-          <br />
-          <br />
-          <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="checkbox_agreement_d" required />
-            <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
-          </div>
-          <a id="btn_decline_signed" class="submit-button btn btn-outline-danger w-100" type="button" href="#">Decline - Attach Signature</a>
-          <hr />
-          <a id="decline_btn" class="btn btn-outline-warning w-100" type="button" href="#">Decline - Personal Signature</a>
-          <hr />
-        </div>
-        <div class="modal-footer">
-          <button id="btn_cancel_d" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
 
   {% include 'logout-modal.html' %}
   {% include 'script-cdn.html' %}
+
   <!-- Sweetalert 2 CDN -->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   {% for panel_conforme in get_panel_conforme %}
   <script>
+    // Accept Response - Personal Signature
     document.getElementById('accept_' + '{{panel_conforme.id}}').addEventListener("click", function () {
       data_id = $(document.getElementById('accept_' + '{{panel_conforme.id}}')).attr("data-id")
 
       document.getElementById('student_name_accept').textContent = "{{panel_conforme.student_leader_full_name}}";
-      document.getElementById("btn_accept").href = "{% url 'dit-head-panel-conforme-accept' id=0 %}".replace(/0/, data_id);
+      document.getElementById("btn_accept").href = "{% url 'panel-panel-conforme-accept' id=0 %}".replace(/0/, data_id);
       $("#acceptModal").modal()
     });
 
   </script>
   {% endfor %}
 
-  <!-- Modal - Accept- Attach Signature -->
+  <!-- Modal - Accept - Attach Signature -->
   <script>
-    document.getElementById("btn_accept_signed").addEventListener("click", function () {
-      if (document.getElementById("checkbox_agreement_a").checked) {
-        document.getElementById("btn_accept_signed").href = "{% url 'dit-head-panel-conforme-accept-sign' id=0 %}".replace(/0/, data_id);
+    document.getElementById('btn_accept_signed').addEventListener("click", function () {
+      if (document.getElementById('checkbox_agreement_a').checked) {
+        document.getElementById("btn_accept_signed").href = "{% url 'panel-panel-conforme-accept-sign' id=0 %}".replace(/0/, data_id);
       } else {
         Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
       }
@@ -214,32 +188,24 @@
 
   {% if response == 'sweet panel conforme accepted' %}
   <script>
-    Swal.fire("Accepted", "The Panel Conforme request of {{accepted_student_member_name}} is accepted.","success");
+    Swal.fire("Accepted", "The Panel Conforme request of {{accepted_student_member_name}} is accepted.", "success");
 
     setTimeout(function () {
-      window.location.replace("{% url 'dit-head-panel-conforme' %}");
-    }, 3000);
+      window.location.replace("{% url 'panel-panel-conforme' %}");
+    }, 2000);
+
   </script>
   {% endif %}
 
-  {% if response == 'sweet panel conforme declined' %}
-  <script>
-    Swal.fire("Declined", "The Panel Conforme request of {{declined_student_member_name}} is declined.", "info");
-
-    setTimeout(function () {
-      window.location.replace("{% url 'dit-head-panel-conforme' %}");
-    }, 3000);
-  </script>
-  {% endif %}
 
   {% if response == 'sweet no esign' %}
-    <script>
-      Swal.fire("Uh-oh", "No E-signature uploaded. \n Please upload you signature in your Profile.", "error");
+  <script>
+    Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
 
-      setTimeout(function () {
-        window.location.replace("{% url 'dit-head-panel-conforme' %}");
-      }, 3000);
-    </script>
+    setTimeout(function () {
+      window.location.replace("{% url 'panel-panel-conforme' %}");
+    }, 2300);
+  </script>
   {% endif %}
 
 </body>

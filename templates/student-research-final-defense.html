@@ -1,0 +1,239 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Student - BET-5 - Research Final Defense Form</title>
+
+  {% include 'css-main-cdn.html' %}
+  <link href="{% static 'css/file-loader.css' %}" rel="stylesheet" />
+</head>
+
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    {% include 'student-sidebar-forms.html' %}
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+
+        {% include 'topbar.html'%}
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <div class="d-sm-flex align-items-center justify-content-between">
+            <h1 class="h3 text-gray-800">BET-5 - Research Final Defense Form</h1>
+          </div>
+
+          <div class="row">
+
+            <div class="col-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 mt-2">
+                     <h6>Research Title:</h6>
+                    </div>
+                    <div class="col-sm-12">
+                      <h4>{{student_research_title}}</h4>
+                      <h6 style="display: inline;">Verdict: <h6 class="text-success" style="display: inline;">{{student_research_title.final_defense_status}}</h6></h6>
+                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">
+                      Group Members:
+                    </div>
+                    <div class="col-sm-12">
+                      - {{student_leader_full_name}}
+                    </div>
+
+                    {% if student_group_members %}
+                    {% for group_member in student_group_members %}
+                    <div class="col-sm-12">
+                      - {{group_member.student_member_full_name}}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="col-sm-12 mt-4 font-weight-bold">
+                      Course:
+                    </div>
+                    <div class="col-sm-12">
+                      {{student_leader_data.course_major_abbr}}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">
+                      Panel Members:
+                    </div>
+
+                    {% if proposal_defense_form %}
+                    {% for panel_member in proposal_defense_form %}
+
+                    {% if panel_member.is_panel_chairman == 1 %}
+                    <div class="col-sm-12">
+                      - {{panel_member.panel_full_name}} - <span class="text-success">Panel Chairman</span>
+                    </div>
+                    {% else %}
+                    <div class="col-sm-12">
+                      - {{panel_member.panel_full_name}}
+                    </div>
+                    {% endif %}
+
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="col-sm-12 mt-4 font-weight-bold">
+                      Subject Teacher:
+                    </div>
+
+                    <div class="col-sm-12">
+                      {{student_leader_data.bet3_subject_teacher_name}}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <a href="{% url 'student-bet5-final-defense-form-download' %}" onclick="generatingForm()"
+              class="btn btn-outline-success w-100">DOWNLOAD FORM</a>
+          </div>
+        </div>
+
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content img-fluid">
+        <div class="modal-body text-center">
+          <div class="spinner-border file-spinner mt-5 mb-3" style="width: 6rem; height: 6rem" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+
+          <div class="container move mt-5 mb-5 file-show" style="display: none">
+            <svg class="file fadein" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+              <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+              <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+            </svg>
+
+            <svg class="file zoomin" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+              <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+              <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+            </svg>
+
+            <svg class="file zoomout" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+              <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+              <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+              <path class="file-check done" d="M26.8,20.6L14.9,32.5l-5.7-5.7l2.1-2.1l3.6,3.6l9.8-9.9L26.8,20.6z" />
+              <circle class="file-loading load" cx="13" cy="21" r="7.7"></circle>
+            </svg>
+
+            <svg class="file fadeout" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+              <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+              <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+              <path class="file-check" d="M26.8,20.6L14.9,32.5l-5.7-5.7l2.1-2.1l3.6,3.6l9.8-9.9L26.8,20.6z" />
+            </svg>
+          </div>
+          <h3 id="simpleUsage" class="mb-5"></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  {% include 'logout-modal.html' %}
+
+  {% include 'script-cdn.html' %}
+
+  <script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+  <script>
+    function generatingForm() {
+      $("#myModal").modal();
+
+      new TypeIt("#simpleUsage", {
+          speed: 20,
+          waitUntilVisible: true,
+          loop: true,
+        })
+        .type("Loading...", {
+          delay: 500
+        })
+        .delete(10)
+        .type("Extracting Data...", {
+          delay: 500
+        })
+        .delete(18)
+        .type("Generating PDF...", {
+          delay: 500
+        })
+        .go();
+    }
+  </script>
+
+  {% if response == 'sweet downloaded' %}
+  <script>
+    Swal.fire("Downloaded", "The Research Proposal Defense Form has been downloaded.", "success");
+    // window.open("{{download_link}}", '_blank').focus();
+
+    setTimeout(function () {
+        window.location.replace("{% url 'student-bet3-research-proposal-defense' %}");
+      }, 2000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet faculty member no signature' %}
+    <script>
+      Swal.fire("Uh-oh", "The Faculty Member might have remove his or her signature. Please try again later.", "error");
+
+      setTimeout(function () {
+        window.location.replace("{% url 'student-bet3-research-proposal-defense' %}");
+      }, 2000);
+    </script>
+    {% endif %}
+
+</body>
+
+</html>

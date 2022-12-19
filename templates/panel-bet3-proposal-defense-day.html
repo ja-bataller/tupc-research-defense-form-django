@@ -389,7 +389,7 @@
       if (document.getElementById('checkbox_agreement_pc').checked) {
         document.getElementById("btn_panel_chairman_esign").href = "{% url 'panel-bet3-proposal-defense-day-critique-panel-chairman-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
       } else {
-        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
       }
     });
   </script>
@@ -400,7 +400,7 @@
       if (document.getElementById('checkbox_agreement_p').checked) {
         document.getElementById("btn_panel_esign").href = "{% url 'panel-bet3-proposal-defense-day-critique-panel-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
       } else {
-        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
       }
     });
   </script>
@@ -425,7 +425,7 @@
       if (document.getElementById('checkbox_proposal_agreement_pc').checked) {
         document.getElementById("btn_proposal_panel_chairman_esign").href = "{% url 'panel-bet3-proposal-defense-day-panel-chairman-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
       } else {
-        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
       }
     });
   </script>
@@ -436,7 +436,7 @@
       if (document.getElementById('checkbox_proposal_agreement_p').checked) {
         document.getElementById("btn_proposal_panel_esign").href = "{% url 'panel-bet3-proposal-defense-day-panel-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
       } else {
-        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
       }
     });
   </script>

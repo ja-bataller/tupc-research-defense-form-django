@@ -100,7 +100,7 @@ submit_btn.addEventListener("click", function (event) {
       clearPad();
       document.getElementById("signatureForm").submit();
     } else {
-      Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+      Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
     }
   }
 

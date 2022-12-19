@@ -35,15 +35,13 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
           <i class="fa-solid fa-house"></i>
-          <span>Home</span></a
-        >
+          <span>Home</span></a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="{% url 'dit-head-research-titles' %}">
           <i class="fa-solid fa-book"></i>
-          <span>Research Titles</span></a
-        >
+          <span>Research Titles</span></a>
       </li>
 
       <!-- Divider -->
@@ -106,8 +104,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'dit-head-the-devs' %}">
           <i class="fa-solid fa-code"></i>
-          <span>The Devs</span></a
-        >
+          <span>The Devs</span></a>
       </li>
 
       <!-- Divider -->
@@ -143,24 +140,27 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-12 mt-2">
-                     <h6>Research Title:</h6>
+                      <h6>Research Title:</h6>
                     </div>
                     <div class="col-sm-12">
                       <h4>{{accepted_research_title}}</h4>
                       {% if end_voting %}
-                        {% if pending_proposal_defense %}
-                          {% if accepted_research_title.proposal_defense_status == "Accepted with Revision" %}
-                          <h6 style="display: inline;">Verdict: <h6 class="text-success" style="display: inline;">{{accepted_research_title.proposal_defense_status}}</h6></h6>
-                          {% endif %}
-                          {% if accepted_research_title.proposal_defense_status == "Deferred with Revision" %}
-                          <h6 style="display: inline;">Verdict: <h6 class="text-info" style="display: inline;">{{accepted_research_title.proposal_defense_status}}</h6></h6>
-                          {% endif %}
-                          {% if accepted_research_title.proposal_defense_status == "Not Accepted" %}
-                          <h6 style="display: inline;">Verdict: <h6 class="text-danger" style="display: inline;">{{accepted_research_title.proposal_defense_status}}</h6></h6>
-                          {% endif %}
-                        {% endif %}
+
+                      {% if get_accepted_research_title_data.final_defense_status == "Accepted with Revision" %}
+                      <h6 style="display: inline;">Verdict: <h6 class="text-success" style="display: inline;">{{get_accepted_research_title_data.final_defense_status}}</h6>
+                      </h6>
                       {% endif %}
-                     </div>
+                      {% if get_accepted_research_title_data.final_defense_status == "Deferred with Revision" %}
+                      <h6 style="display: inline;">Verdict: <h6 class="text-info" style="display: inline;">{{get_accepted_research_title_data.final_defense_status}}</h6>
+                      </h6>
+                      {% endif %}
+                      {% if get_accepted_research_title_data.final_defense_status == "Not Accepted" %}
+                      <h6 style="display: inline;">Verdict: <h6 class="text-danger" style="display: inline;">{{get_accepted_research_title_data.final_defense_status}}</h6>
+                      </h6>
+                      {% endif %}
+
+                      {% endif %}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -227,41 +227,39 @@
                   <tbody>
 
                     {% if panel_members %}
-                      {% for panel_member in present_panel_members %}
-                      <tr>
-                        <td>{{panel_member.panel_username}}</td>
-                        <td>{{panel_member.panel_full_name}}</td>
-                        <td class="text-center text-success">
-                          Present
-                        </td>
-                        <td>pending</td>
-                        <td>pending</td>
-                        <td>pending</td>
-                        <td></td>
-                      </tr>
-                      {% endfor %}
+                    {% for panel_member in present_panel_members %}
+                    <tr>
+                      <td>{{panel_member.panel_username}}</td>
+                      <td>{{panel_member.panel_full_name}}</td>
+                      <td class="text-center text-success">
+                        Present
+                      </td>
+                      <td>pending</td>
+                      <td>pending</td>
+                      <td>pending</td>
+                      <td></td>
+                    </tr>
+                    {% endfor %}
 
                     {% else %}
 
-                      {% if not panel_chairman %}
-                        {% for panel_member in present_panel_members_proposal_defense %}
-                        <tr>
-                          <td>{{panel_member.panel_username}}</td>
-                          <td>{{panel_member.panel_full_name}}</td>
-                          <td class="text-success">
-                            Present
-                          </td>
-                          <td>Pending</td>
-                          <td>Pending</td>
-                          <td>Pending</td>
-                          <td class="text-success">
-                            <a id="panel_chairman_{{panel_member.id}}" data-id="{{panel_member.id}}"
-                              class="btn btn-outline-success mb-2 w-100" href="#">Set as Panel Chairman</a>
-                          </td>
-                          
-                        </tr>
-                        {% endfor %}
-                      {% endif %}
+                    {% if not panel_chairman %}
+                    {% for panel_member in present_panel_members_proposal_defense %}
+                    <tr>
+                      <td>{{panel_member.panel_username}}</td>
+                      <td>{{panel_member.panel_full_name}}</td>
+                      <td class="text-success">
+                        Present
+                      </td>
+                      <td>Pending</td>
+                      <td>Pending</td>
+                      <td class="text-success">
+                        <a id="panel_chairman_{{panel_member.id}}" data-id="{{panel_member.id}}" class="btn btn-outline-success mb-2 w-100" href="#">Set as Panel Chairman</a>
+                      </td>
+
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
                     {% endif %}
 
 
@@ -271,35 +269,35 @@
                       <td>{{panel_member.panel_username}}</td>
                       <td>{{panel_member.panel_full_name}}</td>
                       {% if panel_member.is_panel_chairman == 1 %}
-                        <td class="text-success">
-                          Present - Panel Chairman
-                        </td>
+                      <td class="text-success">
+                        Present - Panel Chairman
+                      </td>
 
-                        {% if panel_member.panel_signature_response == True and panel_member.panel_chairman_signature_response == True %}
-                          <td class="text-success">Done</td>
-                        {% else %}
-                          <td>Pending</td>
-                        {% endif %}
+                      {% if panel_member.panel_signature_response == True and panel_member.panel_chairman_signature_response == True %}
+                      <td class="text-success">Done</td>
+                      {% else %}
+                      <td>Pending</td>
+                      {% endif %}
 
                       {% else %}
-                        <td class="text-success">
-                          Present
-                        </td>
+                      <td class="text-success">
+                        Present
+                      </td>
 
-                        {% if panel_member.panel_signature_response == True %}
-                          <td class="text-success">Done</td>
-                        {% else %}
-                          <td>Pending</td>
-                        {% endif %}
+                      {% if panel_member.panel_signature_response == True %}
+                      <td class="text-success">Done</td>
+                      {% else %}
+                      <td>Pending</td>
+                      {% endif %}
 
                       {% endif %}
 
                       {% if not panel_member.final_defense_response %}
-                        <td>Pending</td>
+                      <td>Pending</td>
                       {% else %}
-                        <td class="text-success">Done</td>
+                      <td class="text-success">Done</td>
                       {% endif %}
-                      
+
                       <td></td>
                     </tr>
                     {% endfor %}
@@ -313,10 +311,8 @@
                       <td>pending</td>
                       <td>pending</td>
                       <td class="text-center">
-                        <a id="present_{{panel_member.id}}" data-id="{{panel_member.id}}"
-                          class="btn btn-outline-success mb-2 w-100" href="#">Present</a>
-                        <a id="absent_{{panel_member.id}}" data-id="{{panel_member.id}}"
-                          class="btn btn-outline-danger mb-2 w-100" href="#">Absent</a>
+                        <a id="present_{{panel_member.id}}" data-id="{{panel_member.id}}" class="btn btn-outline-success mb-2 w-100" href="#">Present</a>
+                        <a id="absent_{{panel_member.id}}" data-id="{{panel_member.id}}" class="btn btn-outline-danger mb-2 w-100" href="#">Absent</a>
                       </td>
                     </tr>
                     {% endfor %}
@@ -339,27 +335,27 @@
             </div>
           </div>
 
-
+          {% if panel_chairman %}
           {% if not start_voting %}
-            <a class="btn btn-outline-success mb-2 w-100"
-              href="{% url 'subject-teacher-bet5-final-defense-day-start-voting' student_leader_data.username %}">Start Voting</a>
+          <a class="btn btn-outline-success mb-2 w-100" href="{% url 'subject-teacher-bet5-final-defense-day-start-voting' student_leader_data.username %}">Start Voting</a>
+          {% endif %}
           {% endif %}
 
 
           {% if start_voting %}
-            {% if done_panel_chairman_sign %}
-              {% if not all_pending_panel_signature_response %}
-                  {% if not end_voting %}
-                    <a class="btn btn-outline-success mb-2 w-100" href="{% url 'subject-teacher-bet5-final-defense-day-end-voting' student_leader_data.username %}">End Voting</a>
-                  {% endif %}
-                {% endif %}
-            {% endif %}
+          {% if done_panel_chairman_sign %}
+          {% if not all_pending_panel_signature_response %}
+          {% if not end_voting %}
+          <a class="btn btn-outline-success mb-2 w-100" href="{% url 'subject-teacher-bet5-final-defense-day-end-voting' student_leader_data.username %}">End Voting</a>
+          {% endif %}
+          {% endif %}
+          {% endif %}
           {% endif %}
 
           {% if end_voting %}
-            {% if pending_proposal_defense %}
-              <a class="btn btn-outline-danger mb-2 w-100" href="{% url 'subject-teacher-bet5-final-defense-day-end-defense' student_leader_data.username %}">End Defense</a>
-            {% endif %}
+          {% if pending_proposal_defense %}
+          <a class="btn btn-outline-danger mb-2 w-100" href="{% url 'subject-teacher-bet5-final-defense-day-end-defense' student_leader_data.username %}">End Defense</a>
+          {% endif %}
           {% endif %}
 
         </div>
@@ -382,8 +378,7 @@
   </a>
 
   <!-- Present Modal -->
-  <div class="modal fade" id="presentModal" tabindex="-1" aria-labelledby="presentModal" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="presentModal" tabindex="-1" aria-labelledby="presentModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -400,8 +395,7 @@
   </div>
 
   <!-- Absent Modal -->
-  <div class="modal fade" id="absentModal" tabindex="-1" aria-labelledby="absentModal" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="absentModal" tabindex="-1" aria-labelledby="absentModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -418,8 +412,7 @@
   </div>
 
   <!-- Panel Chairman Modal -->
-  <div class="modal fade" id="panelChairmanModal" tabindex="-1" aria-labelledby="panelChairmanModal" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="panelChairmanModal" tabindex="-1" aria-labelledby="panelChairmanModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

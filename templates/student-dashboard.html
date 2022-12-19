@@ -69,17 +69,22 @@
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Topic - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
+            <a class="collapse-item" href="{% url 'student-bet3-topic-panel-conforme'%}">Topic - Panel Conforme</a>
             <a class="collapse-item" href="{% url 'student-bet3-adviser-dashboard' %}">Adviser Conforme</a>
             <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation' %}">Proposal - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'student-bet3-critique-form' %}">Critique Form</a>
             <a class="collapse-item" href="{% url 'student-bet3-research-proposal-defense' %}">Research Proposal Defense</a>
+            <a class="collapse-item" href="{% url 'student-bet3-proposal-panel-conforme' %}">Proposal - Panel Conforme</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
-            {% if not student_leader_data.bet5_subject_teacher_name %}
-            <a class="collapse-item" href="{% url 'student-bet5-subject-teacher' %}">BET-5 Subject Teacher</a>
+            {% if student_leader_data.bet3_proposal_defense_status %}
+              {% if not student_leader_data.bet5_subject_teacher_name %}
+              <a class="collapse-item" href="{% url 'student-bet5-subject-teacher' %}">BET-5 Subject Teacher</a>
+              {% endif %}
             {% endif %}
             <a class="collapse-item" href="{% url 'student-bet5-final-defense-panel-invitation' %}">Final - Panel Invitation</a>
-            <a class="collapse-item" href="#">Research Final Defense</a>
+            <a class="collapse-item" href="{% url 'student-bet5-research-final-defense'%}">Research Final Defense</a>
+            <a class="collapse-item" href="{% url 'student-bet5-final-panel-conforme' %}">Final - Panel Conforme</a>
             <a class="collapse-item" href="#">Acknowledgement Receipt</a>
           </div>
         </div>
@@ -267,6 +272,16 @@
                           <hr class="m-1">
                           {% endif %}
 
+                          {% if student_leader_data.topic_panel_conforme == "completed" %}
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
+                            Panel Conforme - Topic Defense</div>
+                          <hr class="m-1">
+                          {% else %}
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
+                            Panel Conforme - Topic Defense</div>
+                          <hr class="m-1">
+                          {% endif %}
+
                           {% if student_leader_data.adviser_conforme_status == "Completed" %}
                           <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
                             Adviser Conforme</div>
@@ -305,6 +320,16 @@
                             Research Proposal Defense Form</div>
                           <hr class="m-1">
                           {% endif %}
+
+                          {% if student_leader_data.proposal_panel_conforme == "completed" %}
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
+                            Panel Conforme - Proposal Defense</div>
+                          <hr class="m-1">
+                          {% else %}
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
+                            Panel Conforme - Proposal Defense</div>
+                          <hr class="m-1">
+                          {% endif %}
                         </div>
                         <div class="col-auto">
                           <i class="fa-solid fa-list-check fa-2x tup-colorway-secondary"></i>
@@ -337,14 +362,37 @@
                             Panel Invitation - Research Final Defense</div>
                           <hr class="m-1">
                           {% endif %}
-   
+
+                          {% if student_leader_data.bet5_final_defense_status == "completed" %}
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
+                            Research Final Defense Form</div>
                           <hr class="m-1">
+                          {% else %}
                           <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
                             Research Final Defense Form</div>
                           <hr class="m-1">
+                          {% endif %}
+
+                          {% if student_leader_data.final_panel_conforme == "completed" %}
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
+                           Final Panel Conforme</div>
+                          <hr class="m-1">
+                          {% else %}
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
+                           Final Panel Conforme</div>
+                          <hr class="m-1">
+                          {% endif %}
+   
+                          
+                          {% if student_leader_data.acknowledgement_receipt == "completed" %}
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
+                            Acknowledgement Receipt</div>
+                          <hr class="m-1">
+                          {% else %}
                           <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
                             Acknowledgement Receipt</div>
                           <hr class="m-1">
+                          {% endif %}
 
                         </div>
                         <div class="col-auto">

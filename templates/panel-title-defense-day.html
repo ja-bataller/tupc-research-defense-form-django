@@ -423,7 +423,7 @@
       if (document.getElementById('checkbox_agreement_a').checked) {
         document.getElementById("btn_accept_signed").href = "{% url 'panel-title-defense-day-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
       } else {
-        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");''
+        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");''
       }
     });
   </script>

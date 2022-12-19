@@ -252,6 +252,10 @@
                       {% if completed_today_defense.form == "Research Proposal Defense" %}
                       <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-proposal-defense-day' completed_today_defense.student_leader_username%}"><i class="fa-solid fa-eye"></i></a></td>
                       {% endif %}
+
+                      {% if completed_today_defense.form == "Research Final Defense" %}
+                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet5-final-defense-day' completed_today_defense.student_leader_username%}"><i class="fa-solid fa-eye"></i></a></td>
+                      {% endif %}
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -442,7 +446,7 @@
 
   {% if response == 'sweet proposal defense end critique' %}
   <script>
-    Swal.fire("End Critique", "The Critique Form has ended.", "invalid");
+    Swal.fire("End Critique", "The Critique Form has ended.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
     }, 4000);

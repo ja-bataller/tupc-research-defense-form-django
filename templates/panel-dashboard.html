@@ -51,6 +51,7 @@
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'panel-panel-conforme' %}">Panel Conforme</a>
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Topic - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'panel-bet3-proposal-defense-panel-invitation-dashboard' %}">Proposal - Panel Invitation</a>
@@ -414,7 +415,7 @@
 
   {% if response == 'sweet proposal defense live signature respond' %}
   <script>
-    Swal.fire("InfSuccesso", "You have marked this form for live signature.", "success");
+    Swal.fire("Success", "You have marked this form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
     }, 3000);
@@ -532,7 +533,7 @@
 
   {% if response == 'sweet proposal panel chairman esign' %}
   <script>
-    Swal.fire("E-Sign Attached", "You have attached your e-signature to the Proposal Defense Form.", "success");
+    Swal.fire("Success", "You have attached your e-signature to the Proposal Defense Form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
     }, 3000);
@@ -541,7 +542,7 @@
 
   {% if response == 'sweet proposal panel esign' %}
   <script>
-    Swal.fire("E-Sign Attached", "You have attached your e-signature to the Proposal Defense Form.", "success");
+    Swal.fire("Success", "You have attached your e-signature to the Proposal Defense Form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
     }, 3000);
@@ -550,7 +551,7 @@
 
   {% if response == 'sweet proposal panel chairman live sign' %}
   <script>
-    Swal.fire("Live Signature", "You have marked the Proposal Defense Form for live signature.", "success");
+    Swal.fire("Success", "You have marked the Proposal Defense Form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
     }, 3000);
@@ -559,7 +560,7 @@
 
   {% if response == 'sweet proposal panel live sign' %}
   <script>
-    Swal.fire("Live Signature", "You have marked the Proposal Defense Form for live signature.", "success");
+    Swal.fire("Success", "You have marked the Proposal Defense Form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
     }, 3000);
@@ -641,7 +642,7 @@
 
   {% if response == 'sweet final panel chairman esign' %}
   <script>
-    Swal.fire("E-Sign Attached", "You have attached your e-signature to the Final Defense Form.", "success");
+    Swal.fire("Success", "You have attached your e-signature to the Final Defense Form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
     }, 3000);

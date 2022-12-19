@@ -204,7 +204,7 @@
       if (document.getElementById('checkbox_agreement_a').checked) {
         document.getElementById("btn_accept_signed").href = "{% url 'panel-bet5-final-defense-panel-invitation-accept-sign' id=0 %}".replace(/0/, data_id);
       } else {
-        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
       }
     });
   </script>
@@ -215,7 +215,7 @@
       if (document.getElementById("checkbox_agreement_d").checked) {
         document.getElementById("btn_decline_signed").href = "{% url 'panel-bet5-final-defense-panel-invitation-decline-sign' id=0 %}".replace(/0/, data_id);
       } else {
-        Swal.fire("Info", "Please check the agreement if you wish to proceed.", "info");
+        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
       }
     });
   </script>

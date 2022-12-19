@@ -107,6 +107,12 @@ class StudentLeader(models.Model):
     bet5_final_defense_panel_invitation_status = models.CharField(max_length=256, blank=True)
     bet5_final_defense_status = models.CharField(max_length=256, blank=True)
 
+    topic_panel_conforme = models.CharField(max_length=256, blank=True)
+    proposal_panel_conforme = models.CharField(max_length=256, blank=True)
+    final_panel_conforme = models.CharField(max_length=256, blank=True)
+
+    acknowledgement_receipt = models.CharField(max_length=256, blank=True)
+
     request_limit = models.IntegerField(blank=True)
 
     def __str__(self) -> str:
@@ -224,6 +230,8 @@ class FilePath(models.Model):
 
     def __str__(self) -> str:
         return self.student_leader_username
+
+
 
 
 ##### TITLE DEFENSE #####
@@ -774,6 +782,78 @@ class FinalDefenseFormLog(models.Model):
     defense_end_time = models.CharField(max_length=256, blank=True)
 
     final_defense_response = models.CharField(max_length=256, blank=True)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
+
+# Panel Conforme
+class PanelConforme(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256, blank=True)
+    
+    dit_head_username= models.CharField(max_length=256)
+    dit_head_full_name = models.CharField(max_length=256)
+    dit_head_response = models.CharField(max_length=256)
+    dit_head_response_date = models.CharField(max_length=256)
+    dit_head_signature = models.BooleanField(default=False)
+
+    panel_username = models.CharField(max_length=256)
+    panel_full_name = models.CharField(max_length=256)
+    panel_response = models.CharField(max_length=256)
+    panel_response_date = models.CharField(max_length=256)
+    panel_signature = models.BooleanField(default=False)
+
+    research_title = models.CharField(max_length=256, blank=True)
+    defense_date = models.CharField(max_length=256, blank=True)
+    defense_start_time = models.CharField(max_length=256, blank=True)
+    defense_end_time = models.CharField(max_length=256, blank=True)
+
+    form_date_sent = models.CharField(max_length=256)
+
+    form_status = models.CharField(max_length=256)
+    form = models.CharField(max_length=256)
+
+    subject_teacher_username = models.CharField(max_length=256, blank=True)
+    subject_teacher_full_name = models.CharField(max_length=256, blank=True)
+
+    is_completed = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
+# Panel Conforme
+class PanelConformeLog(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256, blank=True)
+    
+    dit_head_username= models.CharField(max_length=256)
+    dit_head_full_name = models.CharField(max_length=256)
+    dit_head_response = models.CharField(max_length=256)
+    dit_head_response_date = models.CharField(max_length=256)
+    dit_head_signature = models.BooleanField(default=False)
+
+    panel_username = models.CharField(max_length=256)
+    panel_full_name = models.CharField(max_length=256)
+    panel_response = models.CharField(max_length=256)
+    panel_response_date = models.CharField(max_length=256)
+    panel_signature = models.BooleanField(default=False)
+
+    research_title = models.CharField(max_length=256, blank=True)
+    defense_date = models.CharField(max_length=256, blank=True)
+    defense_start_time = models.CharField(max_length=256, blank=True)
+    defense_end_time = models.CharField(max_length=256, blank=True)
+
+    form_date_sent = models.CharField(max_length=256)
+    form_status = models.CharField(max_length=256)
+    form = models.CharField(max_length=256)
+
+    subject_teacher_username = models.CharField(max_length=256, blank=True)
+    subject_teacher_full_name = models.CharField(max_length=256, blank=True)
+
+    is_completed = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.student_leader_username

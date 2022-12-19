@@ -29,6 +29,18 @@ urlpatterns = [
    path('student/bet3/research-title-defense', views.studentBET3ResearchTitleDefense, name ="student-bet3-research-title-defense"),
    path('student/bet3/research-title-defense-form/download', views.studentDownloadBET3ResearchTitleDefenseForm, name ="student-download-bet3-research-title-defense-form"),
 
+   path('student/bet3/topic/panel-conforme', views.studentBET3TopicPanelConforme, name ="student-bet3-topic-panel-conforme"),
+   path('student/bet3/topic/panel-conforme/save', views.studentTopicPanelConformeSave, name ="student-topic-panel-conforme-save"),
+   path('student/bet3/topic/panel-conforme/download/<str:id>', views.studentTopicPanelConformeDownload, name ="student-topic-panel-conforme-download"),
+
+   path('student/bet3/proposal/panel-conforme', views.studentBET3ProposalPanelConforme, name ="student-bet3-proposal-panel-conforme"),
+   path('student/bet3/proposal/panel-conforme/save', views.studentProposalPanelConformeSave, name ="student-proposal-panel-conforme-save"),
+   path('student/bet3/proposal/panel-conforme/download/<str:id>', views.studentProposalPanelConformeDownload, name ="student-proposal-panel-conforme-download"),
+
+   path('student/bet5/final/panel-conforme', views.studentBET5FinalPanelConforme, name ="student-bet5-final-panel-conforme"),
+   path('student/bet5/final/panel-conforme/save', views.studentFinalPanelConformeSave, name ="student-final-panel-conforme-save"),
+   path('student/bet5/final/panel-conforme/download/<str:id>', views.studentFinalPanelConformeDownload, name ="student-final-panel-conforme-download"),
+
    path('student/bet3/adviser/dashboard', views.studentBET3AdviserDashboard, name ="student-bet3-adviser-dashboard"),
    path('student/bet3/adviser-conforme/download', views.studentBET3AdviserConformeDownload, name ="student-bet3-adviser-conforme-download"),
 
@@ -52,9 +64,12 @@ urlpatterns = [
    path('student/bet5/final-defense/panel-invitation/save', views.studentBET5FinalDefensePanelInvitationSave, name ="student-bet5-final-defense-panel-invitation-save"),
    path('student/bet5/final-defense/panel-invitation/download/<str:id>', views.studentBET5FinalDefensePanelInvitationDownload, name ="student-bet5-final-defense-panel-invitation-download"),
 
+   path('student/bet5/research-final-defense', views.studentBET5ResearchFinalDefenseForm, name ="student-bet5-research-final-defense"),
+   path('student/bet5/research-final-defense-form/download', views.studentBET5ResearchFinalDefenseFormDownload, name ="student-bet5-final-defense-form-download"),
+
    path('student-panel-conforme-bet3/', views.studentPanelConformeBet3, name ="student-panel-conforme-bet3"), 
    path('student-panel-conforme-bet3-create/', views.studentPanelConformeBet3Create, name ="student-panel-conforme-bet3-create"),
-   path('student-panel-conforme-bet3-form/', views.studentPanelConformeBet3Form, name ="student-panel-conforme-bet3-form"), 
+   path('student-panel-conforme-bet3-form/', views.studentPanelConformeBet3Form, name ="student-panel-conforme-bet3-form"),
 
    path('student/bet3/topic-defense/panel-invitation/logs', views.studentBET3PanelInvitationLogs, name ="student-bet3-panel-invitation-logs"),
    path('student/bet3/proposal-defense/panel-invitation/logs', views.studentBET3ProposalDefensePanelInvitationLogs, name ="student-bet3-proposal-defense-panel-invitation-logs"),
@@ -107,15 +122,17 @@ urlpatterns = [
    path('dit-head/bet3/proposal-defense/panel-invitation/accept/<str:id>', views.ditHeadBET3ProposalPanelInvitationAccept, name ="dit-head-bet3-proposal-panel-invitation-accept"),
    path('dit-head/bet3/proposal-defense/panel-invitation/decline/<str:id>', views.ditHeadBET3ProposalPanelInvitationDecline, name ="dit-head-bet3-proposal-panel-invitation-decline"),
 
+   # DIT HEAD - ADVISER CONFORME
    path('dit-head/bet3/adviser-conforme', views.ditHeadBET3AdviserConforme, name ="dit-head-bet3-adviser-conforme"),
-
    path('dit-head/bet3/adviser-conforme/accept/sign/<str:id>', views.ditHeadBET3AdviserConformeAcceptSignature, name ="dit-head-bet3-adviser-conforme-accept-sign"),
    path('dit-head/bet3/adviser-conforme/decline/sign/<str:id>', views.ditHeadBET3AdviserConformeDeclineSignature, name ="dit-head-bet3-adviser-conforme-decline-sign"),
-
    path('dit-head/bet3/adviser-conforme/accept/<str:id>', views.ditHeadBET3AdviserConformeAccept, name ="dit-head-bet3-adviser-conforme-accept"),
    path('dit-head/bet3/adviser-conforme/decline/<str:id>', views.ditHeadBET3AdviserConformeDecline, name ="dit-head-bet3-adviser-conforme-decline"),
-
+   
+   # DIT HEAD - PANEL CONFORME
    path('dit-head/panel-conforme', views.ditHeadPanelConformeDashboard, name ="dit-head-panel-conforme"),
+   path('dit-head/panel-conforme/accept/sign/<str:id>', views.ditHeadPanelConformeAcceptSignature, name ="dit-head-panel-conforme-accept-sign"),
+   path('dit-head/panel-conforme/accept/<str:id>', views.ditHeadPanelConformeAccept, name ="dit-head-panel-conforme-accept"),
 
    path('dit-head/bet5/final-defense/panel-invitation', views.ditHeadBET5FinalDefensePanelInvitationDashboard, name ="dit-head-bet5-final-defense-panel-invitation-dashboard"),
    path('dit-head/bet5/final-defense/panel-invitation/accept/sign/<str:id>', views.ditHeadBET5FinalPanelInvitationAcceptSignature, name ="dit-head-bet5-final-panel-invitation-accept-sign"),
@@ -186,6 +203,10 @@ urlpatterns = [
    path('panel/bet3/panel-invitation/decline/<str:id>', views.panelPanelInvitationBet3Decline, name ="panel-panel-invitation-bet-3-decline"),
    
    path('panel-research-title-defense-dashboard', views.panelResearchTitleDefenseDashboard, name ="panel-research-title-defense-dashboard"),
+
+   path('panel/panel-conforme', views.panelPanelConformeDashboard, name ="panel-panel-conforme"),
+   path('panel/panel-conforme/accept/sign/<str:id>', views.panelPanelConformeAcceptSignature, name ="panel-panel-conforme-accept-sign"),
+   path('panel/panel-conforme/accept/<str:id>', views.panelPanelConformeAccept, name ="panel-panel-conforme-accept"),
 
    path('panel/bet3/proposal-defense/panel-invitation', views.panelBET3ProposalDefensePanelInvitationDashboard, name ="panel-bet3-proposal-defense-panel-invitation-dashboard"),
    path('panel/bet3/proposal-defense/panel-invitation/accept/sign/<str:id>', views.panelBET3ProposalPanelInvitationAcceptSignature, name ="panel-bet3-proposal-defense-panel-invitation-accept-sign"),

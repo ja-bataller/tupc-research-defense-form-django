@@ -2301,8 +2301,7 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
 
                 return render(request, "student-bet3-research-title-defense.html", context)
     except:
-        print("Live Signature")
-        pass
+       panel1_sign_box.cell(0, 0).text = ''
 
     # Panel 2 Signature Box
     panel2_sign_box = doc.tables[5]
@@ -2326,8 +2325,7 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
 
                 return render(request, "student-bet3-research-title-defense.html", context)
     except:
-        print("Live Signature")
-        pass
+        panel2_sign_box.cell(0, 0).text = ''
 
     # Panel 3 Signature Box
     panel3_sign_box = doc.tables[3]
@@ -2351,8 +2349,7 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
 
                 return render(request, "student-bet3-research-title-defense.html", context)
     except:
-        print("Live Signature")
-        pass
+        panel3_sign_box.cell(0, 0).text = ''
 
 
     # Panel 4 Signature Box
@@ -2377,8 +2374,7 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
 
                 return render(request, "student-bet3-research-title-defense.html", context)
     except:
-        print("Live Signature")
-        pass
+       panel4_sign_box.cell(0, 0).text = ''
 
     if accepted_title:
         img = qrcode.make(
@@ -2603,6 +2599,1042 @@ def studentBET3ResearchTitleDefense(request):
     }
 
     return render(request, "student-bet3-research-title-defense.html", context)
+
+# Student - BET3 - Topic - Panel Conforme - Dashboard
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentBET3TopicPanelConforme(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+
+    if get_student_leader_data.bet3_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
+
+        return render(request, "student-bet3-panel-invitation-dashboard.html", context)
+
+    if get_student_leader_data.title_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
+
+        return render(request, "student-dashboard.html", context)
+    ############## PAGE VALIDATION ##############
+
+    get_all_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Topic Panel Conforme")
+
+    get_all_pending_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Topic Panel Conforme", is_completed = False)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "topic_panel_conforme": get_all_topic_panel_conforme,
+        "pending_panel_conforme": get_all_pending_topic_panel_conforme,
+    }
+
+    return render(request, "student-bet3-topic-panel-conforme-dashboard.html", context)
+
+# Student - BET3 - Panel Conforme - Save Process
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentTopicPanelConformeSave(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+    ############## PAGE VALIDATION ##############
+
+    get_student_leader_data.topic_panel_conforme = "completed"
+    get_student_leader_data.save()
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+        "currently_loggedin_user_account": currently_loggedin_user_account, 
+        "student_leader_data": get_student_leader_data, 
+        "response": "sweet panel conforme saved"}
+
+    return render(request, "student-bet3-topic-panel-conforme-dashboard.html", context)
+
+
+# Student - BET3 - Topic Defense - Panel Invitation - Download Process
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentTopicPanelConformeDownload(request, id):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+        get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+        get_panel_conforme = PanelConforme.objects.get(id=int(id), student_leader_username=current_user.username)
+
+    except:
+        return redirect("student-bet3-topic-panel-conforme")
+
+    ############## BET-3 PANEL INVITATION DATA ##############
+    date_submitted = get_panel_conforme.form_date_sent
+
+    student_member_list = [get_panel_conforme.student_leader_full_name]
+    course = get_student_leader_data.course.replace("Engineering", "Eng.")
+    major = get_student_leader_data.major
+
+    defense_date = get_panel_conforme.defense_date
+    defense_start_time = get_panel_conforme.defense_start_time
+    defense_end_time = get_panel_conforme.defense_end_time
+
+    dit_head_full_name = get_panel_conforme.dit_head_full_name
+    dit_head_response = get_panel_conforme.dit_head_response
+    dit_head_response_date = get_panel_conforme.dit_head_response_date
+
+    panel_full_name = get_panel_conforme.panel_full_name
+    panel_username = get_panel_conforme.panel_username
+    panel_response = get_panel_conforme.panel_response
+    panel_response_date = get_panel_conforme.panel_response_date
+
+    if get_group_members:
+        for group_member in get_group_members:
+            student_member_list.append(group_member.student_member_full_name)
+
+    student_member_list.sort()
+
+    print("Date Sent: ", date_submitted)
+
+    print("Group Members: ", student_member_list)
+    print("Course: ", course)
+    print("Major: ", major)
+    print("Research Titles: ", get_panel_conforme.research_title)
+
+    print("Defense Date: ", defense_date)
+    print("Defense Start Time: ", defense_start_time)
+    print("Defense End Time: ", defense_end_time)
+
+    print("DIT Head Name: ", dit_head_full_name)
+    print("DIT Head Response: ", dit_head_response)
+    print("DIT Head Response Date: ", dit_head_response_date)
+
+    print("Panel Name: ", panel_full_name)
+    print("Panel Response: ", panel_response)
+    print("Panel Response Date: ", panel_response_date)
+
+    doc = Document("static/forms/TOPIC-PANEL-CONFORME.docx")
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/TOPIC-PANEL-CONFORME.docx.docx')
+
+    student_table = doc.tables[1]
+
+    dit_head_signature_box = doc.tables[2]
+    panel_signature_box = doc.tables[4]
+
+    panel_data = doc.tables[5]
+
+    qr_code_box = doc.tables[3]
+
+    try:
+        student_table.cell(1, 0).paragraphs[0].runs[0].text = student_member_list[0]
+        student_table.cell(1, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(1, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(1, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(1, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(1, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(2, 0).paragraphs[0].runs[0].text = student_member_list[1]
+        student_table.cell(2, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(2, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(2, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(2, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(2, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(3, 0).paragraphs[0].runs[0].text = student_member_list[2]
+        student_table.cell(3, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(3, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(3, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(3, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(3, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(4, 0).paragraphs[0].runs[0].text = student_member_list[3]
+        student_table.cell(4, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(4, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(4, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(4, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(4, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(5, 0).paragraphs[0].runs[0].text = student_member_list[4]
+        student_table.cell(5, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(5, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(5, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(5, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(5, 4).paragraphs[0].runs[0].text = ""
+
+    doc.paragraphs[6].runs[5].text = get_student_leader_data.course + " Major in " + get_student_leader_data.major
+
+    doc.paragraphs[0].runs[1].text = date_submitted
+    doc.paragraphs[1].runs[0].text = panel_full_name
+    doc.paragraphs[4].runs[1].text = panel_full_name
+
+    doc.paragraphs[8].runs[2].text = get_panel_conforme.research_title
+    doc.paragraphs[19].runs[0].text = get_panel_conforme.dit_head_full_name
+
+    panel_data.cell(0, 0).text = panel_full_name
+    panel_data.cell(0, 2).text = panel_response_date
+
+
+    if get_panel_conforme.dit_head_signature == 1:
+        # Check if DIT Head E-Sign Exist
+        if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_conforme.dit_head_username) + ".png"):
+            dit_head_signature_box.cell(0, 0).text = ''
+            head_signature = dit_head_signature_box.cell(0, 0).add_paragraph()
+            head_signature_run = head_signature.add_run()
+            head_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_conforme.dit_head_username +'.png',width=Inches(1.2), height=Inches(0.45))
+        else:
+            get_all_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Topic Panel Conforme")
+            get_all_pending_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Topic Panel Conforme", is_completed = False)
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "currently_loggedin_user_account": currently_loggedin_user_account,
+                "student_leader_data": get_student_leader_data,
+                "panel_conforme": get_all_topic_panel_conforme,
+                "pending_panel_conforme": get_all_pending_topic_panel_conforme,
+                "response": "sweet faculty member no signature",
+            }
+
+            return render(request, "student-bet3-panel-conforme-dashboard.html", context)
+
+    if get_panel_conforme.panel_signature == True:
+        # Check if Panel E-Sign Exist
+        if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_conforme.panel_username) + ".png"):
+            panel_signature_box.cell(0, 0).text = ''
+            panel_signature = panel_signature_box.cell(0, 0).add_paragraph()
+            panel_signature_run = panel_signature.add_run()
+            panel_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_conforme.panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+
+        else:
+            get_all_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Topic Panel Conforme")
+            get_all_pending_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Topic Panel Conforme", is_completed = False)
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "currently_loggedin_user_account": currently_loggedin_user_account,
+                "student_leader_data": get_student_leader_data,
+                "panel_conforme": get_all_topic_panel_conforme,
+                "pending_panel_conforme": get_all_pending_topic_panel_conforme,
+                "response": "sweet faculty member no signature",
+            }
+
+            return render(request, "student-bet3-panel-conforme-dashboard.html", context)
+
+
+    # Create - QR Code
+    auth_qr_code = qrcode.make('Topic Panel Conforme\nH:' + dit_head_response_date + '\nP: ' + panel_response_date)
+    type(auth_qr_code)  
+    auth_qr_code.save(current_user.username + "-TOPIC-PANEL-CONFORME-QR.png")
+
+    # INSERT IMAGE
+    qr_code = qr_code_box.cell(0, 0).add_paragraph()
+    qr_code_run = qr_code.add_run()
+    qr_code_run.add_picture(current_user.username + "-TOPIC-PANEL-CONFORME-QR.png", width=Inches(1), height=Inches(1))
+
+    doc.save(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.docx")
+    convert(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.docx")
+
+    filePath = FilePath(
+        student_leader_username=current_user.username, 
+        file_path=current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.pdf"
+        )
+    filePath.save()
+
+    os.startfile(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.pdf")
+
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.pdf'
+
+    # filePath =  FilePath(
+    #     student_leader_username = current_user.username,
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.pdf'
+    # )
+    # filePath.save()
+
+    qr_code_path = current_user.username + "-TOPIC-PANEL-CONFORME-QR.png"
+    if os.path.isfile(qr_code_path):
+        os.remove(qr_code_path)
+        print("QR Code has been deleted")
+    else:
+        print("QR Code does not exist")
+
+    bet3_topic_defense_panel_inviation_docx = current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.docx"
+    # bet3_topic_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
+
+    if os.path.isfile(bet3_topic_defense_panel_inviation_docx):
+        os.remove(bet3_topic_defense_panel_inviation_docx)
+        print("Panel Invitation BET-3 has been deleted")
+    else:
+        print("Panel Invitation BET-3 does not exist")
+
+    get_all_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Topic Panel Conforme")
+    get_all_pending_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Topic Panel Conforme", is_completed = False)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        #'download_link': download_link,
+        "topic_panel_conforme": get_all_topic_panel_conforme,
+        "pending_panel_conforme": get_all_pending_topic_panel_conforme,
+        "response": "sweet downloaded",
+    }
+
+    return render(request, "student-bet3-topic-panel-conforme-dashboard.html", context)
+
+
+# Student - BET3 - Proposal - Panel Conforme - Dashboard
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentBET3ProposalPanelConforme(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+
+    if get_student_leader_data.bet3_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
+
+        return render(request, "student-bet3-panel-invitation-dashboard.html", context)
+
+    if get_student_leader_data.title_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
+
+        return render(request, "student-dashboard.html", context)
+    ############## PAGE VALIDATION ##############
+
+    get_all_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Proposal Panel Conforme")
+
+    get_all_pending_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Proposal Panel Conforme", is_completed = False)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "proposal_panel_conforme": get_all_proposal_panel_conforme,
+        "pending_panel_conforme": get_all_pending_proposal_panel_conforme,
+    }
+
+    return render(request, "student-bet3-proposal-panel-conforme-dashboard.html", context)
+
+
+# Student - BET3 - Panel Conforme - Save Process
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentProposalPanelConformeSave(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+    ############## PAGE VALIDATION ##############
+
+    get_student_leader_data.proposal_panel_conforme = "completed"
+    get_student_leader_data.save()
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+        "currently_loggedin_user_account": currently_loggedin_user_account, 
+        "student_leader_data": get_student_leader_data, 
+        "response": "sweet panel conforme saved"}
+
+    return render(request, "student-bet3-proposal-panel-conforme-dashboard.html", context)
+
+
+# Student - BET3 - Proposal Defense - Panel Invitation - Download Process
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentProposalPanelConformeDownload(request, id):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+        get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+        get_panel_conforme = PanelConforme.objects.get(id=int(id), student_leader_username=current_user.username)
+
+    except:
+        return redirect("student-bet3-proposal-panel-conforme")
+
+    ############## BET-3 PANEL INVITATION DATA ##############
+    date_submitted = get_panel_conforme.form_date_sent
+
+    student_member_list = [get_panel_conforme.student_leader_full_name]
+    course = get_student_leader_data.course.replace("Engineering", "Eng.")
+    major = get_student_leader_data.major
+
+    defense_date = get_panel_conforme.defense_date
+    defense_start_time = get_panel_conforme.defense_start_time
+    defense_end_time = get_panel_conforme.defense_end_time
+
+    dit_head_full_name = get_panel_conforme.dit_head_full_name
+    dit_head_response = get_panel_conforme.dit_head_response
+    dit_head_response_date = get_panel_conforme.dit_head_response_date
+
+    panel_full_name = get_panel_conforme.panel_full_name
+    panel_username = get_panel_conforme.panel_username
+    panel_response = get_panel_conforme.panel_response
+    panel_response_date = get_panel_conforme.panel_response_date
+
+    if get_group_members:
+        for group_member in get_group_members:
+            student_member_list.append(group_member.student_member_full_name)
+
+    student_member_list.sort()
+
+    print("Date Sent: ", date_submitted)
+
+    print("Group Members: ", student_member_list)
+    print("Course: ", course)
+    print("Major: ", major)
+    print("Research Titles: ", get_panel_conforme.research_title)
+
+    print("Defense Date: ", defense_date)
+    print("Defense Start Time: ", defense_start_time)
+    print("Defense End Time: ", defense_end_time)
+
+    print("DIT Head Name: ", dit_head_full_name)
+    print("DIT Head Response: ", dit_head_response)
+    print("DIT Head Response Date: ", dit_head_response_date)
+
+    print("Panel Name: ", panel_full_name)
+    print("Panel Response: ", panel_response)
+    print("Panel Response Date: ", panel_response_date)
+
+    doc = Document("static/forms/PROPOSAL-PANEL-CONFORME.docx")
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/TOPIC-PANEL-CONFORME.docx.docx')
+
+    student_table = doc.tables[1]
+
+    dit_head_signature_box = doc.tables[2]
+    panel_signature_box = doc.tables[4]
+
+    panel_data = doc.tables[5]
+
+    qr_code_box = doc.tables[3]
+
+    try:
+        student_table.cell(1, 0).paragraphs[0].runs[0].text = student_member_list[0]
+        student_table.cell(1, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(1, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(1, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(1, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(1, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(2, 0).paragraphs[0].runs[0].text = student_member_list[1]
+        student_table.cell(2, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(2, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(2, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(2, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(2, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(3, 0).paragraphs[0].runs[0].text = student_member_list[2]
+        student_table.cell(3, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(3, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(3, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(3, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(3, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(4, 0).paragraphs[0].runs[0].text = student_member_list[3]
+        student_table.cell(4, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(4, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(4, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(4, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(4, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(5, 0).paragraphs[0].runs[0].text = student_member_list[4]
+        student_table.cell(5, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(5, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(5, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(5, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(5, 4).paragraphs[0].runs[0].text = ""
+
+    doc.paragraphs[6].runs[5].text = get_student_leader_data.course + " Major in " + get_student_leader_data.major
+
+    doc.paragraphs[0].runs[1].text = date_submitted
+    doc.paragraphs[1].runs[0].text = panel_full_name
+    doc.paragraphs[4].runs[1].text = panel_full_name
+
+    doc.paragraphs[8].runs[2].text = get_panel_conforme.research_title
+    doc.paragraphs[19].runs[0].text = get_panel_conforme.dit_head_full_name
+
+    panel_data.cell(0, 0).text = panel_full_name
+    panel_data.cell(0, 2).text = panel_response_date
+
+
+    if get_panel_conforme.dit_head_signature == 1:
+        # Check if DIT Head E-Sign Exist
+        if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_conforme.dit_head_username) + ".png"):
+            dit_head_signature_box.cell(0, 0).text = ''
+            head_signature = dit_head_signature_box.cell(0, 0).add_paragraph()
+            head_signature_run = head_signature.add_run()
+            head_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_conforme.dit_head_username +'.png',width=Inches(1.2), height=Inches(0.45))
+        else:
+            get_all_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Proposal Panel Conforme")
+            get_all_pending_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Proposal Panel Conforme", is_completed = False)
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "currently_loggedin_user_account": currently_loggedin_user_account,
+                "student_leader_data": get_student_leader_data,
+                "panel_conforme": get_all_proposal_panel_conforme,
+                "pending_panel_conforme": get_all_pending_proposal_panel_conforme,
+                "response": "sweet faculty member no signature",
+            }
+
+            return render(request, "student-bet3-proposal-panel-conforme-dashboard.html", context)
+
+    if get_panel_conforme.panel_signature == True:
+        # Check if Panel E-Sign Exist
+        if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_conforme.panel_username) + ".png"):
+            panel_signature_box.cell(0, 0).text = ''
+            panel_signature = panel_signature_box.cell(0, 0).add_paragraph()
+            panel_signature_run = panel_signature.add_run()
+            panel_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_conforme.panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+
+        else:
+            get_all_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Proposal Panel Conforme")
+            get_all_pending_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Proposal Panel Conforme", is_completed = False)
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "currently_loggedin_user_account": currently_loggedin_user_account,
+                "student_leader_data": get_student_leader_data,
+                "panel_conforme": get_all_topic_panel_conforme,
+                "pending_panel_conforme": get_all_pending_topic_panel_conforme,
+                "response": "sweet faculty member no signature",
+            }
+
+            return render(request, "student-bet3-panel-conforme-dashboard.html", context)
+
+
+    # Create - QR Code
+    auth_qr_code = qrcode.make('Topic Panel Conforme\nH:' + dit_head_response_date + '\nP: ' + panel_response_date)
+    type(auth_qr_code)  
+    auth_qr_code.save(current_user.username + "-TOPIC-PANEL-CONFORME-QR.png")
+
+    # INSERT IMAGE
+    qr_code = qr_code_box.cell(0, 0).add_paragraph()
+    qr_code_run = qr_code.add_run()
+    qr_code_run.add_picture(current_user.username + "-TOPIC-PANEL-CONFORME-QR.png", width=Inches(1), height=Inches(1))
+
+    doc.save(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.docx")
+    convert(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.docx")
+
+    filePath = FilePath(
+        student_leader_username=current_user.username, 
+        file_path=current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.pdf"
+        )
+    filePath.save()
+
+    os.startfile(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.pdf")
+
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.pdf'
+
+    # filePath =  FilePath(
+    #     student_leader_username = current_user.username,
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.pdf'
+    # )
+    # filePath.save()
+
+    qr_code_path = current_user.username + "-TOPIC-PANEL-CONFORME-QR.png"
+    if os.path.isfile(qr_code_path):
+        os.remove(qr_code_path)
+        print("QR Code has been deleted")
+    else:
+        print("QR Code does not exist")
+
+    bet3_topic_defense_panel_inviation_docx = current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.docx"
+    # bet3_topic_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
+
+    if os.path.isfile(bet3_topic_defense_panel_inviation_docx):
+        os.remove(bet3_topic_defense_panel_inviation_docx)
+        print("Panel Invitation BET-3 has been deleted")
+    else:
+        print("Panel Invitation BET-3 does not exist")
+
+    get_all_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Proposal Panel Conforme")
+    get_all_pending_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Proposal Panel Conforme", is_completed = False)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        #'download_link': download_link,
+        "proposal_panel_conforme": get_all_proposal_panel_conforme,
+        "pending_panel_conforme": get_all_pending_proposal_panel_conforme,
+        "response": "sweet downloaded",
+    }
+
+    return render(request, "student-bet3-proposal-panel-conforme-dashboard.html", context)
+
+
+# Student - BET5 - Final - Panel Conforme - Dashboard
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentBET5FinalPanelConforme(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+
+    if get_student_leader_data.bet3_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
+
+        return render(request, "student-bet3-panel-invitation-dashboard.html", context)
+
+    if get_student_leader_data.title_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
+
+        return render(request, "student-dashboard.html", context)
+    ############## PAGE VALIDATION ##############
+
+    get_all_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Final Panel Conforme")
+
+    get_all_pending_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Final Panel Conforme", is_completed = False)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "proposal_panel_conforme": get_all_proposal_panel_conforme,
+        "pending_panel_conforme": get_all_pending_proposal_panel_conforme,
+    }
+
+    return render(request, "student-bet5-final-panel-conforme-dashboard.html", context)
+
+
+# Student - BET5 - Final Panel Conforme - Save Process
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentFinalPanelConformeSave(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+    ############## PAGE VALIDATION ##############
+
+    get_student_leader_data.final_panel_conforme = "completed"
+    get_student_leader_data.save()
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+        "currently_loggedin_user_account": currently_loggedin_user_account, 
+        "student_leader_data": get_student_leader_data, 
+        "response": "sweet panel conforme saved"}
+
+    return render(request, "student-bet5-final-panel-conforme-dashboard.html", context)
+
+
+
+# Student - BET5 - Final Defense - Panel Invitation - Download Process
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentFinalPanelConformeDownload(request, id):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+        get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+        get_panel_conforme = PanelConforme.objects.get(id=int(id), student_leader_username=current_user.username)
+
+    except:
+        return redirect("student-bet3-proposal-panel-conforme")
+
+    ############## BET-3 PANEL INVITATION DATA ##############
+    date_submitted = get_panel_conforme.form_date_sent
+
+    student_member_list = [get_panel_conforme.student_leader_full_name]
+    course = get_student_leader_data.course.replace("Engineering", "Eng.")
+    major = get_student_leader_data.major
+
+    defense_date = get_panel_conforme.defense_date
+    defense_start_time = get_panel_conforme.defense_start_time
+    defense_end_time = get_panel_conforme.defense_end_time
+
+    dit_head_full_name = get_panel_conforme.dit_head_full_name
+    dit_head_response = get_panel_conforme.dit_head_response
+    dit_head_response_date = get_panel_conforme.dit_head_response_date
+
+    panel_full_name = get_panel_conforme.panel_full_name
+    panel_username = get_panel_conforme.panel_username
+    panel_response = get_panel_conforme.panel_response
+    panel_response_date = get_panel_conforme.panel_response_date
+
+    if get_group_members:
+        for group_member in get_group_members:
+            student_member_list.append(group_member.student_member_full_name)
+
+    student_member_list.sort()
+
+    print("Date Sent: ", date_submitted)
+
+    print("Group Members: ", student_member_list)
+    print("Course: ", course)
+    print("Major: ", major)
+    print("Research Titles: ", get_panel_conforme.research_title)
+
+    print("Defense Date: ", defense_date)
+    print("Defense Start Time: ", defense_start_time)
+    print("Defense End Time: ", defense_end_time)
+
+    print("DIT Head Name: ", dit_head_full_name)
+    print("DIT Head Response: ", dit_head_response)
+    print("DIT Head Response Date: ", dit_head_response_date)
+
+    print("Panel Name: ", panel_full_name)
+    print("Panel Response: ", panel_response)
+    print("Panel Response Date: ", panel_response_date)
+
+    doc = Document("static/forms/FINAL-PANEL-CONFORME.docx")
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/TOPIC-PANEL-CONFORME.docx.docx')
+
+    student_table = doc.tables[1]
+
+    dit_head_signature_box = doc.tables[2]
+    panel_signature_box = doc.tables[4]
+
+    panel_data = doc.tables[5]
+
+    qr_code_box = doc.tables[3]
+
+    try:
+        student_table.cell(1, 0).paragraphs[0].runs[0].text = student_member_list[0]
+        student_table.cell(1, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(1, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(1, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(1, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(1, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(2, 0).paragraphs[0].runs[0].text = student_member_list[1]
+        student_table.cell(2, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(2, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(2, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(2, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(2, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(3, 0).paragraphs[0].runs[0].text = student_member_list[2]
+        student_table.cell(3, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(3, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(3, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(3, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(3, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(4, 0).paragraphs[0].runs[0].text = student_member_list[3]
+        student_table.cell(4, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(4, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(4, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(4, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(4, 4).paragraphs[0].runs[0].text = ""
+
+    try:
+        student_table.cell(5, 0).paragraphs[0].runs[0].text = student_member_list[4]
+        student_table.cell(5, 2).paragraphs[0].runs[0].text = course
+        student_table.cell(5, 4).paragraphs[0].runs[0].text = major
+    except:
+        student_table.cell(5, 0).paragraphs[0].runs[0].text = ""
+        student_table.cell(5, 2).paragraphs[0].runs[0].text = ""
+        student_table.cell(5, 4).paragraphs[0].runs[0].text = ""
+
+    doc.paragraphs[6].runs[8].text = get_student_leader_data.course + " Major in " + get_student_leader_data.major
+
+    doc.paragraphs[0].runs[1].text = date_submitted
+    doc.paragraphs[1].runs[0].text = panel_full_name
+    doc.paragraphs[4].runs[1].text = panel_full_name
+
+    doc.paragraphs[8].runs[2].text = get_panel_conforme.research_title
+    doc.paragraphs[19].runs[0].text = get_panel_conforme.dit_head_full_name
+
+    panel_data.cell(0, 0).text = panel_full_name
+    panel_data.cell(0, 2).text = panel_response_date
+
+
+    if get_panel_conforme.dit_head_signature == 1:
+        # Check if DIT Head E-Sign Exist
+        if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_conforme.dit_head_username) + ".png"):
+            dit_head_signature_box.cell(0, 0).text = ''
+            head_signature = dit_head_signature_box.cell(0, 0).add_paragraph()
+            head_signature_run = head_signature.add_run()
+            head_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_conforme.dit_head_username +'.png',width=Inches(1.2), height=Inches(0.45))
+        else:
+            get_all_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Final Panel Conforme")
+            get_all_pending_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Final Panel Conforme", is_completed = False)
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "currently_loggedin_user_account": currently_loggedin_user_account,
+                "student_leader_data": get_student_leader_data,
+                "panel_conforme": get_all_proposal_panel_conforme,
+                "pending_panel_conforme": get_all_pending_proposal_panel_conforme,
+                "response": "sweet faculty member no signature",
+            }
+
+            return render(request, "student-bet5-final-panel-conforme-dashboard.html", context)
+
+    if get_panel_conforme.panel_signature == True:
+        # Check if Panel E-Sign Exist
+        if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_conforme.panel_username) + ".png"):
+            panel_signature_box.cell(0, 0).text = ''
+            panel_signature = panel_signature_box.cell(0, 0).add_paragraph()
+            panel_signature_run = panel_signature.add_run()
+            panel_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_conforme.panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+
+        else:
+            get_all_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Final Panel Conforme")
+            get_all_pending_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Final Panel Conforme", is_completed = False)
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "currently_loggedin_user_account": currently_loggedin_user_account,
+                "student_leader_data": get_student_leader_data,
+                "panel_conforme": get_all_topic_panel_conforme,
+                "pending_panel_conforme": get_all_pending_topic_panel_conforme,
+                "response": "sweet faculty member no signature",
+            }
+
+            return render(request, "student-bet5-final-panel-conforme-dashboard.html", context)
+
+
+    # Create - QR Code
+    auth_qr_code = qrcode.make('Final Panel Conforme\nH:' + dit_head_response_date + '\nP: ' + panel_response_date)
+    type(auth_qr_code)  
+    auth_qr_code.save(current_user.username + "-FINAL-PANEL-CONFORME-QR.png")
+
+    # INSERT IMAGE
+    qr_code = qr_code_box.cell(0, 0).add_paragraph()
+    qr_code_run = qr_code.add_run()
+    qr_code_run.add_picture(current_user.username + "-FINAL-PANEL-CONFORME-QR.png", width=Inches(1), height=Inches(1))
+
+    doc.save(current_user.username + "-" + panel_username + "-" + panel_response + "-FINAL-PANEL-CONFORME.docx")
+    convert(current_user.username + "-" + panel_username + "-" + panel_response + "-FINAL-PANEL-CONFORME.docx")
+
+    filePath = FilePath(
+        student_leader_username=current_user.username, 
+        file_path=current_user.username + "-" + panel_username + "-" + panel_response + "-FINAL-PANEL-CONFORME.pdf"
+        )
+    filePath.save()
+
+    os.startfile(current_user.username + "-" + panel_username + "-" + panel_response + "-FINAL-PANEL-CONFORME.pdf")
+
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.pdf'
+
+    # filePath =  FilePath(
+    #     student_leader_username = current_user.username,
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.pdf'
+    # )
+    # filePath.save()
+
+    qr_code_path = current_user.username + "-FINAL-PANEL-CONFORME-QR.png"
+    if os.path.isfile(qr_code_path):
+        os.remove(qr_code_path)
+        print("QR Code has been deleted")
+    else:
+        print("QR Code does not exist")
+
+    bet3_topic_defense_panel_inviation_docx = current_user.username + "-" + panel_username + "-" + panel_response + "-FINAL-PANEL-CONFORME.docx"
+    # bet3_topic_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
+
+    if os.path.isfile(bet3_topic_defense_panel_inviation_docx):
+        os.remove(bet3_topic_defense_panel_inviation_docx)
+        print("Panel Invitation BET-3 has been deleted")
+    else:
+        print("Panel Invitation BET-3 does not exist")
+
+    get_all_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Final Panel Conforme")
+    get_all_pending_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Final Panel Conforme", is_completed = False)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        #'download_link': download_link,
+        "proposal_panel_conforme": get_all_proposal_panel_conforme,
+        "pending_panel_conforme": get_all_pending_proposal_panel_conforme,
+        "response": "sweet downloaded",
+    }
+
+    return render(request, "student-bet5-final-panel-conforme-dashboard.html", context)
+
+
 
 
 # Student - BET3 - Adviser - Dashboard
@@ -2872,19 +3904,19 @@ def studentBET3AdviserConformeDownload(request):
     # student_table.cell(1, 4).paragraphs[0].runs[0].text = major
 
     # STUDENT COURSE
-    student_table.cell(1, 1).paragraphs[0].runs[0].text = course_1
-    student_table.cell(2, 1).paragraphs[0].runs[0].text = course_2
-    student_table.cell(3, 1).paragraphs[0].runs[0].text = course_3
-    student_table.cell(4, 1).paragraphs[0].runs[0].text = course_4
-    student_table.cell(5, 1).paragraphs[0].runs[0].text = course_5
+    student_table.cell(1, 2).paragraphs[0].runs[0].text = course_1
+    student_table.cell(2, 2).paragraphs[0].runs[0].text = course_2
+    student_table.cell(3, 2).paragraphs[0].runs[0].text = course_3
+    student_table.cell(4, 2).paragraphs[0].runs[0].text = course_4
+    student_table.cell(5, 2).paragraphs[0].runs[0].text = course_5
 
     # STUDENT MAJOR
 
-    student_table.cell(1, 2).paragraphs[0].runs[0].text = major_1
-    student_table.cell(2, 2).paragraphs[0].runs[0].text = major_2
-    student_table.cell(3, 2).paragraphs[0].runs[0].text = major_3
-    student_table.cell(4, 2).paragraphs[0].runs[0].text = major_4
-    student_table.cell(5, 2).paragraphs[0].runs[0].text = major_5
+    student_table.cell(1, 4).paragraphs[0].runs[0].text = major_1
+    student_table.cell(2, 4).paragraphs[0].runs[0].text = major_2
+    student_table.cell(3, 4).paragraphs[0].runs[0].text = major_3
+    student_table.cell(4, 4).paragraphs[0].runs[0].text = major_4
+    student_table.cell(5, 4).paragraphs[0].runs[0].text = major_5
 
     doc.paragraphs[8].runs[1].text = research_title
 
@@ -5043,6 +6075,45 @@ def studentBET5SubjectTeacher(request):
     except:
         return redirect("index")
 
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+
+    if get_student_leader_data.bet3_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
+
+        return render(request, "student-bet3-panel-invitation-dashboard.html", context)
+
+    if get_student_leader_data.title_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
+
+        return render(request, "student-dashboard.html", context)
+    
+    if get_student_leader_data.adviser_conforme_status != "Completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete adviser conforme"}
+
+        return render(request, "student-bet3-adviser-dashboard.html", context)
+    
+    if get_student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete panel invitation proposal defense"}
+
+        return render(request, "student-dashboard.html", context)
+    
+    if get_student_leader_data.bet3_proposal_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete proposal defense"}
+
+        return render(request, "student-dashboard.html", context)
+    ############## PAGE VALIDATION ##############
+
+
+
     if get_student_leader_data.bet5_subject_teacher_username:
         return redirect("student-dashboard")
     
@@ -5120,30 +6191,40 @@ def studentBET5FinalDefensePanelInvitation(request):
         return redirect("index")
 
     ############## PAGE VALIDATION ##############
-    # if get_student_leader_data.group_members_status != "completed":
-    #     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
 
-    #     return render(request, "student-add-group-member.html", context)
+        return render(request, "student-add-group-member.html", context)
 
-    # if get_student_leader_data.research_titles_status != "completed":
-    #     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
 
-    #     return render(request, "student-add-research-title.html", context)
+        return render(request, "student-add-research-title.html", context)
 
-    # if get_student_leader_data.bet3_panel_invitation_status != "completed":
-    #     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
+    if get_student_leader_data.bet3_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
 
-    #     return render(request, "student-bet3-panel-invitation-dashboard.html", context)
+        return render(request, "student-bet3-panel-invitation-dashboard.html", context)
 
-    # if get_student_leader_data.title_defense_status != "completed":
-    #     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
+    if get_student_leader_data.title_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
 
-    #     return render(request, "student-dashboard.html", context)
+        return render(request, "student-dashboard.html", context)
+
+    if get_student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
+
+        return render(request, "student-bet3-panel-invitation-dashboard.html", context)
+
+    if get_student_leader_data.title_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
+
+        return render(request, "student-dashboard.html", context)
     
-    # if get_student_leader_data.adviser_conforme_status != "Completed":
-    #     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete adviser conforme"}
+    if get_student_leader_data.adviser_conforme_status != "Completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete adviser conforme"}
 
-    #     return render(request, "student-bet3-adviser-dashboard.html", context)
+        return render(request, "student-bet3-adviser-dashboard.html", context)
     ############## PAGE VALIDATION ##############
 
     get_topic_panel_invitations = ProposalPanelInvitation.objects.all().filter(student_leader_username=current_user.username)
@@ -5378,6 +6459,15 @@ def studentBET5FinalDefensePanelInvitationCreatePanel(request):
                 )
                 send_proposal_defense_panel_invitation.save()
                 i + 1
+            
+            # Send g-mail notifications
+            send_mail(
+                "Panel Invitation for Final Defense",
+                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+                "unofficial.tupc.uitc@gmail.com",
+                ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                fail_silently=False,
+            )
             
 
         context = {
@@ -6124,6 +7214,604 @@ def studentBET5FinalDefensePanelInvitationDownload(request, id):
     }
 
     return render(request, "student-bet5-final-defense-panel-invitation-dashboard.html", context)
+
+
+
+# Student - BET3 - Research Final Defense Form - Page
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentBET5ResearchFinalDefenseForm(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+
+    if get_student_leader_data.bet3_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
+
+        return render(request, "student-bet3-panel-invitation-dashboard.html", context)
+
+    if get_student_leader_data.title_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
+
+        return render(request, "student-dashboard.html", context)
+    
+    # if get_student_leader_data.adviser_conforme_status != "Completed":
+    #     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete adviser conforme"}
+
+    #     return render(request, "student-bet3-adviser-dashboard.html", context)
+    
+    if get_student_leader_data.bet3_proposal_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete proposal defense"}
+
+        return render(request, "student-dashboard.html", context)
+    ############## PAGE VALIDATION ##############
+
+    # Get Student Group Members
+    try:
+        get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+    except:
+        get_student_group_members = None
+
+    # Get Student Proposal Defense Accepted with Revision
+    try:
+        get_accepted_proposal_title = ResearchTitle.objects.get(student_leader_username=current_user.username, final_defense_status = "Accepted with Revision")
+    except:
+        print("pass research titles")
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.group_members_status != "completed" and get_student_leader_data.research_titles_status != "completed" and get_student_leader_data.bet5_final_defense_panel_invitation_status != "completed":
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+    get_proposal_defense_form = FinalDefenseForm.objects.all().filter(student_leader_username=current_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "student_group_members": get_student_group_members,
+        "student_research_title": get_accepted_proposal_title,
+        "proposal_defense_form": get_proposal_defense_form,
+    }
+
+    return render(request, "student-research-final-defense.html", context)
+
+
+# Student - BET3 - Critique Form - Download
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_student, login_url="index")
+def studentBET5ResearchFinalDefenseFormDownload(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("index")
+
+    # Get Student Group Members
+    try:
+        get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+    except:
+        get_student_group_members = None
+
+    # Get Student Proposal Defense Accepted with Revision
+    try:
+        get_accepted_proposal_title = ResearchTitle.objects.get(student_leader_username=current_user.username, final_defense_status = "Accepted with Revision")
+    except:
+        print("pass research titles")
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.group_members_status != "completed" and get_student_leader_data.research_titles_status != "completed" and get_student_leader_data.bet5_final_defense_panel_invitation_status != "completed":
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+    get_proposal_defense_form = FinalDefenseForm.objects.all().filter(student_leader_username=current_user.username, defense_date = get_student_leader_data.research_final_defense_date)
+    get_panel_chair_proposal_defense_form = FinalDefenseForm.objects.filter(student_leader_username=current_user.username, defense_date = get_student_leader_data.research_final_defense_date, is_panel_chairman = True)
+
+
+    get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+
+    doc = Document("static/forms/8-RESEARCH-FINAL-DEFENSE-FORM.docx")
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/5-CRITIQUE-FORM.docx')
+    
+    paragraph = doc.add_paragraph()
+   
+    examinee_table = doc.tables[0]
+    panel_table = doc.tables[1]
+    panelchair_table = doc.tables[2]
+    qrcodebox_table = doc.tables[3]
+
+    # Student Leader
+    examinee_table.cell(0, 2).text = get_proposal_defense_form[0].student_leader_full_name
+
+    # Student 2
+    try:
+        if get_group_members[0]:
+            examinee_table.cell(1, 2).text = get_group_members[0].student_member_full_name
+    except:
+        examinee_table.cell(1, 2).text = ""
+
+
+    # Student 3
+    try:
+        if get_group_members[1]:
+            examinee_table.cell(2, 2).text = get_group_members[1].student_member_full_name
+    except:
+        examinee_table.cell(2, 2).text = ""
+
+    # Student 4
+    try:
+        if get_group_members[2]:
+            examinee_table.cell(3, 2).text = get_group_members[2].student_member_full_name
+    except:
+        examinee_table.cell(3, 2).text = ""
+
+    # Student 5
+    try:
+        if get_group_members[3]:
+            examinee_table.cell(4, 2).text = get_group_members[3].student_member_full_name
+    except:
+         examinee_table.cell(4, 2).text = ""
+    
+    # Degree
+    examinee_table.cell(6, 2).text = get_student_leader_data.course_major_abbr
+
+    # Title of Research
+    examinee_table.cell(8, 2).text = get_accepted_proposal_title.research_title
+
+    # Defense Date
+    examinee_table.cell(9, 2).text = get_proposal_defense_form[0].defense_date
+
+    # Defense Time
+    examinee_table.cell(10, 2).text = get_proposal_defense_form[0].defense_start_time + " - " + get_proposal_defense_form[0].defense_end_time
+
+    # Thesis Adviser name
+    examinee_table.cell(12, 2).text = get_student_leader_data.adviser_name
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    
+    # Panel 1
+    if get_proposal_defense_form[0]:
+        panel_table.cell(1, 0).text = ""
+        panel_name = panel_table.cell(1, 0).add_paragraph(get_proposal_defense_form[0].panel_full_name)
+        panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if get_proposal_defense_form[0].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_proposal_defense_form[0].panel_username) + ".png"):
+                if get_proposal_defense_form[0].final_defense_response == "Accepted with Revision":
+                    panel_table.cell(1, 1).text = ""
+                    panel_table.cell(1, 2).text = ""
+                    panel_table.cell(1, 3).text = ""
+                    panel_sign = panel_table.cell(1, 1).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                
+                elif get_proposal_defense_form[0].proposal_defense_response == "Deferred with Revision":
+                    panel_table.cell(1, 1).text = ""
+                    panel_table.cell(1, 2).text = ""
+                    panel_table.cell(1, 3).text = ""
+                    panel_sign = panel_table.cell(1, 2).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+                elif get_proposal_defense_form[0].proposal_defense_response == "Not Accepted":
+                    panel_table.cell(1, 1).text = ""
+                    panel_table.cell(1, 2).text = ""
+                    panel_table.cell(1, 3).text = ""
+                    panel_sign = panel_table.cell(1, 3).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+        else:
+            if get_proposal_defense_form[0].final_defense_response == "Accepted with Revision":
+                panel_table.cell(1, 2).text = ""
+                panel_table.cell(1, 3).text = ""
+                
+            elif get_proposal_defense_form[0].final_defense_response == "Deferred with Revision":
+                panel_table.cell(1, 1).text = ""
+                panel_table.cell(1, 3).text = "" 
+
+            elif get_proposal_defense_form[0].final_defense_response == "Not Accepted":
+                panel_table.cell(1, 1).text = ""
+                panel_table.cell(1, 2).text = ""   
+
+
+    # Panel 2
+    if get_proposal_defense_form[1]:
+        panel_table.cell(2, 0).text = ""
+        panel_name = panel_table.cell(2, 0).add_paragraph(get_proposal_defense_form[1].panel_full_name)
+        panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if get_proposal_defense_form[1].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_proposal_defense_form[1].panel_username) + ".png"):
+                if get_proposal_defense_form[1].final_defense_response == "Accepted with Revision":
+                    panel_table.cell(2, 1).text = ""
+                    panel_table.cell(2, 2).text = ""
+                    panel_table.cell(2, 3).text = ""
+                    panel_sign = panel_table.cell(2, 1).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[1].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                
+                elif get_proposal_defense_form[1].final_defense_response == "Deferred with Revision":
+                    panel_table.cell(2, 1).text = ""
+                    panel_table.cell(2, 2).text = ""
+                    panel_table.cell(2, 3).text = ""
+                    panel_sign = panel_table.cell(2, 2).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[1].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+                elif get_proposal_defense_form[1].final_defense_response == "Not Accepted":
+                    panel_table.cell(2, 1).text = ""
+                    panel_table.cell(2, 2).text = ""
+                    panel_table.cell(2, 3).text = ""
+                    panel_sign = panel_table.cell(2, 3).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[1].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    
+
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+        else:
+            if get_proposal_defense_form[1].final_defense_response == "Accepted with Revision":
+                panel_table.cell(2, 2).text = ""
+                panel_table.cell(2, 3).text = ""
+                
+            elif get_proposal_defense_form[1].final_defense_response == "Deferred with Revision":
+                panel_table.cell(2, 1).text = ""
+                panel_table.cell(2, 3).text = "" 
+
+            elif get_proposal_defense_form[1].final_defense_response == "Not Accepted":
+                panel_table.cell(2, 1).text = ""
+                panel_table.cell(2, 2).text = ""    
+
+
+    # Panel 3
+    if get_proposal_defense_form[2]:
+        panel_table.cell(3, 0).text = ""
+        panel_name = panel_table.cell(3, 0).add_paragraph(get_proposal_defense_form[2].panel_full_name)
+        panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if get_proposal_defense_form[2].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_proposal_defense_form[2].panel_username) + ".png"):
+                if get_proposal_defense_form[2].final_defense_response == "Accepted with Revision":
+                    panel_table.cell(3, 1).text = ""
+                    panel_table.cell(3, 2).text = ""
+                    panel_table.cell(3, 3).text = ""
+                    panel_sign = panel_table.cell(3, 1).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[2].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                
+                elif get_proposal_defense_form[2].final_defense_response == "Deferred with Revision":
+                    panel_table.cell(3, 1).text = ""
+                    panel_table.cell(3, 2).text = ""
+                    panel_table.cell(3, 3).text = ""
+                    panel_sign = panel_table.cell(3, 2).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[2].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+                elif get_proposal_defense_form[2].final_defense_response == "Not Accepted":
+                    panel_table.cell(3, 1).text = ""
+                    panel_table.cell(3, 2).text = ""
+                    panel_table.cell(3, 3).text = ""
+                    panel_sign = panel_table.cell(3, 3).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[2].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    
+
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+        else:
+            if get_proposal_defense_form[2].final_defense_response == "Accepted with Revision":
+                panel_table.cell(3, 2).text = ""
+                panel_table.cell(3, 3).text = ""
+                
+            elif get_proposal_defense_form[2].final_defense_response == "Deferred with Revision":
+                panel_table.cell(3, 1).text = ""
+                panel_table.cell(3, 3).text = "" 
+
+            elif get_proposal_defense_form[2].final_defense_response == "Not Accepted":
+                panel_table.cell(3, 1).text = ""
+                panel_table.cell(3, 2).text = ""
+
+
+    # Panel 4
+    if get_proposal_defense_form[3]:
+        panel_table.cell(4, 0).text = ""
+        panel_name = panel_table.cell(4, 0).add_paragraph(get_proposal_defense_form[3].panel_full_name)
+        panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if get_proposal_defense_form[3].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_proposal_defense_form[3].panel_username) + ".png"):
+                if get_proposal_defense_form[3].final_defense_response == "Accepted with Revision":
+                    panel_table.cell(4, 1).text = ""
+                    panel_table.cell(4, 2).text = ""
+                    panel_table.cell(4, 3).text = ""
+                    panel_sign = panel_table.cell(4, 1).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[3].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                
+                elif get_proposal_defense_form[3].final_defense_response == "Deferred with Revision":
+                    panel_table.cell(4, 1).text = ""
+                    panel_table.cell(4, 2).text = ""
+                    panel_table.cell(4, 3).text = ""
+                    panel_sign = panel_table.cell(4, 2).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[3].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+                elif get_proposal_defense_form[3].final_defense_response == "Not Accepted":
+                    panel_table.cell(4, 1).text = ""
+                    panel_table.cell(4, 2).text = ""
+                    panel_table.cell(4, 3).text = ""
+                    panel_sign = panel_table.cell(4, 3).add_paragraph()
+                    panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[3].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    
+
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+        else:
+            if get_proposal_defense_form[3].final_defense_response == "Accepted with Revision":
+                panel_table.cell(4, 2).text = ""
+                panel_table.cell(4, 3).text = ""
+                
+            elif get_proposal_defense_form[3].final_defense_response == "Deferred with Revision":
+                panel_table.cell(4, 1).text = ""
+                panel_table.cell(4, 3).text = "" 
+
+            elif get_proposal_defense_form[3].final_defense_response == "Not Accepted":
+                panel_table.cell(4, 1).text = ""
+                panel_table.cell(4, 2).text = ""        
+    
+
+    # Panel 5
+    try:
+        if get_proposal_defense_form[4]:
+            panel_table.cell(5, 0).text = ""
+            panel_name = panel_table.cell(5, 0).add_paragraph(get_proposal_defense_form[4].panel_full_name)
+            panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            if get_proposal_defense_form[4].panel_signature_attach == True:
+                if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_proposal_defense_form[4].panel_username) + ".png"):
+                    if get_proposal_defense_form[4].final_defense_response == "Accepted with Revision":
+                        panel_table.cell(5, 1).text = ""
+                        panel_table.cell(5, 2).text = ""
+                        panel_table.cell(5, 3).text = ""
+                        panel_sign = panel_table.cell(5, 1).add_paragraph()
+                        panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                        panel_sign_run = panel_sign.add_run()
+                        panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[4].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    
+                    elif get_proposal_defense_form[4].final_defense_response == "Deferred with Revision":
+                        panel_table.cell(5, 1).text = ""
+                        panel_table.cell(5, 2).text = ""
+                        panel_table.cell(5, 3).text = ""
+                        panel_sign = panel_table.cell(5, 2).add_paragraph()
+                        panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                        panel_sign_run = panel_sign.add_run()
+                        panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[4].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+
+                    elif get_proposal_defense_form[4].final_defense_response == "Not Accepted":
+                        panel_table.cell(5, 1).text = ""
+                        panel_table.cell(5, 2).text = ""
+                        panel_table.cell(5, 3).text = ""
+                        panel_sign = panel_table.cell(5, 3).add_paragraph()
+                        panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                        panel_sign_run = panel_sign.add_run()
+                        panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_proposal_defense_form[4].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                        
+
+                else:
+                    context = {
+                        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                        "currently_loggedin_user_account": currently_loggedin_user_account,
+                        "student_leader_data": get_student_leader_data,
+                        "student_leader_full_name": student_leader_full_name,
+                        "student_group_members": get_student_group_members,
+                        "student_research_title": get_accepted_proposal_title,
+                        "proposal_defense_form": get_proposal_defense_form,
+                        "response": "sweet faculty member no signature"
+                    }
+
+                    return render(request, "student-bet3-critique-form.html", context)
+            else:
+                if get_proposal_defense_form[4].final_defense_response == "Accepted with Revision":
+                    panel_table.cell(5, 2).text = ""
+                    panel_table.cell(5, 3).text = ""
+                    
+                elif get_proposal_defense_form[4].final_defense_response == "Deferred with Revision":
+                    panel_table.cell(5, 1).text = ""
+                    panel_table.cell(5, 3).text = "" 
+
+                elif get_proposal_defense_form[4].final_defense_response == "Not Accepted":
+                    panel_table.cell(5, 1).text = ""
+                    panel_table.cell(5, 2).text = ""  
+    
+    except:
+        pass
+    
+
+    # Panel 1
+    if get_panel_chair_proposal_defense_form[0]:
+        panelchair_table.cell(1, 0).text = ""
+        panel_name = panelchair_table.cell(1, 0).add_paragraph(get_panel_chair_proposal_defense_form[0].panel_full_name)
+        panel_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        if get_panel_chair_proposal_defense_form[0].panel_chairman_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_chair_proposal_defense_form[0].panel_username) + ".png"):
+                panelchair_table.cell(0, 0).text = ""
+                panel_sign = panelchair_table.cell(0, 0).add_paragraph()
+                panel_sign.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                panel_sign_run = panel_sign.add_run()
+                panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_chair_proposal_defense_form[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-bet3-critique-form.html", context)
+
+    # Create - QR Code
+    auth_qr_code = qrcode.make('Research Proposal Defense Form\nDate:' + get_student_leader_data.research_proposal_defense_date)
+    type(auth_qr_code)  
+    auth_qr_code.save(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM-QR.png")
+
+    # INSERT IMAGE
+    qr_code = qrcodebox_table.cell(0, 0).add_paragraph()
+    qr_code_run = qr_code.add_run()
+    qr_code_run.add_picture(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM-QR.png", width=Inches(1), height=Inches(1))
+
+    doc.save(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.docx")
+    convert(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.docx")
+
+    filePath = FilePath(
+        student_leader_username=current_user.username, 
+        file_path=current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.pdf"
+        )
+    filePath.save()
+
+    os.startfile(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.pdf")
+
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+
+    # filePath =  FilePath(
+    #     student_leader_username = current_user.username,
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    # )
+    # filePath.save()
+
+    #qr_code_path = current_user.username + "-BET3-CRITIQUE-FORM-QR.png"
+
+    # if os.path.isfile(qr_code_path):
+    #     os.remove(qr_code_path)
+    #     print("QR Code has been deleted")
+    # else:
+    #     print("QR Code does not exist")
+
+    #delete_critique_form = current_user.username + "-BET3-CRITIQUE-FORM.docx"
+    # delete_critique_form = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx')
+
+    # if os.path.isfile(delete_critique_form):
+    #     os.remove(delete_critique_form)
+    #     print("Critique Form has been deleted")
+    # else:
+    #     print("Critique Form does not exist")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "student_group_members": get_student_group_members,
+        "student_research_title": get_accepted_proposal_title,
+        "proposal_defense_form": get_proposal_defense_form,
+        "response": "sweet downloaded"
+    }
+
+    return render(request, "student-research-final-defense.html", context)
+
 
 # Student - Panel Conforme BET-3 Process
 @login_required(login_url="index")
@@ -8514,6 +10202,7 @@ def ditHeadDashboard(request):
     get_pending_proposal_panel_invitation = ProposalPanelInvitation.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
     get_pending_final_panel_invitation = FinalPanelInvitation.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
     get_pending_adviser_conforme = AdviserConforme.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
+    get_pending_panel_conforme = PanelConforme.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
 
     context = {
         "currently_loggedin_user_data": currently_loggedin_user, 
@@ -8524,6 +10213,7 @@ def ditHeadDashboard(request):
         "pending_proposal_panel_invitation": get_pending_proposal_panel_invitation.count(),
         "pending_final_panel_invitation": get_pending_final_panel_invitation.count(),
         "pending_adviser_conforme": get_pending_adviser_conforme.count(),
+        "pending_panel_conforme": get_pending_panel_conforme.count(),
         }
 
     return render(request, "dit-head-dashboard.html", context)
@@ -9260,6 +10950,24 @@ def ditHeadBET3ProposalPanelInvitationAcceptSignature(request, id):
         check_panel_invitation.panel_response = "pending"
         check_panel_invitation.save()
 
+        # gmail notification for Student
+        send_mail(
+            "Panel Invitation for Proposal Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Proposal Defense.\nThank you and Have a nice day.",
+            currently_loggedin_user.email,
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
+        # gmail notification for Panel
+        send_mail(
+            "Panel Invitation for Proposal Defense",
+            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Proposal Defense on " + check_panel_invitation.research_proposal_defense_date + " " + check_panel_invitation.research_proposal_defense_start_time + " to " + check_panel_invitation.research_proposal_defense_end_time + "\nThank you and Have a nice day.",
+            currently_loggedin_user.email,
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
         get_panel_invitations = ProposalPanelInvitation.objects.all().filter(dit_head_response="pending")
 
         context = {
@@ -9301,6 +11009,24 @@ def ditHeadBET3ProposalPanelInvitationAccept(request, id):
         check_panel_invitation.panel_response = "pending"
 
         check_panel_invitation.save()
+
+        # gmail notification for Student
+        send_mail(
+            "Panel Invitation for Proposal Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Proposal Defense.\nThank you and Have a nice day.",
+            currently_loggedin_user.email,
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
+        # gmail notification for Panel
+        send_mail(
+            "Panel Invitation for Proposal Defense",
+            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Proposal Defense on " + check_panel_invitation.research_proposal_defense_date + " " + check_panel_invitation.research_proposal_defense_start_time + " to " + check_panel_invitation.research_proposal_defense_end_time + "\nThank you and Have a nice day.",
+            currently_loggedin_user.email,
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
 
         get_panel_invitations = ProposalPanelInvitation.objects.all().filter(dit_head_response="pending")
 
@@ -9395,6 +11121,15 @@ def ditHeadBET3ProposalPanelInvitationDeclineSignature(request, id):
 
         check_updated_panel_invitation.delete()
 
+        # gmail notification for Student
+        send_mail(
+            "Panel Invitation for Proposal Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Proposal Defense.\nThank you and Have a nice day.",
+            currently_loggedin_user.email,
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
         panel_invitation_bet3_check = ProposalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username, dit_head_response="pending")
 
         context = {
@@ -9464,6 +11199,15 @@ def ditHeadBET3ProposalPanelInvitationDecline(request, id):
             is_completed=check_updated_panel_invitation.is_completed,
         )
         log_bet3_panel_invitation.save()
+
+        # gmail notification for Student
+        send_mail(
+            "Panel Invitation for Proposal Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Proposal Defense.\nThank you and Have a nice day.",
+            currently_loggedin_user.email,
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
 
         check_updated_panel_invitation.delete()
 
@@ -9550,7 +11294,7 @@ def ditHeadBET3AdviserConformeAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has acceted your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has accepted your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -9603,7 +11347,7 @@ def ditHeadBET3AdviserConformeAccept(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has acceted your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has accepted your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -9792,7 +11536,9 @@ def ditHeadBET3AdviserConformeDecline(request, id):
         return redirect("dit-head-bet3-adviser-conforme")
 
 
-# DIT Head - BET3 - Adviser Conforme - Dashboard
+# DIT HEAD - ADVISER CONFORME
+
+# DIT Head - BET3 - Panel Conforme - Dashboard
 @login_required(login_url="index")
 @user_passes_test(lambda u: u.is_department_head, login_url="index")
 def ditHeadPanelConformeDashboard(request):
@@ -9811,16 +11557,143 @@ def ditHeadPanelConformeDashboard(request):
         esignature_exist = "False"
         print("E-sign doesn't exist.")
 
-    # PANEL INVITATION BET-3
-    # get_panel_invitation = ProposalPanelInvitation.objects.all().filter(dit_head_response="pending")
+    get_panel_conforme = PanelConforme.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response="pending")
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
-        # "panel_invitations": get_panel_invitation,
+        "get_panel_conforme": get_panel_conforme,
         "esignature_exist": esignature_exist,
     }
 
     return render(request, "dit-head-panel-conforme.html", context)
+
+
+# DIT Head - Panel Conforme - Accept Signature Process
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadPanelConformeAcceptSignature(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # Check if E-Sign Exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        pass
+        print("DIT Head - E-sign exist")
+
+    else:
+        print("DIT Head - E-sign doesn't exist.")
+
+        get_panel_conforme = PanelConforme.objects.all().filter(dit_head_username = currently_loggedin_user ,dit_head_response="Pending")
+
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "get_panel_conforme": get_panel_conforme,
+            "response": "sweet no esign",
+        }
+
+        return render(request, "dit-head-panel-conforme.html", context)
+
+    try:
+        check_panel_conforme = PanelConforme.objects.get(id=id)
+
+        check_panel_conforme.dit_head_response = "Accepted"
+        check_panel_conforme.dit_head_response_date = date_today
+        check_panel_conforme.dit_head_signature = True
+
+        check_panel_conforme.panel_response = "Pending"
+        check_panel_conforme.save()
+
+        get_panel_conforme = PanelConforme.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response="Pending")
+
+        # Email Notification - DIT Head to Student
+        send_mail(
+            "Panel Conforme for Topic Defense",
+            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.dit_head_full_name + " has accepted your Panel Conforme for Topic Defense request.\nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
+        # Email Notification - DIT Head to Panel
+        send_mail(
+            "Panel Conforme for Topic Defense",
+            "Good Day " + check_panel_conforme.panel_full_name + ",\n" + check_panel_conforme.student_leader_full_name +" ("+check_panel_conforme.course_major_abbr+")" + " needs an approval for their Panel Conforme for Topic Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "get_panel_conforme": get_panel_conforme,
+            "accepted_student_member_name": check_panel_conforme.student_leader_full_name,
+            "accepted_student_member_username": check_panel_conforme.student_leader_username,
+            "response": "sweet panel conforme accepted",
+        }
+
+        return render(request, "dit-head-panel-conforme.html", context)
+
+    except:
+        print("NO FOUND")
+        return redirect("dit-head-panel-conforme")
+
+
+# DIT Head - Panel Conforme - Accept Process
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadPanelConformeAccept(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        check_panel_conforme = PanelConforme.objects.get(id=id)
+
+        check_panel_conforme.dit_head_response = "Accepted"
+        check_panel_conforme.dit_head_response_date = date_today
+
+        check_panel_conforme.panel_response = "pending"
+
+        check_panel_conforme.save()
+
+        # Email Notification - DIT Head to Student
+        send_mail(
+            "Panel Conforme for Topic Defense",
+            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.dit_head_full_name + " has accepted your Panel Conforme for Topic Defense request.\nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
+        # Email Notification - DIT Head to Panel
+        send_mail(
+            "Panel Conforme for Topic Defense",
+            "Good Day " + check_panel_conforme.panel_full_name + ",\n" + check_panel_conforme.student_leader_full_name +" ("+check_panel_conforme.course_major_abbr+")" + " needs an approval for their Panel Conforme for Topic Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
+        get_panel_conforme = PanelConforme.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response="pending")
+
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "get_panel_conforme": get_panel_conforme,
+            "accepted_student_member_name": check_panel_conforme.student_leader_full_name,
+            "accepted_student_member_username": check_panel_conforme.student_leader_username,
+            "response": "sweet panel conforme accepted",
+        }
+
+        return render(request, "dit-head-panel-conforme.html", context)
+
+    except:
+        print("NO FOUND")
+        return redirect("dit-head-panel-conforme")
 
 
 # DIT Head - BET5 - Final Defense - Panel Invitation - Dashboard
@@ -9898,6 +11771,24 @@ def ditHeadBET5FinalPanelInvitationAcceptSignature(request, id):
 
         get_panel_invitations = FinalPanelInvitation.objects.all().filter(dit_head_response="pending")
 
+        # gmail notification for Student
+        send_mail(
+            "Panel Invitation for Final Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Final Defense.\nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
+        # gmail notification for Panel
+        send_mail(
+            "Panel Invitation for Final Defense",
+            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Final Defense on " + check_panel_invitation.research_final_defense_date + " " + check_panel_invitation.research_final_defense_start_time + " to " + check_panel_invitation.research_final_defense_end_time + "\nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "panel_invitations": get_panel_invitations,
@@ -9937,6 +11828,24 @@ def ditHeadBET5FinalPanelInvitationAccept(request, id):
         check_panel_invitation.panel_response = "pending"
 
         check_panel_invitation.save()
+
+        # gmail notification for Student
+        send_mail(
+            "Panel Invitation for Final Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Final Defense.\nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
+        # gmail notification for Panel
+        send_mail(
+            "Panel Invitation for Final Defense",
+            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Final Defense on " + check_panel_invitation.research_final_defense_date + " " + check_panel_invitation.research_final_defense_start_time + " to " + check_panel_invitation.research_final_defense_end_time + "\nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
 
         get_panel_invitations = FinalPanelInvitation.objects.all().filter(dit_head_response="pending")
 
@@ -10031,6 +11940,16 @@ def ditHeadBET5FinalPanelInvitationDeclineSignature(request, id):
 
         check_updated_panel_invitation.delete()
 
+        # gmail notification for Student
+        send_mail(
+            "Panel Invitation for Topic Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Final Defense.\nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
+
         panel_invitation_bet3_check = FinalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username, dit_head_response="pending")
 
         context = {
@@ -10102,6 +12021,15 @@ def ditHeadBET5FinalPanelInvitationDecline(request, id):
         log_bet3_panel_invitation.save()
 
         check_updated_panel_invitation.delete()
+
+          # gmail notification for Student
+        send_mail(
+            "Panel Invitation for Topic Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Final Defense.\nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
 
         panel_invitation_bet3_check = FinalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username, dit_head_response="pending")
 
@@ -12936,7 +14864,6 @@ def panelBET3TopicPanelInvitationAcceptSignature(request, id):
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
-
         )
 
         context = {
@@ -13113,6 +15040,151 @@ def panelPanelInvitationBet3Decline(request, id):
     except:
         print("NO FOUND")
         return redirect("panel-panel-invitation-bet-3")
+
+# PANEL - PANEL CONFORME
+
+# Panel - BET3 - Panel Conforme - Dashboard
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_panel, login_url="index")
+def panelPanelConformeDashboard(request):
+    currently_loggedin_user = request.user
+    print("Current User:", currently_loggedin_user.username)
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+
+    get_panel_conforme = PanelConforme.objects.all().filter(panel_username=currently_loggedin_user.username, panel_response="pending")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+        "get_panel_conforme": get_panel_conforme}
+
+    return render(request, "panel-panel-conforme.html", context)
+
+
+# Panel - Panel Conforme - Accept with Signature
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_panel, login_url="index")
+def panelPanelConformeAcceptSignature(request, id):
+    currently_loggedin_user = request.user
+
+    print(id, type(id))
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    response_date = today.strftime("%B %d, %Y")
+
+    # Check - E-sign exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        pass
+        print("Panel - E-sign exist")
+
+    else:
+        print("Panel - E-sign doesn't exist.")
+        get_panel_conforme = PanelConforme.objects.all().filter(panel_username=currently_loggedin_user.username, panel_response="pending")
+
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "panel_invitations": get_panel_conforme,
+            "response": "sweet no esign",
+        }
+
+        return render(request, "panel-panel-conforme.html", context)
+
+    try:
+        check_panel_conforme = PanelConforme.objects.get(id=id)
+
+        check_panel_conforme.panel_response = "Accepted"
+        check_panel_conforme.panel_response_date = response_date
+        check_panel_conforme.panel_signature = True
+
+        check_panel_conforme.form_status = "Accepted"
+        check_panel_conforme.is_completed = True
+        check_panel_conforme.save()
+
+
+        # Send g-mail notifications
+        send_mail(
+            "Panel Conforme for Topic Defense",
+            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.panel_full_name + " has accepted your Panel Conforme for Topic Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
+        get_panel_conforme = PanelConforme.objects.all().filter(panel_username=currently_loggedin_user.username, panel_response="pending")
+
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "get_panel_conforme": get_panel_conforme,
+            "accepted_student_member_name": check_panel_conforme.student_leader_full_name,
+            "accepted_student_member_username": check_panel_conforme.student_leader_username,
+            "response": "sweet panel conforme accepted",
+        }
+
+        return render(request, "panel-panel-conforme.html", context)
+
+    except:
+        print("NO FOUND")
+        return redirect("panel-panel-conforme")
+
+
+# Panel - Panel Conforme - Accept with Signature
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_panel, login_url="index")
+def panelPanelConformeAccept(request, id):
+    currently_loggedin_user = request.user
+
+    print(id, type(id))
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    response_date = today.strftime("%B %d, %Y")
+
+
+    try:
+        check_panel_conforme = PanelConforme.objects.get(id=id)
+
+        check_panel_conforme.panel_response = "Accepted"
+        check_panel_conforme.panel_response_date = response_date
+
+        check_panel_conforme.form_status = "Accepted"
+        check_panel_conforme.is_completed = True
+        check_panel_conforme.save()
+
+
+        # Send g-mail notifications
+        send_mail(
+            "Panel Conforme for Topic Defense",
+            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.panel_full_name + " has accepted your Panel Conforme for Topic Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
+        get_panel_conforme = PanelConforme.objects.all().filter(panel_username=currently_loggedin_user.username, panel_response="pending")
+
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "accepted_student_member_name": check_panel_conforme.student_leader_full_name,
+            "accepted_student_member_username": check_panel_conforme.student_leader_username,
+            "get_panel_conforme": get_panel_conforme,
+            "response": "sweet panel conforme accepted",
+        }
+
+        return render(request, "panel-panel-conforme.html", context)
+
+    except:
+        print("NO FOUND")
+        return redirect("panel-panel-conforme")
 
 
 # Panel - Research Title Defense Dashboard Page
@@ -13475,6 +15547,16 @@ def panelBET3ProposalPanelInvitationAcceptSignature(request, id):
         update_student_leader_data.request_limit = int(update_student_leader_data.request_limit) - 1
         update_student_leader_data.save()
 
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Proposal Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "accepted_student_member_name": check_panel_invitation.student_leader_full_name,
@@ -13529,6 +15611,16 @@ def panelBET3ProposalPanelInvitationDeclineSignature(request, id):
         check_panel_invitation.form_status = "declined"
         check_panel_invitation.save()
 
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Proposal Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "declined_student_member_name": check_panel_invitation.student_leader_full_name,
@@ -13570,6 +15662,16 @@ def panelBET3ProposalPanelInvitationAccept(request, id):
         update_student_leader_data.request_limit = int(update_student_leader_data.request_limit) - 1
         update_student_leader_data.save()
 
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Proposal Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "accepted_student_member_name": check_panel_invitation.student_leader_full_name,
@@ -13606,6 +15708,16 @@ def panelBET3ProposalPanelInvitationDecline(request, id):
 
         check_panel_invitation.form_status = "declined"
         check_panel_invitation.save()
+
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Proposal Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
 
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -13689,6 +15801,15 @@ def panelBET5FinalPanelInvitationAcceptSignature(request, id):
         update_student_leader_data.request_limit = int(update_student_leader_data.request_limit) - 1
         update_student_leader_data.save()
 
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Final Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "accepted_student_member_name": check_panel_invitation.student_leader_full_name,
@@ -13743,6 +15864,15 @@ def panelBET5FinalPanelInvitationDeclineSignature(request, id):
         check_panel_invitation.form_status = "declined"
         check_panel_invitation.save()
 
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Final Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "declined_student_member_name": check_panel_invitation.student_leader_full_name,
@@ -13784,6 +15914,15 @@ def panelBET5FinalPanelInvitationAccept(request, id):
         update_student_leader_data.request_limit = int(update_student_leader_data.request_limit) - 1
         update_student_leader_data.save()
 
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Final Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "accepted_student_member_name": check_panel_invitation.student_leader_full_name,
@@ -13820,6 +15959,15 @@ def panelBET5FinalPanelInvitationDecline(request, id):
 
         check_panel_invitation.form_status = "declined"
         check_panel_invitation.save()
+
+        # Send g-mail notifications
+        send_mail(
+            "Panel Invitation for Final Defense",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
 
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -13910,8 +16058,11 @@ def subjectTeacherTitleDefenseDay(request, id):
 
     get_start_voting = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username, panel_signature_response = 1, start_voting = 1)
 
+    
+
     try:
         check_accepted_title = ResearchTitle.objects.get(student_leader_username=id, title_defense_status="Accepted")
+        final_research_title = check_accepted_title.research_title
     except:
         check_accepted_title = None
 
@@ -13922,6 +16073,7 @@ def subjectTeacherTitleDefenseDay(request, id):
 
     try:
         get_research_title_revise = ResearchTitle.objects.get(student_leader_username=id, title_defense_status="Revise Title")
+        final_research_title = get_research_title_revise.research_title
     except:
         get_research_title_revise = None
 
@@ -14162,6 +16314,44 @@ def subjectTeacherTitleDefenseDay(request, id):
         get_student_leader_data.title_defense_status = "completed"
         get_student_leader_data.request_limit = 5
         get_student_leader_data.save()
+
+        for i in range(len(get_present_panel_members)):
+            save_topic_panel_conforme = PanelConforme(
+                student_leader_username = get_present_panel_members[i].student_leader_username,
+                student_leader_full_name = get_present_panel_members[i].student_leader_full_name,
+                course_major_abbr = get_present_panel_members[i].course_major_abbr,
+                
+                dit_head_username = get_present_panel_members[i].dit_head_username,
+                dit_head_full_name = get_present_panel_members[i].dit_head_full_name,
+                dit_head_response = "pending",
+
+                panel_username = get_present_panel_members[i].panel_username,
+                panel_full_name = get_present_panel_members[i].panel_full_name,
+                panel_response = "on hold",
+
+                research_title = final_research_title,
+                defense_date = get_present_panel_members[i].research_title_defense_date,
+                defense_start_time = get_present_panel_members[i].research_title_defense_start_time,
+                defense_end_time = get_present_panel_members[i].research_title_defense_end_time,
+
+                form_date_sent = date_today,
+
+                form_status = "pending",
+                form = "Topic Panel Conforme",
+
+                subject_teacher_username = get_present_panel_members[i].subject_teacher_username,
+                subject_teacher_full_name = get_present_panel_members[i].subject_teacher_full_name,
+            )
+            save_topic_panel_conforme.save()
+             # Send g-mail notifications
+            send_mail(
+                "Topic Defense - Panel Conforme",
+                "Good Day " + get_present_panel_members[i].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Topic Defense Panel Conforme. \nThank you and Have a nice day.",
+                "unofficial.tupc.uitc@gmail.com",
+                ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                fail_silently=False,
+            )
+            i + 1
 
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
@@ -15968,6 +18158,9 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
     except:
         return redirect("index")
 
+    
+    get_present_panel_members = ProposalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Proposal Defense Panel Invitation", research_proposal_defense_date=date_today, panel_attendance="present")
+
 
     try:
         get_student_research_title = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
@@ -15981,7 +18174,45 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
         
         get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
         get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
+        
+        for i in range(len(get_present_panel_members)):
+            save_topic_panel_conforme = PanelConforme(
+                student_leader_username = get_present_panel_members[i].student_leader_username,
+                student_leader_full_name = get_present_panel_members[i].student_leader_full_name,
+                course_major_abbr = get_present_panel_members[i].course_major_abbr,
+                
+                dit_head_username = get_present_panel_members[i].dit_head_username,
+                dit_head_full_name = get_present_panel_members[i].dit_head_full_name,
+                dit_head_response = "pending",
 
+                panel_username = get_present_panel_members[i].panel_username,
+                panel_full_name = get_present_panel_members[i].panel_full_name,
+                panel_response = "on hold",
+
+                research_title = get_student_research_title.research_title,
+                defense_date = get_present_panel_members[i].research_proposal_defense_date,
+                defense_start_time = get_present_panel_members[i].research_proposal_defense_start_time,
+                defense_end_time = get_present_panel_members[i].research_proposal_defense_end_time,
+
+                form_date_sent = date_today,
+
+                form_status = "pending",
+                form = "Proposal Panel Conforme",
+
+                subject_teacher_username = get_present_panel_members[i].subject_teacher_username,
+                subject_teacher_full_name = get_present_panel_members[i].subject_teacher_full_name,
+            )
+            save_topic_panel_conforme.save()
+
+             # Send g-mail notifications
+            send_mail(
+                "Proposal Defense - Panel Conforme",
+                "Good Day " + get_present_panel_members[i].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Proposal Defense Panel Conforme. \nThank you and Have a nice day.",
+                "unofficial.tupc.uitc@gmail.com",
+                ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                fail_silently=False,
+            )
+            i + 1
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "date_today": today.strftime("%B %d, %Y"),
@@ -16650,6 +18881,7 @@ def subjectTeacherBET5FinalDefenseDay(request, id):
         "done_panel_chairman_sign": get_done_pc_sign,
         "all_pending_panel_signature_response": all_pending_panel_signature_response,
         "pending_proposal_defense": get_pending_proposal_defense,
+        "get_accepted_research_title_data": get_accepted_research_title,
     }
 
     return render(request, "subject-teacher-bet5-final-defense-day.html", context)
@@ -16852,15 +19084,14 @@ def subjectTeacherBET5FinalDefenseDayEndVoting(request, id):
             get_student_proposal_defense_form[i].save()
             i + 1
 
-        ProposalDefenseCritique.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username).update(form_status = "completed")
         accepted_research_title = ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Accepted");
         revise_research_title = ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Revise Title");
 
         if accepted_research_title:
-            ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Accepted").update(proposal_defense_status = "Accepted with Revision", status = "Proposal Defense - Accepted with Revision")
+            ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Accepted").update(final_defense_status = "Accepted with Revision", status = "Final Defense - Accepted with Revision")
         
         if revise_research_title:
-            ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Revise Title").update(proposal_defense_status = "Accepted with Revision", status = "Proposal Defense - Accepted with Revision")
+            ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Revise Title").update(final_defense_status = "Accepted with Revision", status = "Final Defense - Accepted with Revision")
 
     elif int(deferred_with_revision_count) >= 3:
         print("Deferred with Revision - Redefense")
@@ -16870,15 +19101,14 @@ def subjectTeacherBET5FinalDefenseDayEndVoting(request, id):
             get_student_proposal_defense_form[i].save()
             i + 1
         
-        ProposalDefenseCritique.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username).update(form_status = "completed")
         accepted_research_title = ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Accepted");
         revise_research_title = ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Revise Title");
 
         if accepted_research_title:
-            ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Accepted").update(proposal_defense_status = "Deferred with Revision", status = "Proposal Defense - Deferred with Revision")
+            ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Accepted").update(final_defense_status = "Deferred with Revision", status = "Final Defense - Deferred with Revision")
         
         if revise_research_title:
-            ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Revise Title").update(proposal_defense_status = "Deferred with Revision", status = "Proposal Defense - Deferred with Revision")
+            ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Revise Title").update(final_defense_status = "Deferred with Revision", status = "Final Defense - Deferred with Revision")
     
     elif int(not_accepted_count) >= 3:
         print("Not Accepted")
@@ -16888,13 +19118,12 @@ def subjectTeacherBET5FinalDefenseDayEndVoting(request, id):
             get_student_proposal_defense_form[i].save()
             i + 1
         
-        ProposalDefenseCritique.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username).update(form_status = "completed")
-        ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Accepted").update(proposal_defense_status = "Not Accepted", status = "Proposal Defense - Not Accepted")
+        ResearchTitle.objects.filter(student_leader_username = id, title_defense_status = "Accepted").update(final_defense_status = "Not Accepted", status = "Final Defense - Not Accepted")
 
     elif accepted_with_revision_count == deferred_with_revision_count or accepted_with_revision_count == not_accepted_count or deferred_with_revision_count == not_accepted_count:
         print("Tie - re-vote")
         for i in range(len(get_student_proposal_defense_form)):
-            get_student_proposal_defense_form[i].proposal_defense_response = None
+            get_student_proposal_defense_form[i].final_defense_response = None
             get_student_proposal_defense_form[i].panel_chairman_signature_response = False
             get_student_proposal_defense_form[i].panel_chairman_signature_attach = False
             get_student_proposal_defense_form[i].panel_signature_response = False
@@ -16909,7 +19138,7 @@ def subjectTeacherBET5FinalDefenseDayEndVoting(request, id):
         "today_defense_schedule": get_today_defense_schedule,
         "completed_today_defense_schedule": get_completed_today_defense_schedule,
         "student_leader_username": id,
-        "response": "sweet proposal defense vote tie",
+        "response": "sweet final defense vote tie",
         }
 
         return render(request, "subject-teacher-dashboard.html", context)
@@ -16949,11 +19178,51 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
     except:
         get_student_research_title = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Revise Title")
     
-    if get_student_research_title.proposal_defense_status == "Accepted with Revision":
-        DefenseSchedule.objects.filter(username = request.user, student_leader_username=id, form = "Research Proposal Defense").update(status = "Completed")
-        StudentLeader.objects.filter(username=id).update(bet3_proposal_defense_status = "completed", request_limit = 5)
-        ProposalPanelInvitation.objects.filter(student_leader_username=id, form_status="accepted", form="Proposal Defense Panel Invitation", research_proposal_defense_date=date_today, panel_attendance="present").update(is_completed = True)
+    if get_student_research_title.final_defense_status == "Accepted with Revision":
+        DefenseSchedule.objects.filter(username = request.user, student_leader_username=id, form = "Research Final Defense").update(status = "Completed")
+        StudentLeader.objects.filter(username=id).update(bet5_final_defense_status = "completed", request_limit = 5)
+        FinalPanelInvitation.objects.filter(student_leader_username=id, form_status="accepted", form="Final Defense Panel Invitation", research_final_defense_date=date_today, panel_attendance="present").update(is_completed = True)
         
+        get_present_panel_members = FinalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Final Defense Panel Invitation", research_final_defense_date=date_today, panel_attendance="present")
+        for i in range(len(get_present_panel_members)):
+            save_topic_panel_conforme = PanelConforme(
+                student_leader_username = get_present_panel_members[i].student_leader_username,
+                student_leader_full_name = get_present_panel_members[i].student_leader_full_name,
+                course_major_abbr = get_present_panel_members[i].course_major_abbr,
+                
+                dit_head_username = get_present_panel_members[i].dit_head_username,
+                dit_head_full_name = get_present_panel_members[i].dit_head_full_name,
+                dit_head_response = "pending",
+
+                panel_username = get_present_panel_members[i].panel_username,
+                panel_full_name = get_present_panel_members[i].panel_full_name,
+                panel_response = "on hold",
+
+                research_title = get_student_research_title.research_title,
+                defense_date = get_present_panel_members[i].research_final_defense_date,
+                defense_start_time = get_present_panel_members[i].research_final_defense_start_time,
+                defense_end_time = get_present_panel_members[i].research_final_defense_end_time,
+
+                form_date_sent = date_today,
+
+                form_status = "pending",
+                form = "Final Panel Conforme",
+
+                subject_teacher_username = get_present_panel_members[i].subject_teacher_username,
+                subject_teacher_full_name = get_present_panel_members[i].subject_teacher_full_name,
+            )
+            save_topic_panel_conforme.save()
+            i + 1
+
+        # Send g-mail notifications
+        send_mail(
+            "Final Defense - Panel Conforme",
+            "Good Day " + get_present_panel_members[i].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Final Defense Panel Conforme. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
         get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
         get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
 
@@ -16964,22 +19233,22 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
             "today_defense_schedule": get_today_defense_schedule,
             "completed_today_defense_schedule": get_completed_today_defense_schedule,
 
-            "response": "sweet proposal defense done",
+            "response": "sweet final defense done",
         }
 
         return render(request, "subject-teacher-dashboard.html", context)
 
-    elif get_student_research_title.proposal_defense_status == "Deferred with Revision":
-        get_student_proposal_panel_invitation = ProposalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Proposal Defense Panel Invitation", research_proposal_defense_date=date_today, panel_attendance="present")
-        get_student_proposal_defense_schedule = DefenseSchedule.objects.filter(username = request.user, student_leader_username=id, form = "Research Proposal Defense")
-        get_student_proposal_defense_forms = ProposalDefenseForm.objects.all().filter(student_leader_username=id, subject_teacher_username = request.user, defense_date=date_today)
+    elif get_student_research_title.final_defense_status == "Deferred with Revision":
+        get_student_proposal_panel_invitation = FinalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Final Defense Panel Invitation", research_final_defense_date=date_today, panel_attendance="present")
+        get_student_proposal_defense_schedule = DefenseSchedule.objects.filter(username = request.user, student_leader_username=id, form = "Research Final Defense")
+        get_student_proposal_defense_forms = FinalDefenseForm.objects.all().filter(student_leader_username=id, subject_teacher_username = request.user, defense_date=date_today)
 
         get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
         get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
 
         # Proposal Panel Invitation Logs
         for i in range (len(get_student_proposal_panel_invitation)):
-            log_proposal_panel_invitation = ProposalPanelInvitationLog(
+            log_proposal_panel_invitation = FinalPanelInvitationLog(
                 student_leader_username = get_student_proposal_panel_invitation[i].student_leader_username,
                 student_leader_full_name = get_student_proposal_panel_invitation[i].student_leader_full_name,
                 course_major_abbr = get_student_proposal_panel_invitation[i].course_major_abbr,
@@ -16997,9 +19266,9 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
                 panel_signature = get_student_proposal_panel_invitation[i].panel_signature,
                 panel_attendance = get_student_proposal_panel_invitation[i].panel_attendance,
 
-                research_proposal_defense_date = get_student_proposal_panel_invitation[i].research_proposal_defense_date,
-                research_proposal_defense_start_time = get_student_proposal_panel_invitation[i].research_proposal_defense_start_time,
-                research_proposal_defense_end_time = get_student_proposal_panel_invitation[i].research_proposal_defense_end_time,
+                research_final_defense_date = get_student_proposal_panel_invitation[i].research_final_defense_date,
+                research_final_defense_start_time = get_student_proposal_panel_invitation[i].research_final_defense_start_time,
+                research_final_defense_end_time = get_student_proposal_panel_invitation[i].research_final_defense_end_time,
 
                 form_date_sent = get_student_proposal_panel_invitation[i].form_date_sent,
 
@@ -17051,9 +19320,6 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
 
                 form_date = get_student_proposal_defense_forms[i].form_date ,
 
-                start_critique = get_student_proposal_defense_forms[i].start_critique ,
-                end_critique = get_student_proposal_defense_forms[i].end_critique ,
-
                 start_voting = get_student_proposal_defense_forms[i].start_voting ,
                 end_voting = get_student_proposal_defense_forms[i].end_voting ,
 
@@ -17066,9 +19332,6 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
                 defense_date = get_student_proposal_defense_forms[i].defense_date,
                 defense_start_time = get_student_proposal_defense_forms[i].defense_start_time,
                 defense_end_time = get_student_proposal_defense_forms[i].defense_end_time,
-
-                critique_sign_response = get_student_proposal_defense_forms[i].critique_sign_response ,
-                proposal_defense_response = get_student_proposal_defense_forms[i].proposal_defense_response,
             )
             log_proposal_defense_form.save()
             i + 1
@@ -17077,7 +19340,7 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
         get_student_proposal_panel_invitation.delete()
         get_student_proposal_defense_schedule.delete()
         get_student_proposal_defense_forms.delete()
-        StudentLeader.objects.filter(username=id).update(bet3_proposal_defense_panel_invitation_status = "", request_limit = 5, research_proposal_defense_date ="", research_proposal_defense_start_time = "", research_proposal_defense_end_time = "")
+        StudentLeader.objects.filter(username=id).update(bet3_final_defense_panel_invitation_status = "", request_limit = 5, research_final_defense_date ="", research_final_defense_start_time = "", research_final_defense_end_time = "")
 
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -17086,168 +19349,22 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
             "today_defense_schedule": get_today_defense_schedule,
             "completed_today_defense_schedule": get_completed_today_defense_schedule,
 
-            "response": "sweet proposal defense done",
+            "response": "sweet final defense done",
         }
 
         return render(request, "subject-teacher-dashboard.html", context)
 
     elif get_student_research_title.proposal_defense_status == "Not Accepted":
-        get_student_research_titles = ResearchTitle.objects.all().filter(student_leader_username=id)
-        get_student_title_panel_invitation = TitlePanelInvitation.objects.all().filter(student_leader_username=id)
-        get_student_title_defense_schedule = DefenseSchedule.objects.all().filter(student_leader_username=id, form = "Research Title Defense")
-        get_student_title_defense_form = TitleDefenseForm.objects.all().filter(student_leader_username=id)
-        get_student_adviser_conforme = AdviserConforme.objects.filter(student_leader_username=id)
-        get_student_proposal_panel_invitation = ProposalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Proposal Defense Panel Invitation", research_proposal_defense_date=date_today, panel_attendance="present")
-        get_student_proposal_defense_schedule = DefenseSchedule.objects.filter(username = request.user, student_leader_username=id, form = "Research Proposal Defense")
-        get_student_proposal_defense_forms = ProposalDefenseForm.objects.all().filter(student_leader_username=id, subject_teacher_username = request.user, defense_date=date_today)
+        get_student_proposal_panel_invitation = FinalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Final Defense Panel Invitation", research_final_defense_date=date_today, panel_attendance="present")
+        get_student_proposal_defense_schedule = DefenseSchedule.objects.filter(username = request.user, student_leader_username=id, form = "Research Final Defense")
+        get_student_proposal_defense_forms = FinalDefenseForm.objects.all().filter(student_leader_username=id, subject_teacher_username = request.user, defense_date=date_today)
 
         get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
         get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
 
-        # Research Title Log
-        for i in range(len(get_student_research_titles)):
-            log_research_titles = ResearchTitleLog(
-                research_title = get_student_research_titles[i].research_title ,
-
-                course = get_student_research_titles[i].course ,
-                major = get_student_research_titles[i].major ,
-                course_major_abbr = get_student_research_titles[i].course_major_abbr ,
-
-                student_leader_username = get_student_research_titles[i].student_leader_username ,
-                student_leader_name = get_student_research_titles[i].student_leader_name ,
-
-                status = get_student_research_titles[i].status ,
-                date_submitted = get_student_research_titles[i].date_submitted ,
-
-                accepted = get_student_research_titles[i].accepted ,
-                deferred = get_student_research_titles[i].deferred ,
-                revise_title = get_student_research_titles[i].revise_title ,
-                suggested_title =  get_student_research_titles[i].suggested_title ,
-                old_research_title = get_student_research_titles[i].old_research_title ,
-                title_defense_status = get_student_research_titles[i].title_defense_status ,
-                proposal_defense_status = get_student_research_titles[i].proposal_defense_status ,
-            )
-            log_research_titles.save()
-            i + 1
-        print("Research Title - Log - Successfully")
-
-        # Title Panel Invitation Log
-        for i in range(len(get_student_title_panel_invitation)):
-            log_student_title_panel_invitation = TitlePanelInvitationLog(
-                student_leader_username = get_student_title_panel_invitation[i].student_leader_username,
-                student_leader_full_name = get_student_title_panel_invitation[i].student_leader_full_name,
-                course_major_abbr = get_student_title_panel_invitation[i].course_major_abbr,
-                
-                dit_head_username= get_student_title_panel_invitation[i].dit_head_username,
-                dit_head_full_name = get_student_title_panel_invitation[i].dit_head_full_name,
-                dit_head_response = get_student_title_panel_invitation[i].dit_head_response,
-                dit_head_response_date = get_student_title_panel_invitation[i].dit_head_response_date,
-                dit_head_signature = get_student_title_panel_invitation[i].dit_head_signature,
-
-                panel_username = get_student_title_panel_invitation[i].panel_username,
-                panel_full_name = get_student_title_panel_invitation[i].panel_full_name,
-                panel_response = get_student_title_panel_invitation[i].panel_response,
-                panel_response_date = get_student_title_panel_invitation[i].panel_response_date,
-                panel_signature = get_student_title_panel_invitation[i].panel_signature,
-                panel_attendance = get_student_title_panel_invitation[i].panel_attendance,
-
-                research_title_defense_date = get_student_title_panel_invitation[i].research_title_defense_date,
-                research_title_defense_start_time = get_student_title_panel_invitation[i].research_title_defense_start_time,
-                research_title_defense_end_time = get_student_title_panel_invitation[i].research_title_defense_end_time,
-
-                form_date_sent = get_student_title_panel_invitation[i].form_date_sent,
-
-                form_status = get_student_title_panel_invitation[i].form_status,
-                form = get_student_title_panel_invitation[i].form,
-
-                subject_teacher_username = get_student_title_panel_invitation[i].subject_teacher_username,
-                subject_teacher_full_name = get_student_title_panel_invitation[i].subject_teacher_full_name,
-
-                is_completed = get_student_title_panel_invitation[i].is_completed,
-            )
-            log_student_title_panel_invitation.save()
-            i + 1
-        print("Title Panel Invitation - Log - Successfully")
-
-        # Title Defense Schedule Log
-        for i in range(len(get_student_title_defense_schedule)):
-            log_title_defense_schedule = DefenseScheduleLog(
-                username = get_student_title_defense_schedule[i].username,
-                name = get_student_title_defense_schedule[i].name,
-                student_leader_username = get_student_title_defense_schedule[i].student_leader_username,
-                student_leader_name = get_student_title_defense_schedule[i].student_leader_name,
-                course = get_student_title_defense_schedule[i].course,
-                form = get_student_title_defense_schedule[i].form,
-                date = get_student_title_defense_schedule[i].date,
-                start_time = get_student_title_defense_schedule[i].start_time,
-                end_time = get_student_title_defense_schedule[i].end_time,
-                status = get_student_title_defense_schedule[i].status,
-            )
-            log_title_defense_schedule.save()
-            i + 1
-        print("Title Defense Schedule - Log - Successfully")
-
-        # Title Defense Form Log
-        for i in range(len(get_student_title_defense_form)):
-            log_title_defense_form = TitleDefenseFormLog(
-                student_leader_username = get_student_title_defense_form[i].student_leader_username,
-                student_leader_full_name = get_student_title_defense_form[i].student_leader_full_name,
-                course_major_abbr = get_student_title_defense_form[i].course_major_abbr,
-
-                panel_username = get_student_title_defense_form[i].panel_username,
-                panel_full_name = get_student_title_defense_form[i].panel_full_name,
-                panel_attendance = get_student_title_defense_form[i].panel_attendance,
-                is_panel_chairman = get_student_title_defense_form[i].is_panel_chairman,
-                panel_signature_response = get_student_title_defense_form[i].panel_signature_response,
-                panel_signature_attach = get_student_title_defense_form[i].panel_signature_attach,
-
-                form_date = get_student_title_defense_form[i].form_date,
-
-                form_status = get_student_title_defense_form[i].form_status,
-                form = get_student_title_defense_form[i].form,
-
-                subject_teacher_username = get_student_title_defense_form[i].subject_teacher_username,
-                subject_teacher_full_name = get_student_title_defense_form[i].subject_teacher_full_name,
-                defense_date = get_student_title_defense_form[i].defense_date,
-                defense_start_time = get_student_title_defense_form[i].defense_start_time,
-                defense_end_time = get_student_title_defense_form[i].defense_end_time,
-            )
-            log_title_defense_form.save()
-            i + 1
-        print("Title Defense Form - Log - Successfully")
-
-        # Adviser Conforme Log
-        for i in range(len(get_student_adviser_conforme)):
-            log_adviser_conforme = AdviserConformeLog(
-                student_leader_username = get_student_adviser_conforme[i].student_leader_username,
-                student_leader_full_name = get_student_adviser_conforme[i].student_leader_full_name,
-                course = get_student_adviser_conforme[i].course,
-
-                research_title = get_student_adviser_conforme[i].research_title,
-
-                form_date_submitted = get_student_adviser_conforme[i].form_date_submitted,
-
-                dit_head_username = get_student_adviser_conforme[i].dit_head_username,
-                dit_head_name = get_student_adviser_conforme[i].dit_head_name,
-                dit_head_response = get_student_adviser_conforme[i].dit_head_response,
-                dit_head_response_date = get_student_adviser_conforme[i].dit_head_response_date,
-                dit_head_signature = get_student_adviser_conforme[i].dit_head_signature,
-
-                adviser_username = get_student_adviser_conforme[i].adviser_username,
-                adviser_name = get_student_adviser_conforme[i].adviser_name,
-                adviser_response = get_student_adviser_conforme[i].adviser_response,
-                adviser_response_date = get_student_adviser_conforme[i].adviser_response_date,
-                adviser_signature = get_student_adviser_conforme[i].adviser_signature,
-
-                form_status = get_student_adviser_conforme[i].form_status,
-            )
-            log_adviser_conforme.save()
-            i + 1
-        print("Adviser Conforme - Log - Successfully")
-
         # Proposal Panel Invitation Logs
         for i in range (len(get_student_proposal_panel_invitation)):
-            log_proposal_panel_invitation = ProposalPanelInvitationLog(
+            log_proposal_panel_invitation = FinalPanelInvitationLog(
                 student_leader_username = get_student_proposal_panel_invitation[i].student_leader_username,
                 student_leader_full_name = get_student_proposal_panel_invitation[i].student_leader_full_name,
                 course_major_abbr = get_student_proposal_panel_invitation[i].course_major_abbr,
@@ -17265,9 +19382,9 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
                 panel_signature = get_student_proposal_panel_invitation[i].panel_signature,
                 panel_attendance = get_student_proposal_panel_invitation[i].panel_attendance,
 
-                research_proposal_defense_date = get_student_proposal_panel_invitation[i].research_proposal_defense_date,
-                research_proposal_defense_start_time = get_student_proposal_panel_invitation[i].research_proposal_defense_start_time,
-                research_proposal_defense_end_time = get_student_proposal_panel_invitation[i].research_proposal_defense_end_time,
+                research_final_defense_date = get_student_proposal_panel_invitation[i].research_final_defense_date,
+                research_final_defense_start_time = get_student_proposal_panel_invitation[i].research_final_defense_start_time,
+                research_final_defense_end_time = get_student_proposal_panel_invitation[i].research_final_defense_end_time,
 
                 form_date_sent = get_student_proposal_panel_invitation[i].form_date_sent,
 
@@ -17319,9 +19436,6 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
 
                 form_date = get_student_proposal_defense_forms[i].form_date ,
 
-                start_critique = get_student_proposal_defense_forms[i].start_critique ,
-                end_critique = get_student_proposal_defense_forms[i].end_critique ,
-
                 start_voting = get_student_proposal_defense_forms[i].start_voting ,
                 end_voting = get_student_proposal_defense_forms[i].end_voting ,
 
@@ -17334,47 +19448,16 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
                 defense_date = get_student_proposal_defense_forms[i].defense_date,
                 defense_start_time = get_student_proposal_defense_forms[i].defense_start_time,
                 defense_end_time = get_student_proposal_defense_forms[i].defense_end_time,
-
-                critique_sign_response = get_student_proposal_defense_forms[i].critique_sign_response ,
-                proposal_defense_response = get_student_proposal_defense_forms[i].proposal_defense_response,
             )
             log_proposal_defense_form.save()
             i + 1
         print("Proposal Defense Forms - Log - Successfully")
 
-        get_student_research_titles.delete()
-        get_student_title_panel_invitation.delete()
-        get_student_title_defense_schedule.delete()
-        get_student_title_defense_form.delete()
-        get_student_title_defense_form.delete()
-       
         get_student_proposal_panel_invitation.delete()
         get_student_proposal_defense_schedule.delete()
         get_student_proposal_defense_forms.delete()
-
-        get_adviser_data = User.objects.filter(username=get_student_adviser_conforme[0].adviser_username)
-        get_adviser_data.update(advisee_count = get_adviser_data - 1)
-        get_student_adviser_conforme.delete()
         
-        StudentLeader.objects.filter(username=id).update(
-            request_limit = 5, 
-
-            research_titles_status = "",
-            bet3_panel_invitation_status = "",
-            title_defense_status = "",
-            research_title_defense_date ="", 
-            research_title_defense_start_time = "", 
-            research_title_defense_end_time = "",
-
-            adviser_username = "",
-            adviser_name = "",
-            adviser_conforme_status = "",
-
-            bet3_proposal_defense_panel_invitation_status = "", 
-            research_proposal_defense_date ="", 
-            research_proposal_defense_start_time = "", 
-            research_proposal_defense_end_time = ""
-            )
+        StudentLeader.objects.filter(username=id).update(bet5_subject_teacher_username = "", bet5_subject_teacher_name = "", bet3_final_defense_panel_invitation_status = "", request_limit = 5, research_final_defense_date ="", research_final_defense_start_time = "", research_final_defense_end_time = "")
 
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -17383,7 +19466,7 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
             "today_defense_schedule": get_today_defense_schedule,
             "completed_today_defense_schedule": get_completed_today_defense_schedule,
 
-            "response": "sweet proposal defense done",
+            "response": "sweet final defense done",
         }
 
         return render(request, "subject-teacher-dashboard.html", context)
