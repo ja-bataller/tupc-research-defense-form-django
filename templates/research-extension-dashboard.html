@@ -25,7 +25,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'adviser-dashboard' %}">
+        <a class="nav-link" href="{% url 'research-extension-dashboard' %}">
           <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
           </div>
         </a>
@@ -36,7 +36,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'adviser-dashboard' %}">
+        <a class="nav-link" href="{% url 'research-extension-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
       </li>
@@ -79,25 +79,22 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
-                  <div class="float-right">Research & Extension</div>
+                  <div class="float-right">Research Services</div>
                 </span>
                 <img class="img-profile rounded-circle" src="{% static 'img/user.png' %}" />
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                {% if currently_loggedin_user_account == 'Student' %}
-                <a class="dropdown-item" href="{% url 'student-profile' %}">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                {% endif %}
 
-                {% if currently_loggedin_user_account == 'Administrator' %}
-                <a class="dropdown-item" href="{% url 'admin-profile' %}">
+                <a class="dropdown-item" href="{% url 'research-extension-profile' %}">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
-                {% endif %}
+
+                <a class="dropdown-item" href="{% url 'research-extension-account-settings' %}">
+                  <i class="fa-solid fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Account Settings
+                </a>
 
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -120,7 +117,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-                        Research & Extension</div>
+                        Research Services</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">Welcome {{user.honorific}} {{user.last_name}} {{user.suffix}}
                       </div>
                     </div>
@@ -155,7 +152,7 @@
           <div class="d-sm-flex align-items-center justify-content-between mt-4">
             <h1 class="h3 mb-0 text-gray-800">Acknowledgement Receipt - Requests</h1>
           </div>
-          
+
           <div class="card shadow mt-3 mb-4">
             <div class="card-body">
               <div class="table-responsive">
@@ -165,6 +162,7 @@
                       <th>Student ID No.</th>
                       <th>Student Leader Name</th>
                       <th>Course</th>
+                      <th>Research Title</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -173,18 +171,19 @@
                       <th>Student ID No.</th>
                       <th>Student Leader Name</th>
                       <th>Course</th>
+                      <th>Research Title</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
                   <tbody>
-                    {% for advisee_data in all_advisee_data %}
+                    {% for pending_receipt in pending_receipt %}
                     <tr>
-                      <td>{{advisee_data.student_leader_username}}</td>
-                      <td>{{advisee_data.student_leader_full_name}}</td>
-                      <td>{{advisee_data.course}}</td>
-                      <td>{{advisee_data.research_title}}</td>
+                      <td>{{pending_receipt.student_leader_username}}</td>
+                      <td>{{pending_receipt.student_leader_full_name}}</td>
+                      <td>{{pending_receipt.course_major_abbr}}</td>
+                      <td>{{pending_receipt.research_title}}</td>
                       <td>
-                        <a id="accept_{{advisee_data.id}}" data-id="{{advisee_data.id}}" class="btn btn-outline-primary mb-2" type="button" href="#"><i class="fa-solid fa-eye"></i></a>
+                        <a id="accept_{{pending_receipt.id}}" data-id="{{pending_receipt.id}}" class="btn btn-outline-success mb-2" type="button" href="#">Accept</a>
                       </td>
                     </tr>
                     {% endfor %}
@@ -206,6 +205,38 @@
   </div>
   <!-- End of Page Wrapper -->
 
+  <!-- Accept Response Modal -->
+  <div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="acceptModal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to accept
+          <span id="student_name_accept"></span><br>
+          Acknowledgement Receipt request?
+          <br>
+          <br>
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required>
+            <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+          </div>
+          <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Accept -
+            Attach Signature</a>
+          <hr>
+          <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept -
+            Personal Signature</a>
+          <hr>
+        </div>
+        <div class="modal-footer">
+          <button id="btn_cancel_a" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
@@ -214,6 +245,65 @@
   {% include 'logout-modal.html' %}
 
   {% include 'script-cdn.html' %}
+
+  {% for pending_receipt in pending_receipt %}
+  <script>
+    // Accept Response - Personal Signature
+    document.getElementById('accept_' + '{{pending_receipt.id}}').addEventListener("click", function () {
+      data_id = $(document.getElementById('accept_' + '{{pending_receipt.id}}')).attr("data-id")
+
+      document.getElementById('student_name_accept').textContent = "{{pending_receipt.student_leader_full_name}}";
+      document.getElementById("btn_accept").href = "{% url 'research-extension-accept' id=0 %}".replace(/0/, data_id);
+      $("#acceptModal").modal()
+    });
+
+  </script>
+  {% endfor %}
+
+  <!-- Modal - Accept - Attach Signature -->
+  <script>
+    document.getElementById('btn_accept_signed').addEventListener("click", function () {
+      if (document.getElementById('checkbox_agreement_a').checked) {
+        document.getElementById("btn_accept_signed").href = "{% url 'research-extension-accept-sign' id=0 %}".replace(/0/, data_id);
+      } else {
+        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
+      }
+    });
+  </script>
+
+
+  <!-- Modal - Cancel Button -->
+  <script>
+    document.getElementById("btn_cancel_a").addEventListener("click", function () {
+      document.getElementById("checkbox_agreement_a").checked = false;
+    });
+
+    document.getElementById("btn_cancel_d").addEventListener("click", function () {
+      document.getElementById("checkbox_agreement_d").checked = false;
+    });
+  </script>
+
+  {% if response == 'sweet panel conforme accepted' %}
+  <script>
+    Swal.fire("Accepted", "The Acknowledgement Receipt request of {{accepted_student_member_name}} is accepted.", "success");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'research-extension-dashboard' %}");
+    }, 2000);
+
+  </script>
+  {% endif %}
+
+
+  {% if response == 'sweet no esign' %}
+  <script>
+    Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'research-extension-dashboard' %}");
+    }, 2300);
+  </script>
+  {% endif %}
 </body>
 
 </html>

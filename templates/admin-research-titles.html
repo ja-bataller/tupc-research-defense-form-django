@@ -126,7 +126,6 @@
                       <th>Title</th>
                       <th>Course</th>
                       <th>Status</th>
-                      <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -134,16 +133,24 @@
                       <th>Title</th>
                       <th>Course</th>
                       <th>Status</th>
-                      <th>Action</th>
                     </tr>
                   </tfoot>
                   <tbody class="text-dark">
-                    <!-- <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr> -->
+                    {% for research_title in research_titles %}
+                    <tr>
+                      <td>{{research_title.research_title}}</td>
+                      <td>{{research_title.course_major_abbr}}</td>
+                      <td>{{research_title.status}}</td>
+                    </tr>
+                    {% endfor %}
+
+                    {% for research_title in research_title_logs %}
+                    <tr>
+                      <td>{{research_title.research_title}}</td>
+                      <td>{{research_title.course_major_abbr}}</td>
+                      <td>{{research_title.status}}</td>
+                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>

@@ -10,7 +10,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>Panel - User Profile</title>
+  <title>Research & Extension - User Profile</title>
 
   {% include 'css-main-cdn.html' %}
 </head>
@@ -23,7 +23,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'panel-dashboard' %}">
+        <a class="nav-link" href="{% url 'research-extension-dashboard' %}">
           <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
           </div>
         </a>
@@ -33,61 +33,10 @@
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'panel-dashboard' %}">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'research-extension-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
-      </li>
-
-      <!-- Divider -->
-      <!-- <hr class="sidebar-divider"> -->
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-          aria-controls="collapsePages">
-          <i class="fa-solid fa-folder-open"></i>
-          <span>Forms</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
-
-            <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
-          aria-controls="collapseLogs">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          <span>Logs</span>
-        </a>
-        <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Panel Invitation</a>
-            <a class="collapse-item" href="{% url 'panel-bet3-title-defense-logs' %}">Research Title Defense</a>
-            <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
-          </div>
-        </div>
       </li>
 
       <!-- Divider -->
@@ -115,7 +64,46 @@
       <!-- Main Content -->
       <div id="content">
 
-        {% include 'panel-topbar.html' %}
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+          <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
+                  <div class="float-right">Research & Extension</div>
+                </span>
+                <img class="img-profile rounded-circle" src="{% static 'img/user.png' %}" />
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                <a class="dropdown-item" href="{% url 'research-extension-profile' %}">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+
+                <a class="dropdown-item" href="{% url 'research-extension-account-settings' %}">
+                  <i class="fa-solid fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Account Settings
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -185,8 +173,7 @@
                       {% if esignature_exist == 'True' %}
 
                       <div class="text-center mt-5 mb-5">
-                        <img id="esignature_img" src="/uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/{{currently_loggedin_username}}.png"
-                          alt="">
+                        <img id="esignature_img" src="/uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/{{currently_loggedin_username}}.png" alt="">
                       </div>
 
                       {% else %}
@@ -203,12 +190,11 @@
                       {% endif %}
 
                       {% if esignature_exist == 'False' %}
-                      <form method="POST" enctype="multipart/form-data" action="{% url 'panel-upload-esignature' %}">
+                      <form method="POST" enctype="multipart/form-data" action="{% url 'research-extension-upload-esignature' %}">
                         {% csrf_token %}
                         <div class="form-group">
                           <label>Upload Signature</label>
-                          <input type="file" class="form-control-file mb-2" id="esignature" name="esignature"
-                            accept="image/png" required>
+                          <input type="file" class="form-control-file mb-2" id="esignature" name="esignature" accept="image/png" required>
                           <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
                             <label class="form-check-label" for="exampleCheck1">I agree to attach my signature, and use it to this web app.</label>
@@ -218,12 +204,11 @@
                       </form>
 
                       {% elif esignature_exist == 'True'%}
-                      <form method="POST" enctype="multipart/form-data" action="{% url 'panel-upload-esignature' %}">
+                      <form method="POST" enctype="multipart/form-data" action="{% url 'research-extension-upload-esignature' %}">
                         {% csrf_token %}
                         <div class="form-group">
                           <label>Upload Signature</label>
-                          <input type="file" class="form-control-file mb-2" id="esignature" name="esignature"
-                            accept="image/png" required>
+                          <input type="file" class="form-control-file mb-2" id="esignature" name="esignature" accept="image/png" required>
                           <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
                             <label class="form-check-label" for="exampleCheck1">I agree to update my signature, and use it to this web app.</label>
@@ -232,8 +217,7 @@
                         </div>
                       </form>
 
-                      <a type="button" class="btn btn-outline-danger w-100 mb-2"
-                        href="{% url 'panel-delete-esignature' %}">Remove Signature</a>
+                      <a type="button" class="btn btn-outline-danger w-100 mb-2" href="{% url 'research-extension-delete-esignature' %}">Remove Signature</a>
                       {% endif %}
 
                       {% if esignature_exist == 'False' %}
@@ -242,8 +226,7 @@
                         <span>or</span>
                       </div>
 
-                      <a type="button" class="btn btn-outline-success w-100 mb-2"
-                        href="{% url 'panel-create-esignature' %}">Create E-Signature</a>
+                      <a type="button" class="btn btn-outline-success w-100 mb-2" href="{% url 'research-extension-create-esignature' %}">Create E-Signature</a>
 
                       {% endif %}
 
@@ -257,7 +240,7 @@
 
         </div>
         <!-- /.container-fluid -->
-        
+
       </div>
       <!-- End of Main Content -->
 
@@ -283,7 +266,7 @@
   <script>
     Swal.fire("Invalid", "The File you uploaded is not a PNG image file.", "error");
     setTimeout(function () {
-      window.location.replace("{% url 'panel-profile' %}");
+      window.location.replace("{% url 'research-extension-profile' %}");
     }, 2000);
   </script>
   {% endif %}
@@ -292,7 +275,7 @@
   <script>
     Swal.fire("Invalid", "The Image Size you uploaded is invalid.", "error");
     setTimeout(function () {
-      window.location.replace("{% url 'panel-profile' %}");
+      window.location.replace("{% url 'research-extension-profile' %}");
     }, 2000);
   </script>
   {% endif %}

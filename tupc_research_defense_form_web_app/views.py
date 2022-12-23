@@ -1756,7 +1756,10 @@ def studentDownloadPanelInvitationBet3(request, id):
     print("Panel Response: ", panel_response)
     print("Panel Response Date: ", panel_response_date)
 
+    # Local Host - Syntax
     doc = Document("static/forms/1-TOPIC-DEFENSE-PANEL-INVITATION.docx")
+
+    # Deployed - Syntax
     # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/1-TOPIC-DEFENSE-PANEL-INVITATION.docx')
 
     student_table = doc.tables[0] # Student Data Table
@@ -1857,6 +1860,7 @@ def studentDownloadPanelInvitationBet3(request, id):
 
     if get_panel_invitation.dit_head_signature == 1:
         # Check if DIT Head E-Sign Exist
+        # if os.path.exists("/home/johnanthonybataller/tupc-research-defense-form-django/uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_invitation.dit_head_username) + ".png"):
         if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_invitation.dit_head_username) + ".png"):
             head_signature_table.cell(0, 0).text = ''
             head_signature = head_signature_table.cell(0, 0).add_paragraph()
@@ -1910,49 +1914,52 @@ def studentDownloadPanelInvitationBet3(request, id):
     # Create - QR Code
     auth_qr_code = qrcode.make('Topic Panel Invitation\nH:' + dit_head_response_date + '\nP: ' + panel_response_date)
     type(auth_qr_code)  
-    auth_qr_code.save(current_user.username + "-BET3-TOPIC-DEFENSE-PANEL-INVITATION-QR.png")
+    auth_qr_code.save(current_user.username + "-TOPIC-DEFENSE-PANEL-INVITATION-QR.png")
 
     # INSERT IMAGE
     qr_code = qr_code_box.cell(0, 0).add_paragraph()
     qr_code_run = qr_code.add_run()
-    qr_code_run.add_picture(current_user.username + "-BET3-TOPIC-DEFENSE-PANEL-INVITATION-QR.png", width=Inches(1), height=Inches(1))
+    qr_code_run.add_picture(current_user.username + "-TOPIC-DEFENSE-PANEL-INVITATION-QR.png", width=Inches(1), height=Inches(1))
 
-    doc.save(current_user.username + "-" + panel_username + "-" + panel_response + "-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx")
-    convert(current_user.username + "-" + panel_username + "-" + panel_response + "-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx")
+    doc.save(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-DEFENSE-PANEL-INVITATION.docx")
+    convert(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-DEFENSE-PANEL-INVITATION.docx")
 
     filePath = FilePath(
         student_leader_username=current_user.username, 
-        file_path=current_user.username + "-" + panel_username + "-" + panel_response + "-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf"
+        file_path=current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-DEFENSE-PANEL-INVITATION.pdf"
         )
     filePath.save()
 
-    os.startfile(current_user.username + "-" + panel_username + "-" + panel_response + "-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf")
+    os.startfile(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-DEFENSE-PANEL-INVITATION.pdf")
 
-    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx')
-    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
-    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    # Deployed - Syntax
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-DEFENSE-PANEL-INVITATION.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-TOPIC-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
 
     # filePath =  FilePath(
     #     student_leader_username = current_user.username,
-    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
     # )
     # filePath.save()
 
-    qr_code_path = current_user.username + "-BET3-TOPIC-DEFENSE-PANEL-INVITATION-QR.png"
+    qr_code_path = current_user.username + "-TOPIC-DEFENSE-PANEL-INVITATION-QR.png"
     if os.path.isfile(qr_code_path):
         os.remove(qr_code_path)
-        print("QR Code has been deleted")
+        print("Panel Invitation for Topic Defense QR - Deleted")
     else:
-        print("QR Code does not exist")
+        print("Panel Invitation for Topic Defense QR - Not Found")
 
-    bet3_topic_defense_panel_inviation_docx = current_user.username + "-" + panel_username + "-" + panel_response + "-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx"
-    # bet3_topic_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx')
+    bet3_topic_defense_panel_inviation_docx = current_user.username+"-"+panel_username+"-"+panel_response+"-TOPIC-DEFENSE-PANEL-INVITATION.docx"
+    
+    # Deployed - Syntax
+    # bet3_topic_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-TOPIC-DEFENSE-PANEL-INVITATION.docx')
 
     if os.path.isfile(bet3_topic_defense_panel_inviation_docx):
         os.remove(bet3_topic_defense_panel_inviation_docx)
-        print("Panel Invitation BET-3 has been deleted")
+        print("Panel Invitation for Topic Defense docx - Deleted")
     else:
-        print("Panel Invitation BET-3 does not exist")
+        print("Panel Invitation for Topic Defense docx - Not Found")
 
     get_panel_invitations = TitlePanelInvitation.objects.all().filter(student_leader_username=current_user.username)
     get_accepted_panel_invitations = TitlePanelInvitation.objects.all().filter(student_leader_username=current_user.username, form_status="accepted")
@@ -1962,7 +1969,7 @@ def studentDownloadPanelInvitationBet3(request, id):
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
         "currently_loggedin_user_account": currently_loggedin_user_account,
         "student_leader_data": get_student_leader_data,
-        #'download_link': download_link,
+        # 'download_link': download_link,
         "panel_invitations": get_panel_invitations,
         "accepted_panel_invitations": get_accepted_panel_invitations.count(),
         "pending_panel_invitations": get_pending_panel_invitations.count(),
@@ -2181,6 +2188,8 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
     ############## BET-3 RESEARCH TITLE DEFENSE DATA ##############
 
     doc = Document("static/forms/2-RESEARCH-TITLE-DEFENSE-FORM.docx")
+
+    # Deployed - Syntax
     # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/2-RESEARCH-TITLE-DEFENSE-FORM.docx')
 
     doc.paragraphs[0].runs[1].text = date
@@ -2420,7 +2429,7 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
 
     os.startfile(current_user.username + "-BET3-RESEARCH-TITLE-DEFENSE-FORM.pdf")
 
-    # UN COMMENT IF DEPLOYED
+    # Deployed - Syntax
     # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username + '-BET3-RESEARCH-TITLE-DEFENSE-FORM.docx')
     # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username + '-BET3-RESEARCH-TITLE-DEFENSE-FORM.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
     # download_link = "http://johnanthonybataller.pythonanywhere.com/static/"+current_user.username + '-BET3-RESEARCH-TITLE-DEFENSE-FORM.pdf'
@@ -2430,23 +2439,24 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
     #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username + '-BET3-RESEARCH-TITLE-DEFENSE-FORM.pdf'
     # )
     # filePath.save()
-    # UN COMMENT IF DEPLOYED
 
     qr_code_path = current_user.username + "-BET3-TITLE-DEFENSE-QR.png"
     if os.path.isfile(qr_code_path):
         os.remove(qr_code_path)
-        print("BET-3 Research Title Defense QR Code has been deleted")
+        print("Research Title Defense QR Code - Deleted")
     else:
-        print("BET-3 Research Title Defense QR Code does not exist")
+        print("Research Title Defense QR Code - Not Found")
 
     bet3_research_title_defense_form_docx = current_user.username + "-BET3-RESEARCH-TITLE-DEFENSE-FORM.docx"
+
+    # Deployed - Syntax
     # bet3_research_title_defense_form_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username + '-BET3-RESEARCH-TITLE-DEFENSE-FORM.docx')
 
     if os.path.isfile(bet3_research_title_defense_form_docx):
         os.remove(bet3_research_title_defense_form_docx)
-        print("BET-3 Research Title Defense Form has been deleted")
+        print("Research Title Defense Form - Deleted")
     else:
-        print("BET-3 Research Title Defense Form does not exist")
+        print("Research Title Defense Form - Not Found")
 
     # Get Student Group Members
     try:
@@ -2765,7 +2775,9 @@ def studentTopicPanelConformeDownload(request, id):
     print("Panel Response Date: ", panel_response_date)
 
     doc = Document("static/forms/TOPIC-PANEL-CONFORME.docx")
-    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/TOPIC-PANEL-CONFORME.docx.docx')
+
+    # Deployed - Syntax
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/TOPIC-PANEL-CONFORME.docx')
 
     student_table = doc.tables[1]
 
@@ -2902,6 +2914,7 @@ def studentTopicPanelConformeDownload(request, id):
 
     os.startfile(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.pdf")
 
+    # Deployed - Syntax
     # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
     # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
     # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.pdf'
@@ -2915,18 +2928,20 @@ def studentTopicPanelConformeDownload(request, id):
     qr_code_path = current_user.username + "-TOPIC-PANEL-CONFORME-QR.png"
     if os.path.isfile(qr_code_path):
         os.remove(qr_code_path)
-        print("QR Code has been deleted")
+        print("Panel Conforme for Topic Defense QR - Deleted")
     else:
-        print("QR Code does not exist")
+        print("Panel Conforme for Topic Defense QR - Not Found")
 
     bet3_topic_defense_panel_inviation_docx = current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.docx"
+
+    # Deployed - Syntax
     # bet3_topic_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
 
     if os.path.isfile(bet3_topic_defense_panel_inviation_docx):
         os.remove(bet3_topic_defense_panel_inviation_docx)
-        print("Panel Invitation BET-3 has been deleted")
+        print("Panel Conforme for Topic Defense - Deleted")
     else:
-        print("Panel Invitation BET-3 does not exist")
+        print("Panel Conforme for Topic Defense - Not Found")
 
     get_all_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Topic Panel Conforme")
     get_all_pending_topic_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Topic Panel Conforme", is_completed = False)
@@ -3110,7 +3125,9 @@ def studentProposalPanelConformeDownload(request, id):
     print("Panel Response Date: ", panel_response_date)
 
     doc = Document("static/forms/PROPOSAL-PANEL-CONFORME.docx")
-    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/TOPIC-PANEL-CONFORME.docx.docx')
+
+    # Deployed - Syntax
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/PROPOSAL-PANEL-CONFORME.docx.docx')
 
     student_table = doc.tables[1]
 
@@ -3227,51 +3244,52 @@ def studentProposalPanelConformeDownload(request, id):
 
 
     # Create - QR Code
-    auth_qr_code = qrcode.make('Topic Panel Conforme\nH:' + dit_head_response_date + '\nP: ' + panel_response_date)
+    auth_qr_code = qrcode.make('Proposal Panel Conforme\nH:' + dit_head_response_date + '\nP: ' + panel_response_date)
     type(auth_qr_code)  
-    auth_qr_code.save(current_user.username + "-TOPIC-PANEL-CONFORME-QR.png")
+    auth_qr_code.save(current_user.username + "-PROPOSAL-PANEL-CONFORME-QR.png")
 
     # INSERT IMAGE
     qr_code = qr_code_box.cell(0, 0).add_paragraph()
     qr_code_run = qr_code.add_run()
-    qr_code_run.add_picture(current_user.username + "-TOPIC-PANEL-CONFORME-QR.png", width=Inches(1), height=Inches(1))
+    qr_code_run.add_picture(current_user.username + "-PROPOSAL-PANEL-CONFORME-QR.png", width=Inches(1), height=Inches(1))
 
-    doc.save(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.docx")
-    convert(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.docx")
+    doc.save(current_user.username + "-" + panel_username + "-" + panel_response + "-PROPOSAL-PANEL-CONFORME.docx")
+    convert(current_user.username + "-" + panel_username + "-" + panel_response + "-PROPOSAL-PANEL-CONFORME.docx")
 
     filePath = FilePath(
         student_leader_username=current_user.username, 
-        file_path=current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.pdf"
+        file_path=current_user.username + "-" + panel_username + "-" + panel_response + "-PROPOSAL-PANEL-CONFORME.pdf"
         )
     filePath.save()
 
-    os.startfile(current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.pdf")
+    os.startfile(current_user.username + "-" + panel_username + "-" + panel_response + "-PROPOSAL-PANEL-CONFORME.pdf")
 
-    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
-    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
-    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.pdf'
+    # Deployed - Syntax
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-PROPOSAL-PANEL-CONFORME.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-PROPOSAL-PANEL-CONFORME.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-PROPOSAL-PANEL-CONFORME.pdf'
 
     # filePath =  FilePath(
     #     student_leader_username = current_user.username,
-    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.pdf'
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-PROPOSAL-PANEL-CONFORME.pdf'
     # )
     # filePath.save()
 
-    qr_code_path = current_user.username + "-TOPIC-PANEL-CONFORME-QR.png"
+    qr_code_path = current_user.username + "-PROPOSAL-PANEL-CONFORME-QR.png"
     if os.path.isfile(qr_code_path):
         os.remove(qr_code_path)
-        print("QR Code has been deleted")
+        print("Panel Conforme for Proposal Defense QR - Deleted")
     else:
-        print("QR Code does not exist")
+        print("Panel Conforme for Proposal Defense QR - Not Found")
 
-    bet3_topic_defense_panel_inviation_docx = current_user.username + "-" + panel_username + "-" + panel_response + "-TOPIC-PANEL-CONFORME.docx"
-    # bet3_topic_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
+    bet3_topic_defense_panel_inviation_docx = current_user.username + "-" + panel_username + "-" + panel_response + "-PROPOSAL-PANEL-CONFORME.docx"
+    # bet3_topic_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-PROPOSAL-PANEL-CONFORME.docx')
 
     if os.path.isfile(bet3_topic_defense_panel_inviation_docx):
         os.remove(bet3_topic_defense_panel_inviation_docx)
-        print("Panel Invitation BET-3 has been deleted")
+        print("Panel Conforme for Proposal Defense - Deleted")
     else:
-        print("Panel Invitation BET-3 does not exist")
+        print("Panel Conforme for Proposal Defense - Not Found")
 
     get_all_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Proposal Panel Conforme")
     get_all_pending_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Proposal Panel Conforme", is_completed = False)
@@ -3456,7 +3474,7 @@ def studentFinalPanelConformeDownload(request, id):
     print("Panel Response Date: ", panel_response_date)
 
     doc = Document("static/forms/FINAL-PANEL-CONFORME.docx")
-    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/TOPIC-PANEL-CONFORME.docx.docx')
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/FINAL-PANEL-CONFORME.docx')
 
     student_table = doc.tables[1]
 
@@ -3593,31 +3611,31 @@ def studentFinalPanelConformeDownload(request, id):
 
     os.startfile(current_user.username + "-" + panel_username + "-" + panel_response + "-FINAL-PANEL-CONFORME.pdf")
 
-    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
-    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
-    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.pdf'
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-FINAL-PANEL-CONFORME.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-FINAL-PANEL-CONFORME.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-FINAL-PANEL-CONFORME.pdf'
 
     # filePath =  FilePath(
     #     student_leader_username = current_user.username,
-    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.pdf'
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-FINAL-PANEL-CONFORME.pdf'
     # )
     # filePath.save()
 
     qr_code_path = current_user.username + "-FINAL-PANEL-CONFORME-QR.png"
     if os.path.isfile(qr_code_path):
         os.remove(qr_code_path)
-        print("QR Code has been deleted")
+        print("Panel Conforme for Final Defense QR - Deleted")
     else:
-        print("QR Code does not exist")
+        print("Panel Conforme for Final Defense QR - Not Found")
 
     bet3_topic_defense_panel_inviation_docx = current_user.username + "-" + panel_username + "-" + panel_response + "-FINAL-PANEL-CONFORME.docx"
     # bet3_topic_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-PANEL-CONFORME.docx')
 
     if os.path.isfile(bet3_topic_defense_panel_inviation_docx):
         os.remove(bet3_topic_defense_panel_inviation_docx)
-        print("Panel Invitation BET-3 has been deleted")
+        print("Panel Conform for Final Defense - Deleted")
     else:
-        print("Panel Invitation BET-3 does not exist")
+        print("Panel Conforme for Final Defense - Not Found")
 
     get_all_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Final Panel Conforme")
     get_all_pending_proposal_panel_conforme = PanelConforme.objects.all().filter(student_leader_username=current_user.username, form = "Final Panel Conforme", is_completed = False)
@@ -3633,8 +3651,6 @@ def studentFinalPanelConformeDownload(request, id):
     }
 
     return render(request, "student-bet5-final-panel-conforme-dashboard.html", context)
-
-
 
 
 # Student - BET3 - Adviser - Dashboard
@@ -3883,7 +3899,7 @@ def studentBET3AdviserConformeDownload(request):
     adviser_response_date = get_adviser_conforme.adviser_response_date
 
     doc = Document("static/forms/3-RESEARCH-ADVISER-CONFORME.docx")
-    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/3-RESEARCH-ADVISER-CONFORME')
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/3-RESEARCH-ADVISER-CONFORME.docx')
 
     doc.paragraphs[0].runs[3].text = date_submitted
 
@@ -4025,18 +4041,18 @@ def studentBET3AdviserConformeDownload(request):
     qr_code_path = current_user.username + "-BET3-ADVISER-CONFORME.png"
     if os.path.isfile(qr_code_path):
         os.remove(qr_code_path)
-        print("BET-3 Adviser Conforme QR Code has been deleted")
+        print("Adviser Conforme QR - Deleted")
     else:
-        print("BET-3 Adviser Conforme QR Code does not exist")
+        print("Adviser Conforme QR - Not Found")
 
     bet3_adviser_conforme_docx = current_user.username + "-BET3-ADVISER-CONFORME.docx"
     # bet3_adviser_conforme_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +'-BET3-ADVISER-CONFORME.pdf')
 
     if os.path.isfile(bet3_adviser_conforme_docx):
         os.remove(bet3_adviser_conforme_docx)
-        print("BET-3 Adviser Conforme has been deleted")
+        print("Adviser Conforme - Deleted")
     else:
-        print("BET-3 Adviser Conforme does not exist")
+        print("Adviser Conforme - Not Found")
 
     # Student = Check Adviser Conforme
     try:
@@ -4906,7 +4922,7 @@ def studentBET3ProposalDefensePanelInvitationDownload(request, id):
     print("Panel Response Date: ", panel_response_date)
 
     doc = Document("static/forms/4-PROPOSAL-DEFENSE-PANEL-INVITATION.docx")
-    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/1-TOPIC-DEFENSE-PANEL-INVITATION.docx')
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/4-PROPOSAL-DEFENSE-PANEL-INVITATION.docx')
 
     student_table = doc.tables[0] # Student Data Table
     head_signature_table = doc.tables[1]
@@ -5053,31 +5069,31 @@ def studentBET3ProposalDefensePanelInvitationDownload(request, id):
 
     os.startfile(current_user.username + "-" + panel_username + "-" + panel_response + "-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.pdf")
 
-    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx')
-    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
-    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.pdf'
 
     # filePath =  FilePath(
     #     student_leader_username = current_user.username,
-    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.pdf'
     # )
     # filePath.save()
 
     qr_code_path = current_user.username + "-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION-QR.png"
     if os.path.isfile(qr_code_path):
         os.remove(qr_code_path)
-        print("QR Code has been deleted")
+        print("Panel Invitation for Proposal Defense QR - Deleted")
     else:
-        print("QR Code does not exist")
+        print("Panel Invitation for Proposal Defense QR - Not Found")
 
     bet3_proposal_defense_panel_inviation_docx = current_user.username + "-" + panel_username + "-" + panel_response + "-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx"
     # bet3_proposal_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx')
 
     if os.path.isfile(bet3_proposal_defense_panel_inviation_docx):
         os.remove(bet3_proposal_defense_panel_inviation_docx)
-        print("Panel Invitation BET-3 has been deleted")
+        print("Panel Invitation for Proposal Defense - Deleted")
     else:
-        print("Panel Invitation BET-3 does not exist")
+         print("Panel Invitation for Proposal Defense - Not Found")
 
     get_panel_invitations = ProposalPanelInvitation.objects.all().filter(student_leader_username=current_user.username)
     get_accepted_panel_invitations = ProposalPanelInvitation.objects.all().filter(student_leader_username=current_user.username, form_status="accepted")
@@ -5408,13 +5424,13 @@ def studentBET3CritiqueFormDownload(request):
 
     os.startfile(current_user.username + "-BET3-CRITIQUE-FORM.pdf")
 
-    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx')
-    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
-    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-CRITIQUE-FORM.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET3-CRITIQUE-FORM.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-CRITIQUE-FORM.pdf'
 
     # filePath =  FilePath(
     #     student_leader_username = current_user.username,
-    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-CRITIQUE-FORM.pdf'
     # )
     # filePath.save()
 
@@ -5422,18 +5438,18 @@ def studentBET3CritiqueFormDownload(request):
 
     if os.path.isfile(qr_code_path):
         os.remove(qr_code_path)
-        print("QR Code has been deleted")
+        print("Critique Form QR - Deleted")
     else:
-        print("QR Code does not exist")
+        print("Critique Form QR - Not Found")
 
     delete_critique_form = current_user.username + "-BET3-CRITIQUE-FORM.docx"
-    # delete_critique_form = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx')
+    # delete_critique_form = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-CRITIQUE-FORM.docx')
 
     if os.path.isfile(delete_critique_form):
         os.remove(delete_critique_form)
-        print("Critique Form has been deleted")
+        print("Critique Form - Deleted")
     else:
-        print("Critique Form does not exist")
+        print("Critique Form - Form")
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -5587,7 +5603,7 @@ def studentBET3ResearchProposalDefenseFormDownload(request):
     get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
 
     doc = Document("static/forms/6-RESEARCH-PROPOSAL-DEFENSE-FORM.docx")
-    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/5-CRITIQUE-FORM.docx')
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/6-RESEARCH-PROPOSAL-DEFENSE-FORM.docx')
     
     paragraph = doc.add_paragraph()
    
@@ -6014,32 +6030,32 @@ def studentBET3ResearchProposalDefenseFormDownload(request):
 
     os.startfile(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.pdf")
 
-    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx')
-    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
-    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.pdf'
 
     # filePath =  FilePath(
     #     student_leader_username = current_user.username,
-    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.pdf'
     # )
     # filePath.save()
 
-    #qr_code_path = current_user.username + "-BET3-CRITIQUE-FORM-QR.png"
+    qr_code_path = current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM-QR.png"
 
-    # if os.path.isfile(qr_code_path):
-    #     os.remove(qr_code_path)
-    #     print("QR Code has been deleted")
-    # else:
-    #     print("QR Code does not exist")
+    if os.path.isfile(qr_code_path):
+        os.remove(qr_code_path)
+        print("Research Proposal Defense Form QR - Deleted")
+    else:
+        print("Research Proposal Defense Form QR - Not Found")
 
-    #delete_critique_form = current_user.username + "-BET3-CRITIQUE-FORM.docx"
-    # delete_critique_form = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx')
+    delete_critique_form = current_user.username+"-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM-QR.docx"
+    #delete_critique_form = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/"+'-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.docx')
 
-    # if os.path.isfile(delete_critique_form):
-    #     os.remove(delete_critique_form)
-    #     print("Critique Form has been deleted")
-    # else:
-    #     print("Critique Form does not exist")
+    if os.path.isfile(delete_critique_form):
+        os.remove(delete_critique_form)
+        print("Research Proposal Defense Form - Deleted")
+    else:
+        print("Research Proposal Defense Form - Not Found")
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -7025,7 +7041,7 @@ def studentBET5FinalDefensePanelInvitationDownload(request, id):
     print("Panel Response Date: ", panel_response_date)
 
     doc = Document("static/forms/7-FINAL-DEFENSE-PANEL-INVITATION.docx")
-    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/1-TOPIC-DEFENSE-PANEL-INVITATION.docx')
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/7-FINAL-DEFENSE-PANEL-INVITATION.docx')
 
     student_table = doc.tables[0] # Student Data Table
     head_signature_table = doc.tables[1]
@@ -7081,11 +7097,11 @@ def studentBET5FinalDefensePanelInvitationDownload(request, id):
     doc.paragraphs[0].runs[2].text = date_submitted
     doc.paragraphs[1].runs[1].text = panel_full_name
 
-    doc.paragraphs[4].runs[8].text = research_title
+    doc.paragraphs[4].runs[9].text = research_title
 
-    doc.paragraphs[6].runs[1].text = defense_date
-    doc.paragraphs[6].runs[3].text = defense_start_time
-    doc.paragraphs[6].runs[5].text = defense_end_time
+    doc.paragraphs[6].runs[3].text = defense_date
+    doc.paragraphs[6].runs[5].text = defense_start_time
+    doc.paragraphs[6].runs[7].text = defense_end_time
     doc.paragraphs[17].runs[0].text = dit_head_full_name
 
     panel_table.cell(0, 9).paragraphs[0].runs[0].text = panel_response_date
@@ -7172,31 +7188,31 @@ def studentBET5FinalDefensePanelInvitationDownload(request, id):
 
     os.startfile(current_user.username + "-" + panel_username + "-" + panel_response + "-BET5-FINAL-DEFENSE-PANEL-INVITATION.pdf")
 
-    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET5-TOPIC-DEFENSE-PANEL-INVITATION.docx')
-    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET5-TOPIC-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
-    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET5-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET5-FINAL-DEFENSE-PANEL-INVITATION.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET5-FINAL-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET5-FINAL-DEFENSE-PANEL-INVITATION.pdf'
 
     # filePath =  FilePath(
     #     student_leader_username = current_user.username,
-    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET5-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET5-FINAL-DEFENSE-PANEL-INVITATION.pdf'
     # )
     # filePath.save()
 
     qr_code_path = current_user.username + "-BET5-FINAL-DEFENSE-PANEL-INVITATION-QR.png"
     if os.path.isfile(qr_code_path):
         os.remove(qr_code_path)
-        print("QR Code has been deleted")
+        print("Panel Invitation for Final Defense QR - Deleted")
     else:
-        print("QR Code does not exist")
+        print("Panel Invitation for Final Defense QR - Not Found")
 
     bet3_proposal_defense_panel_inviation_docx = current_user.username + "-" + panel_username + "-" + panel_response + "-BET5-FINAL-DEFENSE-PANEL-INVITATION.docx"
-    # bet3_proposal_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx')
+    # bet3_proposal_defense_panel_inviation_docx = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET5-FINAL-DEFENSE-PANEL-INVITATION.docx')
 
     if os.path.isfile(bet3_proposal_defense_panel_inviation_docx):
         os.remove(bet3_proposal_defense_panel_inviation_docx)
-        print("Panel Invitation BET-3 has been deleted")
+        print("Panel Invitation for Final Defense - Deleted")
     else:
-        print("Panel Invitation BET-3 does not exist")
+        print("Panel Invitation for Final Defense - Not Found")
 
     get_panel_invitations = FinalPanelInvitation.objects.all().filter(student_leader_username=current_user.username)
     get_accepted_panel_invitations = FinalPanelInvitation.objects.all().filter(student_leader_username=current_user.username, form_status="accepted")
@@ -7351,7 +7367,7 @@ def studentBET5ResearchFinalDefenseFormDownload(request):
     get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
 
     doc = Document("static/forms/8-RESEARCH-FINAL-DEFENSE-FORM.docx")
-    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/5-CRITIQUE-FORM.docx')
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/8-RESEARCH-FINAL-DEFENSE-FORM.docx')
     
     paragraph = doc.add_paragraph()
    
@@ -7752,52 +7768,52 @@ def studentBET5ResearchFinalDefenseFormDownload(request):
                 return render(request, "student-bet3-critique-form.html", context)
 
     # Create - QR Code
-    auth_qr_code = qrcode.make('Research Proposal Defense Form\nDate:' + get_student_leader_data.research_proposal_defense_date)
+    auth_qr_code = qrcode.make('Research Final Defense Form\nDate:' + get_student_leader_data.research_proposal_defense_date)
     type(auth_qr_code)  
-    auth_qr_code.save(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM-QR.png")
+    auth_qr_code.save(current_user.username + "-BET5-RESEARCH-FINAL-DEFENSE-FORM-QR.png")
 
     # INSERT IMAGE
     qr_code = qrcodebox_table.cell(0, 0).add_paragraph()
     qr_code_run = qr_code.add_run()
-    qr_code_run.add_picture(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM-QR.png", width=Inches(1), height=Inches(1))
+    qr_code_run.add_picture(current_user.username + "-BET5-RESEARCH-FINAL-DEFENSE-FORM-QR.png", width=Inches(1), height=Inches(1))
 
-    doc.save(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.docx")
-    convert(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.docx")
+    doc.save(current_user.username + "-BET5-RESEARCH-FINAL-DEFENSE-FORM.docx")
+    convert(current_user.username + "-BET5-RESEARCH-FINAL-DEFENSE-FORM.docx")
 
     filePath = FilePath(
         student_leader_username=current_user.username, 
-        file_path=current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.pdf"
+        file_path=current_user.username + "-BET5-RESEARCH-FINAL-DEFENSE-FORM.pdf"
         )
     filePath.save()
 
-    os.startfile(current_user.username + "-BET3-RESEARCH-PROPOSAL-DEFENSE-FORM.pdf")
+    os.startfile(current_user.username + "-BET5-RESEARCH-FINAL-DEFENSE-FORM.pdf")
 
-    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx')
-    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
-    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+'BET5-RESEARCH-FINAL-DEFENSE-FORM.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+'-BET5-RESEARCH-FINAL-DEFENSE-FORM.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "http://johnanthonybataller.pythonanywhere.com/static/" +current_user.username+'-BET5-RESEARCH-FINAL-DEFENSE-FORM.pdf'
 
     # filePath =  FilePath(
     #     student_leader_username = current_user.username,
-    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-TOPIC-DEFENSE-PANEL-INVITATION.pdf'
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-BET5-RESEARCH-FINAL-DEFENSE-FORM.pdf'
     # )
     # filePath.save()
 
-    #qr_code_path = current_user.username + "-BET3-CRITIQUE-FORM-QR.png"
+    qr_code_path = current_user.username + "-BET5-RESEARCH-FINAL-DEFENSE-FORM-QR.png"
 
-    # if os.path.isfile(qr_code_path):
-    #     os.remove(qr_code_path)
-    #     print("QR Code has been deleted")
-    # else:
-    #     print("QR Code does not exist")
+    if os.path.isfile(qr_code_path):
+        os.remove(qr_code_path)
+        print("Research Final Defense QR - Deleted")
+    else:
+        print("Research Final Defense QR - Not Found")
 
-    #delete_critique_form = current_user.username + "-BET3-CRITIQUE-FORM.docx"
-    # delete_critique_form = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx')
+    delete_critique_form = current_user.username + "-BET5-RESEARCH-FINAL-DEFENSE-FORM.docx"
+    #delete_critique_form = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-BET3-PROPOSAL-DEFENSE-PANEL-INVITATION.docx')
 
-    # if os.path.isfile(delete_critique_form):
-    #     os.remove(delete_critique_form)
-    #     print("Critique Form has been deleted")
-    # else:
-    #     print("Critique Form does not exist")
+    if os.path.isfile(delete_critique_form):
+        os.remove(delete_critique_form)
+        print("Research Final Defense Form - Deleted")
+    else:
+        print("Research Final Defense Form - Not Found")
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -7813,779 +7829,103 @@ def studentBET5ResearchFinalDefenseFormDownload(request):
     return render(request, "student-research-final-defense.html", context)
 
 
-# Student - Panel Conforme BET-3 Process
+# Student - BET3 - Proposal Defense - Panel Invitation - Download Process
 @login_required(login_url="index")
 @user_passes_test(lambda u: u.is_student, login_url="index")
-def studentPanelConformeBet3(request):
-    current_user = request.user
-
-    try:
-        PanelConformeBET3.objects.get(student_leader_username=current_user)
-        print("Panel Conforme - BET-3 Exist")
-        return redirect("student-panel-conforme-bet3-form")
-
-    except:
-        panel_members = User.objects.all().filter(is_panel=1)
-
-        try:
-            dept_head_check = User.objects.get(is_department_head=1)
-            pass
-        except:
-            print("No DIT Head")
-            context = {"response": "sweet inc form"}
-
-            return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-        if not panel_members or panel_members.count() < 5:
-            print("Incomplete Faculty Member")
-            context = {"response": "sweet inc form"}
-
-            return render(request, "student-panel-conforme-bet-3-create.html", context)
-        else:
-            pass
-
-        print("Panel Conforme - BET-3 Create")
-        return redirect("student-panel-conforme-bet3-create")
-
-
-# Student - Panel Conforme BET-3 Create Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
-def studentPanelConformeBet3Create(request):
+def studentAcknowledgmentReceiptDownload(request):
     current_user = request.user
     current_password = current_user.password
 
+    ############## TOPBAR ##############
     topbar_data = topbarProcess(request)
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
-
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
-    user_course = current_user.course
-
-    panel_member_check_list = []
-    panel_members = User.objects.all().filter(is_panel=1)
-
-    for panel_member in panel_members:
-        panel_member_check_list.append(panel_member.username)
-
-    print(panel_member_check_list)
-
-    if request.method == "POST":
-
-        # Get Text Month, Day Year - Today
-        date_today = today.strftime("%B %d, %Y")
-        print("Date Submitted =", date_today)
-
-        # Get Research Title Input
-        research_title_input = request.POST.get("research_title_input")
-        print("Research Title =", research_title_input)
-
-        # Get Full Course Name and Full Major Name
-        course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-        course_name = course_check.course
-        major_name = course_check.major
-
-        # Shorten the word "Engineering" to "Eng." - for the Generating of PDF Form
-        course_input = course_name
-        course_abbr = course_input.replace("Engineering", "Eng.")
-        print("Course =", course_abbr)
-
-        major_input = major_name
-        print("Major =", major_input)
-
-        # Get Department of Industrial Technology Head Name
-        dept_head_check = User.objects.get(is_department_head=1)
-        dept_head_name_input = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-        print("Department Head =", dept_head_name_input)
-
-        # Get Panel Member 1 Name
-        panel1_input = request.POST.get("panel1_input")
-        print("Panel 1 =", panel1_input)
-
-        # Get Panel Member 2 Name
-        panel2_input = request.POST.get("panel2_input")
-        print("Panel 2 =", panel2_input)
-
-        # Get Panel Member 3 Name
-        panel3_input = request.POST.get("panel3_input")
-        print("Panel 3 =", panel3_input)
-
-        # Get Panel Member 4 Name
-        panel4_input = request.POST.get("panel4_input")
-        print("Panel 4 =", panel4_input)
-
-        # Get Panel Member 5 Name
-        panel5_input = request.POST.get("panel5_input")
-        print("Panel 5 =", panel5_input)
-
-        # Get Student member 1 Username
-        student1_username_input = current_user.username
-        print("Student Username 1 =", student1_username_input)
-
-        # Get Student Member 2 Name
-        student2_input = request.POST.get("student2_input")
-        print("Student 2 =", student2_input)
-
-        # Get Student member 2 Username
-        student2_username_input = request.POST.get("student2_username_input")
-        print("Student Username 2 =", student2_username_input)
-
-        # Get Student Member 3 Name
-        student3_input = request.POST.get("student3_input")
-        print("Student 3 =", student3_input)
-
-        # Get Student member 3 Username
-        student3_username_input = request.POST.get("student3_username_input")
-        print("Student Username 3 =", student3_username_input)
-
-        # Get Student Member 4 Name
-        student4_input = request.POST.get("student4_input")
-        print("Student 4 =", student4_input)
-
-        # Get Student member 4 Username
-        student4_username_input = request.POST.get("student4_username_input")
-        print("Student Useranme 4 =", student4_username_input)
-
-        # Get Student Member 5 Name
-        student5_input = request.POST.get("student5_input")
-        print("Student 5 =", student5_input)
-
-        # Get Student member 5 Username
-        student5_username_input = request.POST.get("student5_username_input")
-        print("Student Username 5 =", student5_username_input)
-
-        # Check if Student Member 2 has an account
-        try:
-            student_username_check = User.objects.get(username=student2_username_input)
-
-            try:
-                dept_head_check = User.objects.get(is_department_head=1)
-                dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                panel_check = User.objects.filter(is_panel=1)
-
-                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                course_name = course_check.course
-                major_name = course_check.major
-
-                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "username_exist": student2_username_input, "response": "sweet student member exist 2"}
-
-                return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-            except:
-                return redirect("student-dashboard")
-        except:
-            pass
-
-        # Check if Student Member 3 has an account
-        try:
-            student_username_check = User.objects.get(username=student3_username_input)
-
-            try:
-                dept_head_check = User.objects.get(is_department_head=1)
-                dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                panel_check = User.objects.filter(is_panel=1)
-
-                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                course_name = course_check.course
-                major_name = course_check.major
-
-                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "username_exist": student3_username_input, "response": "sweet student member exist 3"}
-
-                return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-            except:
-                return redirect("student-dashboard")
-        except:
-            pass
-
-        if not student4_username_input:
-            print("No Group Member 4")
-            pass
-
-        else:
-            #  If Student ID No. is invalid
-            if "TUPC" not in student4_username_input:
-                try:
-                    dept_head_check = User.objects.get(is_department_head=1)
-                    dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                    panel_check = User.objects.filter(is_panel=1)
-
-                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                    course_name = course_check.course
-                    major_name = course_check.major
-
-                    context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "response": "username invalid"}
-
-                    return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-                except:
-                    return redirect("student-dashboard")
-
-            # If Student ID No. is the same with the others
-            if student1_username_input == student4_username_input or student2_username_input == student4_username_input or student3_username_input == student4_username_input or student4_username_input == student1_username_input or student4_username_input == student2_username_input or student4_username_input == student3_username_input:
-                try:
-                    dept_head_check = User.objects.get(is_department_head=1)
-                    dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                    panel_check = User.objects.filter(is_panel=1)
-
-                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                    course_name = course_check.course
-                    major_name = course_check.major
-
-                    context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "response": "username same"}
-
-                    return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-                except:
-                    return redirect("student-dashboard")
-
-            # Check if Student Member 4 has an account
-            try:
-                student_username_check = User.objects.get(username=student4_username_input)
-
-                try:
-                    dept_head_check = User.objects.get(is_department_head=1)
-                    dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                    panel_check = User.objects.filter(is_panel=1)
-
-                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                    course_name = course_check.course
-                    major_name = course_check.major
-
-                    context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "username_exist": student4_username_input, "response": "sweet student member exist 4"}
-
-                    return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-                except:
-                    return redirect("student-dashboard")
-            except:
-                pass
-
-        if not student5_username_input:
-            print("No Group Member 5")
-            pass
-
-        else:
-            # If Student ID No. is invalid.
-            if "TUPC" not in student5_username_input:
-                try:
-                    dept_head_check = User.objects.get(is_department_head=1)
-                    dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                    panel_check = User.objects.filter(is_panel=1)
-
-                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                    course_name = course_check.course
-                    major_name = course_check.major
-
-                    context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "response": "username invalid"}
-
-                    return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-                except:
-                    return redirect("student-dashboard")
-
-            # If Student ID No. is the same with the others
-            if student1_username_input == student5_username_input or student2_username_input == student5_username_input or student3_username_input == student5_username_input or student4_username_input == student5_username_input or student5_username_input == student1_username_input or student5_username_input == student2_username_input or student5_username_input == student3_username_input or student5_username_input == student4_username_input:
-                try:
-                    dept_head_check = User.objects.get(is_department_head=1)
-                    dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                    panel_check = User.objects.filter(is_panel=1)
-
-                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                    course_name = course_check.course
-                    major_name = course_check.major
-
-                    context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "response": "username same"}
-
-                    return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-                except:
-                    return redirect("student-dashboard")
-
-            # Check if Student Member 5 has an account
-            try:
-                student_username_check = User.objects.get(username=student5_username_input)
-
-                try:
-                    dept_head_check = User.objects.get(is_department_head=1)
-                    dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                    panel_check = User.objects.filter(is_panel=1)
-
-                    course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                    course_name = course_check.course
-                    major_name = course_check.major
-
-                    context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "username_exist": student5_username_input, "response": "sweet student member exist 5"}
-
-                    return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-                except:
-                    return redirect("student-dashboard")
-            except:
-                pass
-
-        # If the Student already has a Panel Conform BET-3
-        try:
-            PanelConformeBET3.objects.get(student_leader_username=current_user.username)
-
-            try:
-                dept_head_check = User.objects.get(is_department_head=1)
-                dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                panel_check = User.objects.filter(is_panel=1)
-
-                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                course_name = course_check.course
-                major_name = course_check.major
-
-                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "response": "panel conforme bet-3 exist"}
-
-                return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-            except:
-                return redirect("student-dashboard")
-
-        except:
-            pass
-
-        #  If Research Title is existing
-        try:
-            ResearchTitle.objects.get(research_title=research_title_input)
-
-            try:
-                dept_head_check = User.objects.get(is_department_head=1)
-                dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                panel_check = User.objects.filter(is_panel=1)
-
-                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                course_name = course_check.course
-                major_name = course_check.major
-
-                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "response": "existing research title"}
-
-                return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-            except:
-                return redirect("student-dashboard")
-
-        except:
-            pass
-
-        # If Panel Input is Default
-        if panel1_input == "default" or panel2_input == "default" or panel3_input == "default" or panel4_input == "default" or panel5_input == "default":
-            try:
-                dept_head_check = User.objects.get(is_department_head=1)
-                dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                panel_check = User.objects.filter(is_panel=1)
-
-                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                course_name = course_check.course
-                major_name = course_check.major
-
-                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "response": "choose 5 panel"}
-
-                return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-            except:
-                return redirect("student-dashboard")
-
-        # If Panel Name input is the same with the other Panel Name Input
-        if (
-            panel1_input == panel2_input
-            or panel1_input == panel3_input
-            or panel1_input == panel4_input
-            or panel1_input == panel5_input
-            or panel2_input == panel1_input
-            or panel2_input == panel3_input
-            or panel2_input == panel4_input
-            or panel2_input == panel5_input
-            or panel3_input == panel1_input
-            or panel3_input == panel2_input
-            or panel3_input == panel4_input
-            or panel3_input == panel5_input
-            or panel4_input == panel1_input
-            or panel4_input == panel2_input
-            or panel4_input == panel3_input
-            or panel4_input == panel5_input
-            or panel5_input == panel1_input
-            or panel5_input == panel2_input
-            or panel5_input == panel3_input
-            or panel5_input == panel4_input
-        ):
-            try:
-                dept_head_check = User.objects.get(is_department_head=1)
-                dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                panel_check = User.objects.filter(is_panel=1)
-
-                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                course_name = course_check.course
-                major_name = course_check.major
-
-                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "response": "same panel"}
-
-                return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-            except:
-                return redirect("student-dashboard")
-
-        # If Panel Name input is not in the Panel Member List
-        if panel1_input not in panel_member_check_list or panel2_input not in panel_member_check_list or panel3_input not in panel_member_check_list or panel4_input not in panel_member_check_list or panel5_input not in panel_member_check_list:
-            try:
-                dept_head_check = User.objects.get(is_department_head=1)
-                dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                panel_check = User.objects.filter(is_panel=1)
-
-                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                course_name = course_check.course
-                major_name = course_check.major
-
-                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "response": "sweet panel not in the list"}
-
-                return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-            except:
-                return redirect("student-dashboard")
-
-        # If Student ID No. is invalid
-        if "TUPC" not in student1_username_input or "TUPC" not in student2_username_input or "TUPC" not in student3_username_input:
-            try:
-                dept_head_check = User.objects.get(is_department_head=1)
-                dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                panel_check = User.objects.filter(is_panel=1)
-
-                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                course_name = course_check.course
-                major_name = course_check.major
-
-                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "response": "username invalid"}
-
-                return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-            except:
-                return redirect("student-dashboard")
-
-        # If Student ID No. is the same with the others
-        if student1_username_input == student2_username_input or student1_username_input == student3_username_input or student2_username_input == student1_username_input or student2_username_input == student3_username_input or student3_username_input == student1_username_input or student3_username_input == student2_username_input:
-            try:
-                dept_head_check = User.objects.get(is_department_head=1)
-                dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-                panel_check = User.objects.filter(is_panel=1)
-
-                course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-                course_name = course_check.course
-                major_name = course_check.major
-
-                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel_check": panel_check, "leader_member_name": leader_member_name_2, "leader_member_username": current_user.username, "course_name": course_name, "major_name": major_name, "response": "username same"}
-
-                return render(request, "student-panel-conforme-bet-3-create.html", context)
-
-            except:
-                return redirect("student-dashboard")
-
-        panel_check_1 = User.objects.get(username=panel1_input)
-        panel_check_2 = User.objects.get(username=panel2_input)
-        panel_check_3 = User.objects.get(username=panel3_input)
-        panel_check_4 = User.objects.get(username=panel4_input)
-        panel_check_5 = User.objects.get(username=panel5_input)
-
-        panel_member_full_name_1 = None
-        panel_member_full_name_2 = None
-        panel_member_full_name_3 = None
-        panel_member_full_name_4 = None
-        panel_member_full_name_5 = None
-
-        if panel_check_1.middle_name == "":
-            panel_member_full_name_1 = panel_check_1.first_name + " " + panel_check_1.last_name
-        else:
-            panel_member_full_name_1 = panel_check_1.first_name + " " + panel_check_1.middle_name[0] + ". " + panel_check_1.last_name
-
-        if panel_check_2.middle_name == "":
-            panel_member_full_name_2 = panel_check_2.first_name + " " + panel_check_2.last_name
-        else:
-            panel_member_full_name_2 = panel_check_2.first_name + " " + panel_check_2.middle_name[0] + ". " + panel_check_2.last_name
-
-        if panel_check_3.middle_name == "":
-            panel_member_full_name_3 = panel_check_3.first_name + " " + panel_check_3.last_name
-        else:
-            panel_member_full_name_3 = panel_check_3.first_name + " " + panel_check_3.middle_name[0] + ". " + panel_check_3.last_name
-
-        if panel_check_4.middle_name == "":
-            panel_member_full_name_4 = panel_check_4.first_name + " " + panel_check_4.last_name
-        else:
-            panel_member_full_name_4 = panel_check_4.first_name + " " + panel_check_4.middle_name[0] + ". " + panel_check_4.last_name
-
-        if panel_check_5.middle_name == "":
-            panel_member_full_name_5 = panel_check_5.first_name + " " + panel_check_5.last_name
-        else:
-            panel_member_full_name_5 = panel_check_5.first_name + " " + panel_check_5.middle_name[0] + ". " + panel_check_5.last_name
-
-        # Saving Data to MYSQL Database
-        panel_conforme_form = PanelConformeBET3(
-            student_leader_username=current_user,
-            dept_head=dept_head_name_input,
-            dept_head_status="pending",
-            panel_member_1=panel1_input,
-            panel_member_2=panel2_input,
-            panel_member_3=panel3_input,
-            panel_member_4=panel4_input,
-            panel_member_5=panel5_input,
-            panel_member_name_1=panel_member_full_name_1,
-            panel_member_name_2=panel_member_full_name_2,
-            panel_member_name_3=panel_member_full_name_3,
-            panel_member_name_4=panel_member_full_name_4,
-            panel_member_name_5=panel_member_full_name_5,
-            panel_member_status_1="waiting for DIT Head",
-            panel_member_status_2="waiting for DIT Head",
-            panel_member_status_3="waiting for DIT Head",
-            panel_member_status_4="waiting for DIT Head",
-            panel_member_status_5="waiting for DIT Head",
-            student_member_1=student1_input,
-            student_member_2=student2_input,
-            student_member_3=student3_input,
-            student_member_4=student4_input,
-            student_member_5=student5_input,
-            student_member_username_1=student1_username_input,
-            student_member_username_2=student2_username_input,
-            student_member_username_3=student3_username_input,
-            student_member_username_4=student4_username_input,
-            student_member_username_5=student5_username_input,
-            course=course_abbr,
-            major=major_input,
-            course_major_abbr=user_course,
-            research_title=research_title_input.title(),
-            date_submitted=date_today,
-            form_status="Pending",
-        )
-
-        panel_conforme_form.save()
-
-        research_title_form = ResearchTitle(
-            research_title=research_title_input.title(),
-            course_major_abbr=user_course,
-            course=course_name,
-            major=major_input,
-            student_leader_username=current_user.username,
-            student_leader_name=leader_member_name_2,
-            status="ongoing",
-            date_submitted=date_today,
-        )
-
-        research_title_form.save()
-
-        student_member_group_2 = StudentGroupMember(
-            student_leader_username=current_user.username,
-            student_leader_name=leader_member_name_2,
-            student_member_username=student2_username_input,
-            student_member_name=student2_input,
-            course=course_name,
-            major=major_input,
-            course_major_abbr=user_course,
-        )
-
-        student_member_group_2.save()
-
-        student_member_group_3 = StudentGroupMember(
-            student_leader_username=current_user.username,
-            student_leader_name=leader_member_name_2,
-            student_member_username=student3_username_input,
-            student_member_name=student3_input,
-            course=course_name,
-            major=major_input,
-            course_major_abbr=user_course,
-        )
-
-        student_member_group_3.save()
-
-        if student4_input:
-            student_member_group_4 = StudentGroupMember(
-                student_leader_username=current_user.username,
-                student_leader_name=leader_member_name_2,
-                student_member_username=student4_username_input,
-                student_member_name=student4_input,
-                course=course_name,
-                major=major_input,
-                course_major_abbr=user_course,
-            )
-
-            student_member_group_4.save()
-
-        if student5_input:
-            student_member_group_5 = StudentGroupMember(
-                student_leader_username=current_user.username,
-                student_leader_name=leader_member_name_2,
-                student_member_username=student5_username_input,
-                student_member_name=student5_input,
-                course=course_name,
-                major=major_input,
-                course_major_abbr=user_course,
-            )
-
-            student_member_group_5.save()
-
-        return redirect("student-dashboard")
+    ############## TOPBAR ##############
 
     try:
-        dept_head_check = User.objects.get(is_department_head=1)
-        dept_head_name = None
-
-        panel_check = User.objects.filter(is_panel=1)
-
-        if dept_head_check.middle_name == "":
-            dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_check.last_name
-
-        else:
-            dept_head_middle_initial = dept_head_check.middle_name[0]
-            dept_head_name = dept_head_check.honorific + " " + dept_head_check.first_name + " " + dept_head_middle_initial + ". " + dept_head_check.last_name
-
-        course_check = StudentCourseMajor.objects.get(course_major_abbr=user_course)
-        course_name = course_check.course
-        major_name = course_check.major
-
-        context = {
-            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
-            "currently_loggedin_user_account": currently_loggedin_user_account,
-            "dept_head_name": dept_head_name,
-            "panel_members": panel_members,
-            "panel_check": panel_check,
-            "leader_member_name": leader_member_name_2,
-            "leader_member_username": current_user.username,
-            "course_name": course_name,
-            "major_name": major_name,
-        }
-        return render(request, "student-panel-conforme-bet-3-create.html", context)
-
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+        get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+        get_receipt = AcknowledgementReceipt.objects.get(student_leader_username=current_user.username)
     except:
-        print("Incomplete Form")
-        context = {"user_full_name": user_full_name}
-        return render(request, "student-panel-conforme-bet-3-create.html", context)
+        return redirect('student-dashboard')
+
+    student_member_list = [get_receipt.student_leader_full_name]
+
+    if get_group_members:
+        for group_member in get_group_members:
+            student_member_list.append(group_member.student_member_full_name)
+
+    student_member_list.sort()
+
+    print(student_member_list)
+
+    course = get_student_leader_data.course_major_abbr
 
 
-# Student - Panel Conforme BET-3 Form Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
-def studentPanelConformeBet3Form(request):
-    current_user = request.user
-    current_password = current_user.password
+    doc = Document("static/forms/9-ACKNOWLEDGMENT-RECEIPT.docx")
 
-    topbar_data = topbarProcess(request)
-    currently_loggedin_user_full_name = topbar_data[0]
-    currently_loggedin_user_account = topbar_data[1]
+    title_table = doc.tables[0]
+    student_table = doc.tables[1]
+    department_box = doc.tables[2]
+
+    title_table.cell(0, 2).text = get_receipt.research_title
 
     try:
-        # Panel Conforme - BET-3 - Data
-        panel_conforme_bet3_check = PanelConformeBET3.objects.get(student_leader_username=current_user)
-
-        dept_head_name = panel_conforme_bet3_check.dept_head
-
-        panel1 = panel_conforme_bet3_check.panel_member_1
-        panel2 = panel_conforme_bet3_check.panel_member_2
-        panel3 = panel_conforme_bet3_check.panel_member_3
-        panel4 = panel_conforme_bet3_check.panel_member_4
-        panel5 = panel_conforme_bet3_check.panel_member_5
-
-        student1 = panel_conforme_bet3_check.student_member_1
-        student2 = panel_conforme_bet3_check.student_member_2
-        student3 = panel_conforme_bet3_check.student_member_3
-        student4 = panel_conforme_bet3_check.student_member_4
-        student5 = panel_conforme_bet3_check.student_member_5
-
-        course = panel_conforme_bet3_check.course
-        major = panel_conforme_bet3_check.major
-
-        research_title = panel_conforme_bet3_check.research_title
-
-        date_submitted = panel_conforme_bet3_check.date_submitted
-
-        form_status = panel_conforme_bet3_check.form_status
+        student_table.cell(0, 2).text = student_member_list[0]
+        student_table.cell(0, 4).text = course
     except:
-        return redirect("student-dashboard")
+        pass
 
-    # Generate PDF Form
-    if request.method == "POST":
-        print("Download PDF")
-        doc = Document("static/forms/2-PANEL-CONFORME.docx")
+    try:
+        student_table.cell(1, 2).text = student_member_list[1]
+        student_table.cell(1, 4).text = course
+    except:
+        pass
 
-        header_table = doc.tables[0]
-        student_table = doc.tables[1]
-        adviser_table = doc.tables[3]
-        qr_code_table = doc.tables[2]
+    try:
+        student_table.cell(2, 2).text = student_member_list[2]
+        student_table.cell(2, 4).text = course
+    except:
+        pass
 
-        # print(adviser_table.cell(0, 0).text) # Adviser Name
+    try:
+        student_table.cell(3, 2).text = student_member_list[3]
+        student_table.cell(3, 4).text = course
+    except:
+        pass
 
-        student1 = student_table.cell(1, 0).paragraphs[0].runs[0].text = student1
-        student2 = student_table.cell(2, 0).paragraphs[0].runs[0].text = student2
-        student3 = student_table.cell(3, 0).paragraphs[0].runs[0].text = student3
-        student4 = student_table.cell(4, 0).paragraphs[0].runs[0].text = student4
-        student5 = student_table.cell(5, 0).paragraphs[0].runs[0].text = student5
+    try:
+        student_table.cell(4, 2).text = student_member_list[4]
+        student_table.cell(4, 4).text = course
+    except:
+        pass
+    
+    department_box.cell(4, 2).text = get_receipt.research_ext_full_name
+    department_box.cell(4, 6).text = get_receipt.research_ext_response_date
 
-        course1 = student_table.cell(1, 2).paragraphs[0].runs[0].text = course
-        course2 = student_table.cell(2, 2).paragraphs[0].runs[0].text = course
-        course3 = student_table.cell(3, 2).paragraphs[0].runs[0].text = course
-        course4 = student_table.cell(4, 2).paragraphs[0].runs[0].text = course
-        course5 = student_table.cell(5, 2).paragraphs[0].runs[0].text = course
+    if get_receipt.research_ext_signature == True:
+        # Check if Panel E-Sign Exist
+        if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_receipt.research_ext_username) + ".png"):
+            department_box.cell(4, 4).text = ''
+            panel_signature = department_box.cell(4, 4).add_paragraph()
+            panel_signature_run = panel_signature.add_run()
+            panel_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_receipt.research_ext_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            panel_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_receipt.research_ext_username +'.png',width=Inches(1.2), height=Inches(0.45))
+        else:
+            return redirect("student-dashboard")
 
-        major1 = student_table.cell(1, 4).paragraphs[0].runs[0].text = major
-        major2 = student_table.cell(2, 4).paragraphs[0].runs[0].text = major
-        major3 = student_table.cell(3, 4).paragraphs[0].runs[0].text = major
-        major4 = student_table.cell(4, 4).paragraphs[0].runs[0].text = major
-        major5 = student_table.cell(5, 4).paragraphs[0].runs[0].text = major
+    doc.save(current_user.username + "-ACKNOWLEDGEMENT-RECEIPT.docx")
+    convert(current_user.username + "-ACKNOWLEDGEMENT-RECEIPT.docx")
 
-        panel_member = adviser_table.cell(0, 0).paragraphs[0].runs[0].text = dept_head_name
-        date_signed = adviser_table.cell(0, 2).paragraphs[0].runs[0].text = date_submitted
+    filePath = FilePath(
+        student_leader_username=current_user.username, 
+        file_path=current_user.username + "-ACKNOWLEDGEMENT-RECEIPT.pdf"
+        )
+    filePath.save()
 
-        print(doc.paragraphs[1].runs[1].text)  # Date Today 1
-        print(doc.paragraphs[3].runs[0].text)  # Receiver 1
-        print(doc.paragraphs[6].runs[1].text)  # Receiver 2
-        print(doc.paragraphs[7].runs[1].text)  # Subject
-        print(doc.paragraphs[7].runs[4].text)  # Student Course
-        print(doc.paragraphs[7].runs[6].text)  # Student Major
-        print(doc.paragraphs[10].runs[1].text)  # Research Title
-        print(doc.paragraphs[15].runs[0].text)  # Department Head Name
+    os.startfile(current_user.username + "-ACKNOWLEDGEMENT-RECEIPT.pdf")
 
-        doc.paragraphs[1].runs[1].text = date_submitted
-        doc.paragraphs[3].runs[0].text = "Mr. Jay Victor Gumboc"
-        doc.paragraphs[6].runs[1].text = "Mr. Jay Victor Gumboc"
-        doc.paragraphs[7].runs[1].text = "BET-3"
-        doc.paragraphs[7].runs[4].text = "Bachelor of Engineering Technology"
-        doc.paragraphs[7].runs[6].text = "Major in Computer Engienering Technology"
-        doc.paragraphs[10].runs[1].text = research_title
-        doc.paragraphs[15].runs[0].text = dept_head_name
-
-        # INSERT IMAGE
-        # qr_code = qr_code_table.cell(0, 0).add_paragraph()
-        # qr_code_run = qr_code.add_run()
-        # qr_code_run.add_picture('qr-code.png',width=Inches(0.8), height=Inches(0.8))
-        # qr_code_run.alignment=WD_ALIGN_PARAGRAPH.CENTER
-
-        doc.save("2-PANEL-CONFROME-BET-3-{}.docx".format(current_user))
-        convert("2-PANEL-CONFROME-BET-3-{}.docx".format(current_user))
-        os.startfile("2-PANEL-CONFROME-BET-3-{}.pdf".format(current_user))
-
-        doc.save("2-PANEL-CONFORME-NEW.docx")
-        convert("2-PANEL-CONFORME-NEW.docx")
-        os.startfile("2-PANEL-CONFORME-NEW.pdf")
-
-        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "dept_head_name": dept_head_name, "panel1": panel1, "panel2": panel2, "panel3": panel3, "panel4": panel4, "panel5": panel5, "student1": student1, "student2": student2, "student3": student3, "student4": student4, "student5": student5, "course": course, "major": major, "research_title": research_title, "form_status": form_status}
-        return render(request, "student-panel-conforme-bet-3-form.html", context)
-
-    context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "dept_head_name": dept_head_name, "panel1": panel1, "panel2": panel2, "panel3": panel3, "panel4": panel4, "panel5": panel5, "student1": student1, "student2": student2, "student3": student3, "student4": student4, "student5": student5, "course": course, "major": major, "research_title": research_title, "form_status": form_status}
-
-    return render(request, "student-panel-conforme-bet-3-form.html", context)
+    return redirect("student-dashboard")
 
 
 # Student - BET-3 Panel Invitation - Logs
@@ -8986,9 +8326,14 @@ def adminResearchTitles(request):
     user_middle_name = current_user.middle_name
     user_middle_initial = None
 
+    get_research_titles = ResearchTitle.objects.all()
+    get_research_title_logs = ResearchTitleLog.objects.all()
+
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
         "currently_loggedin_user_account": currently_loggedin_user_account,
+        "research_titles": get_research_titles,
+        "research_title_logs": get_research_title_logs,
     }
 
     return render(request, "admin-research-titles.html", context)
@@ -10180,12 +9525,414 @@ def researchExtensionDashboard(request):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
+    get_pending_receipt = AcknowledgementReceipt.objects.all().filter(research_ext_response ="pending")
+
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
         "date_today": date_today,
+        "pending_receipt": get_pending_receipt,
     }
 
     return render(request, "research-extension-dashboard.html", context)
+
+# Research & Extension - Profile Page
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+def researchExtensionProfile(request):
+    currently_loggedin_user = request.user
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+
+    # Check if E-Sign Exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        esignature_exist = "True"
+        print("E-sign exist")
+
+    else:
+        esignature_exist = "False"
+        print("E-sign doesn't exist.")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_data": currently_loggedin_user,
+        "currently_loggedin_user_first_name": currently_loggedin_user.first_name,
+        "currently_loggedin_user_middle_name": currently_loggedin_user.middle_name,
+        "currently_loggedin_user_last_name": currently_loggedin_user.last_name,
+        "currently_loggedin_user_department": currently_loggedin_user.department,
+        "currently_loggedin_username": currently_loggedin_user.username,
+        "currently_loggedin_user_email": currently_loggedin_user.email,
+        "esignature_exist": esignature_exist,
+    }
+
+    return render(request, "research-extension-profile.html", context)
+
+
+# Panel - Upload E-Signature
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+def researchExtensionUploadESignature(request):
+    currently_loggedin_user = request.user
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+
+    # Check if E-Sign Exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        esignature_exist = "True"
+        print("E-sign exist")
+
+    else:
+        esignature_exist = "False"
+        print("E-sign doesn't exist.")
+
+    if request.method == "POST":
+        esignature = request.FILES["esignature"]
+        print(esignature.name)
+
+        get_file_extensions = os.path.splitext(esignature.name)
+        print(get_file_extensions[1])
+
+        if get_file_extensions[1] == ".png":
+            print("Valid")
+
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + get_file_extensions[1]):
+                os.remove("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + get_file_extensions[1])
+
+                fs = FileSystemStorage()
+
+                filename = fs.save(str(currently_loggedin_user) + get_file_extensions[1], esignature)
+                uploaded_file_url = fs.url(filename)
+                print(uploaded_file_url)
+
+                esignature_size = cv2.imread("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + get_file_extensions[1])
+                h, w, c = esignature_size.shape
+
+                print("width:  ", w)
+                print("height: ", h)
+                print("channel:", c)
+
+                if w == 300 and h == 100:
+                    print("Valid Size")
+                else:
+                    print("Invalid Size")
+                    # Invalid - Delete E-Signature
+                    os.remove("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + get_file_extensions[1])
+
+                    context = {
+                        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                        "currently_loggedin_user_data": currently_loggedin_user,
+                        "currently_loggedin_user_first_name": currently_loggedin_user.first_name,
+                        "currently_loggedin_user_middle_name": currently_loggedin_user.middle_name,
+                        "currently_loggedin_user_last_name": currently_loggedin_user.last_name,
+                        "currently_loggedin_user_department": currently_loggedin_user.department,
+                        "currently_loggedin_username": currently_loggedin_user.username,
+                        "currently_loggedin_user_email": currently_loggedin_user.email,
+                        "esignature_exist": esignature_exist,
+                        "response": "sweet invalid size",
+                    }
+
+                    return render(request, "research-extension-profile.html", context)
+            else:
+                print("The file does not exist")
+
+                fs = FileSystemStorage()
+
+                filename = fs.save(str(currently_loggedin_user) + get_file_extensions[1], esignature)
+                uploaded_file_url = fs.url(filename)
+                print(uploaded_file_url)
+
+                esignature_size = cv2.imread("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + get_file_extensions[1])
+                h, w, c = esignature_size.shape
+
+                if w == 300 and h == 100:
+                    print("Valid Size")
+                else:
+                    print("Invalid Size")
+                    # Invalid - Delete E-Signature
+                    os.remove("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + get_file_extensions[1])
+
+                    context = {
+                        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                        "currently_loggedin_user_data": currently_loggedin_user,
+                        "currently_loggedin_user_first_name": currently_loggedin_user.first_name,
+                        "currently_loggedin_user_middle_name": currently_loggedin_user.middle_name,
+                        "currently_loggedin_user_last_name": currently_loggedin_user.last_name,
+                        "currently_loggedin_user_department": currently_loggedin_user.department,
+                        "currently_loggedin_username": currently_loggedin_user.username,
+                        "currently_loggedin_user_email": currently_loggedin_user.email,
+                        "esignature_exist": esignature_exist,
+                        "response": "sweet invalid size",
+                    }
+
+                    return render(request, "research-extension-profile.html", context)
+
+                return redirect("research-extension-profile")
+
+        else:
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "currently_loggedin_user_data": currently_loggedin_user,
+                "currently_loggedin_user_first_name": currently_loggedin_user.first_name,
+                "currently_loggedin_user_middle_name": currently_loggedin_user.middle_name,
+                "currently_loggedin_user_last_name": currently_loggedin_user.last_name,
+                "currently_loggedin_user_department": currently_loggedin_user.department,
+                "currently_loggedin_username": currently_loggedin_user.username,
+                "currently_loggedin_user_email": currently_loggedin_user.email,
+                "esignature_exist": esignature_exist,
+                "response": "sweet not png",
+            }
+
+            return render(request, "research-extension-profile.html", context)
+
+
+# Panel - Remove E-Signature
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+def researchExtensionDeleteESignature(request):
+    currently_loggedin_user = request.user
+
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        os.remove("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png")
+        return redirect("research-extension-profile")
+
+
+# Panel - Dashboard Page
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+def researchExtensionCreateESignature(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("index")
+
+    if request.method == "POST":
+        signature_url = request.POST.get("signature_link")
+
+        # Separate the metadata from the image data
+        head, data = signature_url.split(",", 1)
+
+        # Get the file extension (gif, jpeg, png)
+        file_ext = head.split(";")[0].split("/")[1]
+
+        # Decode the image data
+        plain_data = base64.b64decode(data)
+
+        # # Write the image to a file
+        with open("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + currently_loggedin_user.username + "." + file_ext, "wb") as f:
+            f.write(plain_data)
+
+        return redirect("research-extension-profile")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+    }
+
+    return render(request, "research-extension-signature-pad.html", context)
+
+
+# Panel - Acount Settings Page
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+def researchExtensionAccountSettings(request):
+    currently_loggedin_user = request.user
+
+    currently_loggedin_user_middle_name = currently_loggedin_user.middle_name
+    currently_loggedin_user_middle_initial = None
+
+    currently_loggedin_user_full_name = None
+
+    if currently_loggedin_user_middle_name == "":
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user.last_name
+
+    else:
+        currently_loggedin_user_middle_initial = currently_loggedin_user_middle_name[0]
+        currently_loggedin_user_full_name = currently_loggedin_user.first_name + " " + currently_loggedin_user_middle_initial + ". " + currently_loggedin_user.last_name
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_data": currently_loggedin_user,
+    }
+
+    if request.method == "POST":
+        current_password_input = request.POST.get("current_password_input")
+        new_password_input = request.POST.get("new_password_input")
+        confirm_new_password_input = request.POST.get("confirm_new_password_input")
+
+        if current_password_input == currently_loggedin_user.password:
+
+            if current_password_input != new_password_input:
+
+                if new_password_input == confirm_new_password_input:
+
+                    User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
+
+                    context = {"response": "changed password"}
+                    return render(request, "index.html", context)
+
+                else:
+                    context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "response": "new password and confirm new password doesnt match"}
+
+                    return render(request, "research-extension-account-settings.html", context)
+
+            else:
+                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "response": "current password and new password is same"}
+
+                return render(request, "research-extension-account-settings.html", context)
+
+        else:
+            context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "response": "current password is incorrect"}
+
+            return render(request, "research-extension-account-settings.html", context)
+
+    return render(request, "research-extension-account-settings.html", context)
+
+
+# Panel - Panel Conforme - Accept with Signature
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+def researchExtensionAcceptSignature(request, id):
+    currently_loggedin_user = request.user
+
+    print(id, type(id))
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # Check - E-sign exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        pass
+        print("Panel - E-sign exist")
+
+    else:
+        print("Panel - E-sign doesn't exist.")
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(research_ext_response ="pending")
+
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": date_today,
+            "pending_receipt": get_pending_receipt,
+             "response": "sweet no esign",
+        }
+
+
+
+    try:
+        check_receipt = AcknowledgementReceipt.objects.get(id=id)
+
+        check_receipt.research_ext_username = currently_loggedin_user.username
+        check_receipt.research_ext_full_name = currently_loggedin_user_full_name
+        check_receipt.research_ext_response = "Accepted"
+        check_receipt.research_ext_response_date = date_today
+        check_receipt.research_ext_signature = True
+
+        check_receipt.save()
+
+
+        # Send g-mail notifications
+        send_mail(
+            "Acknowledgement Receipt",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Research & Extension) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(research_ext_response ="pending")
+
+        context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": date_today,
+                "pending_receipt": get_pending_receipt,
+                "accepted_student_member_name": check_receipt.student_leader_full_name,
+                "accepted_student_member_username": check_receipt.student_leader_username,
+                "response": "sweet panel conforme accepted",
+            }
+
+        return render(request, "research-extension-dashboard.html", context)
+
+    except:
+        print("NO FOUND")
+        return redirect("research-extension-dashboard")
+
+
+# Panel - Panel Conforme - Accept with Signature
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+def researchExtensionAccept(request, id):
+    currently_loggedin_user = request.user
+
+    print(id, type(id))
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        check_receipt = AcknowledgementReceipt.objects.get(id=id)
+
+        check_receipt.research_ext_username = currently_loggedin_user.username
+        check_receipt.research_ext_full_name = currently_loggedin_user_full_name
+        check_receipt.research_ext_response = "Accepted"
+        check_receipt.research_ext_response_date = date_today
+
+        check_receipt.save()
+
+        print("pass -save")
+
+        # Send g-mail notifications
+        send_mail(
+            "Acknowledgement Receipt",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Research & Extension) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+        )
+
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(research_ext_response ="pending")
+
+        context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": date_today,
+                "pending_receipt": get_pending_receipt,
+                "accepted_student_member_name": check_receipt.student_leader_full_name,
+                "accepted_student_member_username": check_receipt.student_leader_username,
+                "response": "sweet panel conforme accepted",
+            }
+
+        return render(request, "research-extension-dashboard.html", context)
+
+    except:
+        print("NO FOUND")
+        return redirect("research-extension-dashboard")
 ##########################################################################################################################
 
 # DIT Head - Dashboard Page
@@ -17675,6 +17422,7 @@ def subjectTeacherBET3ProposalDefenseDay(request, id):
         "group_members": get_group_members,
 
         "accepted_research_title": research_title,
+        "get_accepted_research_title": get_accepted_research_title,
 
         "panel_members": get_panel_members,
 
@@ -19223,6 +18971,49 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
             fail_silently=False,
         )
 
+        try:
+            get_dit_head = User.objects.get(is_department_head = 1)
+
+            if get_dit_head.middle_name == "":
+                dit_head_full_name = get_dit_head.honorific + " " + get_dit_head.first_name + " " + get_dit_head.last_name + " " + get_dit_head.suffix
+            else:
+                dit_head_full_name = get_dit_head.honorific + " " + get_dit_head.first_name + " " + get_dit_head.middle_name[0] + ". " + get_dit_head.last_name + " " + get_dit_head.suffix
+        except:
+            pass
+
+          # ----- Student Leader Data -----
+        try:
+            get_student_leader_data = StudentLeader.objects.get(username=id)
+            print("Student Leader: ", get_student_leader_data.username)
+        except:
+            return redirect("subject-teacher-dashboard")
+
+        create_acknowledgement_receipt = AcknowledgementReceipt(
+            student_leader_username = get_student_research_title.student_leader_username,
+            student_leader_full_name = get_student_research_title.student_leader_name,
+            course_major_abbr = get_student_research_title.course_major_abbr,
+
+            research_title = get_student_research_title.research_title,
+
+            dit_head_username= get_dit_head.username,
+            dit_head_full_name = dit_head_full_name,
+            dit_head_response = "pending",
+
+            adaa_response = "pending",
+            library_response = "pending",
+            research_ext_response = "pending",
+
+            adviser_username = get_student_leader_data.adviser_username,
+            adviser_full_name = get_student_leader_data.adviser_name,
+            adviser_response = "pending",
+
+            subject_teacher_username = get_student_leader_data.bet5_subject_teacher_username,
+            subject_teacher_full_name = get_student_leader_data.bet5_subject_teacher_name,
+            subject_teacher_response = "pending",
+        )
+        create_acknowledgement_receipt.save()
+
+
         get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
         get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
 
@@ -20420,7 +20211,7 @@ def subjectTeacherSetResearchFinalDefenseSchedule(request):
 
     course_handled_list_unfiltered = []
 
-    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username)
+    course_handled = StudentLeader.objects.all().filter(bet5_subject_teacher_username=currently_loggedin_user.username)
 
     for course in course_handled:
         course_handled_list_unfiltered.append(course.course_major_abbr)

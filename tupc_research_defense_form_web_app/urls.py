@@ -67,9 +67,7 @@ urlpatterns = [
    path('student/bet5/research-final-defense', views.studentBET5ResearchFinalDefenseForm, name ="student-bet5-research-final-defense"),
    path('student/bet5/research-final-defense-form/download', views.studentBET5ResearchFinalDefenseFormDownload, name ="student-bet5-final-defense-form-download"),
 
-   path('student-panel-conforme-bet3/', views.studentPanelConformeBet3, name ="student-panel-conforme-bet3"), 
-   path('student-panel-conforme-bet3-create/', views.studentPanelConformeBet3Create, name ="student-panel-conforme-bet3-create"),
-   path('student-panel-conforme-bet3-form/', views.studentPanelConformeBet3Form, name ="student-panel-conforme-bet3-form"),
+   path('student/acknowledgment-receipt/download', views.studentAcknowledgmentReceiptDownload, name ="student-acknowledgement-receipt-download"),
 
    path('student/bet3/topic-defense/panel-invitation/logs', views.studentBET3PanelInvitationLogs, name ="student-bet3-panel-invitation-logs"),
    path('student/bet3/proposal-defense/panel-invitation/logs', views.studentBET3ProposalDefensePanelInvitationLogs, name ="student-bet3-proposal-defense-panel-invitation-logs"),
@@ -312,5 +310,17 @@ urlpatterns = [
 
    path('academic-affairs-office/dashboard', views.academicAffairsOfficeDashboard, name ="academic-affairs-office-dashboard"),
    path('library/dashboard', views.libraryDashboard, name ="library-dashboard"),
+
+
    path('research-extension/dashboard', views.researchExtensionDashboard, name ="research-extension-dashboard"),
+   path('research-extension/user-profile', views.researchExtensionProfile, name ="research-extension-profile"),
+
+   path('research-extension/create/e-signature', views.researchExtensionCreateESignature, name ="research-extension-create-esignature"),
+   path('research-extension/upload/e-signature', views.researchExtensionUploadESignature, name ="research-extension-upload-esignature"),
+   path('research-extension/delete/e-signature', views.researchExtensionDeleteESignature, name ="research-extension-delete-esignature"),
+
+   path('research-extension/account-settings', views.researchExtensionAccountSettings, name ="research-extension-account-settings"),
+
+   path('research-extension/acknowledgement-receipt/accept/sign/<str:id>', views.researchExtensionAcceptSignature, name ="research-extension-accept-sign"),
+   path('research-extension/acknowledgement-receipt/accept/<str:id>', views.researchExtensionAccept, name ="research-extension-accept"),
 ]

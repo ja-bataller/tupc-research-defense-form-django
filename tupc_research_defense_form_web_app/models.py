@@ -823,6 +823,7 @@ class PanelConforme(models.Model):
     def __str__(self) -> str:
         return self.student_leader_username
 
+
 # Panel Conforme
 class PanelConformeLog(models.Model):
     student_leader_username = models.CharField(max_length=256)
@@ -857,3 +858,54 @@ class PanelConformeLog(models.Model):
 
     def __str__(self) -> str:
         return self.student_leader_username
+
+
+# Acknowledgement Receipt
+class AcknowledgementReceipt(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256, blank=True)
+    
+    dit_head_username= models.CharField(max_length=256)
+    dit_head_full_name = models.CharField(max_length=256)
+    dit_head_response = models.CharField(max_length=256)
+    dit_head_response_date = models.CharField(max_length=256)
+    dit_head_signature = models.BooleanField(default=False)
+
+    adaa_username = models.CharField(max_length=256)
+    adaa_full_name = models.CharField(max_length=256)
+    adaa_response = models.CharField(max_length=256)
+    adaa_response_date = models.CharField(max_length=256)
+    adaa_signature = models.BooleanField(default=False)
+
+    library_username = models.CharField(max_length=256)
+    library_full_name = models.CharField(max_length=256)
+    library_response = models.CharField(max_length=256)
+    library_response_date = models.CharField(max_length=256)
+    library_signature = models.BooleanField(default=False)
+
+    research_ext_username = models.CharField(max_length=256)
+    research_ext_full_name = models.CharField(max_length=256)
+    research_ext_response = models.CharField(max_length=256)
+    research_ext_response_date = models.CharField(max_length=256)
+    research_ext_signature = models.BooleanField(default=False)
+
+    adviser_username = models.CharField(max_length=256)
+    adviser_full_name = models.CharField(max_length=256)
+    adviser_response = models.CharField(max_length=256)
+    adviser_response_date = models.CharField(max_length=256)
+    adviser_signature = models.BooleanField(default=False)
+
+    subject_teacher_username = models.CharField(max_length=256)
+    subject_teacher_full_name = models.CharField(max_length=256)
+    subject_teacher_response = models.CharField(max_length=256)
+    subject_teacher_response_date = models.CharField(max_length=256)
+    subject_teacher_signature = models.BooleanField(default=False)
+
+    research_title = models.CharField(max_length=256, blank=True)
+
+    is_completed = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+

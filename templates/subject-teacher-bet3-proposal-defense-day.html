@@ -142,17 +142,17 @@
                     <div class="col-sm-12">
                       <h4>{{accepted_research_title}}</h4>
                       {% if end_voting %}
-                        {% if pending_proposal_defense %}
-                          {% if accepted_research_title.proposal_defense_status == "Accepted with Revision" %}
-                          <h6 style="display: inline;">Verdict: <h6 class="text-success" style="display: inline;">{{accepted_research_title.proposal_defense_status}}</h6></h6>
+                        
+                          {% if get_accepted_research_title.proposal_defense_status == "Accepted with Revision" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-success" style="display: inline;">{{get_accepted_research_title.proposal_defense_status}}</h6></h6>
                           {% endif %}
-                          {% if accepted_research_title.proposal_defense_status == "Deferred with Revision" %}
-                          <h6 style="display: inline;">Verdict: <h6 class="text-info" style="display: inline;">{{accepted_research_title.proposal_defense_status}}</h6></h6>
+                          {% if get_accepted_research_title.proposal_defense_status == "Deferred with Revision" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-info" style="display: inline;">{{get_accepted_research_title.proposal_defense_status}}</h6></h6>
                           {% endif %}
-                          {% if accepted_research_title.proposal_defense_status == "Not Accepted" %}
-                          <h6 style="display: inline;">Verdict: <h6 class="text-danger" style="display: inline;">{{accepted_research_title.proposal_defense_status}}</h6></h6>
+                          {% if get_accepted_research_title.proposal_defense_status == "Not Accepted" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-danger" style="display: inline;">{{get_accepted_research_title.proposal_defense_status}}</h6></h6>
                           {% endif %}
-                        {% endif %}
+                        
                       {% endif %}
                      </div>
                   </div>
