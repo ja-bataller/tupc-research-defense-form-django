@@ -67,6 +67,7 @@ urlpatterns = [
    path('student/bet5/research-final-defense', views.studentBET5ResearchFinalDefenseForm, name ="student-bet5-research-final-defense"),
    path('student/bet5/research-final-defense-form/download', views.studentBET5ResearchFinalDefenseFormDownload, name ="student-bet5-final-defense-form-download"),
 
+   path('studentacknowledgment-receipt', views.studentAcknowledgementReceiptDashboard, name ="student-acknowledgement-receipt"),
    path('student/acknowledgment-receipt/download', views.studentAcknowledgmentReceiptDownload, name ="student-acknowledgement-receipt-download"),
 
    path('student/bet3/topic-defense/panel-invitation/logs', views.studentBET3PanelInvitationLogs, name ="student-bet3-panel-invitation-logs"),
