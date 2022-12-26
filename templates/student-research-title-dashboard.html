@@ -76,6 +76,15 @@
                       <td class="text-danger">{{research_title.status}}</td>
                       {% elif research_title.status == "Proposal Defense - Pending" %}
                       <td class="text-dark">{{research_title.status}}</td>
+
+                      {% elif research_title.status == "Final Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Final Defense - Deferred with Revision" %}
+                      <td class="text-info">{{research_title.status}}</td>
+                      {% elif research_title.status == "Final Defense - Not Accepted" %}
+                      <td class="text-danger">{{research_title.status}}</td>
+                      {% elif research_title.status == "Final Defense - Pending" %}
+                      <td class="text-dark">{{research_title.status}}</td>
                       {% endif %}
                     </tr>
                     {% endfor %}

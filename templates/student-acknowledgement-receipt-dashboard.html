@@ -168,9 +168,9 @@
                 </div>
               </div>
             </div>
-            {% if student_leader_data.bet3_panel_invitation_status != "completed" %} {% if accepted_panel_invitations >= 3 and pending_panel_invitations == 0 %}
-            <a class="btn btn-outline-success mb-2 w-100" type="button" href="{% url 'student-panel-invitation-bet3-save' %}">Mark as Completed</a>
-            {% endif %} {% endif %}
+            {% if acknowledgement_receipt.dit_head_response == "Accepted" and acknowledgement_receipt.adaa_response == "Accepted" and  acknowledgement_receipt.library_response == "Accepted" and acknowledgement_receipt.research_ext_response == "Accepted" and acknowledgement_receipt.adviser_response == "Accepted" %} 
+              <a class="btn btn-outline-success mb-2 w-100" type="button" href="#">Mark as Completed</a>
+            {% endif %}
           </div>
           <!-- /.container-fluid -->
         </div>
