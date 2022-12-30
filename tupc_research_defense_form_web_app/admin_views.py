@@ -43,7 +43,8 @@ def adminDashboard(request):
     count_all_faculty = get_all_faculty.count()
 
     get_all_students = StudentLeader.objects.all()
-    count_all_students = get_all_students.count()
+    get_all_group_members = StudentGroupMember.objects.all()
+    count_all_students = get_all_students.count() + get_all_group_members.count()
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
@@ -131,15 +132,469 @@ def adminStudentAccount(request):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
+    get_all_student = StudentLeader.objects.all()
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
         "currently_loggedin_user_account": currently_loggedin_user_account,
+
+        "students": get_all_student,
     }
 
     return render(request, "admin-student-account.html", context)
+
+
+# Admin - Faculty Member Individual Account Page
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_administrator, login_url="index")
+def adminStudentLeaderData(request, id):
+    current_user = request.user
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        member_check = User.objects.get(username=id)
+        student_leader_check = StudentLeader.objects.get(username=id)
+    except:
+        return redirect("admin-students-account")
+
+    get_all_student = StudentLeader.objects.all()
+
+
+    member_username = member_check.username
+    member_email = member_check.email
+    member_first_name = member_check.first_name
+    member_middle_name = member_check.middle_name
+    member_last_name = member_check.last_name
+    member_suffix = member_check.suffix
+    member_department = member_check.department
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "member_username": member_username,
+        "member_email": member_email,
+        "member_first_name": member_first_name,
+        "member_middle_name": member_middle_name,
+        "member_last_name": member_last_name,
+        "member_suffix": member_suffix,
+        "member_department": member_department,
+        "students": get_all_student,
+    }
+
+    if request.method == "POST":
+        suffix_list = ["", "Sr.", "Jr.", "I", "II", "III", "IV", "V"]
+
+        username_input = request.POST.get("username_input")
+        email_input = request.POST.get("email_input")
+        first_name_input = request.POST.get("first_name_input")
+        middle_name_input = request.POST.get("middle_name_input")
+        last_name_input = request.POST.get("last_name_input")
+        suffix_input = request.POST.get("suffix_input")
+
+        if suffix_input not in suffix_list:
+            print("Suffix not in list")
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                "currently_loggedin_user_account": currently_loggedin_user_account, 
+                "member_username": member_username, 
+                "member_email": member_email, 
+                "member_first_name": member_first_name, 
+                "member_middle_name": member_middle_name, 
+                "member_last_name": member_last_name, 
+                "member_department": member_department,
+                "students": get_all_student, 
+                "response": "sweet invalid suffix"
+                }
+
+            return render(request, "admin-student-leader-data.html", context)
+
+        if "TUPC" in username_input:
+            pass
+
+        else:
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                "currently_loggedin_user_account": currently_loggedin_user_account, 
+                "member_username": member_username, 
+                "member_email": member_email, 
+                "member_first_name": member_first_name, 
+                "member_middle_name": member_middle_name, 
+                "member_last_name": member_last_name, 
+                "member_department": member_department, 
+                "students": get_all_student,
+                "response": "invalid username"
+                }
+
+            return render(request, "admin-student-leader-data.html", context)
+
+        if "gsfe.tupcavite.edu.ph" in email_input:
+            pass
+
+        else:
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                "currently_loggedin_user_account": currently_loggedin_user_account, 
+                "member_username": member_username, 
+                "member_email": member_email, 
+                "member_first_name": member_first_name, 
+                "member_middle_name": member_middle_name, 
+                "member_last_name": member_last_name, 
+                "member_department": member_department,
+                "students": get_all_student,
+                 "response": "invalid email"}
+
+            return render(request, "admin-student-leader-data.html", context)
+
+        member_check.first_name = first_name_input.title()
+        member_check.middle_name = middle_name_input.title()
+        member_check.last_name = last_name_input.title()
+        member_check.suffix = suffix_input
+        member_check.save()
+
+        student_leader_check.first_name = first_name_input.title()
+        student_leader_check.middle_name = middle_name_input.title()
+        student_leader_check.last_name = last_name_input.title()
+        student_leader_check.suffix = suffix_input
+        student_leader_check.save()
+
+        if member_check.username == username_input and member_check.email == email_input:
+
+            sweet_member_check = User.objects.get(username=id)
+
+            sweet_member_username = sweet_member_check.username
+            sweet_member_full_name = None
+
+            if sweet_member_check.middle_name == "":
+                sweet_member_full_name = sweet_member_check.first_name + " " + sweet_member_check.last_name
+
+            else:
+                sweet_member_full_name = sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                "currently_loggedin_user_account": currently_loggedin_user_account, 
+                "sweet_member_username": sweet_member_username, 
+                "sweet_member_full_name": sweet_member_full_name, 
+                "students": get_all_student,
+                "response": "sweet profile updated"}
+
+            return render(request, "admin-student-account.html", context)
+
+        if member_check.username != username_input and member_check.email == email_input:
+            try:
+                User.objects.get(username=username_input)
+
+                sweet_member_check = User.objects.get(username=id)
+
+                sweet_member_username = sweet_member_check.username
+                sweet_member_full_name = None
+
+                if sweet_member_check.middle_name == "":
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+
+                else:
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                    "currently_loggedin_user_account": currently_loggedin_user_account, 
+                    "sweet_member_username": sweet_member_username, 
+                    "sweet_member_full_name": sweet_member_full_name, 
+                    "students": get_all_student,
+                    "response": "sweet partial update username exist"
+                    }
+
+                return render(request, "admin-student-account.html", context)
+
+            except:
+                member_check.username = username_input
+                member_check.save()
+
+                student_leader_check.username = username_input
+                student_leader_check.save()
+
+                members = User.objects.all().filter(is_faculty_member=1)
+
+                sweet_member_check = User.objects.get(username=username_input)
+
+                sweet_member_username = sweet_member_check.username
+                sweet_member_full_name = None
+
+                if sweet_member_check.middle_name == "":
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+
+                else:
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                    "currently_loggedin_user_account": currently_loggedin_user_account, 
+                    "members": members, 
+                    "sweet_member_username": sweet_member_username, 
+                    "sweet_member_full_name": sweet_member_full_name,
+                    "students": get_all_student,
+                    "response": "sweet profile updated"
+                    }
+
+                return render(request, "admin-student-account.html", context)
+
+        if member_check.username == username_input and member_check.email != email_input:
+
+            try:
+                User.objects.get(email=email_input)
+
+                sweet_member_check = User.objects.get(username=id)
+
+                sweet_member_username = sweet_member_check.username
+                sweet_member_full_name = None
+
+                if sweet_member_check.middle_name == "":
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+
+                else:
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "sweet_member_username": sweet_member_username, 
+                    "sweet_member_full_name": sweet_member_full_name, 
+                    "students": get_all_student,
+                    "response": "sweet partial update email exist"
+                    }
+
+                return render(request, "admin-student-account.html", context)
+
+            except: 
+                member_check.email = email_input
+                member_check.save()
+
+                student_leader_check.email = email_input
+                student_leader_check.save()
+
+                sweet_member_check = User.objects.get(username=id)
+
+                sweet_member_username = sweet_member_check.username
+                sweet_member_full_name = None
+
+                if sweet_member_check.middle_name == "":
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+
+                else:
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                    "currently_loggedin_user_account": currently_loggedin_user_account, 
+                    "sweet_member_username": sweet_member_username, 
+                    "sweet_member_full_name": sweet_member_full_name, 
+                    "students": get_all_student,
+                    "response": "sweet profile updated"
+                    }
+
+                return render(request, "admin-student-account.html", context)
+
+        if member_check.username != username_input and member_check.email != email_input:
+
+            try:
+                User.objects.get(username=username_input)
+                User.objects.get(email=email_input)
+
+                sweet_member_check = User.objects.get(username=id)
+
+                sweet_member_username = sweet_member_check.username
+                sweet_member_full_name = None
+
+                if sweet_member_check.middle_name == "":
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+
+                else:
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "sweet_member_username": sweet_member_username, 
+                    "sweet_member_full_name": sweet_member_full_name,
+                    "students": get_all_student,
+                    "response": "sweet partial update username and email exist"}
+
+                return render(request, "admin-student-account.html", context)
+
+            except:
+                member_check.username = username_input
+                member_check.email = email_input
+                member_check.save()
+
+                student_leader_check.username = username_input
+                student_leader_check.email = email_input
+                student_leader_check.save()
+                
+
+                sweet_member_check = User.objects.get(username=username_input)
+
+                sweet_member_username = sweet_member_check.username
+                sweet_member_full_name = None
+
+                if sweet_member_check.middle_name == "":
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.last_name
+
+                else:
+                    sweet_member_full_name = sweet_member_check.honorific + " " + sweet_member_check.first_name + " " + sweet_member_check.middle_name[0] + ". " + sweet_member_check.last_name
+
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "sweet_member_username": sweet_member_username, 
+                    "sweet_member_full_name": sweet_member_full_name, 
+                    "students": get_all_student,
+                    "response": "sweet profile updated"
+                    }
+
+                return render(request, "admin-student-account.html", context)
+
+
+    return render(request, "admin-student-leader-data.html", context)
+
+
+# Admin
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_administrator, login_url="index")
+def adminStudentGroupMemberAccount(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    get_all_student = StudentGroupMember.objects.all()
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+
+        "students": get_all_student,
+    }
+
+    return render(request, "admin-group-members-account.html", context)
+
+
+# Admin - Faculty Member Individual Account Page
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_administrator, login_url="index")
+def adminStudentGroupMemberData(request, id):
+    current_user = request.user
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    get_all_student = StudentGroupMember.objects.all()
+
+    try:
+        member_check = StudentGroupMember.objects.get(student_member_username=id)
+    except:
+        return redirect("admin-student-group-members-account")
+
+    member_username = member_check.student_member_username
+    member_full_name = member_check.student_member_full_name
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "member_username": member_username,
+        "member_full_name": member_full_name,
+    }
+
+    if request.method == "POST":
+
+        username_input = request.POST.get("username_input")
+        email_input = request.POST.get("email_input")
+        full_name_input = request.POST.get("full_name_input")
+
+        if "TUPC" in username_input:
+            pass
+
+        else:
+            context = {
+                 "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "currently_loggedin_user_account": currently_loggedin_user_account,
+                "member_username": member_username,
+                "member_full_name": member_full_name,
+                "students": get_all_student,
+                "response": "invalid username"
+                }
+
+            return render(request, "admin-group-members-data.html", context)
+
+        member_check.student_member_full_name = full_name_input.title()
+        member_check.save()
+
+        if member_check.student_member_username == username_input:
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                "currently_loggedin_user_account": currently_loggedin_user_account, 
+                "sweet_member_username": member_username, 
+                "sweet_member_full_name": full_name_input,
+                "students": get_all_student,
+                "response": "sweet profile updated"}
+
+            return render(request, "admin-group-members-account.html", context)
+
+        if member_check.student_member_username != username_input:
+            try:
+                User.objects.get(username=username_input)
+
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                    "currently_loggedin_user_account": currently_loggedin_user_account, 
+                    "sweet_member_username": member_username, 
+                    "sweet_member_full_name": member_full_name, 
+                    "students": get_all_student,
+                    "response": "sweet partial update username exist"}
+
+                return render(request, "admin-group-members-account.html", context)
+            except:
+                pass
+
+            try:
+                StudentGroupMember.objects.get(student_member_username=username_input)
+
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                    "currently_loggedin_user_account": currently_loggedin_user_account, 
+                    "sweet_member_username": member_username, 
+                    "sweet_member_full_name": member_full_name, 
+                    "students": get_all_student,
+                    "response": "sweet partial update username exist"}
+
+                return render(request, "admin-group-members-account.html", context)
+
+            except:
+                member_check.student_member_username = username_input
+                member_check.save()
+
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+                    "currently_loggedin_user_account": currently_loggedin_user_account, 
+                    "sweet_member_username": username_input, 
+                    "sweet_member_full_name": full_name_input,
+                    "students": get_all_student,
+                    "response": "sweet profile updated"
+                     }
+
+                return render(request, "admin-group-members-account.html", context)
+
+    return render(request, "admin-group-member-data.html", context)
+
 
 # Admin - Student Course and Major Page
 @login_required(login_url="index")
@@ -1451,6 +1906,7 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
             return render(request, "admin-faculty-member-account.html", context)
 
+
 # Admin
 @login_required(login_url="index")
 @user_passes_test(lambda u: u.is_administrator, login_url="index")
@@ -1462,8 +1918,96 @@ def adminAdviseeLimit(request):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
-    user_middle_name = current_user.middle_name
-    user_middle_initial = None
+    get_current_advisee_limit = User.objects.filter(is_panel = 1)
+
+    current_advisee_limit = get_current_advisee_limit[0].advisee_limit
+    print(current_advisee_limit)
+
+    advisee_limit_list = []
+
+    for i in range(len(get_current_advisee_limit)):
+        advisee_limit_list.append(get_current_advisee_limit[i].advisee_count)
+        i + 1
+    
+    max_advisee_count = max(advisee_limit_list)
+    print(max_advisee_count)
+
+
+    if request.method == "POST":
+        advisee_limit_input = request.POST.get("advisee_limit_input")
+        print(advisee_limit_input)
+        
+        if int(advisee_limit_input) < 5:
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "currently_loggedin_user_account": currently_loggedin_user_account,
+                "current_advisee_limit":current_advisee_limit,
+                "response": "sweet advisee limit less minimum"
+            }
+
+            return render(request, "admin-advisee-limit.html", context)
+        
+        if int(max_advisee_count) > int(advisee_limit_input) or int(advisee_limit_input) == 0:
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "currently_loggedin_user_account": currently_loggedin_user_account,
+                "current_advisee_limit":current_advisee_limit,
+                "response": "sweet advisee limit invalid"
+            }
+
+            return render(request, "admin-advisee-limit.html", context)
+
+        
+        User.objects.filter(is_panel = 1).update(advisee_limit = advisee_limit_input)
+
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "currently_loggedin_user_account": currently_loggedin_user_account,
+            "current_advisee_limit":current_advisee_limit,
+            "response": "sweet advisee limit updated"
+        }
+
+        return render(request, "admin-advisee-limit.html", context)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "current_advisee_limit":current_advisee_limit,
+    }
+
+    return render(request, "admin-advisee-limit.html", context)
+
+
+# Admin
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_administrator, login_url="index")
+def adminAdviseeLimitSet(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    get_current_advisee_limit = User.objects.get(is_panel = 1)
+
+    current_advisee_limit = get_current_advisee_limit.advisee_limit
+    print(current_advisee_limit)
+
+    if request.method == "POST":
+        advisee_limit_input = request.POST.get("advisee_limit_input")
+        print(advisee_limit_input)
+
+        if advisee_limit_input < 5:
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "currently_loggedin_user_account": currently_loggedin_user_account,
+                "response": "sweet advisee limit less minimum"
+            }
+
+            return render(request, "admin-advisee-limit.html", context)
+
+
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -1471,6 +2015,7 @@ def adminAdviseeLimit(request):
     }
 
     return render(request, "admin-advisee-limit.html", context)
+
 
 # Admin
 @login_required(login_url="index")

@@ -52,14 +52,13 @@
 
                                         <div class="form-group">
                                             <label">Current Advisee Limit:</label>
-                                            <input type="number" class="form-control"  value="5" disabled>
+                                            <input type="number" class="form-control"  value="{{current_advisee_limit}}" disabled>
                                         </div>
 
 
                                         <div class="form-group">
                                             <label">New Advisee Limit:</label>
-                                            <input type="number" class="form-control"
-                                                name="course_abbr_input" style="text-transform: uppercase;" required>
+                                            <input type="number" class="form-control" name="advisee_limit_input" min="5" style="text-transform: uppercase;" required>
                                         </div>
 
                                         <button type="submit" class="btn btn-outline-success w-100">
@@ -99,7 +98,32 @@
 
     {% include 'alert-validation.html' %}
 
-    
+    {% if response == 'sweet advisee limit less minimum' %}
+    <script>
+        Swal.fire("Invalid", "The Advisee Limit minimum is 5.", "error");
+        setTimeout(function () {
+        window.location.replace("{% url 'admin-advisee-limit' %}");
+        }, 3000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet advisee limit invalid' %}
+    <script>
+        Swal.fire("Invalid", "The Advisee Limit you entered is invalid.", "error");
+        setTimeout(function () {
+        window.location.replace("{% url 'admin-advisee-limit' %}");
+        }, 3000);
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet advisee limit updated' %}
+    <script>
+        Swal.fire("Updated", "The Advisee Limit has been updated.", "success");
+        setTimeout(function () {
+        window.location.replace("{% url 'admin-advisee-limit' %}");
+        }, 3000);
+    </script>
+    {% endif %}
 
 </body>
 

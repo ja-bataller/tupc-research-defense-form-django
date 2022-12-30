@@ -1,0 +1,183 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Admin - Student Group Member Profile</title>
+
+    {% include 'css-main-cdn.html' %}
+  </head>
+
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+      
+      {% include "admin-account-sidebar.html" %}
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+
+          {% include 'topbar.html'%}
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-3">
+
+              <h1 class="h3 mb-0 text-gray-800"  style="display: inline;"><i class="fa-solid fa-user"></i> Student Group Member Profile</h1>
+      
+              <div class="custom-control custom-switch float-right">
+                <input type="checkbox" class="custom-control-input" id="edit_switch" />
+                <label class="custom-control-label" for="edit_switch">Edit</label>
+              </div>
+            </div>
+
+            <form method="POST" onsubmit="savechangesBtnSpinner()">
+              {% csrf_token %}
+              <!-- User Profile Start -->
+              <div class="card border-left-dark shadow h-100 py-2 mb-3">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+
+                      <div class="form-group">
+                        <label>Full Name:</label>
+                        <input id="first_name_input" name="full_name_input" type="text" class="form-control" value="{{member_full_name}}" style="text-transform: capitalize" required disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Username (ID No.):</label>
+                        <input id="username_input" name="username_input" type="text" class="form-control" value="{{member_username}}" onkeyup="this.value = this.value.toUpperCase();" required disabled />
+                      </div>
+
+
+                      <button id="save_changes_btn" type="submit" class="btn btn-outline-success w-100" style="display: None"><i class="fa-solid fa-check"></i> Save Changes</button>
+                      <button id="save_change_spinner" type="submit" class="btn btn-outline-success w-100" style="display: None" disabled>Saving Changes.....</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <!-- User Profile End -->
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    {% include 'logout-modal.html' %} 
+    
+    {% include 'script-cdn.html' %}
+
+    {% include 'alert-validation.html' %}
+
+    <!-- Edit Switch Script -->
+    <script>
+      let edit_switch = document.querySelector("#edit_switch");
+
+      let username_input = document.querySelector("#username_input");
+      let email_input = document.querySelector("#email_input");
+      let first_name_input = document.querySelector("#first_name_input");
+      let middle_name_input = document.querySelector("#middle_name_input");
+      let last_name_input = document.querySelector("#last_name_input");
+      let suffix_input = document.querySelector("#suffix_input");
+      let suffix_value = document.querySelector("#suffix_value");
+      let department_input = document.querySelector("#department_input");
+
+      let password_input = document.querySelector("#password_input");
+      let save_changes_btn = document.querySelector("#save_changes_btn");
+
+      let save_change_spinner = document.querySelector("#save_change_spinner");
+
+      function savechangesBtnSpinner() {
+        save_changes_btn.style.display = "none";
+        save_change_spinner.style.display = "block";
+      }
+
+      edit_switch.addEventListener("change", function () {
+        if (edit_switch.checked) {
+          username_input.removeAttribute("disabled");
+          first_name_input.removeAttribute("disabled");
+          save_changes_btn.style.display = "block";
+
+        } else {
+          // username_input.setAttribute("disabled", "");
+          // email_input.setAttribute("disabled", "");
+          // first_name_input.setAttribute("disabled", "");
+          // middle_name_input.setAttribute("disabled", "");
+          // last_name_input.setAttribute("disabled", "");
+          // // department_input.setAttribute("disabled", "");
+
+          // honorific_value.style.display = "block";
+          // honorific_input.style.display = "none";
+          // password_input.style.display = "none";
+          // save_changes_btn.style.display = "none";
+          location.reload();
+        }
+      });
+    </script>
+
+    {% if response == 'sweet invalid suffix' %}
+    <script>
+      Swal.fire("Invalid", "You just entered a Suffix which is not in the list. Please choose one from the choices given.", "error");
+    </script>
+    {% endif %}
+
+    {% if response == 'sweet profile updated' %}
+    <script>
+      Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated successfully.", "success");
+      setTimeout(function () {
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+      }, 2500);
+    </script>
+    {% endif %} 
+
+    {% if response == 'sweet partial update username exist' %}
+    <script>
+      Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Username, because it is already taken.", "info");
+      setTimeout(function () {
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+      }, 2000);
+    </script>
+    {% endif %} 
+    
+    {% if response == 'sweet partial update email exist' %}
+    <script>
+      Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Email, because it is already taken.", "info");
+      setTimeout(function () {
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+      }, 2000);
+    </script>
+    {% endif %} 
+    
+    {% if response == 'sweet partial update username and email exist' %}
+    <script>
+      Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Username and Email, because it is already taken.", "info");
+      setTimeout(function () {
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+      }, 2000);
+    </script>
+    {% endif %}
+
+  </body>
+</html>

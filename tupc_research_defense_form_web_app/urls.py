@@ -87,9 +87,15 @@ urlpatterns = [
    path('tupc-admin/faculty-member/change-password/<str:id>', views.adminFacultyMemberChangePassword, name ="admin-faculty-member-change-password"),
    path('tupc-admin/faculty-member/change-user-account/<str:id>', views.adminFacultyMemberChangeUserAccount, name ="admin-faculty-member-change-user-account"),
 
-   path('tupc-admin/advisee-limit', views.adminAdviseeLimit, name ="admin-advisee-limit"),  
+   path('tupc-admin/advisee-limit', views.adminAdviseeLimit, name ="admin-advisee-limit"), 
+   path('tupc-admin/advisee-limit/set', views.adminAdviseeLimitSet, name ="admin-advisee-limit-set"),  
 
-   path('tupc-admin/student/account', views.adminStudentAccount, name ="admin-student-account"),  
+   path('tupc-admin/student/account', views.adminStudentAccount, name ="admin-student-account"), 
+   path('tupc-admin/student-leader/data/<str:id>', views.adminStudentLeaderData, name ="admin-student-leader-data"), 
+
+   path('tupc-admin/student/group-members/account', views.adminStudentGroupMemberAccount, name ="admin-student-group-members-account"), 
+   path('tupc-admin/student-group-member/data/<str:id>', views.adminStudentGroupMemberData, name ="admin-student-group-member-data"),
+
    path('tupc-admin/student/course-major/', views.adminStudentCourseMajor, name ="admin-student-course-major"),  
    path('tupc-admin/student/add-course-major/', views.adminStudentAddCourseMajor, name ="admin-student-add-course-major"),
    path('tupc-admin/student/edit-course-major/<str:id>', views.adminStudentEditCourseMajor, name ="admin-student-edit-course-major"), 

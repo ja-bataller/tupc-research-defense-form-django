@@ -1278,12 +1278,11 @@ def studentDownloadPanelInvitationBet3(request, id):
     # Deployed - Syntax
     # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/1-TOPIC-DEFENSE-PANEL-INVITATION.docx')
 
-    student_table = doc.tables[0] # Student Data Table
-    panel_table = doc.tables[3] # Panel Data Table
-    head_signature_table = doc.tables[1]
-    panel_signature_table= doc.tables[2]
-
-    qr_code_box = doc.tables[4]
+    student_table = doc.tables[1]
+    dit_sign_box = doc.tables[2]
+    panel_sign_box = doc.tables[3]
+    panel_table = doc.tables[4]
+    qr_code_box = doc.tables[5]
 
     try:
         student_table.cell(1, 0).paragraphs[0].runs[0].text = student_member_list[0]
@@ -1378,8 +1377,8 @@ def studentDownloadPanelInvitationBet3(request, id):
         # Check if DIT Head E-Sign Exist
         # if os.path.exists("/home/johnanthonybataller/tupc-research-defense-form-django/uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_invitation.dit_head_username) + ".png"):
         if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_invitation.dit_head_username) + ".png"):
-            head_signature_table.cell(0, 0).text = ''
-            head_signature = head_signature_table.cell(0, 0).add_paragraph()
+            dit_sign_box.cell(0, 0).text = ''
+            head_signature = dit_sign_box.cell(0, 0).add_paragraph()
             head_signature_run = head_signature.add_run()
             head_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_invitation.dit_head_username +'.png',width=Inches(1.2), height=Inches(0.45))
         else:
@@ -1402,8 +1401,8 @@ def studentDownloadPanelInvitationBet3(request, id):
     if get_panel_invitation.panel_signature == True:
         # Check if Panel E-Sign Exist
         if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_panel_invitation.panel_username) + ".png"):
-            panel_signature_table.cell(0, 0).text = ''
-            panel_signature = panel_signature_table.cell(0, 0).add_paragraph()
+            panel_sign_box.cell(0, 0).text = ''
+            panel_signature = panel_sign_box.cell(0, 0).add_paragraph()
             panel_signature_run = panel_signature.add_run()
             panel_signature_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_panel_invitation.panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
 

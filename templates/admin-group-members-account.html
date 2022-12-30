@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Admin - Student Leader Account</title>
+    <title>Admin - Student Group Members Account</title>
 
     {% include 'css-main-cdn.html' %}
   </head>
@@ -22,6 +22,7 @@
 
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
+
         <!-- Main Content -->
         <div id="content">
 
@@ -32,7 +33,7 @@
             <!-- Page Heading -->
               <div class="row">
                 <div class="col-lg-9 col-md-12 mb-3">
-                  <h1 class="h3 mb-0 text-gray-800">Students</h1>
+                  <h1 class="h3 mb-0 text-gray-800">Student - Group Members</h1>
                 </div>
               </div>
 
@@ -43,6 +44,8 @@
                   <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                       <tr>
+                        <th>Leader ID No.</th>
+                        <th>Leader Name</th>
                         <th>ID No.</th>
                         <th>Name</th>
                         <th>Course</th>
@@ -51,6 +54,8 @@
                     </thead>
                     <tfoot>
                       <tr>
+                        <th>Leader ID No.</th>
+                        <th>Leader Name</th>
                         <th>ID No.</th>
                         <th>Name</th>
                         <th>Course</th>
@@ -60,11 +65,13 @@
                     <tbody class="text-dark">
                       {% for student in students %}
                       <tr>
-                        <td>{{student.username}}</td>
-                        <td>{{student.first_name}} {{student.middle_name}} {{student.last_name}} {{student.suffix}}</td>
+                        <td>{{student.student_leader_username}}</td>
+                        <td>{{student.student_leader_full_name}}</td>
+                        <td>{{student.student_member_username}}</td>
+                        <td>{{student.student_member_full_name}}</td>
                         <td>{{student.course_major_abbr}}</td>
                         <td class="text-center">
-                          <a class="btn btn-outline-primary" type="button" href="{% url 'admin-student-leader-data' student.username %}"> <i class="fa-solid fa-eye"></i></a>
+                          <a class="btn btn-outline-primary" type="button" href="{% url 'admin-student-group-member-data' student.student_member_username %}"> <i class="fa-solid fa-eye"></i></a>
                         </td>
                       </tr>
                       {% endfor %}
@@ -99,7 +106,7 @@
     <script>
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Current Password you entered for this User is incorrect.", "error");
       setTimeout(function () {
-        window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
       }, 2000);
     </script>
     {% endif %} 
@@ -108,7 +115,7 @@
     <script>
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Current Password and New Password you entered for this User is the same.", "warning");
       setTimeout(function () {
-        window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
       }, 2000);
     </script>
     {% endif %} 
@@ -117,7 +124,7 @@
     <script>
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The New Password and Confirm New Password you entered for this User mismatch.", "warning");
       setTimeout(function () {
-        window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
       }, 2000);
     </script>
     {% endif %} 
@@ -132,7 +139,7 @@
     <script>
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "You didn't enter any User Account for this User.", "error");
       setTimeout(function () {
-        window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
       }, 2000);
     </script>
     {% endif %} 
@@ -141,7 +148,7 @@
     <script>
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The User Account you entered for this User is invalid.", "error");
       setTimeout(function () {
-        window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
       }, 2000);
     </script>
     {% endif %} 
@@ -150,7 +157,7 @@
     <script>
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Current Password you entered for this user is incorrect.", "error");
       setTimeout(function () {
-        window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
       }, 2000);
     </script>
     {% endif %} 
@@ -159,7 +166,7 @@
     <script>
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "This User is already a {{sweet_member_department}} user.", "info");
       setTimeout(function () {
-        window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
       }, 2000);
     </script>
     {% endif %} 
@@ -174,7 +181,7 @@
     <script>
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated successfully.", "success");
       setTimeout(function () {
-        window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
       }, 2000);
     </script>
     {% endif %} 
@@ -183,7 +190,7 @@
     <script>
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Username, because it is already taken.", "info");
       setTimeout(function () {
-        window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
       }, 2000);
     </script>
     {% endif %} 
@@ -192,7 +199,7 @@
     <script>
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Email, because it is already taken.", "info");
       setTimeout(function () {
-        window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
       }, 2000);
     </script>
     {% endif %} 
@@ -201,7 +208,7 @@
     <script>
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Username and Email, because it is already taken.", "info");
       setTimeout(function () {
-        window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
+        window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
       }, 2000);
     </script>
     {% endif %}

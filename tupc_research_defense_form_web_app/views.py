@@ -198,7 +198,7 @@ def signup(request):
         pass
 
     # Check if Panel Members is incomplete
-    if panel_members.count() < 5:
+    if panel_members.count() < 6:
         print("Incomplete Panel Members")
 
         context = {
