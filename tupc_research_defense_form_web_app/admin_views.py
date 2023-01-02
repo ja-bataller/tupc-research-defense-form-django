@@ -1233,6 +1233,8 @@ def adminFacultyMemberData(request, id):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
+    print(id)
+
     try:
         member_check = User.objects.get(username=id)
     except:
@@ -1353,8 +1355,67 @@ def adminFacultyMemberData(request, id):
                     return render(request, "admin-faculty-member-account.html", context)
 
                 except:
+
+                    try:
+                        AcknowledgementReceipt.objects.filter(dit_head_username = id).update(dit_head_username = username_input)
+                    except:
+                        pass
+
+                    try:
+                        AcknowledgementReceipt.objects.filter(adaa_username = id).update(adaa_username = username_input)
+                    except:
+                        pass
+
+                    try:
+                        AcknowledgementReceipt.objects.filter(library_username = id).update(library_username = username_input)
+                    except:
+                        pass
+
+                    try:
+                        AcknowledgementReceipt.objects.filter(research_ext_username = id).update(research_ext_username = username_input)
+                    except:
+                        pass
+
+                    try:
+                        AcknowledgementReceipt.objects.filter(adviser_username = id).update(adviser_username = username_input)
+                    except:
+                        pass
+
+                    try:
+                        AcknowledgementReceipt.objects.filter(subject_teacher_username = id).update(subject_teacher_username = username_input)
+                    except:
+                        pass
+
+                    try:
+                        AcknowledgementReceipt.objects.filter(adaa_username = id).update(adaa_username = username_input)
+                    except:
+                        pass
+                    
+                    try:
+                        TitlePanelInvitation.objects.filter(panel_username = id).update(panel_username = username_input)
+                    except:
+                        pass
+                        
+                    try:
+                        TitleDefenseForm.objects.filter(panel_username = id).update(panel_username = username_input)
+                    except:
+                        pass
+
+                    try:
+                        TitleVote.objects.filter(panel_username = id).update(panel_username = username_input)
+                    except:
+                        pass
+                        
+                    try:
+                        AcknowledgementReceipt.objects.filter(panel_username = id).update(panel_username = username_input)
+                    except:
+                        pass
+
+                    
                     member_check.username = username_input
                     member_check.save()
+
+                    
 
                     members = User.objects.all().filter(is_faculty_member=1)
 

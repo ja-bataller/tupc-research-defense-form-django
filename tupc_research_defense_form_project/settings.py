@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Uncomment when deployed
 # DEBUG = False
-# ALLOWED_HOSTS = ['johnanthonybataller.pythonanywhere.com']
+# ALLOWED_HOSTS = ['unofficialtupcresearchdefense.pythonanywhere.com']
 
 
 # Application definition
@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'tupc_research_defense_form_project.wsgi.application'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'johnanthonybatal$tupc_research_defense_form_db',
-#         'HOST': 'johnanthonybataller.mysql.pythonanywhere-services.com',
-#         'USER': 'johnanthonybatal',
-#         'PASSWORD': 'tupcresearchdefenseform',
+#         'NAME': 'unofficialtupcre$tupc_research_defense_form_db',
+#         'HOST': 'unofficialtupcresearchdefense.mysql.pythonanywhere-services.com',
+#         'USER': 'unofficialtupcre',
+#         'PASSWORD': '!!!tupc!!!',
 #     }
 # }
 
@@ -141,7 +141,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-# STATIC_ROOT = '/home/johnanthonybataller/tupc-research-defense-form-django/static'
+# STATIC_ROOT = '/home/unofficialtupcresearchdefense/tupc-research-defense-form-django/static'
 
 MEDIA_URL = 'uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9')

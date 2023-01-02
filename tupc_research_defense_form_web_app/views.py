@@ -11,6 +11,7 @@ from .models import *
 
 # Import Date & Time
 from datetime import date
+import time
 
 # Import Docx and PDF Convert
 from docx import Document
@@ -29,6 +30,12 @@ from .dit_head_views import *
 from .panel_views import *
 from .subject_teacher_views import *
 from .adviser_views import *
+
+
+# Set Timezone to Manila
+# os.environ["TZ"] = "Asia/Manila"
+# time.tzset()
+
 
 today = date.today()
 date_today = today.strftime("%B %d, %Y")
