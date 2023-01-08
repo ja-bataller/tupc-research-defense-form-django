@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Adviser - Create E-Signature</title>
 
@@ -23,7 +24,7 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'adviser-dashboard' %}">
           <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
           </div>
@@ -40,9 +41,7 @@
           <span>Home</span></a>
       </li>
 
-      
 
-    
       <!-- Divider -->
       <!-- <hr class="sidebar-divider"> -->
 
@@ -59,10 +58,7 @@
             <a class="collapse-item" href="{% url 'adviser-bet3-adviser-conforme' %}">Research Adviser Conforme</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
+            <a class="collapse-item" href="{% url 'adviser-acknowledgement-receipt' %}">Acknowledgement Receipt</a>
           </div>
         </div>
       </li>
@@ -77,16 +73,10 @@
         <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="#">Research Adviser Conforme</a>
-            <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
-            <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+            <a class="collapse-item" href="{% url 'adviser-bet3-adviser-conforme-logs' %}">Research Adviser Conforme</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
+            <a class="collapse-item" href="{% url 'adviser-acknowledgement-receipt-logs' %}">Acknowledgement Receipt</a>
           </div>
         </div>
       </li>
@@ -103,7 +93,7 @@
 
       <!-- Nav Item - The Developers -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'adviser-the-devs' %}">
           <i class="fa-solid fa-code"></i>
           <span>The Devs</span></a>
       </li>

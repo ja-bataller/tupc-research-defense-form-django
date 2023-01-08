@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Panel - Final Defense Day</title>
 
@@ -126,7 +127,18 @@
                      <h6>Research Title:</h6>
                     </div>
                     <div class="col-sm-12">
-                      <h4>{{accepted_research_title}}</h4>
+                      <h4>{{research_title}}</h4>
+                      {% if end_voting %}
+                          {% if get_accepted_research_title.final_defense_status == "Accepted with Revision" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-success" style="display: inline;">{{get_accepted_research_title.final_defense_status}}</h6></h6>
+                          {% endif %}
+                          {% if get_accepted_research_title.final_defense_status == "Deferred with Revision" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-info" style="display: inline;">{{get_accepted_research_title.final_defense_status}}</h6></h6>
+                          {% endif %}
+                          {% if get_accepted_research_title.final_defense_status == "Not Accepted" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-danger" style="display: inline;">{{get_accepted_research_title.final_defense_status}}</h6></h6>
+                          {% endif %}
+                      {% endif %}
                      </div>
                   </div>
                 </div>
@@ -188,7 +200,7 @@
                 </div>
                 <a id="btn_proposal_panel_chairman_esign" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature - Panel Chairman</a>
                 <hr>
-                <a id="btn_proposal_panel_chairman_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Personal Signature - Panel Chairman</a>
+                <a id="btn_proposal_panel_chairman_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature - Panel Chairman</a>
                 <hr>
               {% endif %}
               
@@ -199,7 +211,7 @@
                 </div>
                 <a id="btn_proposal_panel_esign" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature - Panel</a>
                 <hr>
-                <a id="btn_proposal_panel_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Personal Signature - Panel</a>
+                <a id="btn_proposal_panel_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature - Panel</a>
               {% endif %}
             {% endif %}
 
@@ -307,7 +319,7 @@
       if (document.getElementById('checkbox_proposal_agreement_pc').checked) {
         document.getElementById("btn_proposal_panel_chairman_esign").href = "{% url 'panel-bet5-final-defense-day-panel-chairman-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
       } else {
-        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
       }
     });
   </script>
@@ -318,7 +330,7 @@
       if (document.getElementById('checkbox_proposal_agreement_p').checked) {
         document.getElementById("btn_proposal_panel_esign").href = "{% url 'panel-bet5-final-defense-day-panel-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
       } else {
-        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
       }
     });
   </script>

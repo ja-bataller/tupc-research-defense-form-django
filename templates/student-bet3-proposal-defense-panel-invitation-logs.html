@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Student - BET3 - Proposal Defense - Panel Invitation - Logs</title>
 
@@ -33,7 +34,7 @@
             <!-- Page Heading -->
             <div class="row">
               <div class="col-lg-9 col-md-12 mb-3">
-                <h1 class="h3 mb-0 text-gray-800">BET-3 - Proposal Defense - Panel Invitation - Logs </h1>
+                <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-clock-rotate-left"></i> BET-3 - Proposal Defense - Panel Invitation - Logs </h1>
               </div>
             </div>
 
@@ -199,21 +200,23 @@
     <script>
       Swal.fire("Downloaded", "The Panel Invitation Form has been downloaded.", "success");
 
-      // window.open("{{download_link}}", '_blank').focus();
+     if ("{{download_link}}") {
+        window.open("{{download_link}}", '_blank').focus();
+      }
     </script>
     {% endif %} {% if response == 'sweet request limit exceed' %}
     <script>
       Swal.fire("Uh-oh", "You have reached the Panel Invitation request limit.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'sweet bet-3 panel invitation saved' %}
     <script>
       Swal.fire("Completed", "BET-3 Panel Invitation completed.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -223,7 +226,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -233,7 +236,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 

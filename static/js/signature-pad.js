@@ -93,14 +93,14 @@ submit_btn.addEventListener("click", function (event) {
     Swal.fire("Invalid", "Please input your Signature.", "error");
     // setTimeout(function () {
     //   window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    // }, 2000);
+    // }, 4000);
   } else {
     if (document.getElementById("signature_agreement_checkbox").checked) {
       document.getElementById("signature_url").value = imageURL;
       clearPad();
       document.getElementById("signatureForm").submit();
     } else {
-      Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
+      Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
     }
   }
 

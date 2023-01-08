@@ -10,6 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Student - Home</title>
 
@@ -71,18 +72,23 @@
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Topic - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
+            <a class="collapse-item" href="{% url 'student-bet3-topic-panel-conforme'%}">Topic - Panel Conforme</a>
             <a class="collapse-item" href="{% url 'student-bet3-adviser-dashboard' %}">Adviser Conforme</a>
             <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation' %}">Proposal - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'student-bet3-critique-form' %}">Critique Form</a>
             <a class="collapse-item" href="{% url 'student-bet3-research-proposal-defense' %}">Research Proposal Defense</a>
+            <a class="collapse-item" href="{% url 'student-bet3-proposal-panel-conforme' %}">Proposal - Panel Conforme</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
+            {% if student_leader_data.bet3_proposal_defense_status %}
             {% if not student_leader_data.bet5_subject_teacher_name %}
             <a class="collapse-item" href="{% url 'student-bet5-subject-teacher' %}">BET-5 Subject Teacher</a>
             {% endif %}
+            {% endif %}
             <a class="collapse-item" href="{% url 'student-bet5-final-defense-panel-invitation' %}">Final - Panel Invitation</a>
-            <a class="collapse-item" href="#">Research Final Defense</a>
-            <a class="collapse-item" href="#">Acknowledgement Receipt</a>
+            <a class="collapse-item" href="{% url 'student-bet5-research-final-defense'%}">Research Final Defense</a>
+            <a class="collapse-item" href="{% url 'student-bet5-final-panel-conforme' %}">Final - Panel Conforme</a>
+            <a class="collapse-item" href="{% url 'student-acknowledgement-receipt' %}">Acknowledgement Receipt</a>
           </div>
         </div>
       </li>
@@ -115,7 +121,7 @@
 
       <!-- Nav Item - The Developers -->
       <li class="nav-item active">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'student-the-devs' %}">
           <i class="fa-solid fa-code"></i>
           <span>The Devs</span>
         </a>
@@ -145,15 +151,15 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between">
-            <h1 class="h3 mb-0 text-gray-800">The Devs</h1>
+            <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-code"></i> The Devs</h1>
           </div>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam reiciendis pariatur repellendus! Aut quae odit tempore vel consequuntur nulla qui dolor! Aliquam reiciendis repellat, modi nam pariatur eaque. Quasi, cumque. <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum vero optio, soluta natus provident hic commodi sapiente culpa accusantium et totam cupiditate eveniet doloremque numquam ipsa mollitia praesentium unde a.</p>
 
           <div class="row">
             <div class="col-sm-12">
               <div class="d-flex justify-content-center">
-                <figure class="snip0078 hover red">
-                  <img src="{% static './img/default.jpg' %}" alt="sampl45" />
+                <figure class="snip0078 red">
+                  <img src="{% static './img/bataller.jpg' %}" alt="sampl45" />
                   <figcaption>
                     <h6>Bataller <br> John Anthony B.</h6>
                     <p style="font-size: 0.6rem;">BET-COET</p>
@@ -164,43 +170,51 @@
             </div>
 
             <div class="col">
-              <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample50" />
-                <figcaption>
-                  <h6>Jasa <br> Mary Chris O.</h6>
-                  <p style="font-size: 0.6rem;">BET-COET</p>
-                </figcaption>
-                <a href="#"></a>
-              </figure>
+              <div class="d-flex justify-content-center">
+                <figure class="snip0078 red"><img src="{% static './img/JASA.jpg' %}" alt="sample50" />
+                  <figcaption>
+                    <h6>Jasa <br> Mary Chris O.</h6>
+                    <p style="font-size: 0.6rem;">BET-COET</p>
+                  </figcaption>
+                  <a href="#"></a>
+                </figure>
+              </div>
             </div>
 
             <div class="col">
-              <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample46" />
-                <figcaption>
-                  <h6>Nazaire <br> Alliah Faith S.</h6>
-                  <p style="font-size: 0.6rem;">BET-COET</p>
-                </figcaption>
-                <a href="#"></a>
-              </figure>
+              <div class="d-flex justify-content-center">
+                <figure class="snip0078 red"><img src="{% static './img/NAZAIRE.jpg' %}" alt="sample46" />
+                  <figcaption>
+                    <h6>Nazaire <br> Alliah Faith S.</h6>
+                    <p style="font-size: 0.6rem;">BET-COET</p>
+                  </figcaption>
+                  <a href="#"></a>
+                </figure>
+              </div>
             </div>
 
             <div class="col">
-              <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample46" />
-                <figcaption>
-                  <h6>Taccad <br> Kyle Nicole R.</h6>
-                  <p style="font-size: 0.6rem;">BET-COET</p>
-                </figcaption>
-                <a href="#"></a>
-              </figure>
+              <div class="d-flex justify-content-center">
+                <figure class="snip0078 red"><img src="{% static './img/TACCAD.jpg' %}" alt="sample46" />
+                  <figcaption>
+                    <h6>Taccad <br> Kyle Nicole R.</h6>
+                    <p style="font-size: 0.6rem;">BET-COET</p>
+                  </figcaption>
+                  <a href="#"></a>
+                </figure>
+              </div>
             </div>
 
             <div class="col">
-              <figure class="snip0078 red"><img src="{% static './img/default.jpg' %}" alt="sample46" />
-                <figcaption>
-                  <h6>Tulabot <br> Vanessa B.</h6>
-                  <p style="font-size: 0.6rem;">BET-COET</p>
-                </figcaption>
-                <a href="#"></a>
-              </figure>
+              <div class="d-flex justify-content-center">
+                <figure class="snip0078 red"><img src="{% static './img/TULABOT.jpg' %}" alt="sample46" />
+                  <figcaption>
+                    <h6>Tulabot <br> Vanessa B.</h6>
+                    <p style="font-size: 0.6rem;">BET-COET</p>
+                  </figcaption>
+                  <a href="#"></a>
+                </figure>
+              </div>
             </div>
           </div>
         </div>
@@ -227,39 +241,6 @@
   {% include 'logout-modal.html' %}
 
   {% include 'script-cdn.html' %}
-
-  {% if response == 'sweet panel invitation bet-3 success' %}
-  <script>
-    Swal.fire("Submitted", "Panel Invitation BET-3 submitted.", "success");
-    setTimeout(function () {
-      window.location.replace("{% url 'student-dashboard' %}");
-    }, 2000);
-  </script>
-  {% endif %}
-
-  {% if response == 'sweet no group members' %}
-  <script>
-    Swal.fire("Invalid", "Unable to access this page. Please submit your Group Members information.", "error");
-  </script>
-  {% endif %}
-
-  {% if response == 'sweet incomplete title defense' %}
-  <script>
-    Swal.fire("Uh-oh", "Unable to access this page. <br> Research Title Defense is incomplete.", "error");
-    setTimeout(function () {
-      window.location.replace("{% url 'student-dashboard' %}");
-    }, 2000);
-  </script>
-  {% endif %}
-
-  {% if response == 'sweet incomplete proposal defense' %}
-  <script>
-    Swal.fire("Uh-oh", "Unable to access this page. <br> Research Proposal Defense is incomplete.", "error");
-    setTimeout(function () {
-      window.location.replace("{% url 'student-dashboard' %}");
-    }, 2000);
-  </script>
-  {% endif %}
 
 </body>
 

@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Panel - Title Defense Day</title>
 
@@ -256,7 +257,7 @@
             </div>
             <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature</a>
             <hr>
-            <a id="btn_accept_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Personal Signature</a>
+            <a id="btn_accept_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature</a>
             {% endif %}
           {% endif %}
 
@@ -423,7 +424,7 @@
       if (document.getElementById('checkbox_agreement_a').checked) {
         document.getElementById("btn_accept_signed").href = "{% url 'panel-title-defense-day-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
       } else {
-        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");''
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");''
       }
     });
   </script>

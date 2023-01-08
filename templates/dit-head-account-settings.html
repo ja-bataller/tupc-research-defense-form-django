@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>DIT Head - Account Settings</title>
 
@@ -57,16 +58,16 @@
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'dit-head-panel-conforme' %}">Panel Conforme</a>
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'dit-head-panel-invitation-bet-3' %}">Topic - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'dit-head-bet3-adviser-conforme' %}">Adviser Conforme</a>
             <a class="collapse-item" href="{% url 'dit-head-bet3-proposal-defense-panel-invitation-dashboard' %}">Proposal - Panel Invitation</a>
-            <a class="collapse-item" href="{% url 'dit-head-panel-conforme' %}">Panel Conforme</a>
 
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
             <a class="collapse-item" href="{% url 'dit-head-bet5-final-defense-panel-invitation-dashboard' %}">Final - Panel Invitation</a>
-            <a class="collapse-item" href="#">Acknowledgement Receipt</a>
+            <a class="collapse-item" href="{% url 'dit-head-acknowledgement-receipt' %}">Acknowledgement Receipt</a>
           </div>
         </div>
       </li>

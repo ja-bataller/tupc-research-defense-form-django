@@ -2,278 +2,293 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
 
-    <title>Student - BET-3 - Proposal Defense - Panel Invitation</title>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
-    {% include 'css-main-cdn.html' %}
-    <link href="{% static 'css/file-loader.css' %}" rel="stylesheet" />
-  </head>
+  <title>Student - BET-3 - Proposal Defense - Panel Invitation</title>
 
-  <body id="page-top">
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-      
-      {% include 'student-sidebar-forms.html' %}
+  {% include 'css-main-cdn.html' %}
+  <link href="{% static 'css/file-loader.css' %}" rel="stylesheet" />
+</head>
 
-      <!-- Content Wrapper -->
-      <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-          {% include 'topbar.html'%}
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
 
-          <!-- Begin Page Content -->
-          <div class="container-fluid">
-            <!-- Page Heading -->
-            <div class="row">
-              <div class="col-lg-9 col-md-12 mb-3">
-                <h1 class="h3 mb-0 text-gray-800">BET-3 - Proposal Defense - Panel Invitation</h1>
-              </div>
-              
-              {% if not student_leader_data.research_proposal_defense_date %}
-                {% if student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed" %}
-                  {% if previous_panel %}
-                  <div class="col-lg-3 col-md-12 mb-3">
-                    <a href="{% url 'student-bet3-proposal-defense-panel-invitation-create-panel' %}" type="button" class="btn btn-outline-success w-100">Create New Form</a>
-                  </div>
-                  {% endif %}
-                {% endif %}
-              {% else %}
-                {% if student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed" %}
-                <div class="col-lg-3 col-md-12 mb-3">
-                  <a href="{% url 'student-bet3-proposal-defense-panel-invitation-create' %}" type="button" class="btn btn-outline-success w-100">Create New Form</a>
-                </div>
-                {% endif %}
-              {% endif %}
+    {% include 'student-sidebar-forms.html' %}
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+        {% include 'topbar.html'%}
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <!-- Page Heading -->
+          <div class="row">
+            <div class="col-lg-9 col-md-12 mb-3">
+              <h1 class="h3 mb-0 text-gray-800">BET-3 - Proposal Defense - Panel Invitation</h1>
             </div>
 
-            <!-- DataTales Example -->
-            <div class="card shadow mb-2">
-              <div class="card-header py-3">
-                {% if student_leader_data.research_proposal_defense_date %}
-                <h6 class="m-0 font-weight-bold">Proposal Defense Schedule: {{student_leader_data.research_proposal_defense_date}} - {{student_leader_data.research_proposal_defense_start_time}} to {{student_leader_data.research_proposal_defense_end_time}}</h6>
-                {% else %}
-                <h6 class="m-0 font-weight-bold">Proposal Defense Schedule: No Schedule</h6>
-                {% endif %}
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-bordered text-center" id="bet3PanelInvitation" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th hidden>Ref No.</th>
-                        <th>DIT Head ID No.</th>
-                        <th>DIT Head Name</th>
-                        <th>DIT Head Response</th>
-                        <th>Panel ID No.</th>
-                        <th>Panel Name</th>
-                        <th>Panel Response</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th hidden>Ref No.</th>
-                        <th>DIT Head ID No.</th>
-                        <th>DIT Head Name</th>
-                        <th>DIT Head Response</th>
-                        <th>Panel ID No.</th>
-                        <th>Panel Name</th>
-                        <th>Panel Response</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </tfoot>
-                    <tbody class="text-dark">
-                      {% for panel_invitation in panel_invitations %}
-                      <tr>
-                        <td hidden>{{panel_invitation.id}}</td>
-                        <td>{{panel_invitation.dit_head_username}}</td>
-                        <td>{{panel_invitation.dit_head_full_name}}</td>
-
-                        {% if panel_invitation.dit_head_response == "accepted" %}
-                        <td class="text-success">{{panel_invitation.dit_head_response}}</td>
-                        {% elif panel_invitation.dit_head_response == "declined"%}
-                        <td class="text-danger">{{panel_invitation.dit_head_response}}</td>
-                        {% else %}
-                        <td>{{panel_invitation.dit_head_response}}</td>
-                        {% endif %}
-
-                        <td>{{panel_invitation.panel_username}}</td>
-                        <td>{{panel_invitation.panel_full_name}}</td>
-
-                        {% if panel_invitation.panel_response == "accepted" %}
-                        <td class="text-success">{{panel_invitation.panel_response}}</td>
-                        {% elif panel_invitation.panel_response == "declined"%}
-                        <td class="text-danger">{{panel_invitation.panel_response}}</td>
-                        {% else %}
-                        <td>{{panel_invitation.panel_response}}</td>
-                        {% endif %} {% if panel_invitation.form_status == "accepted" %}
-                        <td class="text-success">{{panel_invitation.form_status}}</td>
-                        {% elif panel_invitation.form_status == "declined - DIT Head" or panel_invitation.form_status == "declined" %}
-                        <td class="text-danger">{{panel_invitation.form_status}}</td>
-                        {% else %}
-                        <td>{{panel_invitation.form_status}}</td>
-                        {% endif %} 
-                        {% if student_leader_data.bet3_proposal_defense_panel_invitation_status == "completed" %} 
-                        {% if panel_invitation.form_status == "accepted" %}
-                        <td class="text-center"><a class="btn btn-outline-success" onclick="generatingForm()" href="{% url 'student-bet3-proposal-defense-panel-invitation-download' panel_invitation.id  %}">DOWNLOAD FORM</a></td>
-                        {% elif panel_invitation.form_status == "declined" %}
-                        <td class="text-center"><a class="btn btn-outline-success" onclick="generatingForm()" href="{% url 'student-bet3-proposal-defense-panel-invitation-download' panel_invitation.id  %}">DOWNLOAD FORM</a></td>
-                        {% else %}
-                        <td></td>
-                        {% endif %} {% else %}
-                        <td></td>
-                        {% endif %}
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+            {% if not student_leader_data.research_proposal_defense_date %}
+            {% if student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed" %}
+            {% if previous_panel %}
+            <div class="col-lg-3 col-md-12 mb-3">
+              <a href="{% url 'student-bet3-proposal-defense-panel-invitation-create-panel' %}" type="button" class="btn btn-outline-success w-100">Create New Form</a>
             </div>
-            {% if student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed" %} 
-            {% if accepted_panel_invitations >= 3 and pending_panel_invitations == 0 %}
-            <a class="btn btn-outline-success mb-2 w-100" type="button" href="{% url 'student-bet3-proposal-defense-panel-invitation-save' %}">Mark as Completed</a>
-            {% endif %} 
+            {% endif %}
+            {% endif %}
+            {% else %}
+            {% if student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed" %}
+            <div class="col-lg-3 col-md-12 mb-3">
+              <a href="{% url 'student-bet3-proposal-defense-panel-invitation-create' %}" type="button" class="btn btn-outline-success w-100">Create New Form</a>
+            </div>
+            {% endif %}
             {% endif %}
           </div>
-          <!-- /.container-fluid -->
-        </div>
-        <!-- End of Main Content -->
 
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content img-fluid">
-              <div class="modal-body text-center">
-                <div class="spinner-border file-spinner mt-5 mb-3" style="width: 6rem; height: 6rem" role="status">
-                  <span class="sr-only">Loading...</span>
-                </div>
+          <!-- DataTales Example -->
+          <div class="card shadow mb-2">
+            <div class="card-header py-3">
+              {% if student_leader_data.research_proposal_defense_date %}
+              <h6 class="m-0 font-weight-bold">Proposal Defense Schedule: {{student_leader_data.research_proposal_defense_date}} - {{student_leader_data.research_proposal_defense_start_time}} to {{student_leader_data.research_proposal_defense_end_time}}</h6>
+              {% else %}
+              <h6 class="m-0 font-weight-bold">Proposal Defense Schedule: No Schedule</h6>
+              {% endif %}
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered text-center" id="bet3PanelInvitation" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th hidden>Ref No.</th>
+                      <th>DIT Head ID No.</th>
+                      <th>DIT Head Name</th>
+                      <th>DIT Head Response</th>
+                      <th>Panel ID No.</th>
+                      <th>Panel Name</th>
+                      <th>Panel Response</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th hidden>Ref No.</th>
+                      <th>DIT Head ID No.</th>
+                      <th>DIT Head Name</th>
+                      <th>DIT Head Response</th>
+                      <th>Panel ID No.</th>
+                      <th>Panel Name</th>
+                      <th>Panel Response</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </tfoot>
+                  <tbody class="text-dark">
+                    {% for panel_invitation in panel_invitations %}
+                    <tr>
+                      <td hidden>{{panel_invitation.id}}</td>
+                      <td>{{panel_invitation.dit_head_username}}</td>
+                      <td>{{panel_invitation.dit_head_full_name}}</td>
 
-                <div class="container move mt-5 mb-5 file-show" style="display: none">
-                  <svg class="file fadein" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
-                    <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
-                    <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
-                  </svg>
+                      {% if panel_invitation.dit_head_response == "accepted" %}
+                      <td class="text-success">{{panel_invitation.dit_head_response}}</td>
+                      {% elif panel_invitation.dit_head_response == "declined"%}
+                      <td class="text-danger">{{panel_invitation.dit_head_response}}</td>
+                      {% else %}
+                      <td>{{panel_invitation.dit_head_response}}</td>
+                      {% endif %}
 
-                  <svg class="file zoomin" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
-                    <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
-                    <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
-                  </svg>
+                      <td>{{panel_invitation.panel_username}}</td>
+                      <td>{{panel_invitation.panel_full_name}}</td>
 
-                  <svg class="file zoomout" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
-                    <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
-                    <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
-                    <path class="file-check done" d="M26.8,20.6L14.9,32.5l-5.7-5.7l2.1-2.1l3.6,3.6l9.8-9.9L26.8,20.6z" />
-                    <circle class="file-loading load" cx="13" cy="21" r="7.7"></circle>
-                  </svg>
-
-                  <svg class="file fadeout" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
-                    <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
-                    <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
-                    <path class="file-check" d="M26.8,20.6L14.9,32.5l-5.7-5.7l2.1-2.1l3.6,3.6l9.8-9.9L26.8,20.6z" />
-                  </svg>
-                </div>
-                <h3 id="simpleUsage" class="mb-5"></h3>
+                      {% if panel_invitation.panel_response == "accepted" %}
+                      <td class="text-success">{{panel_invitation.panel_response}}</td>
+                      {% elif panel_invitation.panel_response == "declined"%}
+                      <td class="text-danger">{{panel_invitation.panel_response}}</td>
+                      {% else %}
+                      <td>{{panel_invitation.panel_response}}</td>
+                      {% endif %} {% if panel_invitation.form_status == "accepted" %}
+                      <td class="text-success">{{panel_invitation.form_status}}</td>
+                      {% elif panel_invitation.form_status == "declined - DIT Head" or panel_invitation.form_status == "declined" %}
+                      <td class="text-danger">{{panel_invitation.form_status}}</td>
+                      {% else %}
+                      <td>{{panel_invitation.form_status}}</td>
+                      {% endif %}
+                      {% if student_leader_data.bet3_proposal_defense_panel_invitation_status == "completed" %}
+                      {% if panel_invitation.form_status == "accepted" %}
+                      <td class="text-center"><a class="btn btn-outline-success" onclick="generatingForm()" href="{% url 'student-bet3-proposal-defense-panel-invitation-download' panel_invitation.id  %}">DOWNLOAD FORM</a></td>
+                      {% elif panel_invitation.form_status == "declined" %}
+                      <td class="text-center"><a class="btn btn-outline-success" onclick="generatingForm()" href="{% url 'student-bet3-proposal-defense-panel-invitation-download' panel_invitation.id  %}">DOWNLOAD FORM</a></td>
+                      {% else %}
+                      <td></td>
+                      {% endif %} {% else %}
+                      <td></td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
+          {% if student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed" %}
+          {% if accepted_panel_invitations >= 3 and pending_panel_invitations == 0 %}
+          <a class="btn btn-outline-success mb-2 w-100" type="button" href="{% url 'student-bet3-proposal-defense-panel-invitation-save' %}">Mark as Completed</a>
+          {% endif %}
+          {% endif %}
         </div>
-
-        <!-- Footer -->
-        {% include 'footer.html' %}
-        <!-- End of Footer -->
+        <!-- /.container-fluid -->
       </div>
-      <!-- End of Content Wrapper -->
+      <!-- End of Main Content -->
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content img-fluid">
+            <div class="modal-body text-center">
+              <div class="spinner-border file-spinner mt-5 mb-3" style="width: 6rem; height: 6rem" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+
+              <div class="container move mt-5 mb-5 file-show" style="display: none">
+                <svg class="file fadein" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                  <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                  <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                </svg>
+
+                <svg class="file zoomin" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                  <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                  <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                </svg>
+
+                <svg class="file zoomout" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                  <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                  <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                  <path class="file-check done" d="M26.8,20.6L14.9,32.5l-5.7-5.7l2.1-2.1l3.6,3.6l9.8-9.9L26.8,20.6z" />
+                  <circle class="file-loading load" cx="13" cy="21" r="7.7"></circle>
+                </svg>
+
+                <svg class="file fadeout" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                  <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                  <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                  <path class="file-check" d="M26.8,20.6L14.9,32.5l-5.7-5.7l2.1-2.1l3.6,3.6l9.8-9.9L26.8,20.6z" />
+                </svg>
+              </div>
+              <h3 id="simpleUsage" class="mb-5"></h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fas fa-angle-up"></i>
-    </a>
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
-    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+  {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
 
-    <script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
-    <script>
-      function generatingForm() {
-        $("#myModal").modal();
+  <script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+  <script>
+    function generatingForm() {
+      $("#myModal").modal();
 
-        new TypeIt("#simpleUsage", {
-          speed: 20,
-          waitUntilVisible: true,
-          loop: true,
-        })
-          .type("Loading...", { delay: 500 })
-          .delete(10)
-          .type("Extracting Data...", { delay: 500 })
-          .delete(18)
-          .type("Generating PDF...", { delay: 500 })
-          .go();
-      }
-    </script>
+      new TypeIt("#simpleUsage", {
+        speed: 20,
+        waitUntilVisible: true,
+        loop: true,
+      })
+        .type("Loading...", { delay: 500 })
+        .delete(10)
+        .type("Extracting Data...", { delay: 500 })
+        .delete(18)
+        .type("Generating PDF...", { delay: 500 })
+        .go();
+    }
+  </script>
 
-    {% if response == 'sweet downloaded' %}
-    <script>
-      Swal.fire("Downloaded", "The Panel Invitation for Proposal Defense has been downloaded.", "success");
+  {% if response == 'sweet downloaded' %}
+  <script>
+    Swal.fire("Downloaded", "The Panel Invitation for Proposal Defense has been downloaded.", "success");
 
-      // window.open("{{download_link}}", '_blank').focus();
-    </script>
-    {% endif %} 
-    
-    {% if response == 'sweet request limit exceed' %}
-    <script>
-      Swal.fire("Uh-oh", "You have reached the Panel Invitation request limit.", "error");
-      setTimeout(function () {
-        window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
-      }, 3000);
-    </script>
-    {% endif %} {% if response == 'sweet bet-3 panel invitation saved' %}
-    <script>
-      Swal.fire("Completed", "Panel Invitation for Proposal Defense completed.", "success");
-      setTimeout(function () {
-        window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
-      }, 3000);
-    </script>
-    {% endif %}
+    if ("{{download_link}}") {
+      window.open("{{download_link}}", '_blank').focus();
+    }
+  </script>
+  {% endif %}
 
-    {% if response == 'sweet incomplete proposal panel invitation' %}
-    <script>
-      Swal.fire("Uh-oh", "You can't access this page. <br> Please complete Panel Invitation for Proposal Defense.", "error");
+  {% if response == 'sweet request limit exceed' %}
+  <script>
+    Swal.fire("Uh-oh", "You have reached the Panel Invitation request limit.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
+    }, 4000);
+  </script>
+  {% endif %} {% if response == 'sweet bet-3 panel invitation saved' %}
+  <script>
+    Swal.fire("Completed", "Panel Invitation for Proposal Defense completed.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
+    }, 4000);
+  </script>
+  {% endif %}
 
-      setTimeout(function () {
-        window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
-      }, 2000);
-    </script>
-    {% endif %}
+  {% if response == 'sweet incomplete proposal panel invitation' %}
+  <script>
+    Swal.fire("Uh-oh", "You can't access this page. <br> Please complete Panel Invitation for Proposal Defense.", "error");
 
-    {% if response == 'sweet no defense schedule' %}
-    <script>
-      Swal.fire("Uh-oh", "There are No Available Proposal Defense Schedule. <br> Please try again later.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
+    }, 4000);
+  </script>
+  {% endif %}
 
-      setTimeout(function () {
-        window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
-      }, 2000);
-    </script>
-    {% endif %}
+  {% if response == 'sweet no defense schedule' %}
+  <script>
+    Swal.fire("Uh-oh", "There are No Available Proposal Defense Schedule. <br> Please try again later.", "error");
 
-    <script>
-      $(document).ready(function () {
-        $('#bet3PanelInvitation').DataTable({
-          order: [
-            [0, 'desc']
-          ],
-        });
+    setTimeout(function () {
+      window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  <!-- <script>
+    $(document).ready(function () {
+      $('#bet3PanelInvitation').DataTable({
+        order: [
+          [0, 'desc']
+        ],
       });
-    </script>
+    });
+  </script> -->
 
-  </body>
+  {% if response == 'sweet incomplete proposal panel invitation' %}
+  <script>
+    Swal.fire("Unauthorized", "You can't access this page. <br> Please complete the Panel Invitation for Proposal Defense.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+</body>
+
 </html>

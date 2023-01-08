@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Student - BET-3 - Topic Panel Conforme</title>
 
@@ -217,7 +218,7 @@
       Swal.fire("Uh-oh", "You have reached the Panel Invitation request limit.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-topic-panel-conforme' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %} 
     {% if response == 'sweet panel conforme saved' %}
@@ -225,17 +226,17 @@
       Swal.fire("Completed", "Panel Conforme for Topic Defense completed.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-topic-panel-conforme' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %}
 
-    {% if response == 'sweet incomplete bet3 panel invitation' %}
+    {% if response == 'sweet incomplete topic panel conforme' %}
     <script>
-      Swal.fire("Unauthorized", "You can't access this page. <br> Please complete the Panel Invitation for Topic Defense.", "error");
+      Swal.fire("Unauthorized", "You can't access this page. <br> Please complete the Topic Panel Conforme.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-topic-panel-conforme' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -245,11 +246,11 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-topic-panel-conforme' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %}
 
-    <script>
+    <!-- <script>
       $(document).ready(function () {
         $('#bet3PanelInvitation').DataTable({
           order: [
@@ -257,7 +258,7 @@
           ],
         });
       });
-    </script>
+    </script> -->
 
 
   {% if response == 'sweet faculty member no signature' %}
@@ -266,7 +267,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-topic-panel-conforme' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %}
 

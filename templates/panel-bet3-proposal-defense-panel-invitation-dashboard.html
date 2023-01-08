@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Panel - BET-3 - Proposal - Panel Invitation</title>
 
@@ -131,7 +132,7 @@
             Attach Signature</a>
           <hr>
           <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept -
-            Personal Signature</a>
+            Live Signature</a>
           <hr>
         </div>
         <div class="modal-footer">
@@ -160,7 +161,7 @@
           </div>
           <a id="btn_decline_signed" class="submit-button btn btn-outline-danger w-100" type="button" href="#">Decline - Attach Signature</a>
           <hr />
-          <a id="btn_decline" class="btn btn-outline-warning w-100" type="button" href="#">Decline - Personal Signature</a>
+          <a id="btn_decline" class="btn btn-outline-warning w-100" type="button" href="#">Decline - Live Signature</a>
           <hr />
         </div>
         <div class="modal-footer">
@@ -178,7 +179,7 @@
 
   {% for panel_invitation in panel_invitations %}
   <script>
-    // Accept Response - Personal Signature
+    // Accept Response - Live Signature
     document.getElementById('accept_' + '{{panel_invitation.id}}').addEventListener("click", function () {
       data_id = $(document.getElementById('accept_' + '{{panel_invitation.id}}')).attr("data-id")
 
@@ -187,7 +188,7 @@
       $("#acceptModal").modal()
     });
 
-    // Decline Response - Personal Signature
+    // Decline Response - Live Signature
     document.getElementById('decline_' + '{{panel_invitation.id}}').addEventListener("click", function () {
       data_id = $(document.getElementById('decline_' + '{{panel_invitation.id}}')).attr("data-id")
 
@@ -204,7 +205,7 @@
       if (document.getElementById('checkbox_agreement_a').checked) {
         document.getElementById("btn_accept_signed").href = "{% url 'panel-bet3-proposal-defense-panel-invitation-accept-sign' id=0 %}".replace(/0/, data_id);
       } else {
-        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
       }
     });
   </script>
@@ -215,7 +216,7 @@
       if (document.getElementById("checkbox_agreement_d").checked) {
         document.getElementById("btn_decline_signed").href = "{% url 'panel-bet3-proposal-defense-panel-invitation-decline-sign' id=0 %}".replace(/0/, data_id);
       } else {
-        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
       }
     });
   </script>
@@ -237,7 +238,7 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-panel-invitation-dashboard' %}");
-    }, 2000);
+    }, 4000);
 
   </script>
   {% endif %}
@@ -248,18 +249,18 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-panel-invitation-dashboard' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
 
   {% if response == 'sweet no esign' %}
   <script>
-    Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
+    Swal.fire("Uh-oh", "No E-signature uploaded. \n Please upload you signature in your Profile. Thank you.", "error");
 
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-panel-invitation-dashboard' %}");
-    }, 2300);
+    }, 4000);
   </script>
   {% endif %}
 

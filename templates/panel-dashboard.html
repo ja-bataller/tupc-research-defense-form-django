@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Panel - Home</title>
 
@@ -92,7 +93,7 @@
 
       <!-- Nav Item - The Developers -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'panel-the-devs' %}">
           <i class="fa-solid fa-code"></i>
           <span>The Devs</span></a>
       </li>
@@ -337,7 +338,7 @@
     Swal.fire("Accepted", "{{accepted_research_title}} is marked as accepted", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -346,7 +347,7 @@
     Swal.fire("Deferred", "{{deferred_research_title}} is marked as deferred", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -355,7 +356,7 @@
     Swal.fire("Revise", "{{revise_research_title}} is marked for title revision.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -364,7 +365,7 @@
     Swal.fire("Done", "You have mark your reponse as done.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -373,7 +374,7 @@
     Swal.fire("Success", "You have attached your signature to this form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -382,7 +383,7 @@
     Swal.fire("Success", "You have marked this form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -391,7 +392,7 @@
     Swal.fire("Uh-oh", "You have have already respond for you signature attachment.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -400,7 +401,7 @@
     Swal.fire("Invalid", "No E-signature uploaded. \n Please upload you signature in your Profile.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-title-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -409,7 +410,7 @@
     Swal.fire("Success", "You have attached your signature to this form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -418,7 +419,7 @@
     Swal.fire("Success", "You have marked this form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -427,7 +428,7 @@
     Swal.fire("Uh-oh", "You have have already respond for you signature attachment.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -436,7 +437,7 @@
     Swal.fire("Invalid", "No E-signature uploaded. \n Please upload you signature in your Profile.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -445,7 +446,7 @@
     Swal.fire("Saved", "Your critique has been saved.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -454,7 +455,7 @@
     Swal.fire("Deleted", "The Critique has been deleted.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -463,7 +464,7 @@
     Swal.fire("Invalid", "The Critique you are trying to delete doesn't exist.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -472,7 +473,7 @@
     Swal.fire("Success", "You have attached your signature to this Critique Form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -481,7 +482,7 @@
     Swal.fire("Success", "You have attached your signature to this Critique Form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -490,7 +491,7 @@
     Swal.fire("Success", "You have marked this Critique Form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -499,7 +500,7 @@
     Swal.fire("Success", "You have marked this Critique Form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -509,7 +510,7 @@
     Swal.fire("Accepted with Revision", "You have marked the Proposal Defense as Accepted with Revision.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -518,7 +519,7 @@
     Swal.fire("Deferred with Revision", "You have marked the Proposal Defense as Deferred with Revision.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -527,7 +528,7 @@
     Swal.fire("Not Accepted", "You have marked the Proposal Defense as Not Accepted.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -536,7 +537,7 @@
     Swal.fire("Success", "You have attached your e-signature to the Proposal Defense Form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -545,7 +546,7 @@
     Swal.fire("Success", "You have attached your e-signature to the Proposal Defense Form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -554,7 +555,7 @@
     Swal.fire("Success", "You have marked the Proposal Defense Form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -563,7 +564,7 @@
     Swal.fire("Success", "You have marked the Proposal Defense Form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -572,7 +573,7 @@
     Swal.fire("Uh-oh", "The Critique Form has already ended.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet3-proposal-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -581,7 +582,7 @@
     Swal.fire("Success", "You have attached your signature to this form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -590,7 +591,7 @@
     Swal.fire("Success", "You have marked this form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -599,7 +600,7 @@
     Swal.fire("Uh-oh", "You have have already respond for you signature attachment.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -608,7 +609,7 @@
     Swal.fire("Invalid", "No E-signature uploaded. \n Please upload you signature in your Profile.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -618,7 +619,7 @@
     Swal.fire("Accepted with Revision", "You have marked the Final Defense as Accepted with Revision.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -627,7 +628,7 @@
     Swal.fire("Deferred with Revision", "You have marked the Final Defense as Deferred with Revision.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -636,7 +637,7 @@
     Swal.fire("Not Accepted", "You have marked the Final Defense as Not Accepted.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -645,7 +646,7 @@
     Swal.fire("Success", "You have attached your e-signature to the Final Defense Form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -654,7 +655,7 @@
     Swal.fire("Success", "You have attached your signature to the Final Defense Form.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -663,7 +664,7 @@
     Swal.fire("Success", "You have marked the Final Defense Form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -672,7 +673,7 @@
     Swal.fire("Success", "You have marked the Final Defense Form for live signature.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'panel-bet5-final-defense-day' student_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 

@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Admin - Student Leader Account</title>
 
@@ -32,7 +33,7 @@
             <!-- Page Heading -->
               <div class="row">
                 <div class="col-lg-9 col-md-12 mb-3">
-                  <h1 class="h3 mb-0 text-gray-800">Students</h1>
+                  <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-graduation-cap"></i> Students</h1>
                 </div>
               </div>
 
@@ -100,7 +101,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Current Password you entered for this User is incorrect.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -109,7 +110,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Current Password and New Password you entered for this User is the same.", "warning");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -118,7 +119,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The New Password and Confirm New Password you entered for this User mismatch.", "warning");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -133,7 +134,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "You didn't enter any User Account for this User.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -142,7 +143,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The User Account you entered for this User is invalid.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -151,7 +152,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Current Password you entered for this user is incorrect.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -160,7 +161,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "This User is already a {{sweet_member_department}} user.", "info");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -175,7 +176,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated successfully.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -184,7 +185,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Username, because it is already taken.", "info");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -193,7 +194,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Email, because it is already taken.", "info");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -202,7 +203,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Username and Email, because it is already taken.", "info");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-leader-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
   

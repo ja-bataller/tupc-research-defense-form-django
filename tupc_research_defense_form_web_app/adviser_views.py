@@ -36,11 +36,14 @@ def adviserDashboard(request):
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
         return redirect("index")
+    
+    all_advisee_data = AdviserConforme.objects.all().filter(adviser_username = currently_loggedin_user.username)
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
         "currently_loggedin_user_data": get_adviser_data,
         "date_today": today.strftime("%B %d, %Y"),
+        "all_advisee_data": all_advisee_data,
     }
 
     return render(request, "adviser-dashboard.html", context)
@@ -630,7 +633,7 @@ def adviserBET3AdviserConformeAccept(request, id):
 
 # Adviser - BET-3 - Adviser Conforme - Decline Process
 @login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@user_passes_test(lambda u: u.is_adviser, login_url="index")
 def adviserBET3AdviserConformeDecline(request, id):
     currently_loggedin_user = request.user
 
@@ -700,6 +703,215 @@ def adviserBET3AdviserConformeDecline(request, id):
     except:
         print("NO FOUND")
         return redirect("adviser-bet3-adviser-conforme")
+
+
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_adviser, login_url="index")
+def adviserAcknowledgementReceipt(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    get_pending_receipt = AcknowledgementReceipt.objects.all().filter(adviser_username = currently_loggedin_user.username, adviser_response ="pending")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": date_today,
+        "pending_receipt": get_pending_receipt,
+    }
+
+    return render(request, "adviser-acknowledgement-receipt.html", context)
+
+
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_adviser, login_url="index")
+def adviserAcknowledgementReceiptAcceptSignature(request, id):
+    currently_loggedin_user = request.user
+
+    print(id, type(id))
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # Check - E-sign exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        pass
+
+    else:
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(adviser_username = currently_loggedin_user.username, adviser_response ="pending")
+
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": date_today,
+            "pending_receipt": get_pending_receipt,
+            "response": "sweet no esign",
+        }
+
+        return render(request, "adviser-acknowledgement-receipt.html", context)
+
+
+    try:
+        check_receipt = AcknowledgementReceipt.objects.get(id=id)
+
+        check_receipt.adviser_response = "Accepted"
+        check_receipt.adviser_response_date = date_today
+        check_receipt.adviser_signature = True
+        check_receipt.save()
+
+
+        # Send g-mail notifications
+        send_mail(
+            "Acknowledgement Receipt",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Adviser) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(adviser_username = currently_loggedin_user.username, adviser_response ="pending")
+
+        context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": date_today,
+                "pending_receipt": get_pending_receipt,
+                "accepted_student_member_name": check_receipt.student_leader_full_name,
+                "accepted_student_member_username": check_receipt.student_leader_username,
+                "response": "sweet panel acknowledgement receipt accepted",
+            }
+
+        return render(request, "adviser-acknowledgement-receipt.html", context)
+
+    except:
+        return redirect("adviser-acknowledgement-receipt")
+
+
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_adviser, login_url="index")
+def adviserAcknowledgementReceiptAccept(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        check_receipt = AcknowledgementReceipt.objects.get(id=id)
+
+        check_receipt.adviser_response = "Accepted"
+        check_receipt.adviser_response_date = date_today
+        check_receipt.save()
+
+
+        # Send g-mail notifications
+        send_mail(
+            "Acknowledgement Receipt",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Adviser) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(adviser_username = currently_loggedin_user.username, adviser_response ="pending")
+
+        context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": date_today,
+                "pending_receipt": get_pending_receipt,
+                "accepted_student_member_name": check_receipt.student_leader_full_name,
+                "accepted_student_member_username": check_receipt.student_leader_username,
+                "response": "sweet panel acknowledgement receipt accepted",
+            }
+
+        return render(request, "adviser-acknowledgement-receipt.html", context)
+
+    except:
+        return redirect("adviser-acknowledgement-receipt")
+
+
+# Adviser - BET-3 - Adviser Conforme Page
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_adviser, login_url="index")
+def adviserBET3AdviserConformeLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # Adviser - Get Adviser Data
+    try:
+        get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("index")
+
+    # BET-3 - Get Adviser Conforme
+    get_adviser_conforme_accepted = AdviserConforme.objects.all().filter(adviser_username=currently_loggedin_user.username, adviser_response="Accepted")
+    get_adviser_conforme_declined = AdviserConforme.objects.all().filter(adviser_username=currently_loggedin_user.username, adviser_response="Declined")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_data": get_adviser_data,
+        "date_today": today.strftime("%B %d, %Y"),
+        "adviser_conforme_accepted": get_adviser_conforme_accepted,
+        "adviser_conforme_declined": get_adviser_conforme_declined,
+    }
+
+    return render(request, "adviser-adviser-conforme-logs.html", context)
+
+# Adviser - Advisee Dashboard
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_adviser, login_url="index")
+def adviserAcknowledgementReceiptLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # Adviser - Get Adviser Data
+    try:
+        get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("index")
+
+    get_accepted_receipt = AcknowledgementReceipt.objects.all().filter(adviser_username = currently_loggedin_user.username, adviser_response ="Accepted")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_data": get_adviser_data,
+        "accepted_receipt": get_accepted_receipt,
+    }
+
+    return render(request, "adviser-acknowledgement-receipt-logs.html", context)
+
+# Adviser - Advisee Dashboard
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_adviser, login_url="index")
+def adviserTheDevs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # Adviser - Get Adviser Data
+    try:
+        get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("index")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_data": get_adviser_data,
+    }
+
+    return render(request, "adviser-the-devs.html", context)
+
 
 
 @login_required(login_url="index")

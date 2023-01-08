@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Panel - User Profile</title>
 
@@ -22,7 +23,7 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'panel-dashboard' %}">
           <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
           </div>
@@ -51,17 +52,14 @@
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'panel-panel-conforme' %}">Panel Conforme</a>
             <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'panel-panel-invitation-bet-3' %}">Topic - Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'panel-bet3-proposal-defense-panel-invitation-dashboard' %}">Proposal - Panel Invitation</a>
 
-            <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
+            <a class="collapse-item" href="{% url 'panel-bet5-final-defense-panel-invitation-dashboard' %}">Final - Panel Invitation</a>
           </div>
         </div>
       </li>
@@ -76,7 +74,7 @@
         <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'panel-bet3-title-defense-logs' %}">Research Title Defense</a>
             <!-- <a class="collapse-item" href="">Research Title Defense</a>
                         <a class="collapse-item" href="">Research Adviser Conforme</a> -->
@@ -123,7 +121,7 @@
           <!-- User Profile Start -->
           <div class="row">
             <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
-              <div class="card border-left-info shadow h-100 py-2 mb-3">
+              <div class="card border-left-dark shadow h-100 py-2 mb-3">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -172,7 +170,7 @@
               </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
-              <div class="card border-left-warning shadow h-100 py-2 mb-3">
+              <div class="card border-left-danger shadow h-100 py-2 mb-3">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -195,7 +193,7 @@
 
                       <div class="text-center mt-5 mb-5">
                         <h3>No Signature Uploaded <br>
-                          H 100 x W 300
+                          H 100px x W 300px
 
                         </h3>
                       </div>
@@ -284,7 +282,7 @@
     Swal.fire("Invalid", "The File you uploaded is not a PNG image file.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-profile' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -293,7 +291,7 @@
     Swal.fire("Invalid", "The Image Size you uploaded is invalid.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'panel-profile' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 

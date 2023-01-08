@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Student - BET-3 - Critique Form</title>
 
@@ -240,11 +241,13 @@
   {% if response == 'sweet downloaded' %}
   <script>
     Swal.fire("Downloaded", "The Critique Form has been downloaded.", "success");
-    // window.open("{{download_link}}", '_blank').focus();
+    if ("{{download_link}}") {
+        window.open("{{download_link}}", '_blank').focus();
+    }
 
     setTimeout(function () {
         window.location.replace("{% url 'student-bet3-critique-form' %}");
-      }, 2000);
+      }, 4000);
   </script>
   {% endif %}
 
@@ -254,7 +257,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-critique-form' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 

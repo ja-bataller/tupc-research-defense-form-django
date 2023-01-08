@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Subject Teacher - Set Schedule</title>
 
@@ -30,7 +31,7 @@
           <!-- Begin Page Content -->
           <div class="container-fluid">
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-gray-800">Final Defense Schedule</h1>
+              <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-calendar-days"></i> Final Defense Schedule</h1>
             </div>
 
             <form id="course_available_sched" method="POST">
@@ -104,7 +105,7 @@
             </div>
 
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-gray-800">Final Defense - Set Schedule</h1>
+              <h1 class="h3 mb-0 text-gray-800"><i class="fa-regular fa-calendar-plus"></i> Final Defense - Set Schedule</h1>
             </div>
 
             <form method="POST" action="{% url 'subject-teacher-save-research-final-defense-schedule' %}">
@@ -214,42 +215,42 @@
       Swal.fire("Invalid", "You just entered a Course which is not in the list. Please choose one from the choices given.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'subject-teacher-set-research-final-defense-schedule' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'sweet invalid defense time' %}
     <script>
       Swal.fire("Invalid", "You just entered a Defense Time which is not in the list. Please choose one from the choices given.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'subject-teacher-set-research-final-defense-schedule' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'schedule saved' %}
     <script>
       Swal.fire("Saved", "The Defense Date has been recorded.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'subject-teacher-set-research-final-defense-schedule' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'scheduled date exist' %}
     <script>
       Swal.fire("Uh-oh", "The Defense Date you entered is already recorded.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'subject-teacher-set-research-final-defense-schedule' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'schedule deleted' %}
     <script>
       Swal.fire("Deleted", "The Defense Date has been deleted.", "warning");
       setTimeout(function () {
         window.location.replace("{% url 'subject-teacher-set-research-final-defense-schedule' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'sweet schedule not found' %}
     <script>
       Swal.fire("Uh-oh", "The Defense Date you are trying to delete doesn't exist.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'subject-teacher-set-research-final-defense-schedule' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
   </body>

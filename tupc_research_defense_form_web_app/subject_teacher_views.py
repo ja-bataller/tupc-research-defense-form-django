@@ -72,7 +72,7 @@ def subjectTeacherTitleDefenseDay(request, id):
     if get_student_leader_data.research_title_defense_date != today.strftime("%B %d, %Y"):
         return redirect("subject-teacher-dashboard")
 
-    if get_student_leader_data.middle_name == " ":
+    if get_student_leader_data.middle_name == "":
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
@@ -1516,7 +1516,7 @@ def subjectTeacherBET3ProposalDefenseDay(request, id):
     except:
         return redirect("subject-teacher-dashboard")
 
-    if get_student_leader_data.middle_name == " ":
+    if get_student_leader_data.middle_name == "":
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
@@ -2706,7 +2706,7 @@ def subjectTeacherBET5FinalDefenseDay(request, id):
     except:
         return redirect("subject-teacher-dashboard")
 
-    if get_student_leader_data.middle_name == " ":
+    if get_student_leader_data.middle_name == "":
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
@@ -3190,7 +3190,7 @@ def subjectTeacherBET5FinalDefenseDayEndVoting(request, id):
         "today_defense_schedule": get_today_defense_schedule,
         "completed_today_defense_schedule": get_completed_today_defense_schedule,
         "student_leader_username": id,
-        "response": "sweet proposal defense end voting",
+        "response": "sweet final defense end voting",
     }
 
     return render(request, "subject-teacher-dashboard.html", context)
@@ -3422,7 +3422,7 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
         get_student_proposal_panel_invitation.delete()
         get_student_proposal_defense_schedule.delete()
         get_student_proposal_defense_forms.delete()
-        StudentLeader.objects.filter(username=id).update(bet3_final_defense_panel_invitation_status = "", request_limit = 5, research_final_defense_date ="", research_final_defense_start_time = "", research_final_defense_end_time = "")
+        StudentLeader.objects.filter(username=id).update(bet5_final_defense_panel_invitation_status = "", request_limit = 5, research_final_defense_date ="", research_final_defense_start_time = "", research_final_defense_end_time = "")
 
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -3539,7 +3539,7 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
         get_student_proposal_defense_schedule.delete()
         get_student_proposal_defense_forms.delete()
         
-        StudentLeader.objects.filter(username=id).update(bet5_subject_teacher_username = "", bet5_subject_teacher_name = "", bet3_final_defense_panel_invitation_status = "", request_limit = 5, research_final_defense_date ="", research_final_defense_start_time = "", research_final_defense_end_time = "")
+        StudentLeader.objects.filter(username=id).update(bet5_subject_teacher_username = "", bet5_subject_teacher_name = "", bet5_final_defense_panel_invitation_status = "", request_limit = 5, research_final_defense_date ="", research_final_defense_start_time = "", research_final_defense_end_time = "")
 
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -3847,9 +3847,14 @@ def subjectTeacherResearchTitles(request):
     user_middle_name = current_user.middle_name
     user_middle_initial = None
 
+    get_research_titles = ResearchTitle.objects.all()
+    get_research_title_logs = ResearchTitleLog.objects.all()
+
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
         "currently_loggedin_user_account": currently_loggedin_user_account,
+        "research_titles": get_research_titles,
+        "research_title_logs": get_research_title_logs,
     }
 
     return render(request, "subject-teacher-research-titles.html", context)
@@ -3881,7 +3886,7 @@ def subjectTeacherMyTitleDefenseDashboard(request):
         print(course_input)
 
         try:
-            student_defense_scheduled = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, course=course_input, status="Reserved")
+            student_defense_scheduled = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, form="Research Title Defense", course=course_input, status="Reserved")
 
             context = {
                 "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -3927,7 +3932,7 @@ def subjectTeacherStudentsTitleDefenseDashboard(request):
         print(course_input)
 
         try:
-            student_defense_scheduled = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, course=course_input, status="Reserved")
+            student_defense_scheduled = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, form="Research Title Defense", course=course_input, status="Reserved")
             student_defense_unscheduled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username, course_major_abbr=course_input, research_title_defense_date="")
 
             context = {
@@ -4100,9 +4105,9 @@ def subjectTeacherBET3TitleDefenseLogs(request):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
-    get_completed_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, status="Completed")
-    get_redefense_defense_schedule = DefenseScheduleLog.objects.all().filter(username=currently_loggedin_user.username, status="Re-Defense")
-    get_reschedule_defense_schedule = DefenseScheduleLog.objects.all().filter(username=currently_loggedin_user.username, status="Reschedule")
+    get_completed_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, form="Research Title Defense", status="Completed")
+    get_redefense_defense_schedule = DefenseScheduleLog.objects.all().filter(username=currently_loggedin_user.username, form="Research Title Defense", status="Re-Defense")
+    get_reschedule_defense_schedule = DefenseScheduleLog.objects.all().filter(username=currently_loggedin_user.username, form="Research Title Defense", status="Reschedule")
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -4137,21 +4142,30 @@ def subjectTeacherBET3TitleDefenseLogCompleted(request, id):
     get_absent_panel_members = TitlePanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="BET-3 Panel Invitation", panel_attendance="absent")
 
     try:
-        get_research_title_accepted = ResearchTitle.objects.get(student_leader_username=id, status="Title Defense - Accepted")
+        get_research_title_accepted = ResearchTitle.objects.get(student_leader_username=id, title_defense_status="Accepted")
     except:
         get_research_title_accepted = None
 
     try:
-        get_research_title_revise = ResearchTitle.objects.get(student_leader_username=id, status="Title Defense - Revise Title")
+        get_research_title_revise = ResearchTitle.objects.get(student_leader_username=id, title_defense_status="Revise Title")
     except:
         get_research_title_revise = None
 
-    if get_student_leader_data.middle_name == " ":
+    if get_student_leader_data.middle_name == "":
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
 
-    context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "student_leader_data": get_student_leader_data, "student_leader_full_name": student_leader_full_name, "group_members": get_student_group_members, "research_titles": get_research_titles, "research_title_accepted": get_research_title_accepted, "research_title_revise": get_research_title_revise, "present_panel_members": get_present_panel_members, "absent_panel_members": get_absent_panel_members}
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+        "student_leader_data": get_student_leader_data, 
+        "student_leader_full_name": student_leader_full_name, 
+        "group_members": get_student_group_members, 
+        "research_titles": get_research_titles, 
+        "research_title_accepted": get_research_title_accepted, 
+        "research_title_revise": get_research_title_revise, 
+        "present_panel_members": get_present_panel_members, 
+        "absent_panel_members": get_absent_panel_members}
 
     return render(request, "subject-teacher-bet3-research-title-defense-data.html", context)
 
@@ -4229,6 +4243,52 @@ def subjectTeacherBET3ProposalDefenseLogs(request):
     return render(request, "subject-teacher-bet3-research-proposal-defense-logs.html", context)
 
 
+# Subject Teacher - BET-3 Research Title Defense Completed Logs Dashboard
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+def subjectTeacherBET3ProposalDefenseLogCompleted(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=id)
+    except:
+        return redirect("subject-teacher-bet3-title-defense-logs")
+    
+    try:
+        get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
+        research_title = get_accepted_research_title.research_title
+    except:
+       pass
+    
+    get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username=id)
+
+    get_present_panel = ProposalDefenseForm.objects.all().filter(student_leader_username=id)
+    get_absent_panel = ProposalPanelInvitation.objects.all().filter(student_leader_username=id, panel_attendance = "absent")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name, 
+        "student_leader_data": get_student_leader_data, 
+        "student_leader_full_name": student_leader_full_name, 
+        "group_members": get_student_group_members,
+        "present_panel": get_present_panel,
+        "absent_panel":get_absent_panel,
+
+        "research_title": research_title, 
+        "get_accepted_research_title":get_accepted_research_title,
+        }
+
+    return render(request, "subject-teacher-bet3-research-proposal-defense-data.html", context)
 ##### SUBJECT TEACHER - BET-3 - PROPOSAL DEFENSE #####
 
 # Subject Teacher - Research Proposal Defense Dashboard Page
@@ -4665,7 +4725,7 @@ def subjectTeacherMyFinalDefenseDashboard(request):
 
     course_handled_list_unfiltered = []
 
-    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username)
+    course_handled = StudentLeader.objects.all().filter(bet5_subject_teacher_username=currently_loggedin_user.username)
 
     for course in course_handled:
         course_handled_list_unfiltered.append(course.course_major_abbr)
@@ -4711,7 +4771,7 @@ def subjectTeacherStudentsFinalDefenseDashboard(request):
 
     course_handled_list_unfiltered = []
 
-    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username)
+    course_handled = StudentLeader.objects.all().filter(bet5_subject_teacher_username=currently_loggedin_user.username)
 
     for course in course_handled:
         course_handled_list_unfiltered.append(course.course_major_abbr)
@@ -4725,7 +4785,7 @@ def subjectTeacherStudentsFinalDefenseDashboard(request):
 
         try:
             student_defense_scheduled = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, course=course_input, form = "Research Final Defense", status="Reserved")
-            student_defense_unscheduled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username, course_major_abbr=course_input, research_proposal_defense_date="")
+            student_defense_unscheduled = StudentLeader.objects.all().filter(bet5_subject_teacher_username=currently_loggedin_user.username, course_major_abbr=course_input, research_final_defense_date="")
 
             print(student_defense_unscheduled)
             context = {
@@ -4746,6 +4806,139 @@ def subjectTeacherStudentsFinalDefenseDashboard(request):
     }
 
     return render(request, "subject-teacher-students-final-defense-schedule-dashboard.html", context)
+
+
+
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+def subjectTeacherAcknowledgementReceipt(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    get_pending_receipt = AcknowledgementReceipt.objects.all().filter(subject_teacher_username = currently_loggedin_user.username, subject_teacher_response ="pending")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": date_today,
+        "pending_receipt": get_pending_receipt,
+    }
+
+    return render(request, "subject-teacher-acknowledgement-receipt.html", context)
+
+
+
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+def subjectTeacherAcknowledgementReceiptAcceptSignature(request, id):
+    currently_loggedin_user = request.user
+
+    print(id, type(id))
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # Check - E-sign exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        pass
+        print("Panel - E-sign exist")
+
+    else:
+        print("Panel - E-sign doesn't exist.")
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(subject_teacher_username = currently_loggedin_user.username ,subject_teacher_response ="pending")
+
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": date_today,
+            "pending_receipt": get_pending_receipt,
+            "response": "sweet no esign",
+        }
+
+        return render(request, "subject-teacher-acknowledgement-receipt.html", context)
+
+
+    try:
+        check_receipt = AcknowledgementReceipt.objects.get(id=id)
+
+        check_receipt.subject_teacher_response = "Accepted"
+        check_receipt.subject_teacher_response_date = date_today
+        check_receipt.subject_teacher_signature = True
+
+        check_receipt.save()
+
+
+        # Send g-mail notifications
+        send_mail(
+            "Acknowledgement Receipt",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Faculty in charge) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(subject_teacher_username = currently_loggedin_user.username ,subject_teacher_response ="pending")
+
+        context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": date_today,
+                "pending_receipt": get_pending_receipt,
+                "accepted_student_member_name": check_receipt.student_leader_full_name,
+                "accepted_student_member_username": check_receipt.student_leader_username,
+                "response": "sweet panel acknowledgement receipt accepted",
+            }
+
+        return render(request, "subject-teacher-acknowledgement-receipt.html", context)
+
+    except:
+        return redirect("subject-teacher-acknowledgement-receipt")
+
+
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+def subjectTeacherAcknowledgementReceiptAccept(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        check_receipt = AcknowledgementReceipt.objects.get(id=id)
+
+        check_receipt.subject_teacher_response = "Accepted"
+        check_receipt.subject_teacher_response_date = date_today
+        check_receipt.save()
+
+
+        # Send g-mail notifications
+        send_mail(
+            "Acknowledgement Receipt",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Faculty in charge) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(subject_teacher_username = currently_loggedin_user.username ,subject_teacher_response ="pending")
+
+        context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": date_today,
+                "pending_receipt": get_pending_receipt,
+                "accepted_student_member_name": check_receipt.student_leader_full_name,
+                "accepted_student_member_username": check_receipt.student_leader_username,
+                "response": "sweet panel acknowledgement receipt accepted",
+            }
+
+        return render(request, "subject-teacher-acknowledgement-receipt.html", context)
+
+    except:
+        return redirect("subject-teacher-acknowledgement-receipt")
 
 
 # Subject Teacher - BET-3 Research Title Defense Logs Dashboard

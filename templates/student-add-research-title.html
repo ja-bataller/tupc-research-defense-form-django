@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Student - Add Group Members</title>
 
@@ -155,7 +156,7 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'student-add-research-titles' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %} 
   
@@ -165,17 +166,17 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'student-add-research-titles' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet incomplete research titles' %}
   <script>
-    Swal.fire("Unauthorized", "You can't access this page. Please submit the list of your Research Titles.", "error");
+    Swal.fire("Unauthorized", "You can't access this page. <br> Please submit the list of your Research Titles.", "error");
 
     setTimeout(function () {
       window.location.replace("{% url 'student-add-research-titles' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 

@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Uncomment when deployed
 # DEBUG = False
-# ALLOWED_HOSTS = ['unofficialtupcresearchdefense.pythonanywhere.com']
+# ALLOWED_HOSTS = ['www.ditresearchdefense.online ']
 
 
 # Application definition

@@ -1,0 +1,196 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+
+  <title>Subject Teacher - Title Defense - Logs - Data</title>
+
+  {% include 'css-main-cdn.html' %}
+</head>
+
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    {% include 'subject-teacher-sidebar-proposal-defense.html' %}
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+
+        {% include 'subject-teacher-topbar.html' %}
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <div class="d-sm-flex align-items-center justify-content-between">
+            <h1 class="h3 text-gray-800">Research Proposal Defense Day</h1>
+          </div>
+          <h1 class="h6 mb-0 text-gray-800 mb-2">{{student_leader_data.research_proposal_defense_date}} -
+            {{student_leader_data.research_proposal_defense_start_time}} to
+            {{student_leader_data.research_proposal_defense_end_time}}</h1>
+
+          <div class="row">
+
+            <div class="col-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 mt-2">
+                     <h6>Research Title:</h6>
+                    </div>
+                    <div class="col-sm-12">
+                      <h4>{{research_title}}</h4>
+
+                        
+                          {% if get_accepted_research_title.proposal_defense_status == "Accepted with Revision" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-success" style="display: inline;">{{get_accepted_research_title.proposal_defense_status}}</h6></h6>
+                          {% endif %}
+                          {% if get_accepted_research_title.proposal_defense_status == "Deferred with Revision" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-info" style="display: inline;">{{get_accepted_research_title.proposal_defense_status}}</h6></h6>
+                          {% endif %}
+                          {% if get_accepted_research_title.proposal_defense_status == "Not Accepted" %}
+                          <h6 style="display: inline;">Verdict: <h6 class="text-danger" style="display: inline;">{{get_accepted_research_title.proposal_defense_status}}</h6></h6>
+                          {% endif %}
+                        
+
+                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">
+                      Group Members:
+                    </div>
+                    <div class="col-sm-12">
+                      - {{student_leader_full_name}}
+                    </div>
+
+                    {% if group_members %}
+                    {% for group_member in group_members %}
+                    <div class="col-sm-12">
+                      - {{group_member.student_member_full_name}}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="col-sm-12 mt-4 font-weight-bold">
+                      Course:
+                    </div>
+                    <div class="col-sm-12">
+                      {{student_leader_data.course_major_abbr}}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-2">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Panel ID No.</th>
+                      <th>Panel Name</th>
+                      <th>Attendance</th>
+                      <th>Critique Signature</th>
+                      <th>Proposal Defense Signature</th>
+                      <th>Vote Status</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Panel ID No.</th>
+                      <th>Panel Name</th>
+                      <th>Attendance</th>
+                      <th>Critique Signature</th>
+                      <th>Defense Signature</th>
+                      <th>Vote Status</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    {% for panel in present_panel %}
+                    <tr>
+                      <td>{{panel.panel_username}}</td>
+                      <td>{{panel.panel_full_name}}</td>
+
+                      {% if panel.is_panel_chairman == 1 %}
+                      <td class="text-success">Present - Panel Chairman</td>
+                      {% else %}
+                      <td class="text-success">Present</td>
+                      {% endif %}
+
+                      {% if panel.critique_sign_response == 1 %}
+                      <td class="text-success">Done</td>
+                      {% else %}
+                      <td>pending</td>
+                      {% endif %}
+
+                      {% if panel.panel_signature_response == 1 %}
+                      <td class="text-success">Done</td>
+                      {% else %}
+                      <td>pending</td>
+                      {% endif %}
+
+                      <td class="text-success">Done</td>
+                    </tr>
+                    {% endfor %}
+
+                    {% for panel in absent_panel %}
+                    <tr>
+                      <td>{{panel.panel_username}}</td>
+                      <td class="text-danger">{{panel.panel_full_name}}</td>
+                      <td>Absent</td>
+                      <td>N/A</td>
+                      <td>N/A</td>
+                      <td>N/A</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+
+</body>
+
+</html>

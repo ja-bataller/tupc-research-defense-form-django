@@ -1,0 +1,292 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+
+  <title>Academic Affairs Office - User Profile</title>
+
+  {% include 'css-main-cdn.html' %}
+</head>
+
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+      <!-- Sidebar - Brand -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'academic-affairs-office-dashboard' %}">
+          <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
+          </div>
+        </a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0" />
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'academic-affairs-office-dashboard' %}">
+          <i class="fa-solid fa-house"></i>
+          <span>Home</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'academic-affairs-office-logs' %}">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Logs</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider" />
+
+      <!-- Nav Item - The Developers -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'academic-affairs-office-the-devs' %}">
+          <i class="fa-solid fa-code"></i>
+          <span>The Devs</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block" />
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+          <!-- Sidebar Toggle (Topbar) (Visible Only XS) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-lg-inline text-gray-600 small">{{currently_loggedin_user_full_name}} <br />
+                  <div class="float-right">Academic Affairs Office</div>
+                </span>
+                <img class="img-profile rounded-circle" src="{% static 'img/user.png' %}" />
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                <a class="dropdown-item" href="{% url 'academic-affairs-office-profile' %}">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+
+                <a class="dropdown-item" href="{% url 'academic-affairs-office-account-settings' %}">
+                  <i class="fa-solid fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Account Settings
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- User Profile Start -->
+          <div class="row">
+            <div class="col-lg-8 col-md-6 col-sm-12 mb-3">
+              <div class="card border-left-dark shadow h-100 py-2 mb-3">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <!-- Page Heading -->
+                      <div class="d-sm-flex align-items-center justify-content-between mb-3">
+                        <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-user"></i> User Profile</h1>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Honorific:</label>
+                        <input type="text" class="form-control" value="{{request.user.honorific}}" disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>First Name:</label>
+                        <input type="text" class="form-control" value="{{request.user.first_name}}" disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Middle Name:</label>
+                        <input type="text" class="form-control" value="{{request.user.middle_name}}" disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Last Name:</label>
+                        <input type="text" class="form-control" value="{{request.user.last_name}}" disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Suffix:</label>
+                        <input type="text" class="form-control" value="{{request.user.suffix}}" disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control" value="{{request.user}}" disabled />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" value="{{request.user.email}}" disabled />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+              <div class="card border-left-danger shadow h-100 py-2 mb-3">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <!-- Page Heading -->
+                      <div class="d-sm-flex align-items-center justify-content-between mb-3">
+                        <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-file-signature"></i> User E-Signature
+                        </h1>
+                      </div>
+
+                      {% if esignature_exist == 'True' %}
+
+                      <div class="text-center mt-5 mb-5">
+                        <img id="esignature_img" src="/uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/{{currently_loggedin_username}}.png" alt="">
+                      </div>
+
+                      {% else %}
+
+                      <!-- <button type="button" class="btn btn-outline-info w-100 mb-2">Update E-sign</button> -->
+
+                      <div class="text-center mt-5 mb-5">
+                        <h3>No Signature Uploaded <br>
+                          H 100px x W 300px
+
+                        </h3>
+                      </div>
+
+                      {% endif %}
+
+                      {% if esignature_exist == 'False' %}
+                      <form method="POST" enctype="multipart/form-data" action="{% url 'academic-affairs-office-upload-esignature' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label>Upload Signature</label>
+                          <input type="file" class="form-control-file mb-2" id="esignature" name="esignature" accept="image/png" required>
+                          <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                            <label class="form-check-label" for="exampleCheck1">I agree to attach my signature, and use it to this web app.</label>
+                          </div>
+                          <button type="submit" class="btn btn-outline-primary w-100">Upload Signature</button>
+                        </div>
+                      </form>
+
+                      {% elif esignature_exist == 'True'%}
+                      <form method="POST" enctype="multipart/form-data" action="{% url 'academic-affairs-office-upload-esignature' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label>Upload Signature</label>
+                          <input type="file" class="form-control-file mb-2" id="esignature" name="esignature" accept="image/png" required>
+                          <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                            <label class="form-check-label" for="exampleCheck1">I agree to update my signature, and use it to this web app.</label>
+                          </div>
+                          <button type="submit" class="btn btn-outline-info w-100">Update Signature</button>
+                        </div>
+                      </form>
+
+                      <a type="button" class="btn btn-outline-danger w-100 mb-2" href="{% url 'academic-affairs-office-delete-esignature' %}">Remove Signature</a>
+                      {% endif %}
+
+                      {% if esignature_exist == 'False' %}
+
+                      <div class="text-center mb-3">
+                        <span>or</span>
+                      </div>
+
+                      <a type="button" class="btn btn-outline-success w-100 mb-2" href="{% url 'academic-affairs-office-create-esignature' %}">Create E-Signature</a>
+
+                      {% endif %}
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- User Profile End -->
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      {% include 'footer.html'%}
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  {% include 'logout-modal.html' %}
+  {% include 'script-cdn.html' %}
+
+  <script src="{% static 'js/signature-pad.js' %}"></script>
+
+  {% if response == 'sweet not png' %}
+  <script>
+    Swal.fire("Invalid", "The File you uploaded is not a PNG image file.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'academic-affairs-office-profile' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet invalid size' %}
+  <script>
+    Swal.fire("Invalid", "The Image Size you uploaded is invalid.", "error");
+    setTimeout(function () {
+      window.location.replace("{% url 'academic-affairs-office-profile' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+</body>
+
+</html>

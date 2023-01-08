@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Panel - Panel Conforme</title>
 
@@ -132,7 +133,7 @@
             Attach Signature</a>
           <hr>
           <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept -
-            Personal Signature</a>
+            Live Signature</a>
           <hr>
         </div>
         <div class="modal-footer">
@@ -151,7 +152,7 @@
 
   {% for panel_conforme in get_panel_conforme %}
   <script>
-    // Accept Response - Personal Signature
+    // Accept Response - Live Signature
     document.getElementById('accept_' + '{{panel_conforme.id}}').addEventListener("click", function () {
       data_id = $(document.getElementById('accept_' + '{{panel_conforme.id}}')).attr("data-id")
 
@@ -169,7 +170,7 @@
       if (document.getElementById('checkbox_agreement_a').checked) {
         document.getElementById("btn_accept_signed").href = "{% url 'panel-panel-conforme-accept-sign' id=0 %}".replace(/0/, data_id);
       } else {
-        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
       }
     });
   </script>
@@ -192,7 +193,7 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'panel-panel-conforme' %}");
-    }, 2000);
+    }, 4000);
 
   </script>
   {% endif %}
@@ -200,11 +201,11 @@
 
   {% if response == 'sweet no esign' %}
   <script>
-    Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
+    Swal.fire("Uh-oh", "No E-signature uploaded. \n Please upload you signature in your Profile. Thank you.", "error");
 
     setTimeout(function () {
       window.location.replace("{% url 'panel-panel-conforme' %}");
-    }, 2300);
+    }, 4000);
   </script>
   {% endif %}
 

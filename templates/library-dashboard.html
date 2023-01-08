@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Library - Dashboard</title>
 
@@ -24,8 +25,8 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'adviser-dashboard' %}">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'library-dashboard' %}">
           <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
           </div>
         </a>
@@ -35,10 +36,16 @@
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'adviser-dashboard' %}">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'library-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'library-logs' %}">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Logs</span></a>
       </li>
 
       <!-- Divider -->
@@ -46,7 +53,7 @@
 
       <!-- Nav Item - The Developers -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'library-the-devs' %}">
           <i class="fa-solid fa-code"></i>
           <span>The Devs</span></a>
       </li>
@@ -85,19 +92,16 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                {% if currently_loggedin_user_account == 'Student' %}
-                <a class="dropdown-item" href="{% url 'student-profile' %}">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                {% endif %}
 
-                {% if currently_loggedin_user_account == 'Administrator' %}
-                <a class="dropdown-item" href="{% url 'admin-profile' %}">
+                <a class="dropdown-item" href="{% url 'library-profile' %}">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
-                {% endif %}
+
+                <a class="dropdown-item" href="{% url 'library-account-settings' %}">
+                  <i class="fa-solid fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Account Settings
+                </a>
 
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -153,9 +157,9 @@
           <!-- DataTales Example -->
 
           <div class="d-sm-flex align-items-center justify-content-between mt-4">
-            <h1 class="h3 mb-0 text-gray-800">Acknowledgement Receipt - Requests</h1>
+            <h1 class="h3 ml-2 mb-0 text-gray-800"><i class="fa-solid fa-envelope"></i> Acknowledgement Receipt - Requests</h1>
           </div>
-          
+
           <div class="card shadow mt-3 mb-4">
             <div class="card-body">
               <div class="table-responsive">
@@ -165,6 +169,7 @@
                       <th>Student ID No.</th>
                       <th>Student Leader Name</th>
                       <th>Course</th>
+                      <th>Research Title</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -173,18 +178,19 @@
                       <th>Student ID No.</th>
                       <th>Student Leader Name</th>
                       <th>Course</th>
+                      <th>Research Title</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
-                  <tbody>
-                    {% for advisee_data in all_advisee_data %}
+                  <tbody class="text-dark">
+                    {% for pending_receipt in pending_receipt %}
                     <tr>
-                      <td>{{advisee_data.student_leader_username}}</td>
-                      <td>{{advisee_data.student_leader_full_name}}</td>
-                      <td>{{advisee_data.course}}</td>
-                      <td>{{advisee_data.research_title}}</td>
+                      <td>{{pending_receipt.student_leader_username}}</td>
+                      <td>{{pending_receipt.student_leader_full_name}}</td>
+                      <td>{{pending_receipt.course_major_abbr}}</td>
+                      <td>{{pending_receipt.research_title}}</td>
                       <td>
-                        <a id="accept_{{advisee_data.id}}" data-id="{{advisee_data.id}}" class="btn btn-outline-primary mb-2" type="button" href="#"><i class="fa-solid fa-eye"></i></a>
+                        <a id="accept_{{pending_receipt.id}}" data-id="{{pending_receipt.id}}" class="btn btn-outline-success mb-2" type="button" href="#">Accept</a>
                       </td>
                     </tr>
                     {% endfor %}
@@ -197,6 +203,37 @@
         <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
+
+      <!-- Accept Response Modal -->
+      <div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="acceptModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
+              </button>
+            </div>
+            <div class="modal-body">Are you sure you want to accept
+              <span id="student_name_accept"></span><br>
+              Acknowledgement Receipt request?
+              <br>
+              <br>
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required>
+                <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+              </div>
+              <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Accept -
+                Attach Signature</a>
+              <hr>
+              <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept -
+                Live Signature</a>
+              <hr>
+            </div>
+            <div class="modal-footer">
+              <button id="btn_cancel_a" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Footer -->
       {% include 'footer.html' %}
@@ -214,6 +251,65 @@
   {% include 'logout-modal.html' %}
 
   {% include 'script-cdn.html' %}
+
+  {% for pending_receipt in pending_receipt %}
+  <script>
+    // Accept Response - Live Signature
+    document.getElementById('accept_' + '{{pending_receipt.id}}').addEventListener("click", function () {
+      data_id = $(document.getElementById('accept_' + '{{pending_receipt.id}}')).attr("data-id")
+
+      document.getElementById('student_name_accept').textContent = "{{pending_receipt.student_leader_full_name}}";
+      document.getElementById("btn_accept").href = "{% url 'library-accept' id=0 %}".replace(/0/, data_id);
+      $("#acceptModal").modal()
+    });
+
+  </script>
+  {% endfor %}
+
+  <!-- Modal - Accept - Attach Signature -->
+  <script>
+    document.getElementById('btn_accept_signed').addEventListener("click", function () {
+      if (document.getElementById('checkbox_agreement_a').checked) {
+        document.getElementById("btn_accept_signed").href = "{% url 'library-accept-sign' id=0 %}".replace(/0/, data_id);
+      } else {
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
+      }
+    });
+  </script>
+
+
+  <!-- Modal - Cancel Button -->
+  <script>
+    document.getElementById("btn_cancel_a").addEventListener("click", function () {
+      document.getElementById("checkbox_agreement_a").checked = false;
+    });
+
+    document.getElementById("btn_cancel_d").addEventListener("click", function () {
+      document.getElementById("checkbox_agreement_d").checked = false;
+    });
+  </script>
+
+  {% if response == 'sweet panel conforme accepted' %}
+  <script>
+    Swal.fire("Accepted", "The Acknowledgement Receipt request of {{accepted_student_member_name}} is accepted.", "success");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'library-dashboard' %}");
+    }, 4000);
+
+  </script>
+  {% endif %}
+
+
+  {% if response == 'sweet no esign' %}
+  <script>
+    Swal.fire("Uh-oh", "No E-signature uploaded. \n Please upload you signature in your Profile. Thank you.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'library-dashboard' %}");
+    }, 4000);
+  </script>
+  {% endif %}
 </body>
 
 </html>

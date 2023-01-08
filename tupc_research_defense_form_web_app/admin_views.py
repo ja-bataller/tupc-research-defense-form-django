@@ -1759,6 +1759,29 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
                 if user_account_input == "DIT Head":
 
+                    try:
+                        print("Exist")
+                        check_dit_head = User.objects.get(is_department_head=1)
+                        print("pass")
+
+                        members = User.objects.all().filter(is_faculty_member=1)
+
+                        sweet_member_check = User.objects.get(username=id)
+
+                        sweet_member_username = sweet_member_check.username
+
+                        context = {
+                            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                            "currently_loggedin_user_account": currently_loggedin_user_account,
+                            "members": members,
+                            "sweet_member_username": sweet_member_username,
+                            "response": "sweet dit head exist",
+                        }
+
+                        return render(request, "admin-faculty-member-account.html", context)
+                    except:
+                        pass
+
                     sweet_member_check = User.objects.get(username=id)
 
                     sweet_member_username = sweet_member_check.username

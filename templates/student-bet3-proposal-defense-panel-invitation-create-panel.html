@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Student - Proposal - Panel Invitation</title>
 
@@ -101,7 +102,7 @@
       Swal.fire("Uh-oh", "There's no Department Head assigned. <br> Please try again later.", "warning");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -110,7 +111,7 @@
       Swal.fire("Invalid", "The Defense Schedule you entered is invalid. <br> Please choose from the given choices.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation-create-panel' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -150,7 +151,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -160,7 +161,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -169,7 +170,7 @@
       Swal.fire("Info", "{{panel_full_name}} is your Subject Teacher", "info");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-proposal-defense-panel-invitation-create-panel' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 

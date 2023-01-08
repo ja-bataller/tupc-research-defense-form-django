@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Subject Teacher - Dashboard</title>
 
@@ -88,6 +89,12 @@
         </div>
       </li>
 
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'subject-teacher-acknowledgement-receipt' %}">
+          <i class="fa-solid fa-file-lines"></i>
+          <span>Acknowledgement Receipt</span></a>
+      </li>
+
       <li class="nav-item active">
         <a class="nav-link" href="{% url 'subject-teacher-research-titles' %}">
           <i class="fa-solid fa-book"></i>
@@ -104,7 +111,7 @@
           <span>The Devs</span></a>
       </li>
 
-      <!-- Divider -->`
+      <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block" />
 
       <!-- Sidebar Toggler (Sidebar) -->
@@ -143,7 +150,6 @@
                       <th>Title</th>
                       <th>Course</th>
                       <th>Status</th>
-                      <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -151,16 +157,46 @@
                       <th>Title</th>
                       <th>Course</th>
                       <th>Status</th>
-                      <th>Action</th>
                     </tr>
                   </tfoot>
                   <tbody class="text-dark">
-                    <!-- <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr> -->
+                    {% for research_title in research_titles %}
+                    <tr>
+                      <td>{{research_title.research_title}}</td>
+                      <td>{{research_title.course_major_abbr}}</td>
+
+                      {% if research_title.status == "Topic Defense - Accepted" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Proposal Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Final Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Title Defense - Deferred" %}
+                      <td class="text-danger">{{research_title.status}}</td>
+                      {% else %}
+                      <td>{{research_title.status}}</td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+
+                    {% for research_title in research_title_logs %}
+                    <tr>
+                      <td>{{research_title.research_title}}</td>
+                      <td>{{research_title.course_major_abbr}}</td>
+
+                      {% if research_title.status == "Topic Defense - Accepted" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Proposal Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Final Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Title Defense - Deferred" %}
+                      <td class="text-danger">{{research_title.status}}</td>
+                      {% else %}
+                      <td>{{research_title.status}}</td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>
@@ -192,7 +228,7 @@
     Swal.fire("Present", "{{panel_invitation_data.panel_full_name}} is marked as present", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -201,7 +237,7 @@
     Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -210,7 +246,7 @@
     Swal.fire("Success", "{{panel_chairman_data.panel_full_name}} is assigned as Panel Chairman", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' panel_chairman_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -219,7 +255,7 @@
     Swal.fire("Info", "It seems some of the Panel Members is not yet done voting for research title.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -228,7 +264,7 @@
     Swal.fire("Closed", "You have closed the research title voting.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -243,7 +279,7 @@
     Swal.fire("Completed", "Title Defense has been marked as Completed.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-dashboard'%}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -252,7 +288,7 @@
     Swal.fire("Revote", "The Panel's Vote for {{tie_research_title}} are tied. Please vote again.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -261,7 +297,7 @@
     Swal.fire("Info", "All the Research Title presented are Deferred.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -270,7 +306,7 @@
     Swal.fire("Info", "The Group of {{student_leader_full_name}} is marked as re-defense.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-dashboard'%}");;
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -279,7 +315,7 @@
     Swal.fire("Info", "Incomplete Panel Member. The Group of {{student_leader_full_name}} is marked as reschedule.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-dashboard'%}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -288,7 +324,7 @@
     Swal.fire("Info", "Please wait for the Panel to response for their signature.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -297,7 +333,7 @@
     Swal.fire("Sucess", "Panel Members can now vote for the Research Title/s", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -307,7 +343,7 @@
     Swal.fire("Present", "{{panel_invitation_data.panel_full_name}} is marked as present", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -316,7 +352,7 @@
     Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -325,7 +361,7 @@
     Swal.fire("Success", "{{panel_chairman_data.panel_full_name}} is assigned as Panel Chairman", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' panel_chairman_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -334,7 +370,7 @@
     Swal.fire("Info", "Please wait for the Panel Chairman to response for the signature.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -343,7 +379,7 @@
     Swal.fire("Sucess", "The Critique Form has started.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -352,7 +388,7 @@
     Swal.fire("Info", "The Critique Form has ended.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -361,7 +397,7 @@
     Swal.fire("Start Vote", "The Verdict voting has started.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -370,7 +406,7 @@
     Swal.fire("End Vote", "The Verdict voting has ended.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -379,7 +415,7 @@
     Swal.fire("Tie Vote", "The Panel Member's vote is tie. Please vote again.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -389,7 +425,7 @@
     Swal.fire("Defense Ended", "The Proposal Defense has ended.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-dashboard' %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -398,7 +434,7 @@
     Swal.fire("Present", "{{panel_invitation_data.panel_full_name}} is marked as present", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -407,7 +443,7 @@
     Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -416,7 +452,7 @@
     Swal.fire("Success", "{{panel_chairman_data.panel_full_name}} is assigned as Panel Chairman", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' panel_chairman_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -425,7 +461,7 @@
     Swal.fire("Info", "Please wait for the Panel Chairman to response for the signature.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -435,7 +471,7 @@
     Swal.fire("Start Vote", "The Verdict voting has started.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -444,7 +480,7 @@
     Swal.fire("End Vote", "The Verdict voting has ended.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -453,7 +489,7 @@
     Swal.fire("Tie Vote", "The Panel Member's vote is tie. Please vote again.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -462,7 +498,7 @@
     Swal.fire("Defense Ended", "The Final Defense has ended.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-dashboard' %}");
-    }, 3000);
+    }, 4000);
   </script>
   {% endif %}
 </body>

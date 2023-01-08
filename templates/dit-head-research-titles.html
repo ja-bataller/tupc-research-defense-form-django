@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>DIT Head - Research Titles</title>
 
@@ -35,13 +36,15 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'dit-head-dashboard' %}">
           <i class="fa-solid fa-house"></i>
-          <span>Home</span></a>
+          <span>Home</span></a
+        >
       </li>
 
       <li class="nav-item active">
         <a class="nav-link" href="{% url 'dit-head-research-titles' %}">
           <i class="fa-solid fa-book"></i>
-          <span>Research Titles</span></a>
+          <span>Research Titles</span></a
+        >
       </li>
 
       <!-- Divider -->
@@ -55,16 +58,16 @@
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'dit-head-panel-conforme' %}">Panel Conforme</a>
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'dit-head-panel-invitation-bet-3' %}">Topic - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'dit-head-bet3-adviser-conforme' %}">Adviser Conforme</a>
             <a class="collapse-item" href="{% url 'dit-head-bet3-proposal-defense-panel-invitation-dashboard' %}">Proposal - Panel Invitation</a>
-            <a class="collapse-item" href="{% url 'dit-head-panel-conforme' %}">Panel Conforme</a>
 
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
             <a class="collapse-item" href="{% url 'dit-head-bet5-final-defense-panel-invitation-dashboard' %}">Final - Panel Invitation</a>
-            <a class="collapse-item" href="#">Acknowledgement Receipt</a>
+            <a class="collapse-item" href="{% url 'dit-head-acknowledgement-receipt' %}">Acknowledgement Receipt</a>
           </div>
         </div>
       </li>
@@ -104,7 +107,8 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'dit-head-the-devs' %}">
           <i class="fa-solid fa-code"></i>
-          <span>The Devs</span></a>
+          <span>The Devs</span></a
+        >
       </li>
 
       <!-- Divider -->
@@ -129,7 +133,8 @@
           <!-- Page Heading -->
           <div class="row">
             <div class="col-lg-9 col-md-12 mb-3">
-              <h1 class="h3 mb-0 text-gray-800">Research Titles</h1>
+              <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-book"></i>
+                 Research Titles</h1>
             </div>
           </div>
 
@@ -160,7 +165,18 @@
                     <tr>
                       <td>{{research_title.research_title}}</td>
                       <td>{{research_title.course_major_abbr}}</td>
+
+                      {% if research_title.status == "Topic Defense - Accepted" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Proposal Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Final Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Title Defense - Deferred" %}
+                      <td class="text-danger">{{research_title.status}}</td>
+                      {% else %}
                       <td>{{research_title.status}}</td>
+                      {% endif %}
                     </tr>
                     {% endfor %}
 
@@ -168,7 +184,18 @@
                     <tr>
                       <td>{{research_title.research_title}}</td>
                       <td>{{research_title.course_major_abbr}}</td>
+
+                      {% if research_title.status == "Topic Defense - Accepted" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Proposal Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Final Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Title Defense - Deferred" %}
+                      <td class="text-danger">{{research_title.status}}</td>
+                      {% else %}
                       <td>{{research_title.status}}</td>
+                      {% endif %}
                     </tr>
                     {% endfor %}
                   </tbody>

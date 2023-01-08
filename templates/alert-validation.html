@@ -81,7 +81,7 @@
 
 {% if response == "account created" %}
 <script>
-  Swal.fire("Success!", "The Account has been created.", "success");
+  Swal.fire("Success", "The Account has been created.", "success");
 </script>
 {% endif %} 
 
@@ -253,7 +253,7 @@
 
   setTimeout(function () {
         window.location.replace("{% url 'index' %}");
-      }, 2000);
+      }, 4000);
 </script>
 {% endif %}
 

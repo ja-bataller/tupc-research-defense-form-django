@@ -3,107 +3,112 @@
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-    <!-- Sidebar - Brand -->
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'student-dashboard' %}">
-        <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
-        </div>
-      </a>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider my-0">
-
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'student-dashboard' %}">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span></a>
-    </li>
-
-    <!-- Nav Item - Group Collapse Menu -->
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGroup" aria-expanded="true"
-        aria-controls="collapseGroup">
-        <i class="fa-solid fa-users"></i>
-        <span>Group</span>
-      </a>
-      <div id="collapseGroup" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item" href="{% url 'student-group-members' %}">Members</a>
-          <a class="collapse-item" href="{% url 'student-research-titles' %}">Research Titles</a>
-        </div>
+  <!-- Sidebar - Brand -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'student-dashboard' %}">
+      <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
       </div>
-    </li>
+    </a>
+  </li>
 
-    <!-- Nav Item - Forms Collapse Menu -->
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForms" aria-expanded="true"
-        aria-controls="collapseForms">
-        <i class="fa-solid fa-folder-open"></i>
-        <span>Forms</span>
-      </a>
-      <div id="collapseForms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item" href="#">Consultation Form</a>
-          <h6 class="collapse-header">BET-3</h6>
-          <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Topic - Panel Invitation</a>
-          <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
-          <a class="collapse-item" href="{% url 'student-bet3-adviser-dashboard' %}">Adviser Conforme</a>
-          <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation' %}">Proposal - Panel Invitation</a>
-          <a class="collapse-item" href="{% url 'student-bet3-critique-form' %}">Critique Form</a>
-          <a class="collapse-item" href="#">Research Proposal Defense</a>
-          <div class="collapse-divider"></div>
-          <h6 class="collapse-header">BET-5</h6>
-          <a class="collapse-item" href="#">Final - Panel Invitation</a>
-          <a class="collapse-item" href="#">Research Final Defense</a>
-          <a class="collapse-item" href="#">Acknowledgement Receipt</a>
-        </div>
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0">
+
+  <!-- Nav Item - Dashboard -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'student-dashboard' %}">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span></a>
+  </li>
+
+  <!-- Nav Item - Group Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGroup" aria-expanded="true" aria-controls="collapseGroup">
+      <i class="fa-solid fa-users"></i>
+      <span>Group</span>
+    </a>
+    <div id="collapseGroup" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{% url 'student-group-members' %}">Members</a>
+        <a class="collapse-item" href="{% url 'student-research-titles' %}">Research Titles</a>
       </div>
-    </li>
-
-    <!-- Nav Item - Logs Collapse Menu -->
-    <li class="nav-item active">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
-        aria-controls="collapseLogs">
-        <i class="fa-solid fa-clock-rotate-left"></i>
-        <span>Logs</span>
-      </a>
-      <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">BET-3</h6>
-          <a class="collapse-item" href="{% url 'student-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
-          <a class="collapse-item" href="{% url 'student-bet3-panel-invitation-logs' %}">Research Title Defense</a>
-          <a class="collapse-item" href="#">Adviser Conforme</a>
-          <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation-logs' %}">Proposal - Panel Invitation</a>
-          <a class="collapse-item" href="#">Critique Form</a>
-          <a class="collapse-item" href="#">Research Proposal Defense</a>
-          <div class="collapse-divider"></div>
-          <h6 class="collapse-header">BET-5</h6>
-          <a class="collapse-item" href="#">Final - Panel Invitation</a>
-          <a class="collapse-item" href="#">Research Final Defense</a>
-        </div>
-      </div>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Nav Item - The Developers -->
-    <li class="nav-item">
-      <a class="nav-link" href="#">
-        <i class="fa-solid fa-code"></i>
-        <span>The Devs</span>
-      </a>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
-
-    <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-      <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
+  </li>
 
-  </ul>
-  <!-- End of Sidebar -->
+  <!-- Nav Item - Forms Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForms" aria-expanded="true" aria-controls="collapseForms">
+      <i class="fa-solid fa-folder-open"></i>
+      <span>Forms</span>
+    </a>
+    <div id="collapseForms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="#">Consultation Form</a>
+        <h6 class="collapse-header">BET-3</h6>
+        <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Topic - Panel Invitation</a>
+        <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
+        <a class="collapse-item" href="{% url 'student-bet3-topic-panel-conforme'%}">Topic - Panel Conforme</a>
+        <a class="collapse-item" href="{% url 'student-bet3-adviser-dashboard' %}">Adviser Conforme</a>
+        <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation' %}">Proposal - Panel Invitation</a>
+        <a class="collapse-item" href="{% url 'student-bet3-critique-form' %}">Critique Form</a>
+        <a class="collapse-item" href="{% url 'student-bet3-research-proposal-defense' %}">Research Proposal Defense</a>
+        <a class="collapse-item" href="{% url 'student-bet3-proposal-panel-conforme' %}">Proposal - Panel Conforme</a>
+        <div class="collapse-divider"></div>
+        <h6 class="collapse-header">BET-5</h6>
+        {% if student_leader_data.bet3_proposal_defense_status %}
+        {% if not student_leader_data.bet5_subject_teacher_name %}
+        <a class="collapse-item" href="{% url 'student-bet5-subject-teacher' %}">BET-5 Subject Teacher</a>
+        {% endif %}
+        {% endif %}
+        <a class="collapse-item" href="{% url 'student-bet5-final-defense-panel-invitation' %}">Final - Panel Invitation</a>
+        <a class="collapse-item" href="{% url 'student-bet5-research-final-defense'%}">Research Final Defense</a>
+        <a class="collapse-item" href="{% url 'student-bet5-final-panel-conforme' %}">Final - Panel Conforme</a>
+        <a class="collapse-item" href="{% url 'student-acknowledgement-receipt' %}">Acknowledgement Receipt</a>
+      </div>
+    </div>
+  </li>
+
+  <!-- Nav Item - Logs Collapse Menu -->
+  <li class="nav-item active">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true" aria-controls="collapseLogs">
+      <i class="fa-solid fa-clock-rotate-left"></i>
+      <span>Logs</span>
+    </a>
+    <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">BET-3</h6>
+        <a class="collapse-item" href="{% url 'student-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
+        <a class="collapse-item" href="#">Research Title Defense</a>
+        <a class="collapse-item" href="#">Adviser Conforme</a>
+        <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation-logs' %}">Proposal - Panel Invitation</a>
+        <a class="collapse-item" href="#">Critique Form</a>
+        <a class="collapse-item" href="#">Research Proposal Defense</a>
+        <div class="collapse-divider"></div>
+        <h6 class="collapse-header">BET-5</h6>
+        <a class="collapse-item" href="#">Final - Panel Invitation</a>
+        <a class="collapse-item" href="#">Research Final Defense</a>
+      </div>
+    </div>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Nav Item - The Developers -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'student-the-devs' %}">
+      <i class="fa-solid fa-code"></i>
+      <span>The Devs</span>
+    </a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block">
+
+  <!-- Sidebar Toggler (Sidebar) -->
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+  </div>
+
+</ul>
+<!-- End of Sidebar -->

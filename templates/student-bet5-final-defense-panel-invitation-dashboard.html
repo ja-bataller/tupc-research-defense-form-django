@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Student - BET-5 - Final Defense - Panel Invitation</title>
 
@@ -227,7 +228,9 @@
     <script>
       Swal.fire("Downloaded", "The Panel Invitation for Final Defense has been downloaded.", "success");
 
-      // window.open("{{download_link}}", '_blank').focus();
+      if ("{{download_link}}") {
+        window.open("{{download_link}}", '_blank').focus();
+      }
     </script>
     {% endif %} 
     
@@ -236,24 +239,24 @@
       Swal.fire("Uh-oh", "You have reached the Panel Invitation request limit.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet5-final-defense-panel-invitation' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'sweet bet-3 panel invitation saved' %}
     <script>
       Swal.fire("Completed", "Panel Invitation for Final Defense completed.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet5-final-defense-panel-invitation' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %}
 
-    {% if response == 'sweet incomplete proposal panel invitation' %}
+    {% if response == 'sweet incomplete final panel invitation' %}
     <script>
-      Swal.fire("Uh-oh", "You can't access this page. <br> Please complete Panel Invitation for Final Defense.", "error");
+      Swal.fire("Uh-oh", "You can't access this page. <br> Please complete the Panel Invitation for Final Defense.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet5-final-defense-panel-invitation' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -263,7 +266,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet5-final-defense-panel-invitation' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 

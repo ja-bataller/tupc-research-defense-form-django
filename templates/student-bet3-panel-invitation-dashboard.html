@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Student - BET-3 - Topic Defense - Panel Invitation</title>
 
@@ -225,7 +227,7 @@
       Swal.fire("Uh-oh", "You have reached the Panel Invitation request limit.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %} 
     {% if response == 'sweet bet-3 panel invitation saved' %}
@@ -233,7 +235,7 @@
       Swal.fire("Completed", "Panel Invitation for Topic Defense completed.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -243,7 +245,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -253,11 +255,11 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %}
 
-    <script>
+    <!-- <script>
       $(document).ready(function () {
         $('#bet3PanelInvitation').DataTable({
           order: [
@@ -265,7 +267,7 @@
           ],
         });
       });
-    </script>
+    </script> -->
 
 
   {% if response == 'sweet faculty member no signature' %}
@@ -274,7 +276,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %}
 

@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Student - BET-5 Subject Teacher</title>
 
@@ -85,17 +86,27 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'student-bet5-subject-teacher' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet bet5 subject teacher saved' %}
   <script>
-    Swal.fire("Saved", "BET5/5L Subject Teacher saved.", "success");
+    Swal.fire("Saved", "BET5/5L Subject Teacher saved.", "success"); 
 
     setTimeout(function () {
       window.location.replace("{% url 'student-bet5-subject-teacher' %}");
-    }, 2000);
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no bet5 subject teacher' %}
+  <script>
+    Swal.fire("Unauthorized", "Please set your BET-5 Subject Teacher.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'student-bet5-subject-teacher' %}");
+    }, 4000);
   </script>
   {% endif %}
 </body>

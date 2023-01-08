@@ -67,7 +67,8 @@ urlpatterns = [
    path('student/bet5/research-final-defense', views.studentBET5ResearchFinalDefenseForm, name ="student-bet5-research-final-defense"),
    path('student/bet5/research-final-defense-form/download', views.studentBET5ResearchFinalDefenseFormDownload, name ="student-bet5-final-defense-form-download"),
 
-   path('studentacknowledgment-receipt', views.studentAcknowledgementReceiptDashboard, name ="student-acknowledgement-receipt"),
+   path('student/acknowledgment-receipt', views.studentAcknowledgementReceiptDashboard, name ="student-acknowledgement-receipt"),
+   path('student/acknowledgment-receipt/save', views.studentAcknowledgementReceiptSave, name ="student-acknowledgement-receipt-save"),
    path('student/acknowledgment-receipt/download', views.studentAcknowledgmentReceiptDownload, name ="student-acknowledgement-receipt-download"),
 
    path('student/bet3/topic-defense/panel-invitation/logs', views.studentBET3PanelInvitationLogs, name ="student-bet3-panel-invitation-logs"),
@@ -144,7 +145,10 @@ urlpatterns = [
    path('dit-head/bet5/final-defense/panel-invitation/decline/sign/<str:id>', views.ditHeadBET5FinalPanelInvitationDeclineSignature, name ="dit-head-bet5-final-panel-invitation-decline-sign"),
    path('dit-head/bet5/final-defense/panel-invitation/accept/<str:id>', views.ditHeadBET5FinalPanelInvitationAccept, name ="dit-head-bet5-final-panel-invitation-accept"),
    path('dit-head/bet5/final-defense/panel-invitation/decline/<str:id>', views.ditHeadBET5FinalPanelInvitationDecline, name ="dit-head-bet5-final-panel-invitation-decline"),
-   #path('dit-head/bet5/acknowledgement-receipt', views.ditHeadAcknowledgementReceipt, name ="dit-head-acknowledgement-receipt"),
+
+   path('dit-head/acknowledgement-receipt', views.ditHeadAcknowledgementReceipt, name ="dit-head-acknowledgement-receipt"),
+   path('dit-head/acknowledgement-receipt/accept/sign/<str:id>', views.ditHeadAcknowledgementReceiptAcceptSignature, name ="dit-head-acknowledgement-receipt-accept-sign"),
+   path('dit-head/acknowledgement-receipt/accept/<str:id>', views.ditHeadAcknowledgementReceiptAccept, name ="dit-head-acknowledgement-receipt-accept"),
 
    path('dit-head/bet3/topic-defense/panel-invitation/logs', views.ditHeadBET3PanelInvitationLogs, name ="dit-head-bet3-panel-invitation-logs"),
    path('dit-head/bet3/adviser-conforme/logs', views.ditHeadBET3AdviserConformeLogs, name ="dit-head-bet3-adviser-conforme-logs"),
@@ -230,11 +234,17 @@ urlpatterns = [
    path('panel/bet3/title-defense/logs/completed/<str:id>', views.panelBET3TitleDefenseLogCompleted, name ="bet3-title-defense-logs-completed"),
    path('panel/bet3/title-defense/logs/redefense/<str:id>', views.panelBET3TitleDefenseLogRedefense, name ="bet3-title-defense-logs-redefense"),
 
+   path('panel/the-devs', views.panelTheDevs, name ="panel-the-devs"),
+
    # Subject Teacher URLS
    path('subject-teacher/dashboard', views.subjectTeacherDashboard, name ="subject-teacher-dashboard"),
    path('subject-teacher/profile', views.subjectTeacherProfile, name ="subject-teacher-profile"),
 
    path('subject-teacher/research-titles', views.subjectTeacherResearchTitles, name ="subject-teacher-research-titles"),
+
+   path('subject-teacher/acknowledgement-receipt', views.subjectTeacherAcknowledgementReceipt, name ="subject-teacher-acknowledgement-receipt"),
+   path('subject-teacher/acknowledgement-receipt/accept/sign/<str:id>', views.subjectTeacherAcknowledgementReceiptAcceptSignature, name ="subject-teacher-acknowledgement-receipt-accept-sign"),
+   path('subject-teacher/acknowledgement-receipt/accept/<str:id>', views.subjectTeacherAcknowledgementReceiptAccept, name ="subject-teacher-acknowledgement-receipt-accept"),
 
    path('subject-teacher/create/e-signature', views.subjectTeacherCreateESignature, name ="subject-teacher-create-esignature"),
    path('subject-teacher/upload/e-signature', views.subjectTeacherUploadESignature, name ="subject-teacher-upload-esignature"),
@@ -291,6 +301,12 @@ urlpatterns = [
 
    path('subject-teacher/title-defense/logs/completed/<str:id>', views.subjectTeacherBET3TitleDefenseLogCompleted, name ="subject-teacher-bet3-title-defense-logs-completed"),
    path('subject-teacher/title-defense/logs/redefense/<str:id>', views.subjectTeacherBET3TitleDefenseLogRedefense, name ="subject-teacher-bet3-title-defense-logs-redefense"),
+
+   path('subject-teacher/proposal-defense/logs/completed/<str:id>', views.subjectTeacherBET3ProposalDefenseLogCompleted, name ="subject-teacher-bet3-proposal-defense-logs-completed"),
+   #path('subject-teacher/proposal-defense/logs/redefense/<str:id>', views.subjectTeacherBET3ProposalDefenseLogRedefense, name ="subject-teacher-bet3-proposal-defense-logs-redefense"),
+
+   # path('subject-teacher/final-defense/logs/completed/<str:id>', views.subjectTeacherBET3FinalDefenseLogCompleted, name ="subject-teacher-bet3-final-defense-logs-completed"),
+   # path('subject-teacher/final-defense/logs/redefense/<str:id>', views.subjectTeacherBET3FinalDefenseLogRedefense, name ="subject-teacher-bet3-final-defense-logs-redefense"),
    
    path('subject-teacher/the-devs', views.subjectTeacherTheDevs, name ="subject-teacher-the-devs"),
    
@@ -314,12 +330,50 @@ urlpatterns = [
    path('adviser/bet3/adviser-conforme/accept/<str:id>', views.adviserBET3AdviserConformeAccept, name ="adviser-bet3-adviser-conforme-accept"),
    path('adviser/bet3/adviser-conforme/decline/<str:id>', views.adviserBET3AdviserConformeDecline, name ="adviser-bet3-adviser-conforme-decline"),
 
+   path('adviser/acknowledgement-receipt', views.adviserAcknowledgementReceipt, name ="adviser-acknowledgement-receipt"),
+   path('adviser/acknowledgement-receipt/accept/sign/<str:id>', views.adviserAcknowledgementReceiptAcceptSignature, name ="adviser-acknowledgement-receipt-accept-sign"),
+   path('adviser/acknowledgement-receipt/accept/<str:id>', views.adviserAcknowledgementReceiptAccept, name ="adviser-acknowledgement-receipt-accept"),
+
+   path('adviser/the-devs', views.adviserTheDevs, name ="adviser-the-devs"),
+
+   path('adviser/bet3/adviser-conforme/logs', views.adviserBET3AdviserConformeLogs, name ="adviser-bet3-adviser-conforme-logs"),
+   path('adviser/bet3//acknowledgement-receipt/logs', views.adviserAcknowledgementReceiptLogs, name ="adviser-acknowledgement-receipt-logs"),
+
 
    path('academic-affairs-office/dashboard', views.academicAffairsOfficeDashboard, name ="academic-affairs-office-dashboard"),
+   path('academic-affairs-office/logs', views.academicAffairsOfficeLogs, name ="academic-affairs-office-logs"),
+   path('academic-affairs-office/user-profile', views.academicAffairsOfficeProfile, name ="academic-affairs-office-profile"),
+
+   path('academic-affairs-office/create/e-signature', views.academicAffairsOfficeCreateESignature, name ="academic-affairs-office-create-esignature"),
+   path('academic-affairs-office/upload/e-signature', views.academicAffairsOfficeUploadESignature, name ="academic-affairs-office-upload-esignature"),
+   path('academic-affairs-office/delete/e-signature', views.academicAffairsOfficeDeleteESignature, name ="academic-affairs-office-delete-esignature"),
+
+   path('academic-affairs-office/account-settings', views.academicAffairsOfficeAccountSettings, name ="academic-affairs-office-account-settings"),
+
+   path('academic-affairs-office/the-devs', views.academicAffairsOfficeTheDevs, name ="academic-affairs-office-the-devs"),
+
+   path('academic-affairs-office/acknowledgement-receipt/accept/sign/<str:id>', views.academicAffairsOfficeAcceptSignature, name ="academic-affairs-office-accept-sign"),
+   path('academic-affairs-office/acknowledgement-receipt/accept/<str:id>', views.academicAffairsOfficeAccept, name ="academic-affairs-office-accept"),
+
+
    path('library/dashboard', views.libraryDashboard, name ="library-dashboard"),
+   path('library/logs', views.libraryLogs, name ="library-logs"),
+   path('library/user-profile', views.libraryProfile, name ="library-profile"),
+
+   path('library/create/e-signature', views.libraryCreateESignature, name ="library-create-esignature"),
+   path('library/upload/e-signature', views.libraryUploadESignature, name ="library-upload-esignature"),
+   path('library/delete/e-signature', views.libraryDeleteESignature, name ="library-delete-esignature"),
+
+   path('library/account-settings', views.libraryAccountSettings, name ="library-account-settings"),
+
+   path('library/the-devs', views.libraryTheDevs, name ="library-the-devs"),
+
+   path('library/acknowledgement-receipt/accept/sign/<str:id>', views.libraryAcceptSignature, name ="library-accept-sign"),
+   path('library/acknowledgement-receipt/accept/<str:id>', views.libraryAccept, name ="library-accept"),
 
 
    path('research-extension/dashboard', views.researchExtensionDashboard, name ="research-extension-dashboard"),
+   path('research-extension/logs', views.researchExtensionLogs, name ="research-extension-logs"),
    path('research-extension/user-profile', views.researchExtensionProfile, name ="research-extension-profile"),
 
    path('research-extension/create/e-signature', views.researchExtensionCreateESignature, name ="research-extension-create-esignature"),
@@ -327,6 +381,8 @@ urlpatterns = [
    path('research-extension/delete/e-signature', views.researchExtensionDeleteESignature, name ="research-extension-delete-esignature"),
 
    path('research-extension/account-settings', views.researchExtensionAccountSettings, name ="research-extension-account-settings"),
+
+   path('research-extension/the-devs', views.researchExtensionTheDevs, name ="research-extension-the-devs"),
 
    path('research-extension/acknowledgement-receipt/accept/sign/<str:id>', views.researchExtensionAcceptSignature, name ="research-extension-accept-sign"),
    path('research-extension/acknowledgement-receipt/accept/<str:id>', views.researchExtensionAccept, name ="research-extension-accept"),

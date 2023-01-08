@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Student - Acknowledgement Receipt - Dashboard</title>
 
@@ -68,7 +69,9 @@
                         
                         {% if acknowledgement_receipt.dit_head_response == "pending" %}
                         <td>{{acknowledgement_receipt.dit_head_response}}</td>
-                        {% elif acknowledgement_receipt.dit_head_response == "accepted" %}
+                        {% elif acknowledgement_receipt.dit_head_response == "Accepted" %}
+                        <td class="text-success">{{acknowledgement_receipt.dit_head_response}}</td>
+                        {% else %}
                         <td>{{acknowledgement_receipt.dit_head_response}}</td>
                         {% endif %}
                       </tr>
@@ -86,7 +89,9 @@
                         
                         {% if acknowledgement_receipt.adaa_response == "pending" %}
                         <td>{{acknowledgement_receipt.adaa_response}}</td>
-                        {% elif acknowledgement_receipt.adaa_response == "accepted" %}
+                        {% elif acknowledgement_receipt.adaa_response == "Accepted" %}
+                        <td class="text-success">{{acknowledgement_receipt.adaa_response}}</td>
+                        {% else %}
                         <td>{{acknowledgement_receipt.adaa_response}}</td>
                         {% endif %}
                       </tr>
@@ -104,7 +109,9 @@
                         
                         {% if acknowledgement_receipt.library_response == "pending" %}
                         <td>{{acknowledgement_receipt.library_response}}</td>
-                        {% elif acknowledgement_receipt.library_response == "accepted" %}
+                        {% elif acknowledgement_receipt.library_response == "Accepted" %}
+                        <td class="text-success">{{acknowledgement_receipt.library_response}}</td>
+                        {% else %}
                         <td>{{acknowledgement_receipt.library_response}}</td>
                         {% endif %}
                       </tr>
@@ -124,6 +131,8 @@
                         <td>{{acknowledgement_receipt.research_ext_response}}</td>
                         {% elif acknowledgement_receipt.research_ext_response == "Accepted" %}
                         <td class="text-success">{{acknowledgement_receipt.research_ext_response}}</td>
+                        {% else %}
+                        <td>{{acknowledgement_receipt.research_ext_response}}</td>
                         {% endif %}
                       </tr>
 
@@ -142,6 +151,8 @@
                         <td>{{acknowledgement_receipt.adviser_response}}</td>
                         {% elif acknowledgement_receipt.adviser_response == "Accepted" %}
                         <td class="text-success">{{acknowledgement_receipt.adviser_response}}</td>
+                        {% else %}
+                        <td>{{acknowledgement_receipt.adviser_response}}</td>
                         {% endif %}
                       </tr>
 
@@ -160,6 +171,8 @@
                         <td>{{acknowledgement_receipt.subject_teacher_response}}</td>
                         {% elif acknowledgement_receipt.subject_teacher_response == "Accepted" %}
                         <td class="text-success">{{acknowledgement_receipt.subject_teacher_response}}</td>
+                        {% else %}
+                        <td>{{acknowledgement_receipt.subject_teacher_response}}</td>
                         {% endif %}
                       </tr>
 
@@ -168,9 +181,17 @@
                 </div>
               </div>
             </div>
+            {% if student_leader_data.acknowledgement_receipt != "completed" %}
             {% if acknowledgement_receipt.dit_head_response == "Accepted" and acknowledgement_receipt.adaa_response == "Accepted" and  acknowledgement_receipt.library_response == "Accepted" and acknowledgement_receipt.research_ext_response == "Accepted" and acknowledgement_receipt.adviser_response == "Accepted" %} 
-              <a class="btn btn-outline-success mb-2 w-100" type="button" href="#">Mark as Completed</a>
+              <a class="btn btn-outline-success mb-2 w-100" type="button" href="{% url 'student-acknowledgement-receipt-save' %}">Mark as Completed</a>
             {% endif %}
+            {% endif %}
+
+            {% if student_leader_data.acknowledgement_receipt == "completed" %}
+              <a class="btn btn-outline-success mb-2 w-100" type="button" onclick="generatingForm()" href="{% url 'student-acknowledgement-receipt-download' %}">DOWNLOAD FORM</a>
+            {% endif %}
+
+
           </div>
           <!-- /.container-fluid -->
         </div>
@@ -220,6 +241,45 @@
         <!-- End of Footer -->
       </div>
       <!-- End of Content Wrapper -->
+
+       <!-- Modal -->
+       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content img-fluid">
+            <div class="modal-body text-center">
+              <div class="spinner-border file-spinner mt-5 mb-3" style="width: 6rem; height: 6rem" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+
+              <div class="container move mt-5 mb-5 file-show" style="display: none">
+                <svg class="file fadein" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                  <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                  <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                </svg>
+
+                <svg class="file zoomin" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                  <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                  <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                </svg>
+
+                <svg class="file zoomout" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                  <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                  <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                  <path class="file-check done" d="M26.8,20.6L14.9,32.5l-5.7-5.7l2.1-2.1l3.6,3.6l9.8-9.9L26.8,20.6z" />
+                  <circle class="file-loading load" cx="13" cy="21" r="7.7"></circle>
+                </svg>
+
+                <svg class="file fadeout" x="0px" y="0px" width="36px" height="43px" viewBox="0 0 36 43">
+                  <path class="file-body" d="M36,43H0V0h24.7L36,11.3V43z" />
+                  <path class="file-bend" d="M24.7,0L36,11.3H24.7V0z" />
+                  <path class="file-check" d="M26.8,20.6L14.9,32.5l-5.7-5.7l2.1-2.1l3.6,3.6l9.8-9.9L26.8,20.6z" />
+                </svg>
+              </div>
+              <h3 id="simpleUsage" class="mb-5"></h3>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- End of Page Wrapper -->
 
@@ -252,7 +312,7 @@
 
     {% if response == 'sweet downloaded' %}
     <script>
-      Swal.fire("Downloaded", "The Panel Invitation for Topic Defense has been downloaded.", "success");
+      Swal.fire("Downloaded", "The Acknowledgement Receipt has been downloaded.", "success");
 
       if ("{{download_link}}") {
         window.open("{{download_link}}", '_blank').focus();
@@ -260,61 +320,22 @@
     </script>
     {% endif %} 
     
-    {% if response == 'sweet request limit exceed' %}
+    {% if response == 'sweet acknowledgement receipt completed' %}
     <script>
-      Swal.fire("Uh-oh", "You have reached the Panel Invitation request limit.", "error");
+      Swal.fire("Completed", "Acknowledgement Receipt completed.", "success");
       setTimeout(function () {
-        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
-    </script>
-    {% endif %} 
-    {% if response == 'sweet bet-3 panel invitation saved' %}
-    <script>
-      Swal.fire("Completed", "Panel Invitation for Topic Defense completed.", "success");
-      setTimeout(function () {
-        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
+        window.location.replace("{% url 'student-acknowledgement-receipt' %}");
+      }, 4000);
     </script>
     {% endif %}
 
-    {% if response == 'sweet incomplete bet3 panel invitation' %}
-    <script>
-      Swal.fire("Unauthorized", "You can't access this page. <br> Please complete the Panel Invitation for Topic Defense.", "error");
-
-      setTimeout(function () {
-        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet no defense schedule' %}
-    <script>
-      Swal.fire("Uh-oh", "There are No Available Title Defense Schedule. <br> Please try again later.", "error");
-
-      setTimeout(function () {
-        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
-    </script>
-    {% endif %}
-
-    <script>
-      $(document).ready(function () {
-        $('#bet3PanelInvitation').DataTable({
-          order: [
-            [0, 'desc']
-          ],
-        });
-      });
-    </script>
-
-
-  {% if response == 'sweet faculty member no signature' %}
+    {% if response == 'sweet faculty member no signature' %}
     <script>
       Swal.fire("Uh-oh", "The Faculty Member might have remove his or her signature. <br> Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'student-panel-invitation-bet3' %}");
-      }, 3000);
+        window.location.replace("{% url 'student-acknowledgement-receipt' %}");
+      }, 4000);
     </script>
     {% endif %}
 

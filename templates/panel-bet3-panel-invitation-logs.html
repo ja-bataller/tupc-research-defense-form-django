@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Panel - BET-3 - Topic- Panel Invitation - Logs</title>
 
@@ -86,7 +87,7 @@
                       {% if panel_invitation.panel_signature == True %}
                         <td>E-Signature</td>
                       {% else %}
-                        <td>Personal Signature</td>
+                        <td>Live Signature</td>
                       {% endif %}
                     </tr>
                     {% elif panel_invitation.panel_response == "declined" %}
@@ -105,7 +106,7 @@
                       {% if panel_invitation.panel_signature == True %}
                         <td>E-Signature</td>
                       {% else %}
-                        <td>Personal Signature</td>
+                        <td>Live Signature</td>
                       {% endif %}
                     </tr>
                     {% endif %}
@@ -128,7 +129,7 @@
                       {% if panel_invitation.panel_signature == True %}
                         <td>E-Signature</td>
                       {% else %}
-                        <td>Personal Signature</td>
+                        <td>Live Signature</td>
                       {% endif %}
                     </tr>
                     {% elif panel_invitation.dit_head_response == "declined" %}
@@ -147,7 +148,7 @@
                       {% if panel_invitation.panel_signature == True %}
                         <td>E-Signature</td>
                       {% else %}
-                        <td>Personal Signature</td>
+                        <td>Live Signature</td>
                       {% endif %}
                     </tr>
                     {% endif %}

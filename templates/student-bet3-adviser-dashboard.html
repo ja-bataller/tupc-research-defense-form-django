@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Student - BET-3 - Adviser Conforme</title>
 
@@ -315,7 +316,9 @@
 {% if response == 'sweet downloaded' %}
 <script>
   Swal.fire("Downloaded", "The Adviser Conforme Form has been downloaded.", "success");
-  // window.open("{{download_link}}", '_blank').focus();
+  if ("{{download_link}}") {
+        window.open("{{download_link}}", '_blank').focus();
+    }
 
 </script>
 {% endif %}
@@ -335,7 +338,7 @@
     Swal.fire("Uh-oh", "There is no Department Head assigned.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'student-bet3-adviser-dashboard' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -344,7 +347,7 @@
     Swal.fire("Invalid", "Please choose a Adviser that is on the list.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'student-bet3-adviser-dashboard' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -353,7 +356,7 @@
     Swal.fire("Invalid", "The Adviser you entered doesn't exist.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'student-bet3-adviser-dashboard' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -362,7 +365,7 @@
     Swal.fire("Sent", "The Adviser Conforme has been sent to {{adviser_name}}.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'student-bet3-adviser-dashboard' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -371,7 +374,7 @@
     Swal.fire("Invalid", "You already have an existing Adviser Conforme.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'student-bet3-adviser-dashboard' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -381,7 +384,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-adviser-dashboard' %}");
-      }, 2000);
+      }, 4000);
     </script>
   {% endif %}
 
@@ -391,7 +394,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-adviser-dashboard' %}");
-      }, 2000);
+      }, 4000);
     </script>
   {% endif %}
 

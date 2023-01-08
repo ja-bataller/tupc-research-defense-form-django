@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Panel - User Profile</title>
 
@@ -57,16 +58,16 @@
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'dit-head-panel-conforme' %}">Panel Conforme</a>
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'dit-head-panel-invitation-bet-3' %}">Topic - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'dit-head-bet3-adviser-conforme' %}">Adviser Conforme</a>
             <a class="collapse-item" href="{% url 'dit-head-bet3-proposal-defense-panel-invitation-dashboard' %}">Proposal - Panel Invitation</a>
-            <a class="collapse-item" href="{% url 'dit-head-panel-conforme' %}">Panel Conforme</a>
 
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
             <a class="collapse-item" href="{% url 'dit-head-bet5-final-defense-panel-invitation-dashboard' %}">Final - Panel Invitation</a>
-            <a class="collapse-item" href="#">Acknowledgement Receipt</a>
+            <a class="collapse-item" href="{% url 'dit-head-acknowledgement-receipt' %}">Acknowledgement Receipt</a>
           </div>
         </div>
       </li>
@@ -205,7 +206,7 @@
 
                       <div class="text-center mt-5 mb-5">
                         <h3>No Signature Uploaded <br>
-                          H 100 x W 300
+                          H 100px x W 300px
 
                         </h3>
                       </div>
@@ -294,7 +295,7 @@
     Swal.fire("Invalid", "The File you uploaded is not a PNG image file.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'dit-head-profile' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -303,7 +304,7 @@
     Swal.fire("Invalid", "The Image Size you uploaded is invalid.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'dit-head-profile' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 

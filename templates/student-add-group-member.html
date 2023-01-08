@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Student - Add Group Members</title>
 
@@ -516,7 +517,7 @@
 
         setTimeout(function () {
           location.reload();
-        }, 2000);
+        }, 4000);
       }
     });
 
@@ -546,7 +547,7 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'student-add-group-members' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %} {% if response == 'sweet group member has same username' %}
   <script>
@@ -554,7 +555,7 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'student-add-group-members' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %} {% if response == 'sweet already a group member' %}
   <script>
@@ -562,17 +563,17 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'student-add-group-members' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
   {% if response == 'sweet incomplete group members' %}
   <script>
-    Swal.fire("Unauthorized", "You can't access this page. Please submit the list of your Group Members.", "error");
+    Swal.fire("Unauthorized", "You can't access this page. <br> Please submit the list of your Group Members.", "error");
 
     setTimeout(function () {
       window.location.replace("{% url 'student-add-group-members' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -582,7 +583,7 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'student-add-group-members' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -592,7 +593,7 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'student-add-group-members' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 </body>

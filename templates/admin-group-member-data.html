@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Admin - Student Group Member Profile</title>
 
@@ -32,7 +33,7 @@
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
 
-              <h1 class="h3 mb-0 text-gray-800"  style="display: inline;"><i class="fa-solid fa-user"></i> Student Group Member Profile</h1>
+              <h1 class="h3 mb-0 text-gray-800"  style="display: inline;"><i class="fa-solid fa-users"></i> Student Group Member Profile</h1>
       
               <div class="custom-control custom-switch float-right">
                 <input type="checkbox" class="custom-control-input" id="edit_switch" />
@@ -148,7 +149,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated successfully.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2500);
+      }, 4000);
     </script>
     {% endif %} 
 
@@ -157,7 +158,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Username, because it is already taken.", "info");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -166,7 +167,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Email, because it is already taken.", "info");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -175,7 +176,7 @@
       Swal.fire("{{sweet_member_username}} \n {{sweet_member_full_name}}", "The Profile of this user is updated, \n except for the Username and Email, because it is already taken.", "info");
       setTimeout(function () {
         window.location.replace("{% url 'admin-student-group-member-data' id=0 %}".replace(/0/, "{{sweet_member_username}}"));
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 

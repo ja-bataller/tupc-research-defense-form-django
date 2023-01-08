@@ -123,7 +123,7 @@ def panelTitleDefenseDay(request, id):
     except:
         return redirect("panel-dashboard")
 
-    if get_student_leader_data.middle_name == " ":
+    if get_student_leader_data.middle_name == "":
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
@@ -490,7 +490,7 @@ def panelBET3ProposalDefenseDay(request, id):
     except:
         return redirect("panel-dashboard")
 
-    if get_student_leader_data.middle_name == " ":
+    if get_student_leader_data.middle_name == "":
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
@@ -560,6 +560,20 @@ def panelBET3ProposalDefenseDay(request, id):
     except:
         check_pending_pc_panel_defense_signature = 0
 
+    try:
+        get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
+        research_title = get_accepted_research_title.research_title
+    except:
+       pass
+    
+    try:
+        get_revise_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Revise Title")
+        research_title = get_revise_research_title.research_title
+    except:
+        pass
+
+    get_end_voting = ProposalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = get_student_leader_data.bet3_subject_teacher_username, start_voting = 1, end_voting = 1)
+
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
 
@@ -589,6 +603,8 @@ def panelBET3ProposalDefenseDay(request, id):
         "start_voting": check_start_voting,
         "student_username": id,
         # "response_signature": get_no_response_signature
+        "get_accepted_research_title": get_accepted_research_title,
+        "end_voting": get_end_voting,
     }
 
     return render(request, "panel-bet3-proposal-defense-day.html", context)
@@ -1713,7 +1729,7 @@ def panelBET5FinalDefenseDay(request, id):
     except:
         return redirect("panel-dashboard")
 
-    if get_student_leader_data.middle_name == " ":
+    if get_student_leader_data.middle_name == "":
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
@@ -1748,13 +1764,16 @@ def panelBET5FinalDefenseDay(request, id):
     except:
         check_pending_pc_panel_defense_signature = 0
 
+    get_end_voting = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = get_student_leader_data.bet5_subject_teacher_username, start_voting = 1, end_voting = 1)
+
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
 
         "student_leader_data": get_student_leader_data,
         "student_leader_full_name": student_leader_full_name,
         "group_members": get_group_members,
-        "accepted_research_title": research_title,
+        "research_title": research_title,
+        "get_accepted_research_title": get_accepted_research_title,
         # "research_titles": get_research_titles,
         # "panel_members": get_panel_members,
         # "present_panel_members": get_present_panel_members,
@@ -1769,6 +1788,8 @@ def panelBET5FinalDefenseDay(request, id):
         # "research_title_revise": get_research_title_revise,
         "start_voting": check_start_voting,
         "student_username": id,
+        "end_voting": get_end_voting,
+
         # "response_signature": get_no_response_signature
     }
 
@@ -3149,7 +3170,7 @@ def panelBET3TitleDefenseLogCompleted(request, id):
     except:
         get_research_title_revise = None
 
-    if get_student_leader_data.middle_name == " ":
+    if get_student_leader_data.middle_name == "":
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
@@ -3193,7 +3214,7 @@ def panelBET3TitleDefenseLogRedefense(request, id):
     get_present_panel_members = TitleDefenseFormLog.objects.all().filter(student_leader_username=id, panel_attendance="present")
     get_panel_title_votes = TitleVote.objects.all().filter(student_leader_username=id, panel_username=currently_loggedin_user.username, panel_response_date=get_present_panel_members[0].defense_date)
 
-    if get_student_leader_data.middle_name == " ":
+    if get_student_leader_data.middle_name == "":
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
     else:
         student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
@@ -3716,6 +3737,28 @@ def panelBET5FinalPanelInvitationDecline(request, id):
         print("NO FOUND")
         return redirect("panel-bet5-final-defense-panel-invitation-dashboard")
 
+
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_panel, login_url="index")
+def panelTheDevs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("index")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+    }
+
+    return render(request, "panel-the-devs.html", context)
 
 @login_required(login_url="index")
 def topbarProcess(request):

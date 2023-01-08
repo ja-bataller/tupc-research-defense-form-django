@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Student - Final Defense Panel Invitation - Create</title>
 
@@ -35,7 +36,7 @@
             <form method="POST">
               {% csrf_token %}
 
-              <div class="card border-left-info shadow h-100 py-2 mb-3">
+              <div class="card border-left-dark shadow h-100 py-2 mb-3">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -109,7 +110,7 @@
       Swal.fire("Uh-oh", "There is no Department Head assigned. Please try again later.", "warning");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-final-defense-panel-invitation' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -118,7 +119,7 @@
       Swal.fire("Invalid", "The Defense Schedule you entered is invalid. Please choose one from the choices given.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-final-defense-panel-invitation-create' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -158,7 +159,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-final-defense-panel-invitation' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -168,7 +169,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-final-defense-panel-invitation' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 
@@ -177,7 +178,7 @@
       Swal.fire("Info", "{{panel_full_name}} is your Subject Teacher", "info");
       setTimeout(function () {
         window.location.replace("{% url 'student-bet3-final-defense-panel-invitation-create' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 

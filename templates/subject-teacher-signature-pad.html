@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Subject Teacher - Create E-signature</title>
 
@@ -90,6 +91,12 @@
       </li>
 
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'subject-teacher-acknowledgement-receipt' %}">
+          <i class="fa-solid fa-file-lines"></i>
+          <span>Acknowledgement Receipt</span></a>
+      </li>
+
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'subject-teacher-research-titles' %}">
           <i class="fa-solid fa-book"></i>
           <span>Research Titles</span></a>
@@ -105,7 +112,7 @@
           <span>The Devs</span></a>
       </li>
 
-      <!-- Divider -->`
+      <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block" />
 
       <!-- Sidebar Toggler (Sidebar) -->

@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>DIT Head - Panel Invitation BET-3</title>
 
@@ -29,7 +30,8 @@
           <div class="container-fluid">
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-dark">BET-3 - Proposal Defense - Panel Invitation - Logs</h1>
+              <h1 class="h3 mb-0 text-dark"><i class="fa-solid fa-clock-rotate-left"></i>
+                 BET-3 - Proposal Defense - Panel Invitation - Logs</h1>
             </div>
 
             <!-- DataTales Example -->
@@ -83,7 +85,7 @@
                         {% if panel_invitation.dit_head_signature == True %}
                         <td>E-Signature</td>
                         {% else %}
-                        <td>Personal Signature</td>
+                        <td>Live Signature</td>
                         {% endif %}
                       </tr>
                       {% elif panel_invitation.dit_head_response == "declined" %}
@@ -102,7 +104,7 @@
                         {% if panel_invitation.dit_head_signature == True %}
                         <td>E-Signature</td>
                         {% else %}
-                        <td>Personal Signature</td>
+                        <td>Live Signature</td>
                         {% endif %}
                       </tr>
                       {% endif %} {% endfor %} {% for panel_invitation in panel_invitations_2 %} {% if panel_invitation.dit_head_response == "accepted" %}
@@ -121,7 +123,7 @@
                         {% if panel_invitation.dit_head_signature == True %}
                         <td>E-Signature</td>
                         {% else %}
-                        <td>Personal Signature</td>
+                        <td>Live Signature</td>
                         {% endif %}
                       </tr>
                       {% elif panel_invitation.dit_head_response == "declined" %}
@@ -140,7 +142,7 @@
                         {% if panel_invitation.dit_head_signature == True %}
                         <td>E-Signature</td>
                         {% else %}
-                        <td>Personal Signature</td>
+                        <td>Live Signature</td>
                         {% endif %}
                       </tr>
                       {% endif %} {% endfor %}

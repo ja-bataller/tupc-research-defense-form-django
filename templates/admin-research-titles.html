@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Admin - Research Titles</title>
 
@@ -62,6 +63,7 @@
             <a class="collapse-item" href="{% url 'admin-advisee-limit' %}">Advisee Limit</a>
             <h6 class="collapse-header">Student</h6>
             <a class="collapse-item" href="{% url 'admin-student-account' %}">Students</a>
+            <a class="collapse-item" href="{% url 'admin-student-group-members-account' %}">Group Members</a>
             <a class="collapse-item" href="{% url 'admin-student-course-major' %}">Course</a>
           </div>
         </div>
@@ -109,7 +111,7 @@
           <!-- Page Heading -->
           <div class="row">
             <div class="col-lg-9 col-md-12 mb-3">
-              <h1 class="h3 mb-0 text-gray-800">Research Titles</h1>
+              <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-book"></i> Research Titles</h1>
             </div>
           </div>
 
@@ -140,7 +142,18 @@
                     <tr>
                       <td>{{research_title.research_title}}</td>
                       <td>{{research_title.course_major_abbr}}</td>
+
+                      {% if research_title.status == "Topic Defense - Accepted" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Proposal Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Final Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Title Defense - Deferred" %}
+                      <td class="text-danger">{{research_title.status}}</td>
+                      {% else %}
                       <td>{{research_title.status}}</td>
+                      {% endif %}
                     </tr>
                     {% endfor %}
 
@@ -148,7 +161,18 @@
                     <tr>
                       <td>{{research_title.research_title}}</td>
                       <td>{{research_title.course_major_abbr}}</td>
+
+                      {% if research_title.status == "Topic Defense - Accepted" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Proposal Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Final Defense - Accepted with Revision" %}
+                      <td class="text-success">{{research_title.status}}</td>
+                      {% elif research_title.status == "Title Defense - Deferred" %}
+                      <td class="text-danger">{{research_title.status}}</td>
+                      {% else %}
                       <td>{{research_title.status}}</td>
+                      {% endif %}
                     </tr>
                     {% endfor %}
                   </tbody>

@@ -38,7 +38,7 @@
                     <!-- Page Heading -->
                     <div class="row">
                         <div class="col-lg-10 col-md-12 mb-3">
-                          <h1 class="h3 mb-0 text-gray-800">Advisee Limit</h1>
+                          <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-user-tie"></i> Advisee Limit</h1>
                         </div>
                       </div>
 
@@ -103,7 +103,7 @@
         Swal.fire("Invalid", "The Advisee Limit minimum is 5.", "error");
         setTimeout(function () {
         window.location.replace("{% url 'admin-advisee-limit' %}");
-        }, 3000);
+        }, 4000);
     </script>
     {% endif %}
 
@@ -112,7 +112,7 @@
         Swal.fire("Invalid", "The Advisee Limit you entered is invalid.", "error");
         setTimeout(function () {
         window.location.replace("{% url 'admin-advisee-limit' %}");
-        }, 3000);
+        }, 4000);
     </script>
     {% endif %}
 
@@ -121,7 +121,7 @@
         Swal.fire("Updated", "The Advisee Limit has been updated.", "success");
         setTimeout(function () {
         window.location.replace("{% url 'admin-advisee-limit' %}");
-        }, 3000);
+        }, 4000);
     </script>
     {% endif %}
 

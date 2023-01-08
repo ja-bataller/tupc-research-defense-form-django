@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Student - BET-3 - Proposal Panel Conforme</title>
 
@@ -118,10 +119,12 @@
               </div>
             </div>
             
+            {% if student_leader_data.topic_panel_conforme  %} 
             {% if not student_leader_data.proposal_panel_conforme  %} 
             {% if not pending_panel_conforme %} 
               <a class="btn btn-outline-success mb-2 w-100" type="button" href="{% url 'student-proposal-panel-conforme-save' %}">Mark as Completed</a>
               {% endif %} 
+            {% endif %}
             {% endif %}
           </div>
           <!-- /.container-fluid -->
@@ -231,7 +234,15 @@
     </script>
     {% endif %}
 
+    {% if response == 'sweet incomplete proposal panel conforme' %}
+    <script>
+      Swal.fire("Unauthorized", "You can't access this page. <br> Please complete the Proposal Panel Conforme.", "error");
 
+      setTimeout(function () {
+        window.location.replace("{% url 'student-bet3-proposal-panel-conforme' %}");
+      }, 4000);
+    </script>
+    {% endif %}
 
     <script>
       $(document).ready(function () {

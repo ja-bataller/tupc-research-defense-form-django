@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>DIT Head - BET-3 - Proposal Defense - Panel Inviation - Dashboard</title>
 
@@ -36,7 +37,7 @@
 
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-3">
-              <h1 class="h3 mb-0 text-gray-800">BET-3 - Proposal Defense - Panel Invitation - Requests</h1>
+              <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-envelope"></i> BET-3 - Proposal Defense - Panel Invitation - Requests</h1>
             </div>
 
             <!-- DataTales Example -->
@@ -130,7 +131,7 @@
             </div>
             <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Accept - Attach Signature</a>
             <hr />
-            <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept - Personal Signature</a>
+            <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept - Live Signature</a>
             <hr />
           </div>
           <div class="modal-footer">
@@ -158,7 +159,7 @@
             </div>
             <a id="btn_decline_signed" class="submit-button btn btn-outline-danger w-100" type="button" href="#">Decline - Attach Signature</a>
             <hr />
-            <a id="decline_btn" class="btn btn-outline-warning w-100" type="button" href="#">Decline - Personal Signature</a>
+            <a id="decline_btn" class="btn btn-outline-warning w-100" type="button" href="#">Decline - Live Signature</a>
             <hr />
           </div>
           <div class="modal-footer">
@@ -204,7 +205,7 @@
         if (document.getElementById("checkbox_agreement_a").checked) {
           document.getElementById("btn_accept_signed").href = "{% url 'dit-head-bet3-proposal-panel-invitation-accept-sign' id=0 %}".replace(/0/, data_id);
         } else {
-          Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
+          Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
         }
       });
     </script>
@@ -215,7 +216,7 @@
         if (document.getElementById("checkbox_agreement_d").checked) {
           document.getElementById("btn_decline_signed").href = "{% url 'dit-head-bet3-proposal-panel-invitation-decline-sign' id=0 %}".replace(/0/, data_id);
         } else {
-          Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
+          Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
         }
       });
     </script>
@@ -237,7 +238,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'dit-head-bet3-proposal-defense-panel-invitation-dashboard' %}");
-      }, 1500);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'sweet panel invitation bet-3 declined' %}
     <script>
@@ -245,18 +246,18 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'dit-head-bet3-proposal-defense-panel-invitation-dashboard' %}");
-      }, 1500);
+      }, 4000);
     </script>
     {% endif %} 
     
     
     {% if response == 'sweet no esign' %}
     <script>
-      Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
+      Swal.fire("Uh-oh", "No E-signature uploaded. \n Please upload you signature in your Profile. Thank you.", "error");
 
       setTimeout(function () {
         window.location.replace("{% url 'dit-head-bet3-proposal-defense-panel-invitation-dashboard' %}");
-      }, 2300);
+      }, 4000);
     </script>
     {% endif %}
     

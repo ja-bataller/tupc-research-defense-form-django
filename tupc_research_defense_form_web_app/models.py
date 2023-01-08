@@ -51,7 +51,7 @@ class StudentCourseMajor(models.Model):
 
 # Student Leaders
 class StudentLeader(models.Model):
-    username = models.EmailField(unique=True)
+    username = models.CharField(unique=True, max_length=256,)
     email = models.EmailField(unique=True)
 
     first_name = models.CharField(max_length=256, blank=False)
@@ -411,6 +411,8 @@ class AdviserConforme(models.Model):
     adviser_signature = models.BooleanField(default=False)
     form_status = models.CharField(max_length=256)
 
+    thesis_completed = models.BooleanField(default=False)
+
     def __str__(self) -> str:
         return self.student_leader_username
 
@@ -438,6 +440,7 @@ class AdviserConformeLog(models.Model):
     adviser_signature = models.BooleanField(default=False)
 
     form_status = models.CharField(max_length=256)
+    thesis_completed = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.student_leader_username

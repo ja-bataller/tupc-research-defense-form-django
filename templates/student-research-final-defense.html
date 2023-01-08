@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Student - BET-5 - Research Final Defense Form</title>
 
@@ -216,11 +217,13 @@
   {% if response == 'sweet downloaded' %}
   <script>
     Swal.fire("Downloaded", "The Research Proposal Defense Form has been downloaded.", "success");
-    // window.open("{{download_link}}", '_blank').focus();
+   if ("{{download_link}}") {
+        window.open("{{download_link}}", '_blank').focus();
+      }
 
     setTimeout(function () {
-        window.location.replace("{% url 'student-bet3-research-proposal-defense' %}");
-      }, 2000);
+        window.location.replace("{% url 'student-bet5-research-final-defense' %}");
+      }, 4000);
   </script>
   {% endif %}
 
@@ -229,8 +232,8 @@
       Swal.fire("Uh-oh", "The Faculty Member might have remove his or her signature. Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'student-bet3-research-proposal-defense' %}");
-      }, 2000);
+        window.location.replace("{% url 'student-bet5-research-final-defense' %}");
+      }, 4000);
     </script>
     {% endif %}
 

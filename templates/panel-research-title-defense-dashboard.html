@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Panel - Dashboard</title>
 
@@ -248,7 +249,7 @@
     setTimeout(function () {
       window.location.replace(
         "{% url 'subject-teacher-title-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -258,7 +259,7 @@
     setTimeout(function () {
       window.location.replace(
         "{% url 'subject-teacher-title-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -268,7 +269,7 @@
     setTimeout(function () {
       window.location.replace(
         "{% url 'subject-teacher-title-defense-day' panel_chairman_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 </body>

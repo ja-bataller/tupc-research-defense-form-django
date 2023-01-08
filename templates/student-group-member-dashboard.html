@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Student - Group Members</title>
 
@@ -101,7 +102,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-group-members-dashboard' %}");
-      }, 1500);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'sweet no group members' %}
     <script>
@@ -109,7 +110,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-group-members-dashboard' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'sweet unauthorized to add group members' %}
     <script>
@@ -117,7 +118,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-group-members-dashboard' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'sweet unauthorized to access group members' %}
     <script>
@@ -125,7 +126,7 @@
 
       setTimeout(function () {
         window.location.replace("{% url 'student-add-group-members' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %}
 

@@ -9,7 +9,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
-  <meta name="author" content="">
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Student - Home</title>
 
@@ -78,9 +78,9 @@
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
             {% if student_leader_data.bet3_proposal_defense_status %}
-              {% if not student_leader_data.bet5_subject_teacher_name %}
-              <a class="collapse-item" href="{% url 'student-bet5-subject-teacher' %}">BET-5 Subject Teacher</a>
-              {% endif %}
+            {% if not student_leader_data.bet5_subject_teacher_name %}
+            <a class="collapse-item" href="{% url 'student-bet5-subject-teacher' %}">BET-5 Subject Teacher</a>
+            {% endif %}
             {% endif %}
             <a class="collapse-item" href="{% url 'student-bet5-final-defense-panel-invitation' %}">Final - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'student-bet5-research-final-defense'%}">Research Final Defense</a>
@@ -340,7 +340,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="col-md-6 col-sm-12 mb-3">
               <div class="row">
                 <div class="col-sm-12 mb-3">
@@ -350,9 +350,9 @@
                         <div class="col mr-2">
                           <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                             Research Forms Progress</div>
-                          
+
                           <div class="h5 mt-3 mb-2 font-weight-bold text-gray-800">BET-5/5L</div>
-                          
+
                           {% if student_leader_data.bet5_final_defense_panel_invitation_status == "completed" %}
                           <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
                             Panel Invitation - Research Final Defense</div>
@@ -375,15 +375,15 @@
 
                           {% if student_leader_data.final_panel_conforme == "completed" %}
                           <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
-                           Final Panel Conforme</div>
+                            Final Panel Conforme</div>
                           <hr class="m-1">
                           {% else %}
                           <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
-                           Final Panel Conforme</div>
+                            Final Panel Conforme</div>
                           <hr class="m-1">
                           {% endif %}
-   
-                          
+
+
                           {% if student_leader_data.acknowledgement_receipt == "completed" %}
                           <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
                             Acknowledgement Receipt</div>
@@ -437,7 +437,7 @@
     Swal.fire("Submitted", "Panel Invitation BET-3 submitted.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'student-dashboard' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -452,7 +452,7 @@
     Swal.fire("Unauthorized", "Unable to access this page. <br> Research Title Defense is incomplete.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'student-dashboard' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -461,7 +461,7 @@
     Swal.fire("Unauthorized", "Unable to access this page. <br> Research Proposal Defense is incomplete.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'student-dashboard' %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -470,7 +470,37 @@
     Swal.fire("Unauthorized", "Unable to access this page. <br> Research Final Defense is incomplete.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'student-dashboard' %}");
-    }, 2000);
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet incomplete final panel conforme' %}
+  <script>
+    Swal.fire("Unauthorized", "You can't access this page. <br> Please complete the Final Panel Conforme.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'student-bet5-final-panel-conforme' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet incomplete proposal panel conforme' %}
+  <script>
+    Swal.fire("Unauthorized", "You can't access this page. <br> Please complete the Proposal Panel Conforme.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'student-bet3-proposal-panel-conforme' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet incomplete topic panel conforme' %}
+  <script>
+    Swal.fire("Unauthorized", "You can't access this page. <br> Please complete the Topic Panel Conforme.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'student-bet3-topic-panel-conforme' %}");
+    }, 4000);
   </script>
   {% endif %}
 

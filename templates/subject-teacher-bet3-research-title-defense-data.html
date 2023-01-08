@@ -9,8 +9,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
-  <title>Subject Teacher - Title Defense - Logs - Data</title>
+  <title>Subject Teacher - Proposal Defense - Logs - Data</title>
 
   {% include 'css-main-cdn.html' %}
 </head>
@@ -98,25 +99,25 @@
                     {% if research_titles %}
                     {% for research_title in research_titles %}
 
-                    {% if research_title.status == "Title Defense - Accepted" %}
+                    {% if research_title.title_defense_status == "Accepted" %}
                     <div class="col-sm-12">
                       - {{research_title.research_title}} - <span class="text-success">Accepted</span>
                     </div>
                     {% endif %}
 
-                    {% if research_title.status == "Title Defense - Deferred" %}
+                    {% if research_title.title_defense_status == "Deferred" %}
                     <div class="col-sm-12">
                       - {{research_title.research_title}} - <span class="text-danger">Deferred</span>
                     </div>
                     {% endif %}
 
-                    {% if research_title.status == "Title Defense - Revise Title" %}
+                    {% if research_title.title_defense_status == "Revise Title" %}
                     <div class="col-sm-12">
                       - {{research_title.research_title}} - <span class="text-info">Revise Title</span>
                     </div>
                     {% endif %}
 
-                    {% if research_title.status == "Title Defense - Pending" %}
+                    {% if research_title.title_defense_status == "Pending" %}
                     <div class="col-sm-12">
                       - {{research_title.research_title}}
                     </div>

@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
     <title>Student - Topic - Panel Invitation</title>
 
@@ -39,7 +40,7 @@
                         </div> -->
             </div>
 
-            <div class="card border-left-info shadow h-100 py-2 mb-3">
+            <div class="card border-left-dark shadow h-100 py-2 mb-3">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
@@ -372,7 +373,7 @@
       Swal.fire("Uh-oh", "Sorry, can't fill-up  form at the moment. \n Please try again later.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'sweet panel not in the list' %}
     <script>
@@ -399,14 +400,14 @@
       Swal.fire("Uh-oh", "There's no DIT Head assigned yet. Please try again later.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'sweet inc panel' %}
     <script>
       Swal.fire("Invalid", "There's not enough Panel Member assigned yet. Please try again later.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
+      }, 4000);
     </script>
     {% endif %} 
     
@@ -415,7 +416,7 @@
       Swal.fire("Uh-oh", "There's no Title Defense Schedule available. Please try again later.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
-      }, 3000);
+      }, 4000);
     </script>
 
     {% endif %} {% if response == 'sweet same username' %}
@@ -439,7 +440,7 @@
       Swal.fire("Invalid", "You entered the same Panel Member with the other input field.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3-form' %}");
-      }, 1500);
+      }, 4000);
     </script>
     {% endif %} 
 
@@ -448,7 +449,7 @@
       Swal.fire("Invalid", "The Panel Member you entered is already recorded.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3-form' %}");
-      }, 1500);
+      }, 4000);
     </script>
     {% endif %}
     
@@ -457,7 +458,7 @@
       Swal.fire("Invalid", "You entered a Panel Member that is not in the list. Please choose from the given choices.", "error");
       setTimeout(function () {
         window.location.replace("{% url 'student-panel-invitation-bet3-form' %}");
-      }, 1500);
+      }, 4000);
     </script>
     {% endif %} {% if response == 'sweet group member exist' %}
     <script>
@@ -474,7 +475,7 @@
       Swal.fire("Sent", "The Panel Invitation for Topic Defense has been sent.", "success");
       setTimeout(function () {
         window.location.replace("{% url 'student-dashboard' %}");
-      }, 2000);
+      }, 4000);
     </script>
     {% endif %} 
     

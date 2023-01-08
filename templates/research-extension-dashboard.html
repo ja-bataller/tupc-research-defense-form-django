@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Research & Extension - Dashboard</title>
 
@@ -41,12 +42,18 @@
           <span>Home</span></a>
       </li>
 
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'research-extension-logs' %}">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Logs</span></a>
+      </li>
+
       <!-- Divider -->
       <hr class="sidebar-divider" />
 
       <!-- Nav Item - The Developers -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'research-extension-the-devs' %}">
           <i class="fa-solid fa-code"></i>
           <span>The Devs</span></a>
       </li>
@@ -150,7 +157,7 @@
           <!-- DataTales Example -->
 
           <div class="d-sm-flex align-items-center justify-content-between mt-4">
-            <h1 class="h3 mb-0 text-gray-800">Acknowledgement Receipt - Requests</h1>
+            <h1 class="h3 ml-2 mb-0 text-gray-800"><i class="fa-solid fa-envelope"></i> Acknowledgement Receipt - Requests</h1>
           </div>
 
           <div class="card shadow mt-3 mb-4">
@@ -175,7 +182,7 @@
                       <th>Action</th>
                     </tr>
                   </tfoot>
-                  <tbody>
+                  <tbody class="text-dark">
                     {% for pending_receipt in pending_receipt %}
                     <tr>
                       <td>{{pending_receipt.student_leader_username}}</td>
@@ -227,7 +234,7 @@
             Attach Signature</a>
           <hr>
           <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept -
-            Personal Signature</a>
+            Live Signature</a>
           <hr>
         </div>
         <div class="modal-footer">
@@ -248,7 +255,7 @@
 
   {% for pending_receipt in pending_receipt %}
   <script>
-    // Accept Response - Personal Signature
+    // Accept Response - Live Signature
     document.getElementById('accept_' + '{{pending_receipt.id}}').addEventListener("click", function () {
       data_id = $(document.getElementById('accept_' + '{{pending_receipt.id}}')).attr("data-id")
 
@@ -266,7 +273,7 @@
       if (document.getElementById('checkbox_agreement_a').checked) {
         document.getElementById("btn_accept_signed").href = "{% url 'research-extension-accept-sign' id=0 %}".replace(/0/, data_id);
       } else {
-        Swal.fire("Uh-oh", "Please check the agreement if you wish to proceed.", "error");
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
       }
     });
   </script>
@@ -289,7 +296,7 @@
 
     setTimeout(function () {
       window.location.replace("{% url 'research-extension-dashboard' %}");
-    }, 2000);
+    }, 4000);
 
   </script>
   {% endif %}
@@ -297,11 +304,11 @@
 
   {% if response == 'sweet no esign' %}
   <script>
-    Swal.fire("Info", "No E-signature uploaded. \n Please upload you signature in your Profile.", "info");
+    Swal.fire("Uh-oh", "No E-signature uploaded. \n Please upload you signature in your Profile. Thank you.", "error");
 
     setTimeout(function () {
       window.location.replace("{% url 'research-extension-dashboard' %}");
-    }, 2300);
+    }, 4000);
   </script>
   {% endif %}
 </body>

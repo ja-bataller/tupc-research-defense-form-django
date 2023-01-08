@@ -1979,6 +1979,134 @@ def ditHeadPanelConformeBet3Decline(request, id):
     pass
 
 
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadAcknowledgementReceipt(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    get_pending_receipt = AcknowledgementReceipt.objects.all().filter(dit_head_username = currently_loggedin_user.username, dit_head_response ="pending")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": date_today,
+        "pending_receipt": get_pending_receipt,
+    }
+
+    return render(request, "dit-head-acknowledgement-receipt.html", context)
+
+
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadAcknowledgementReceiptAcceptSignature(request, id):
+    currently_loggedin_user = request.user
+
+    print(id, type(id))
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # Check - E-sign exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        pass
+
+    else:
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(dit_head_username = currently_loggedin_user.username, dit_head_response ="pending")
+
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": date_today,
+            "pending_receipt": get_pending_receipt,
+            "response": "sweet no esign",
+        }
+
+        return render(request, "dit-head-acknowledgement-receipt.html", context)
+
+
+    try:
+        check_receipt = AcknowledgementReceipt.objects.get(id=id)
+
+        check_receipt.dit_head_response = "Accepted"
+        check_receipt.dit_head_response_date = date_today
+        check_receipt.dit_head_signature = True
+        check_receipt.save()
+
+
+        # Send g-mail notifications
+        send_mail(
+            "Acknowledgement Receipt",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(DIT Head) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(dit_head_username = currently_loggedin_user.username, dit_head_response ="pending")
+
+        context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": date_today,
+                "pending_receipt": get_pending_receipt,
+                "accepted_student_member_name": check_receipt.student_leader_full_name,
+                "accepted_student_member_username": check_receipt.student_leader_username,
+                "response": "sweet panel acknowledgement receipt accepted",
+            }
+
+        return render(request, "dit-head-acknowledgement-receipt.html", context)
+
+    except:
+        return redirect("dit-head-acknowledgement-receipt")
+
+
+@login_required(login_url="index")
+@user_passes_test(lambda u: u.is_department_head, login_url="index")
+def ditHeadAcknowledgementReceiptAccept(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        check_receipt = AcknowledgementReceipt.objects.get(id=id)
+
+        check_receipt.dit_head_response = "Accepted"
+        check_receipt.dit_head_response_date = date_today
+        check_receipt.save()
+
+
+        # Send g-mail notifications
+        send_mail(
+            "Acknowledgement Receipt",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(DIT Head) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "unofficial.tupc.uitc@gmail.com",
+            ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+            fail_silently=False,
+
+        )
+
+        get_pending_receipt = AcknowledgementReceipt.objects.all().filter(dit_head_username = currently_loggedin_user.username, dit_head_response ="pending")
+
+        context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": date_today,
+                "pending_receipt": get_pending_receipt,
+                "accepted_student_member_name": check_receipt.student_leader_full_name,
+                "accepted_student_member_username": check_receipt.student_leader_username,
+                "response": "sweet panel acknowledgement receipt accepted",
+            }
+
+        return render(request, "dit-head-acknowledgement-receipt.html", context)
+
+    except:
+        return redirect("dit-head-acknowledgement-receipt")
+
+
 # DIT Head - BET-3 Panel Invitation Logs
 @login_required(login_url="index")
 @user_passes_test(lambda u: u.is_department_head, login_url="index")

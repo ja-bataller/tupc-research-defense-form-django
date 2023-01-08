@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
   <title>Subject Teacher - Dashboard</title>
 
@@ -89,6 +90,12 @@
       </li>
 
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'subject-teacher-acknowledgement-receipt' %}">
+          <i class="fa-solid fa-file-lines"></i>
+          <span>Acknowledgement Receipt</span></a>
+      </li>
+
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'subject-teacher-research-titles' %}">
           <i class="fa-solid fa-book"></i>
           <span>Research Titles</span></a>
@@ -104,7 +111,7 @@
           <span>The Devs</span></a>
       </li>
 
-      <!-- Divider -->`
+      <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block" />
 
       <!-- Sidebar Toggler (Sidebar) -->
@@ -289,7 +296,7 @@
     Swal.fire("Present", "{{panel_invitation_data.panel_full_name}} is marked as present", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -298,7 +305,7 @@
     Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -307,7 +314,7 @@
     Swal.fire("Success", "{{panel_chairman_data.panel_full_name}} is assigned as Panel Chairman", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' panel_chairman_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -316,7 +323,7 @@
     Swal.fire("Uh-oh", "It seems some of the Panel Members is not yet done voting for research title.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -325,7 +332,7 @@
     Swal.fire("Close Voting", "You have closed the research title voting.", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -340,7 +347,7 @@
     Swal.fire("Completed", "Title Defense has been marked as Completed.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-dashboard'%}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -404,7 +411,7 @@
     Swal.fire("Present", "{{panel_invitation_data.panel_full_name}} is marked as present", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -413,7 +420,7 @@
     Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -422,7 +429,7 @@
     Swal.fire("Success", "{{panel_chairman_data.panel_full_name}} is assigned as Panel Chairman", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' panel_chairman_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -495,7 +502,7 @@
     Swal.fire("Present", "{{panel_invitation_data.panel_full_name}} is marked as present", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -504,7 +511,7 @@
     Swal.fire("Absent", "{{panel_invitation_data.panel_full_name}} is marked as absent", "error");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' panel_invitation_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 
@@ -513,7 +520,7 @@
     Swal.fire("Success", "{{panel_chairman_data.panel_full_name}} is assigned as Panel Chairman", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' panel_chairman_data.student_leader_username %}");
-    }, 2000);
+    }, 4000);
   </script>
   {% endif %}
 

@@ -9,8 +9,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
-  <title>Adviser - Dashboard</title>
+  <title>Adviser - Adviser Home</title>
 
   {% include 'css-main-cdn.html' %}
 
@@ -24,7 +25,7 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'adviser-dashboard' %}">
           <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
           </div>
@@ -41,9 +42,6 @@
           <span>Home</span></a>
       </li>
 
-      
-
-      
 
       <!-- Divider -->
       <!-- <hr class="sidebar-divider"> -->
@@ -61,10 +59,7 @@
             <a class="collapse-item" href="{% url 'adviser-bet3-adviser-conforme' %}">Research Adviser Conforme</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
+            <a class="collapse-item" href="{% url 'adviser-acknowledgement-receipt' %}">Acknowledgement Receipt</a>
           </div>
         </div>
       </li>
@@ -79,16 +74,10 @@
         <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="#">Research Adviser Conforme</a>
-            <!-- <a class="collapse-item" href="#">Panel Conforme</a> -->
-            <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+            <a class="collapse-item" href="{% url 'adviser-bet3-adviser-conforme-logs' %}">Research Adviser Conforme</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
+            <a class="collapse-item" href="{% url 'adviser-acknowledgement-receipt-logs' %}">Acknowledgement Receipt</a>
           </div>
         </div>
       </li>
@@ -105,7 +94,7 @@
 
       <!-- Nav Item - The Developers -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'adviser-the-devs' %}">
           <i class="fa-solid fa-code"></i>
           <span>The Devs</span></a>
       </li>
@@ -184,7 +173,7 @@
                       <th>Student Leader Name</th>
                       <th>Course</th>
                       <th>Research Title</th>
-                      <th>Action</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -193,20 +182,21 @@
                       <th>Student Leader Name</th>
                       <th>Course</th>
                       <th>Research Title</th>
-                      <th>Action</th>
+                      <th>Status</th>
                     </tr>
                   </tfoot>
-                  <tbody>
+                  <tbody class="text-dark">
                     {% for advisee_data in all_advisee_data %}
                     <tr>
                       <td>{{advisee_data.student_leader_username}}</td>
                       <td>{{advisee_data.student_leader_full_name}}</td>
                       <td>{{advisee_data.course}}</td>
                       <td>{{advisee_data.research_title}}</td>
-                      <td>
-                        <a id="accept_{{advisee_data.id}}" data-id="{{advisee_data.id}}"
-                          class="btn btn-outline-primary mb-2" type="button" href="#"><i class="fa-solid fa-eye"></i></a>
-                      </td>
+                      {% if advisee_data.thesis_completed == True %}
+                      <td class="text-success">Completed</td>
+                      {% else %}
+                      <td>Ongoing</td>
+                      {% endif %}
                     </tr>
                     {% endfor %}
                   </tbody>
