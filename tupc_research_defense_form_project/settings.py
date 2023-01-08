@@ -141,7 +141,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-# STATIC_ROOT = '/home/unofficialtupcresearchdefense/tupc-research-defense-form-django/static'
+# STATIC_ROOT = '/home/johnanthonybataller/tupc-research-defense-form-django/static'
 
 MEDIA_URL = 'uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9')
