@@ -4,7 +4,10 @@ from . import views
 urlpatterns = [
    # Authentication URLS
    path('', views.index, name ="index"),
+   path('login', views.loginPage, name ="login"),
    path('signup', views.signup, name ="signup"),
+   path('forgot-password', views.forgotPassword, name ="forgot-password"),
+   path('reset-password/<str:id>', views.resetPassword, name ="reset-password"),
    path('logout', views.logout_user, name ="logout_user"),
    path('login-as', views.login_as_user_accounts, name ="login-as"),
 
@@ -230,9 +233,18 @@ urlpatterns = [
    path('panel/bet5/final-defense/panel-invitation/decline/<str:id>', views.panelBET5FinalPanelInvitationDecline, name ="panel-bet5-final-defense-panel-invitation-decline"),
 
    path('panel/bet3/panel-invitation/logs', views.panelBET3PanelInvitationLogs, name ="panel-bet3-panel-invitation-logs"),
+   path('panel/bet3/proposal-panel-invitation/logs', views.panelBET3ProposalPanelInvitationLogs, name ="panel-bet3-proposal-panel-invitation-logs"),
+   path('panel/bet5/final-panel-invitation/logs', views.panelBET5FinalPanelInvitationLogs, name ="panel-bet5-final-panel-invitation-logs"),
+
    path('panel/bet3/title-defense/logs', views.panelBET3TitleDefenseLogs, name ="panel-bet3-title-defense-logs"),
    path('panel/bet3/title-defense/logs/completed/<str:id>', views.panelBET3TitleDefenseLogCompleted, name ="bet3-title-defense-logs-completed"),
    path('panel/bet3/title-defense/logs/redefense/<str:id>', views.panelBET3TitleDefenseLogRedefense, name ="bet3-title-defense-logs-redefense"),
+
+   path('panel/bet3/proposal-defense/logs', views.panelBET3ProposalDefenseLogs, name ="panel-bet3-proposal-defense-logs"),
+   path('panel/bet3/proposal-defense/logs/completed/<str:id>', views.panelBET3ProposalDefenseLogCompleted, name ="bet3-proposal-defense-logs-completed"),
+
+   path('panel/bet5/final-defense/logs', views.panelBET5FinalDefenseLogs, name ="panel-bet5-final-defense-logs"),
+   path('panel/bet5/final-defense/logs/completed/<str:id>', views.panelBET5FinalDefenseLogCompleted, name ="bet5-final-defense-logs-completed"),
 
    path('panel/the-devs', views.panelTheDevs, name ="panel-the-devs"),
 
@@ -245,6 +257,8 @@ urlpatterns = [
    path('subject-teacher/acknowledgement-receipt', views.subjectTeacherAcknowledgementReceipt, name ="subject-teacher-acknowledgement-receipt"),
    path('subject-teacher/acknowledgement-receipt/accept/sign/<str:id>', views.subjectTeacherAcknowledgementReceiptAcceptSignature, name ="subject-teacher-acknowledgement-receipt-accept-sign"),
    path('subject-teacher/acknowledgement-receipt/accept/<str:id>', views.subjectTeacherAcknowledgementReceiptAccept, name ="subject-teacher-acknowledgement-receipt-accept"),
+
+   path('subject-teacher/acknowledgement-receipt/logs', views.subjectTeacherAcknowledgementReceiptLogs, name ="subject-teacher-acknowledgement-receipt-logs"),
 
    path('subject-teacher/create/e-signature', views.subjectTeacherCreateESignature, name ="subject-teacher-create-esignature"),
    path('subject-teacher/upload/e-signature', views.subjectTeacherUploadESignature, name ="subject-teacher-upload-esignature"),
@@ -305,7 +319,7 @@ urlpatterns = [
    path('subject-teacher/proposal-defense/logs/completed/<str:id>', views.subjectTeacherBET3ProposalDefenseLogCompleted, name ="subject-teacher-bet3-proposal-defense-logs-completed"),
    #path('subject-teacher/proposal-defense/logs/redefense/<str:id>', views.subjectTeacherBET3ProposalDefenseLogRedefense, name ="subject-teacher-bet3-proposal-defense-logs-redefense"),
 
-   # path('subject-teacher/final-defense/logs/completed/<str:id>', views.subjectTeacherBET3FinalDefenseLogCompleted, name ="subject-teacher-bet3-final-defense-logs-completed"),
+   path('subject-teacher/final-defense/logs/completed/<str:id>', views.subjectTeacherBET3FinalDefenseLogCompleted, name ="subject-teacher-bet5-final-defense-logs-completed"),
    # path('subject-teacher/final-defense/logs/redefense/<str:id>', views.subjectTeacherBET3FinalDefenseLogRedefense, name ="subject-teacher-bet3-final-defense-logs-redefense"),
    
    path('subject-teacher/the-devs', views.subjectTeacherTheDevs, name ="subject-teacher-the-devs"),

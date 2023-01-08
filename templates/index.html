@@ -2,86 +2,106 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Log In - TUP-C Research Defense Form Web App</title>
 
-    <!-- Bootstrap 4.6.1 CSS CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous" />
-
-    <!-- Izitoast 1.4.0 CSS CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Stylish Portfolio - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Simple line icons-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" rel="stylesheet" />
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
     <!-- Custom CSS Stylesheet -->
-    <link rel="stylesheet" href="{% static '/css/login_signup.css' %}" />
-  </head>
+    <link rel="stylesheet" href="{% static '/css/style-index.css' %}" />
+</head>
 
-  <body>
-    <div class="container">
-      <div class="row content">
-        <div class="col-md-6 mb-3">
-          <img class="img-fluid" src="{% static '/img/laptop-boy.jpg' %}" alt="" />
-        </div>
-        <div class="col-md-6">
-          <h1 class="signin-text mb-4">Log In</h1>
-
-          <!-- Login Form Start -->
-          <form method="POST" onsubmit="loginBtnSpinner()">
-            {% csrf_token %}
-
-            <div class="form-group">
-              <label for="email">Username</label>
-              <input type="text" name="username_input" class="form-control" placeholder="TUPC-XX-XXXX" onkeyup="this.value = this.value.toUpperCase();" required />
+<body id="page-top">
+    <!-- Navigation-->
+    <a class="menu-toggle rounded" href="#"><i class="fas fa-bars"></i></a>
+    <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand"><a href="#page-top">DIT Research Defense</a></li>
+            <li class="sidebar-nav-item"><a href="#page-top">Home</a></li>
+            <li class="sidebar-nav-item"><a href="#services">About</a></li>
+        </ul>
+    </nav>
+    <!-- Header-->
+    <header class="masthead d-flex align-items-center">
+        <div class="container px-4 px-lg-5 text-center">
+            <div class="justify-content-center">
+                <img src="{% static 'img/TUP-Logo.png' %}" width="30%" alt="">
             </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" name="password_input" class="form-control" required />
-            </div>
-            <!-- <div class="form-group form-check">
-                        <input type="checkbox" name="checkbox" class="form-check-input" id="checkbox">
-                        <label class="form-check-label" for="checkbox">Remember Me</label>
-                    </div> -->
-            <button id="login_btn" class="btn btn-class mt-2 w-100" type="submit">Login</button>
-
-            <button id="login_spinner" class="btn btn-class mt-2 w-100" style="display: None" disabled>
-              <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
-            </button>
-
-            <hr class="mt-5" />
-            <p class="text-center">Don't have an account yet? <a href="{% url 'signup' %}">Sign up</a></p>
-          </form>
-          <!-- Login Form End -->
-          
+            <h1 class="mb-1">DIT Research Defense</h1>
+            <h3 class="mb-5"><em>Technological University of the Philippines - Cavite</em></h3>
+            <a class="btn btn-primary btn-xl" href="{% url  'login'%}">Log In here</a>
         </div>
-      </div>
+    </header>
+    <!-- Services-->
+    <section class="content-section bg-primary text-white text-center" id="services">
+        <div class="container px-4 px-lg-5">
+            <div class="content-section-heading">
+                <h3 class="text-secondary mb-0">Students Research Defense</h3>
+                <h2 class="mb-5">Easy Steps</h2>
+            </div>
+            <div class="row gx-4 gx-lg-5">
+                <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
+                    <span class="service-icon rounded-circle mx-auto mb-3"><i class="fa-solid fa-user"></i></span>
+                    <h4><strong>#1 Sign Up</strong></h4>
+
+                </div>
+                <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
+                    <span class="service-icon rounded-circle mx-auto mb-3"><i class="fa-solid fa-pen"></i></span>
+                    <h4><strong>#2 Fill-up Form</strong></h4>
+
+                </div>
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <span class="service-icon rounded-circle mx-auto mb-3"><i class="fa-solid fa-envelope"></i></span>
+                    <h4><strong>#3 Submit</strong></h4>
+
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <span class="service-icon rounded-circle mx-auto mb-3"><i class="fa-solid fa-hourglass"></i></span>
+                    <h4><strong>#4 Wait for Approval</strong></h4>
+
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <span class="service-icon rounded-circle mx-auto mb-3"><i class="fa-solid fa-file-arrow-down"></i></span>
+                    <h4><strong>#5 Download Form</strong></h4>
+
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <span class="service-icon rounded-circle mx-auto mb-3"><i class="fa-solid fa-circle-check"></i></span>
+                    <h4><strong>#6 Completed</strong></h4>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Map-->
+    <div class="map" id="contact">
+        <iframe src="https://maps.google.com/maps?q=tup%20cavite&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+        <br />
+        <small><a href="https://maps.google.com/maps?q=tup%20cavite&t=&z=13&ie=UTF8&iwloc=&output=embed"></a></small>
     </div>
+    <!-- Footer-->
 
-    <!-- Bootstrap 4.6 Script CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+    <footer class="footer text-center">
+        <p class="text-muted small mb-0">Un-Official TUPC Department of Industrial Technology - Research Defense</p>
+        </div>
+    </footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="{% static '/js/script-index.js' %}"></script>
+</body>
 
-    <!-- Izitoat 1.4.0 Script CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-    <!-- SweetAlert2 Script CDN -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    {% include 'alert-validation.html' %}
-
-    <script>
-      let login_btn = document.querySelector("#login_btn");
-      let login_spinner = document.querySelector("#login_spinner");
-
-      function loginBtnSpinner() {
-        login_btn.style.display = "none";
-        login_spinner.style.display = "block";
-      }
-    </script>
-
-  </body>
 </html>

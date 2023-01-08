@@ -23,8 +23,8 @@ today = date.today()
 date_today = today.strftime("%B %d, %Y")
 
 # Adviser - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserDashboard(request):
     currently_loggedin_user = request.user
 
@@ -35,7 +35,7 @@ def adviserDashboard(request):
     try:
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
     
     all_advisee_data = AdviserConforme.objects.all().filter(adviser_username = currently_loggedin_user.username)
 
@@ -50,8 +50,8 @@ def adviserDashboard(request):
 
 
 # Adviser - Profile Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserProfile(request):
     currently_loggedin_user = request.user
 
@@ -92,8 +92,8 @@ def adviserProfile(request):
 
 
 # Adviser - Upload E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserUploadESignature(request):
     currently_loggedin_user = request.user
 
@@ -219,8 +219,8 @@ def adviserUploadESignature(request):
 
 
 # Adviser - Remove E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserDeleteESignature(request):
     currently_loggedin_user = request.user
 
@@ -230,8 +230,8 @@ def adviserDeleteESignature(request):
 
 
 # Adviser - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserCreateESignature(request):
     currently_loggedin_user = request.user
 
@@ -242,7 +242,7 @@ def adviserCreateESignature(request):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     if request.method == "POST":
         signature_url = request.POST.get("signature_link")
@@ -272,8 +272,8 @@ def adviserCreateESignature(request):
 
 
 # Adviser - Acount Settings Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserAccountSettings(request):
     currently_loggedin_user = request.user
 
@@ -308,7 +308,7 @@ def adviserAccountSettings(request):
                     User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
 
                     context = {"response": "changed password"}
-                    return render(request, "index.html", context)
+                    return render(request, "login.html", context)
 
                 else:
                     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "response": "new password and confirm new password doesnt match"}
@@ -329,8 +329,8 @@ def adviserAccountSettings(request):
 
 
 # Adviser - Advisee Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserAdviseeDashboard(request):
     currently_loggedin_user = request.user
 
@@ -342,7 +342,7 @@ def adviserAdviseeDashboard(request):
     try:
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # BET-3 - Get Adviser Conforme
     get_all_advisee_data = AdviserConforme.objects.all().filter(adviser_username=currently_loggedin_user.username, form_status="Accepted")
@@ -357,8 +357,8 @@ def adviserAdviseeDashboard(request):
 
 
 # Adviser - BET-3 - Adviser Conforme Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserBET3AdviserConforme(request):
     currently_loggedin_user = request.user
 
@@ -370,7 +370,7 @@ def adviserBET3AdviserConforme(request):
     try:
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # BET-3 - Get Adviser Conforme
     get_adviser_conforme = AdviserConforme.objects.all().filter(adviser_username=currently_loggedin_user.username, adviser_response="Pending")
@@ -387,8 +387,8 @@ def adviserBET3AdviserConforme(request):
 
 
 # Adviser - BET-3 - Adviser Conforme - Accept with Signature Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserBET3AdviserConformeAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -400,7 +400,7 @@ def adviserBET3AdviserConformeAcceptSignature(request, id):
     try:
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # BET-3 - Get Adviser Conforme
     get_adviser_conforme = AdviserConforme.objects.all().filter(adviser_username=currently_loggedin_user.username, adviser_response="Pending")
@@ -425,7 +425,7 @@ def adviserBET3AdviserConformeAcceptSignature(request, id):
     try:
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # BET-3 - Check Adviser Conforme
     try:
@@ -476,8 +476,8 @@ def adviserBET3AdviserConformeAcceptSignature(request, id):
 
 
 # Adviser - BET-3 - Adviser Conforme - Decline with Signature Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def adviserBET3AdviserConformeDeclineSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -489,7 +489,7 @@ def adviserBET3AdviserConformeDeclineSignature(request, id):
     try:
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # BET-3 - Get Adviser Conforme
     get_adviser_conforme = AdviserConforme.objects.all().filter(adviser_username=currently_loggedin_user.username, adviser_response="Pending")
@@ -570,8 +570,8 @@ def adviserBET3AdviserConformeDeclineSignature(request, id):
 
 
 # Adviser - BET-3 - Adviser Conforme - Accept Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserBET3AdviserConformeAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -583,7 +583,7 @@ def adviserBET3AdviserConformeAccept(request, id):
     try:
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # BET-3 - Check Adviser Conforme
     try:
@@ -632,8 +632,8 @@ def adviserBET3AdviserConformeAccept(request, id):
 
 
 # Adviser - BET-3 - Adviser Conforme - Decline Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserBET3AdviserConformeDecline(request, id):
     currently_loggedin_user = request.user
 
@@ -645,7 +645,7 @@ def adviserBET3AdviserConformeDecline(request, id):
     try:
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # BET-3 - Check Adviser Conforme
     try:
@@ -705,8 +705,8 @@ def adviserBET3AdviserConformeDecline(request, id):
         return redirect("adviser-bet3-adviser-conforme")
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserAcknowledgementReceipt(request):
     currently_loggedin_user = request.user
 
@@ -725,8 +725,8 @@ def adviserAcknowledgementReceipt(request):
     return render(request, "adviser-acknowledgement-receipt.html", context)
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserAcknowledgementReceiptAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -789,8 +789,8 @@ def adviserAcknowledgementReceiptAcceptSignature(request, id):
         return redirect("adviser-acknowledgement-receipt")
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserAcknowledgementReceiptAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -834,8 +834,8 @@ def adviserAcknowledgementReceiptAccept(request, id):
 
 
 # Adviser - BET-3 - Adviser Conforme Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserBET3AdviserConformeLogs(request):
     currently_loggedin_user = request.user
 
@@ -847,7 +847,7 @@ def adviserBET3AdviserConformeLogs(request):
     try:
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # BET-3 - Get Adviser Conforme
     get_adviser_conforme_accepted = AdviserConforme.objects.all().filter(adviser_username=currently_loggedin_user.username, adviser_response="Accepted")
@@ -864,8 +864,8 @@ def adviserBET3AdviserConformeLogs(request):
     return render(request, "adviser-adviser-conforme-logs.html", context)
 
 # Adviser - Advisee Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserAcknowledgementReceiptLogs(request):
     currently_loggedin_user = request.user
 
@@ -877,7 +877,7 @@ def adviserAcknowledgementReceiptLogs(request):
     try:
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_accepted_receipt = AcknowledgementReceipt.objects.all().filter(adviser_username = currently_loggedin_user.username, adviser_response ="Accepted")
 
@@ -890,8 +890,8 @@ def adviserAcknowledgementReceiptLogs(request):
     return render(request, "adviser-acknowledgement-receipt-logs.html", context)
 
 # Adviser - Advisee Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_adviser, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_adviser, login_url="login")
 def adviserTheDevs(request):
     currently_loggedin_user = request.user
 
@@ -903,7 +903,7 @@ def adviserTheDevs(request):
     try:
         get_adviser_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -914,7 +914,7 @@ def adviserTheDevs(request):
 
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def topbarProcess(request):
 
     currently_loggedin_user = request.user

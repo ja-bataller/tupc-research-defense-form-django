@@ -49,6 +49,14 @@ class StudentCourseMajor(models.Model):
         return self.course_major_abbr
 
 
+
+class ForgotPassword(models.Model):
+    username = models.CharField(max_length=256)
+    token = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.username
+
 # Student Leaders
 class StudentLeader(models.Model):
     username = models.CharField(unique=True, max_length=256,)
@@ -230,8 +238,6 @@ class FilePath(models.Model):
 
     def __str__(self) -> str:
         return self.student_leader_username
-
-
 
 
 ##### TITLE DEFENSE #####

@@ -28,8 +28,8 @@ today = date.today()
 date_today = today.strftime("%B %d, %Y")
 
 # Student - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentDashboard(request):
     current_user = request.user
     current_password = current_user.password
@@ -57,8 +57,8 @@ def studentDashboard(request):
 
 
 # Student - User Profile - Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentProfile(request):
     current_user = request.user
     current_password = current_user.password
@@ -109,7 +109,7 @@ def studentProfile(request):
                     User.objects.filter(username=current_user).update(password=new_password_input)
 
                     context = {"response": "changed password"}
-                    return render(request, "index.html", context)
+                    return render(request, "login.html", context)
 
                 else:
                     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "user_first_name": user_first_name, "user_middle_name": user_middle_name, "user_last_name": user_last_name, "user_course": user_course, "course_name": course_name, "major_name": major_name, "username": user_username, "user_email": user_email, "response": "new password and confirm new password doesnt match"}
@@ -130,8 +130,8 @@ def studentProfile(request):
 
 
 # Student - Group Member - Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentGroupMemberProcess(request):
     current_user = request.user
     current_password = current_user.password
@@ -147,7 +147,7 @@ def studentGroupMemberProcess(request):
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
 
     except:
-        return redirect("index")
+        return redirect("login")
 
     if get_student_leader_data.group_members_status == "completed":
         return redirect("student-group-members-dashboard")
@@ -156,8 +156,8 @@ def studentGroupMemberProcess(request):
 
 
 # Student - Add Group Member - Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentAddGroupMember(request):
     current_user = request.user
     current_password = current_user.password
@@ -173,7 +173,7 @@ def studentAddGroupMember(request):
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
 
     except:
-        return redirect("index")
+        return redirect("login")
 
     if get_student_leader_data.group_members_status == "completed":
         return redirect("student-group-members-dashboard")
@@ -481,8 +481,8 @@ def studentAddGroupMember(request):
 
 
 # Student - Group Member - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentGroupMembersDashboard(request):
     current_user = request.user
     current_password = current_user.password
@@ -498,7 +498,7 @@ def studentGroupMembersDashboard(request):
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
 
     except:
-        return redirect("index")
+        return redirect("login")
 
     if get_student_leader_data.group_members_status != "completed":
         return redirect("student-add-group-members")
@@ -524,8 +524,8 @@ def studentGroupMembersDashboard(request):
 
 
 # Student - Research Title - Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentResearchTitleProcess(request):
     current_user = request.user
     current_password = current_user.password
@@ -541,7 +541,7 @@ def studentResearchTitleProcess(request):
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
 
     except:
-        return redirect("index")
+        return redirect("login")
 
     if get_student_leader_data.research_titles_status == "completed":
         return redirect("student-research-title-dashboard")
@@ -550,8 +550,8 @@ def studentResearchTitleProcess(request):
 
 
 # Student - Add Research Title - Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentAddResearchTitle(request):
     current_user = request.user
     current_password = current_user.password
@@ -567,7 +567,7 @@ def studentAddResearchTitle(request):
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
 
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -743,8 +743,8 @@ def studentAddResearchTitle(request):
 
 
 # Student - Research Title - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentResearchTitleDashboard(request):
     current_user = request.user
     current_password = current_user.password
@@ -759,7 +759,7 @@ def studentResearchTitleDashboard(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -779,8 +779,8 @@ def studentResearchTitleDashboard(request):
 
 
 # Student - Add Research Title - Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentResearchTitleUpdate(request):
     current_user = request.user
     current_password = current_user.password
@@ -795,7 +795,7 @@ def studentResearchTitleUpdate(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
 
     try:
@@ -828,8 +828,8 @@ def studentResearchTitleUpdate(request):
     
     
 # Student - BET3 - Topic Defense - Panel Invitation - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentPanelInvitationBet3(request):
     current_user = request.user
     current_password = current_user.password
@@ -844,7 +844,7 @@ def studentPanelInvitationBet3(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -875,8 +875,8 @@ def studentPanelInvitationBet3(request):
 
 
 # Student - BET3 - Topic Defense - Panel Invitation - Create Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentPanelInvitationBet3Create(request):
     current_user = request.user
     current_password = current_user.password
@@ -891,7 +891,7 @@ def studentPanelInvitationBet3Create(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -1161,8 +1161,8 @@ def studentPanelInvitationBet3Create(request):
 
 
 # Student - BET3 - Topic Defense - Panel Invitation - Save Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentPanelInvitationBet3Save(request):
     current_user = request.user
     current_password = current_user.password
@@ -1177,7 +1177,7 @@ def studentPanelInvitationBet3Save(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -1200,8 +1200,8 @@ def studentPanelInvitationBet3Save(request):
 
 
 # Student - BET3 - Research Title Defense - Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3ResearchTitleDefense(request):
     current_user = request.user
     current_password = current_user.password
@@ -1216,7 +1216,7 @@ def studentBET3ResearchTitleDefense(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -1295,8 +1295,8 @@ def studentBET3ResearchTitleDefense(request):
     return render(request, "student-bet3-research-title-defense.html", context)
 
 # Student - BET3 - Topic - Panel Conforme - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3TopicPanelConforme(request):
     current_user = request.user
     current_password = current_user.password
@@ -1311,7 +1311,7 @@ def studentBET3TopicPanelConforme(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -1350,8 +1350,8 @@ def studentBET3TopicPanelConforme(request):
     return render(request, "student-bet3-topic-panel-conforme-dashboard.html", context)
 
 # Student - BET3 - Panel Conforme - Save Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentTopicPanelConformeSave(request):
     current_user = request.user
     current_password = current_user.password
@@ -1366,7 +1366,7 @@ def studentTopicPanelConformeSave(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -1393,8 +1393,8 @@ def studentTopicPanelConformeSave(request):
 
 
 # Student - BET3 - Proposal - Panel Conforme - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3ProposalPanelConforme(request):
     current_user = request.user
     current_password = current_user.password
@@ -1409,7 +1409,7 @@ def studentBET3ProposalPanelConforme(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -1459,8 +1459,8 @@ def studentBET3ProposalPanelConforme(request):
 
 
 # Student - BET3 - Panel Conforme - Save Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentProposalPanelConformeSave(request):
     current_user = request.user
     current_password = current_user.password
@@ -1475,7 +1475,7 @@ def studentProposalPanelConformeSave(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -1503,8 +1503,8 @@ def studentProposalPanelConformeSave(request):
 
 
 # Student - BET5 - Final - Panel Conforme - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET5FinalPanelConforme(request):
     current_user = request.user
     current_password = current_user.password
@@ -1519,7 +1519,7 @@ def studentBET5FinalPanelConforme(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -1589,8 +1589,8 @@ def studentBET5FinalPanelConforme(request):
 
 
 # Student - BET5 - Final Panel Conforme - Save Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentFinalPanelConformeSave(request):
     current_user = request.user
     current_password = current_user.password
@@ -1605,7 +1605,7 @@ def studentFinalPanelConformeSave(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -1633,8 +1633,8 @@ def studentFinalPanelConformeSave(request):
 
 
 # Student - BET3 - Adviser - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3AdviserDashboard(request):
     current_user = request.user
     current_password = current_user.password
@@ -1649,7 +1649,7 @@ def studentBET3AdviserDashboard(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -1794,8 +1794,8 @@ def studentBET3AdviserDashboard(request):
 ##### STUDENT - PROPOSAL DEFENSE #####
 
 # Student - BET3 - Proposal Defense - Panel Invitation
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3ProposalDefensePanelInvitation(request):
     current_user = request.user
     current_password = current_user.password
@@ -1810,7 +1810,7 @@ def studentBET3ProposalDefensePanelInvitation(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -1874,8 +1874,8 @@ def studentBET3ProposalDefensePanelInvitation(request):
 
 
 # Student - BET3 - Proposal Defense - Panel Invitation - Create for previous Panel Members
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3ProposalDefensePanelInvitationCreatePanel(request):
     current_user = request.user
     current_password = current_user.password
@@ -1884,7 +1884,7 @@ def studentBET3ProposalDefensePanelInvitationCreatePanel(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## TOPBAR ##############
     topbar_data = topbarProcess(request)
@@ -2125,8 +2125,8 @@ def studentBET3ProposalDefensePanelInvitationCreatePanel(request):
 
 
 # Student - BET3 - Proposal Defense - Panel Invitation - Create Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3ProposalDefensePanelInvitationCreate(request):
     current_user = request.user
     current_password = current_user.password
@@ -2141,7 +2141,7 @@ def studentBET3ProposalDefensePanelInvitationCreate(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -2506,8 +2506,8 @@ def studentBET3ProposalDefensePanelInvitationCreate(request):
 
 
 # Student - BET3 - Proposal Defense - Panel Invitation - Save Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3ProposalDefensePanelInvitationSave(request):
     current_user = request.user
     current_password = current_user.password
@@ -2522,7 +2522,7 @@ def studentBET3ProposalDefensePanelInvitationSave(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -2559,8 +2559,8 @@ def studentBET3ProposalDefensePanelInvitationSave(request):
 
 
 # Student - BET3 - Critique Form - Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3CritiqueForm(request):
     current_user = request.user
     current_password = current_user.password
@@ -2575,7 +2575,7 @@ def studentBET3CritiqueForm(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -2649,8 +2649,8 @@ def studentBET3CritiqueForm(request):
 
 
 # Student - BET3 - Research Proposal Defense Form - Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3ResearchProposalDefenseForm(request):
     current_user = request.user
     current_password = current_user.password
@@ -2665,7 +2665,7 @@ def studentBET3ResearchProposalDefenseForm(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -2737,8 +2737,8 @@ def studentBET3ResearchProposalDefenseForm(request):
 
 
 # Student - BET5 - Subject Teacher
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET5SubjectTeacher(request):
     current_user = request.user
     current_password = current_user.password
@@ -2753,7 +2753,7 @@ def studentBET5SubjectTeacher(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -2801,7 +2801,7 @@ def studentBET5SubjectTeacher(request):
     try:
         get_all_faculty = User.objects.all().filter(is_faculty_member = True)
     except:
-        return redirect("index")
+        return redirect("login")
     
     if request.method == "POST":
         input_bet5_subject_teacher = request.POST.get("input_bet5_subject_teacher")
@@ -2852,8 +2852,8 @@ def studentBET5SubjectTeacher(request):
 
 
 # Student - BET5 - Final Defense - Panel Invitation
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET5FinalDefensePanelInvitation(request):
     current_user = request.user
     current_password = current_user.password
@@ -2868,7 +2868,7 @@ def studentBET5FinalDefensePanelInvitation(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
    ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -2937,8 +2937,8 @@ def studentBET5FinalDefensePanelInvitation(request):
 
 
 # Student - BET5 - Final Defense - Panel Invitation - Create for previous Panel Members
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET5FinalDefensePanelInvitationCreatePanel(request):
     current_user = request.user
     current_password = current_user.password
@@ -2947,7 +2947,7 @@ def studentBET5FinalDefensePanelInvitationCreatePanel(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## TOPBAR ##############
     topbar_data = topbarProcess(request)
@@ -3197,8 +3197,8 @@ def studentBET5FinalDefensePanelInvitationCreatePanel(request):
 
 
 # Student - BET5 - Final Defense - Panel Invitation - Create Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET5FinalDefensePanelInvitationCreate(request):
     current_user = request.user
     current_password = current_user.password
@@ -3213,7 +3213,7 @@ def studentBET5FinalDefensePanelInvitationCreate(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -3578,8 +3578,8 @@ def studentBET5FinalDefensePanelInvitationCreate(request):
 
 
 # Student - BET5 - Final Defense - Panel Invitation - Save Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET5FinalDefensePanelInvitationSave(request):
     current_user = request.user
     current_password = current_user.password
@@ -3594,7 +3594,7 @@ def studentBET5FinalDefensePanelInvitationSave(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -3631,8 +3631,8 @@ def studentBET5FinalDefensePanelInvitationSave(request):
 
 
 # Student - BET3 - Research Final Defense Form - Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET5ResearchFinalDefenseForm(request):
     current_user = request.user
     current_password = current_user.password
@@ -3647,7 +3647,7 @@ def studentBET5ResearchFinalDefenseForm(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -3739,8 +3739,8 @@ def studentBET5ResearchFinalDefenseForm(request):
 
 
 # Student - Acknowledgement Receipt Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentAcknowledgementReceiptDashboard(request):
     current_user = request.user
     current_password = current_user.password
@@ -3755,7 +3755,7 @@ def studentAcknowledgementReceiptDashboard(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -3839,8 +3839,8 @@ def studentAcknowledgementReceiptDashboard(request):
     return render(request, "student-acknowledgement-receipt-dashboard.html", context)
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentAcknowledgementReceiptSave(request):
     current_user = request.user
     current_password = current_user.password
@@ -3855,7 +3855,7 @@ def studentAcknowledgementReceiptSave(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     ############## PAGE VALIDATION ##############
     if get_student_leader_data.group_members_status != "completed":
@@ -3882,6 +3882,18 @@ def studentAcknowledgementReceiptSave(request):
     get_student_leader_data.save()
 
     try:
+        get_adviser = User.objects.get(username = get_student_leader_data.adviser_username)
+        get_adviser.advisee_count = int(get_adviser.advisee_count) - 1
+        get_adviser.save()
+    except:
+        pass
+    
+    try:
+        AdviserConforme.objects.filter(student_leader_username = get_student_leader_data.username).update(thesis_completed = True)
+    except:
+        pass
+    
+    try:
         get_acknowledgement_receipt = AcknowledgementReceipt.objects.get(student_leader_username=current_user.username)
     except:
         pass
@@ -3897,8 +3909,8 @@ def studentAcknowledgementReceiptSave(request):
 
 
 # Student - BET-3 Panel Invitation - Logs
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3PanelInvitationLogs(request):
     current_user = request.user
     current_password = current_user.password
@@ -3913,7 +3925,7 @@ def studentBET3PanelInvitationLogs(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_panel_invitations_logs = TitlePanelInvitationLog.objects.all().filter(student_leader_username=current_user.username)
 
@@ -3928,8 +3940,8 @@ def studentBET3PanelInvitationLogs(request):
 
 
 # Student - BET-3 - Propsoal Defense - Panel Invitation - Logs
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3ProposalDefensePanelInvitationLogs(request):
     current_user = request.user
     current_password = current_user.password
@@ -3944,7 +3956,7 @@ def studentBET3ProposalDefensePanelInvitationLogs(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_panel_invitations_logs = ProposalPanelInvitationLog.objects.all().filter(student_leader_username=current_user.username)
 
@@ -3959,8 +3971,8 @@ def studentBET3ProposalDefensePanelInvitationLogs(request):
 
 
 # Student
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentTheDevs(request):
     current_user = request.user
     current_password = current_user.password
@@ -3980,7 +3992,7 @@ def studentTheDevs(request):
     return render(request, "student-the-devs.html", context)
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def topbarProcess(request):
 
     currently_loggedin_user = request.user
@@ -4015,7 +4027,7 @@ def topbarProcess(request):
     return (currently_loggedin_user_full_name, currently_loggedin_user_account)
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def fullNameProcess(request, id):
 
     print(id)

@@ -80,7 +80,7 @@
                         
                         <td class="text-success">{{completed_defense.status}}</td>
 
-                        <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-title-defense-logs-completed' completed_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
+                        <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet5-final-defense-logs-completed' completed_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
                       </tr>
                       {% endfor %}
 
@@ -94,7 +94,8 @@
                         <td>{{redefense_schedule.date}}</td>
                         <td>{{redefense_schedule.start_time}} to {{redefense_schedule.end_time}}</td>
                         <td class="text-danger">{{redefense_schedule.status}}</td>
-                        <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-title-defense-logs-redefense' redefense_schedule.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
+                        <!-- <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-title-defense-logs-redefense' redefense_schedule.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td> -->
+                        <td></td>
                       </tr>
                       {% endfor %}
 

@@ -31,8 +31,8 @@ date_today = today.strftime("%B %d, %Y")
 
 
 # DIT Head - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadDashboard(request):
     currently_loggedin_user = request.user
 
@@ -62,8 +62,8 @@ def ditHeadDashboard(request):
 
 
 # DIT Head - Profile Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadProfile(request):
     currently_loggedin_user = request.user
 
@@ -104,8 +104,8 @@ def ditHeadProfile(request):
 
 
 # DIT Head - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadCreateESignature(request):
     currently_loggedin_user = request.user
 
@@ -140,8 +140,8 @@ def ditHeadCreateESignature(request):
 
 
 # Panel - Upload E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadUploadESignature(request):
     currently_loggedin_user = request.user
 
@@ -268,8 +268,8 @@ def ditHeadUploadESignature(request):
 
 
 # DIT Head - Remove E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadDeleteESignature(request):
     currently_loggedin_user = request.user
 
@@ -279,8 +279,8 @@ def ditHeadDeleteESignature(request):
 
 
 # DIT Head - Acount Settings - Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadAccountSettings(request):
     currently_loggedin_user = request.user
 
@@ -315,7 +315,7 @@ def ditHeadAccountSettings(request):
                     User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
 
                     context = {"response": "changed password"}
-                    return render(request, "index.html", context)
+                    return render(request, "login.html", context)
 
                 else:
                     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "response": "new password and confirm new password doesnt match"}
@@ -335,8 +335,8 @@ def ditHeadAccountSettings(request):
     return render(request, "dit-head-account-settings.html", context)
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadResearchTitles(request):
     currently_loggedin_user = request.user
 
@@ -357,8 +357,8 @@ def ditHeadResearchTitles(request):
 
 
 # DIT Head - BET3 - Topic - Panel Invitation
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadPanelInvitationBet3(request):
     currently_loggedin_user = request.user
 
@@ -411,8 +411,8 @@ def ditHeadPanelInvitationBet3(request):
 
 
 # DIT Head - BET3 - Topic - Panel Invitation - Accept w/ Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3TopicPanelInvitationAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -488,8 +488,8 @@ def ditHeadBET3TopicPanelInvitationAcceptSignature(request, id):
 
 
 # DIT Head - BET3 - Topic - Panel Invitation - Accept Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadPanelInvitationBet3Accept(request, id):
     currently_loggedin_user = request.user
 
@@ -548,8 +548,8 @@ def ditHeadPanelInvitationBet3Accept(request, id):
 
 
 # DIT Head - BET3 - Topic - Panel Invitation - Decline w/ Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3TopicPanelInvitationDeclineSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -644,8 +644,8 @@ def ditHeadBET3TopicPanelInvitationDeclineSignature(request, id):
 
 
 # DIT Head - Panel Invitation BET-3 Decline Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadPanelInvitationBet3Decline(request, id):
     currently_loggedin_user = request.user
 
@@ -720,8 +720,8 @@ def ditHeadPanelInvitationBet3Decline(request, id):
 
 
 # DIT Head - BET3 - Proposal Defense - Panel Invitation - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3ProposalDefensePanelInvitationDashboard(request):
     currently_loggedin_user = request.user
 
@@ -751,8 +751,8 @@ def ditHeadBET3ProposalDefensePanelInvitationDashboard(request):
 
 
 # DIT Head - BET3 - Proposal - Panel Invitation - Accept w/ Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3ProposalPanelInvitationAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -828,8 +828,8 @@ def ditHeadBET3ProposalPanelInvitationAcceptSignature(request, id):
 
 
 # DIT Head - BET3 - Proposal - Panel Invitation - Accept Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3ProposalPanelInvitationAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -888,8 +888,8 @@ def ditHeadBET3ProposalPanelInvitationAccept(request, id):
 
 
 # DIT Head - BET3 - Proposal - Panel Invitation - Decline w/ Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3ProposalPanelInvitationDeclineSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -989,8 +989,8 @@ def ditHeadBET3ProposalPanelInvitationDeclineSignature(request, id):
 
 
 # DIT Head - Panel Invitation BET-3 Decline Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3ProposalPanelInvitationDecline(request, id):
     currently_loggedin_user = request.user
 
@@ -1071,8 +1071,8 @@ def ditHeadBET3ProposalPanelInvitationDecline(request, id):
 
 
 # DIT Head - BET-3 Adviser Conforme Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3AdviserConforme(request):
     currently_loggedin_user = request.user
 
@@ -1092,8 +1092,8 @@ def ditHeadBET3AdviserConforme(request):
 
 
 # DIT Head - BET-3 Adviser Conforme - Accept with signature Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3AdviserConformeAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1167,8 +1167,8 @@ def ditHeadBET3AdviserConformeAcceptSignature(request, id):
 
 
 # DIT Head - BET-3 Adviser Conforme - Accept Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3AdviserConformeAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -1223,8 +1223,8 @@ def ditHeadBET3AdviserConformeAccept(request, id):
 
 
 # DIT Head - BET-3 Adviser Conforme - Decline with signature Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3AdviserConformeDeclineSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1311,8 +1311,8 @@ def ditHeadBET3AdviserConformeDeclineSignature(request, id):
 
 
 # DIT Head - BET-3 Adviser Conforme - Decline Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3AdviserConformeDecline(request, id):
     currently_loggedin_user = request.user
 
@@ -1381,8 +1381,8 @@ def ditHeadBET3AdviserConformeDecline(request, id):
 # DIT HEAD - ADVISER CONFORME
 
 # DIT Head - BET3 - Panel Conforme - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadPanelConformeDashboard(request):
     currently_loggedin_user = request.user
 
@@ -1411,8 +1411,8 @@ def ditHeadPanelConformeDashboard(request):
 
 
 # DIT Head - Panel Conforme - Accept Signature Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadPanelConformeAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1484,8 +1484,8 @@ def ditHeadPanelConformeAcceptSignature(request, id):
 
 
 # DIT Head - Panel Conforme - Accept Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadPanelConformeAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -1539,8 +1539,8 @@ def ditHeadPanelConformeAccept(request, id):
 
 
 # DIT Head - BET5 - Final Defense - Panel Invitation - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET5FinalDefensePanelInvitationDashboard(request):
     currently_loggedin_user = request.user
 
@@ -1570,8 +1570,8 @@ def ditHeadBET5FinalDefensePanelInvitationDashboard(request):
 
 
 # DIT Head - BET5 - Final - Panel Invitation - Accept w/ Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET5FinalPanelInvitationAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1647,8 +1647,8 @@ def ditHeadBET5FinalPanelInvitationAcceptSignature(request, id):
 
 
 # DIT Head - BET3 - Proposal - Panel Invitation - Accept Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET5FinalPanelInvitationAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -1707,8 +1707,8 @@ def ditHeadBET5FinalPanelInvitationAccept(request, id):
 
 
 # DIT Head - BET3 - Proposal - Panel Invitation - Decline w/ Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET5FinalPanelInvitationDeclineSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1809,8 +1809,8 @@ def ditHeadBET5FinalPanelInvitationDeclineSignature(request, id):
 
 
 # DIT Head - Panel Invitation BET-5 Decline Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET5FinalPanelInvitationDecline(request, id):
     currently_loggedin_user = request.user
 
@@ -1891,8 +1891,8 @@ def ditHeadBET5FinalPanelInvitationDecline(request, id):
 
 
 # DIT Head - Panel Conforme BET-3 Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadPanelConformeBet3(request):
     currently_loggedin_user = request.user
 
@@ -1928,8 +1928,8 @@ def ditHeadPanelConformeBet3(request):
 
 
 # DIT Head - Panel Conforme BET-3 Accept Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadPanelConformeBet3Accept(request, id):
     currently_loggedin_user = request.user
 
@@ -1973,14 +1973,14 @@ def ditHeadPanelConformeBet3Accept(request, id):
 
 
 # DIT Head - Panel Conforme BET-3 Decline Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadPanelConformeBet3Decline(request, id):
     pass
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadAcknowledgementReceipt(request):
     currently_loggedin_user = request.user
 
@@ -1999,8 +1999,8 @@ def ditHeadAcknowledgementReceipt(request):
     return render(request, "dit-head-acknowledgement-receipt.html", context)
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadAcknowledgementReceiptAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -2063,8 +2063,8 @@ def ditHeadAcknowledgementReceiptAcceptSignature(request, id):
         return redirect("dit-head-acknowledgement-receipt")
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadAcknowledgementReceiptAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -2108,8 +2108,8 @@ def ditHeadAcknowledgementReceiptAccept(request, id):
 
 
 # DIT Head - BET-3 Panel Invitation Logs
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3PanelInvitationLogs(request):
     currently_loggedin_user = request.user
 
@@ -2131,8 +2131,8 @@ def ditHeadBET3PanelInvitationLogs(request):
 
 
 # DIT Head - BET-3 Adviser Conforme Logs
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3AdviserConformeLogs(request):
     currently_loggedin_user = request.user
 
@@ -2154,8 +2154,8 @@ def ditHeadBET3AdviserConformeLogs(request):
 
 
 # DIT Head - BET-3 Panel Invitation Logs
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET3ProposalPanelInvitationLogs(request):
     currently_loggedin_user = request.user
 
@@ -2176,8 +2176,8 @@ def ditHeadBET3ProposalPanelInvitationLogs(request):
     return render(request, "dit-head-bet3-proposal-panel-invitation-logs.html", context)
 
 # DIT Head
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadPanelConformeLogs(request):
     currently_loggedin_user = request.user
 
@@ -2186,21 +2186,21 @@ def ditHeadPanelConformeLogs(request):
     currently_loggedin_user_account = topbar_data[1]
 
     # BET-3 Panel Invitation Logs
-    # get_panel_invitation = ProposalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username)
-    # get_panel_invitation_2 = ProposalPanelInvitationLog.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+    get_panel_conforme = PanelConforme.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+    get_panel_conforme_2 = PanelConformeLog.objects.all().filter(dit_head_username=currently_loggedin_user.username)
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
-        # "panel_invitations": get_panel_invitation,
-        # "panel_invitations_2": get_panel_invitation_2,
+        "panel_conforme": get_panel_conforme,
+        "panel_conforme_2": get_panel_conforme_2,
     }
 
     return render(request, "dit-head-panel-conforme-logs.html", context)
 
 
 # DIT Head
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET5FinalPanelInvitationLogs(request):
     currently_loggedin_user = request.user
 
@@ -2221,8 +2221,8 @@ def ditHeadBET5FinalPanelInvitationLogs(request):
     return render(request, "dit-head-bet5-final-panel-invitation-logs.html", context)
 
 # DIT Head
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadBET5AcknowledgementReceiptLogs(request):
     currently_loggedin_user = request.user
 
@@ -2230,21 +2230,19 @@ def ditHeadBET5AcknowledgementReceiptLogs(request):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
-    # BET-3 Panel Invitation Logs
-    # get_panel_invitation = FinalPanelInvitation.objects.all().filter(dit_head_username=currently_loggedin_user.username)
-    # get_panel_invitation_2 = FinalPanelInvitationLog.objects.all().filter(dit_head_username=currently_loggedin_user.username)
+    get_accepted_receipt = AcknowledgementReceipt.objects.all().filter(dit_head_username = currently_loggedin_user.username, dit_head_response ="Accepted")
+
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
-        # "panel_invitations": get_panel_invitation,
-        # "panel_invitations_2": get_panel_invitation_2,
+        "accepted_receipt": get_accepted_receipt,
     }
 
     return render(request, "dit-head-acknowledgement-receipt-logs.html", context)
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_department_head, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadTheDevs(request):
     currently_loggedin_user = request.user
 
@@ -2264,7 +2262,7 @@ def ditHeadTheDevs(request):
 
     return render(request, "dit-head-the-devs.html", context)
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def topbarProcess(request):
 
     currently_loggedin_user = request.user

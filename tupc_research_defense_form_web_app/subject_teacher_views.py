@@ -23,8 +23,8 @@ today = date.today()
 date_today = today.strftime("%B %d, %Y")
 
 # Subject Teacher - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherDashboard(request):
     currently_loggedin_user = request.user
 
@@ -35,7 +35,7 @@ def subjectTeacherDashboard(request):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
 
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
@@ -53,8 +53,8 @@ def subjectTeacherDashboard(request):
 
 
 # Subject Teacher - Research Title Defense Day Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherTitleDefenseDay(request, id):
     currently_loggedin_user = request.user
 
@@ -424,8 +424,8 @@ def subjectTeacherTitleDefenseDay(request, id):
 
 
 # Subject Teacher - Research Title Defense Day - Present Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherTitleDefenseDayPresent(request, id):
     currently_loggedin_user = request.user
 
@@ -495,8 +495,8 @@ def subjectTeacherTitleDefenseDayPresent(request, id):
 
 
 # Subject Teacher - Research Title Defense Day - Absent Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherTitleDefenseDayAbsent(request, id):
     currently_loggedin_user = request.user
 
@@ -523,8 +523,8 @@ def subjectTeacherTitleDefenseDayAbsent(request, id):
 
 
 # Subject Teacher - Research Title Defense Day - Set Panel Chairman Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherTitleDefenseDaySetPanelChairman(request, id):
     currently_loggedin_user = request.user
 
@@ -547,8 +547,8 @@ def subjectTeacherTitleDefenseDaySetPanelChairman(request, id):
 
 
 # Subject Teacher - Research Title Defense Day - Start Voting
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherTitleDefenseDayStartVote(request, id):
     currently_loggedin_user = request.user
 
@@ -559,7 +559,7 @@ def subjectTeacherTitleDefenseDayStartVote(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # try:
     #     get_available_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = date_today, status = "Available")
@@ -596,7 +596,7 @@ def subjectTeacherTitleDefenseDayStartVote(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # try:
     #     get_available_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = date_today, status = "Available")
@@ -620,8 +620,8 @@ def subjectTeacherTitleDefenseDayStartVote(request, id):
 
 
 # Subject Teacher - Research Title Defense Day - Close Voting
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherTitleDefenseDayCloseVote(request, id):
     currently_loggedin_user = request.user
 
@@ -633,7 +633,7 @@ def subjectTeacherTitleDefenseDayCloseVote(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_student_research_title_data = ResearchTitle.objects.all().filter(student_leader_username=id)
 
@@ -1495,8 +1495,8 @@ def subjectTeacherTitleDefenseDayCloseVote(request, id):
 
 
 # Subject Teacher - Research Proposal Defense Day
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3ProposalDefenseDay(request, id):
 
     print(request.user)
@@ -1737,8 +1737,8 @@ def subjectTeacherBET3ProposalDefenseDay(request, id):
 
 
 # Subject Teacher - Research Proposal Defense Day - Present Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3ProposalDefensePresent(request, id):
     currently_loggedin_user = request.user
 
@@ -1791,8 +1791,8 @@ def subjectTeacherBET3ProposalDefensePresent(request, id):
 
 
 # Subject Teacher - Research Title Defense Day - Absent Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3ProposalDefenseAbsent(request, id):
     currently_loggedin_user = request.user
 
@@ -1819,8 +1819,8 @@ def subjectTeacherBET3ProposalDefenseAbsent(request, id):
 
 
 # Subject Teacher - Research Title Defense Day - Set Panel Chairman Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3ProposalDefenseDaySetPanelChairman(request, id):
     currently_loggedin_user = request.user
 
@@ -1843,8 +1843,8 @@ def subjectTeacherBET3ProposalDefenseDaySetPanelChairman(request, id):
 
 
 # Subject Teacher - Research Proposal Defense Day - Start Critique
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3ProposalDefenseDayStartCritique(request, id):
     currently_loggedin_user = request.user
 
@@ -1855,7 +1855,7 @@ def subjectTeacherBET3ProposalDefenseDayStartCritique(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     try:
         get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
@@ -1930,7 +1930,7 @@ def subjectTeacherBET3ProposalDefenseDayStartCritique(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
     get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
@@ -1949,8 +1949,8 @@ def subjectTeacherBET3ProposalDefenseDayStartCritique(request, id):
 
 
 # Subject Teacher - Research Proposal Defense Day - End Critique
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3ProposalDefenseDayEndCritique(request, id):
     currently_loggedin_user = request.user
 
@@ -1961,7 +1961,7 @@ def subjectTeacherBET3ProposalDefenseDayEndCritique(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
 
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
@@ -1997,7 +1997,7 @@ def subjectTeacherBET3ProposalDefenseDayEndCritique(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
     get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
@@ -2016,8 +2016,8 @@ def subjectTeacherBET3ProposalDefenseDayEndCritique(request, id):
 
 
 # Subject Teacher - Research Proposal Defense Day - Start Voting
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3ProposalDefenseDayStartVoting(request, id):
     currently_loggedin_user = request.user
 
@@ -2028,7 +2028,7 @@ def subjectTeacherBET3ProposalDefenseDayStartVoting(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
 
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
@@ -2045,7 +2045,7 @@ def subjectTeacherBET3ProposalDefenseDayStartVoting(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
     get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
@@ -2064,8 +2064,8 @@ def subjectTeacherBET3ProposalDefenseDayStartVoting(request, id):
 
 
 # Subject Teacher - Research Proposal Defense Day - End Voting
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3ProposalDefenseDayEndVoting(request, id):
     currently_loggedin_user = request.user
 
@@ -2076,7 +2076,7 @@ def subjectTeacherBET3ProposalDefenseDayEndVoting(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
 
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
@@ -2183,8 +2183,8 @@ def subjectTeacherBET3ProposalDefenseDayEndVoting(request, id):
 
 
 # Subject Teacher - Research Proposal Defense Day - End Defense
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
     currently_loggedin_user = request.user
 
@@ -2195,7 +2195,7 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     
     get_present_panel_members = ProposalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Proposal Defense Panel Invitation", research_proposal_defense_date=date_today, panel_attendance="present")
@@ -2685,8 +2685,8 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
         
 
 # SUBJECT TEACHER - FINAL DEFENSE PROCESS
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET5FinalDefenseDay(request, id):
 
     print(request.user)
@@ -2927,8 +2927,8 @@ def subjectTeacherBET5FinalDefenseDay(request, id):
 
 
 # Subject Teacher - Research Final Defense Day - Present Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET5FinalDefensePresent(request, id):
     currently_loggedin_user = request.user
 
@@ -2981,8 +2981,8 @@ def subjectTeacherBET5FinalDefensePresent(request, id):
 
 
 # Subject Teacher - Research Final Defense Day - Absent Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET5FinalDefenseAbsent(request, id):
     currently_loggedin_user = request.user
 
@@ -3009,8 +3009,8 @@ def subjectTeacherBET5FinalDefenseAbsent(request, id):
 
 
 # Subject Teacher - Research Final Defense Day - Set Panel Chairman Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET5FinalDefenseDaySetPanelChairman(request, id):
     currently_loggedin_user = request.user
 
@@ -3033,8 +3033,8 @@ def subjectTeacherBET5FinalDefenseDaySetPanelChairman(request, id):
 
 
 # Subject Teacher - Research FInal Defense Day - Start Voting
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET5FinalDefenseDayStartVoting(request, id):
     currently_loggedin_user = request.user
 
@@ -3045,7 +3045,7 @@ def subjectTeacherBET5FinalDefenseDayStartVoting(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
 
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
@@ -3062,7 +3062,7 @@ def subjectTeacherBET5FinalDefenseDayStartVoting(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
     get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
@@ -3081,8 +3081,8 @@ def subjectTeacherBET5FinalDefenseDayStartVoting(request, id):
 
 
 # Subject Teacher - Research Final Defense Day - End Voting
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET5FinalDefenseDayEndVoting(request, id):
     currently_loggedin_user = request.user
 
@@ -3093,7 +3093,7 @@ def subjectTeacherBET5FinalDefenseDayEndVoting(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
 
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
@@ -3197,8 +3197,8 @@ def subjectTeacherBET5FinalDefenseDayEndVoting(request, id):
 
 
 # Subject Teacher - Research Final Defense Day - End Defense
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
     currently_loggedin_user = request.user
 
@@ -3209,7 +3209,7 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
     try:
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
 
     try:
@@ -3555,8 +3555,8 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
 
 
 # Subject Teacher - User Profile -  Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherProfile(request):
     currently_loggedin_user = request.user
 
@@ -3597,8 +3597,8 @@ def subjectTeacherProfile(request):
 
 
 # Subject Teacher - Upload E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherUploadESignature(request):
     currently_loggedin_user = request.user
 
@@ -3724,8 +3724,8 @@ def subjectTeacherUploadESignature(request):
 
 
 # Subject Teacher - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherCreateESignature(request):
     currently_loggedin_user = request.user
 
@@ -3736,7 +3736,7 @@ def subjectTeacherCreateESignature(request):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     if request.method == "POST":
         signature_url = request.POST.get("signature_link")
@@ -3766,8 +3766,8 @@ def subjectTeacherCreateESignature(request):
 
 
 # Subject Teacher - Remove E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherDeleteESignature(request):
     currently_loggedin_user = request.user
 
@@ -3777,8 +3777,8 @@ def subjectTeacherDeleteESignature(request):
 
 
 # Subject Teacher - Acount Settings Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherAccountSettings(request):
     currently_loggedin_user = request.user
 
@@ -3813,7 +3813,7 @@ def subjectTeacherAccountSettings(request):
                     User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
 
                     context = {"response": "changed password"}
-                    return render(request, "index.html", context)
+                    return render(request, "login.html", context)
 
                 else:
                     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "response": "new password and confirm new password doesnt match"}
@@ -3834,8 +3834,8 @@ def subjectTeacherAccountSettings(request):
 
 
 # Subject Teacher
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherResearchTitles(request):
     current_user = request.user
     current_password = current_user.password
@@ -3862,8 +3862,8 @@ def subjectTeacherResearchTitles(request):
 ##### SUBJECT TEACHER - BET-3 - TOPIC DEFENSE #####
 
 # Subject Teacher - Research Title Defense Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherMyTitleDefenseDashboard(request):
     currently_loggedin_user = request.user
 
@@ -3908,8 +3908,8 @@ def subjectTeacherMyTitleDefenseDashboard(request):
 
 
 # Subject Teacher - Research Title Defense Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherStudentsTitleDefenseDashboard(request):
     currently_loggedin_user = request.user
 
@@ -3956,8 +3956,8 @@ def subjectTeacherStudentsTitleDefenseDashboard(request):
 
 
 # Subject Teacher - Set Research Title Defense Schedule Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherSetResearchTitleDefenseSchedule(request):
     currently_loggedin_user = request.user
 
@@ -3995,8 +3995,8 @@ def subjectTeacherSetResearchTitleDefenseSchedule(request):
 
 
 # Subject Teacher - Save Research Title Defense Schedule Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherSaveResearchTitleDefenseSchedule(request):
     currently_loggedin_user = request.user
 
@@ -4074,8 +4074,8 @@ def subjectTeacherSaveResearchTitleDefenseSchedule(request):
 
 
 # Subject Teacher - Delete Research Title Defense Schedule Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherDeleteResearchTitleDefenseSchedule(request, id):
     currently_loggedin_user = request.user
 
@@ -4096,8 +4096,8 @@ def subjectTeacherDeleteResearchTitleDefenseSchedule(request, id):
 
 
 # Subject Teacher - BET-3 Research Title Defense Logs Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3TitleDefenseLogs(request):
     currently_loggedin_user = request.user
 
@@ -4120,8 +4120,8 @@ def subjectTeacherBET3TitleDefenseLogs(request):
 
 
 # Subject Teacher - BET-3 Research Title Defense Completed Logs Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3TitleDefenseLogCompleted(request, id):
     currently_loggedin_user = request.user
 
@@ -4171,8 +4171,8 @@ def subjectTeacherBET3TitleDefenseLogCompleted(request, id):
 
 
 # Subject Teacher - BET-3 Research Title Defense Redefense Logs Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3TitleDefenseLogRedefense(request, id):
     currently_loggedin_user = request.user
 
@@ -4220,8 +4220,8 @@ def subjectTeacherBET3TitleDefenseLogRedefense(request, id):
 
 
 # Subject Teacher - BET-3 Research Title Defense Logs Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3ProposalDefenseLogs(request):
     currently_loggedin_user = request.user
 
@@ -4244,8 +4244,8 @@ def subjectTeacherBET3ProposalDefenseLogs(request):
 
 
 # Subject Teacher - BET-3 Research Title Defense Completed Logs Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET3ProposalDefenseLogCompleted(request, id):
     currently_loggedin_user = request.user
 
@@ -4292,8 +4292,8 @@ def subjectTeacherBET3ProposalDefenseLogCompleted(request, id):
 ##### SUBJECT TEACHER - BET-3 - PROPOSAL DEFENSE #####
 
 # Subject Teacher - Research Proposal Defense Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherMyProposalDefenseDashboard(request):
     currently_loggedin_user = request.user
 
@@ -4338,8 +4338,8 @@ def subjectTeacherMyProposalDefenseDashboard(request):
 
 
 # Subject Teacher - Research Proposal Defense Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherStudentsProposalDefenseDashboard(request):
     currently_loggedin_user = request.user
 
@@ -4387,8 +4387,8 @@ def subjectTeacherStudentsProposalDefenseDashboard(request):
 
 
 # Subject Teacher - Set Research Proposal Defense Schedule Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherSetResearchProposalDefenseSchedule(request):
     currently_loggedin_user = request.user
 
@@ -4431,8 +4431,8 @@ def subjectTeacherSetResearchProposalDefenseSchedule(request):
 
 
 # Subject Teacher - BET-3 Research Proposal Defense Form - Save Schedule
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherSaveResearchProposalDefenseSchedule(request):
     currently_loggedin_user = request.user
 
@@ -4528,8 +4528,8 @@ def subjectTeacherSaveResearchProposalDefenseSchedule(request):
 
 
 # Subject Teacher - Delete Research Proposal Defense Schedule
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherDeleteResearchProposalDefenseSchedule(request, id):
     currently_loggedin_user = request.user
 
@@ -4551,8 +4551,8 @@ def subjectTeacherDeleteResearchProposalDefenseSchedule(request, id):
 # SUBJECT TEACHER - FINAL DEFENSE OPTIONS
 
 # Subject Teacher - Set Research Final Defense Schedule Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherSetResearchFinalDefenseSchedule(request):
     currently_loggedin_user = request.user
 
@@ -4595,8 +4595,8 @@ def subjectTeacherSetResearchFinalDefenseSchedule(request):
 
 
 # Subject Teacher - BET-3 Research Final Defense Form - Save Schedule
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherSaveResearchFinalDefenseSchedule(request):
     currently_loggedin_user = request.user
 
@@ -4692,8 +4692,8 @@ def subjectTeacherSaveResearchFinalDefenseSchedule(request):
 
 
 # Subject Teacher - Delete Research Proposal Defense Schedule
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherDeleteResearchFinalDefenseSchedule(request, id):
     currently_loggedin_user = request.user
 
@@ -4714,8 +4714,8 @@ def subjectTeacherDeleteResearchFinalDefenseSchedule(request, id):
 
 
 # Subject Teacher - Research Final Defense Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherMyFinalDefenseDashboard(request):
     currently_loggedin_user = request.user
 
@@ -4760,8 +4760,8 @@ def subjectTeacherMyFinalDefenseDashboard(request):
 
 
 # Subject Teacher - Research Final Defense Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherStudentsFinalDefenseDashboard(request):
     currently_loggedin_user = request.user
 
@@ -4809,8 +4809,8 @@ def subjectTeacherStudentsFinalDefenseDashboard(request):
 
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherAcknowledgementReceipt(request):
     currently_loggedin_user = request.user
 
@@ -4830,8 +4830,8 @@ def subjectTeacherAcknowledgementReceipt(request):
 
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherAcknowledgementReceiptAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -4897,8 +4897,8 @@ def subjectTeacherAcknowledgementReceiptAcceptSignature(request, id):
         return redirect("subject-teacher-acknowledgement-receipt")
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherAcknowledgementReceiptAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -4941,9 +4941,28 @@ def subjectTeacherAcknowledgementReceiptAccept(request, id):
         return redirect("subject-teacher-acknowledgement-receipt")
 
 
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
+def subjectTeacherAcknowledgementReceiptLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    get_pending_receipt = AcknowledgementReceipt.objects.all().filter(subject_teacher_username = currently_loggedin_user.username, subject_teacher_response ="Accepted")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": date_today,
+        "accepted_receipt": get_pending_receipt,
+    }
+
+    return render(request, "subject-teacher-acknowledgement-logs.html", context)
+
 # Subject Teacher - BET-3 Research Title Defense Logs Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherBET5FinalDefenseLogs(request):
     currently_loggedin_user = request.user
 
@@ -4965,9 +4984,146 @@ def subjectTeacherBET5FinalDefenseLogs(request):
     return render(request, "subject-teacher-bet5-research-final-defense-logs.html", context)
 
 
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
+def subjectTeacherBET3FinalDefenseLogCompleted(request, id):
+
+    print(request.user)
+
+    # ----- Topbar Process -----
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    print("Subject Teacher: ", currently_loggedin_user_full_name, "-", currently_loggedin_user_account)
+    # ----- Topbar Process -----
+
+    # ----- Student Leader Data -----
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=id)
+        print("Student Leader: ", get_student_leader_data.username)
+    except:
+        return redirect("subject-teacher-dashboard")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+    print("Student Leader Full Name: ", student_leader_full_name)
+    # ----- Student Leader Data -----
+
+
+    # ----- Validation ------
+    
+     # ----- Validation ------
+
+    # ----- Fetch Data -----
+    get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=id) # Get all the group members
+
+    get_panel_members  = FinalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Final Defense Panel Invitation", research_final_defense_date=get_student_leader_data.research_final_defense_date, panel_attendance="")
+
+    get_present_panel_members = FinalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Final Defense Panel Invitation", research_final_defense_date=get_student_leader_data.research_final_defense_date, panel_attendance="present")
+    get_pending_proposal_defense = FinalPanelInvitation.objects.filter(student_leader_username=id, form_status="accepted", form="Final Defense Panel Invitation", research_final_defense_date=get_student_leader_data.research_final_defense_date, panel_attendance="present", is_completed = False)
+
+    get_absent_panel_members = FinalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Final Defense Panel Invitation", research_final_defense_date=get_student_leader_data.research_final_defense_date, panel_attendance="absent")
+    
+    get_bet3_panel_invitations = FinalPanelInvitation.objects.all().filter(student_leader_username=id)
+
+    get_proposal_defense_present_panel = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, panel_attendance="present")
+
+    get_present_panel_members_proposal_defense = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, panel_attendance="present")
+
+    get_start_critique = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, subject_teacher_username = request.user)
+
+    get_end_critique = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, subject_teacher_username = request.user)
+
+    check_pending = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, subject_teacher_username = request.user)
+    
+    check_pending_critique = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, subject_teacher_username = request.user)
+
+    get_start_voting = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, subject_teacher_username = request.user, start_voting = 1)
+
+    get_end_voting = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, subject_teacher_username = request.user, start_voting = 1, end_voting = 1)
+
+    check_pending_vote = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, subject_teacher_username = request.user, final_defense_response = "")
+
+    try:
+        get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
+        research_title = get_accepted_research_title.research_title
+    except:
+       pass
+    
+    try:
+        get_revise_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Revise Title")
+        research_title = get_revise_research_title.research_title
+    except:
+        pass
+    
+    try:
+        get_student_proposal_defense_schedule = DefenseSchedule.objects.get(student_leader_username=id, form="Research Final Defense", date=get_student_leader_data.research_final_defense_date, status="Reserved")
+    except:
+        pass
+    
+    try:
+        get_panel_chairman = FinalDefenseForm.objects.get(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, panel_attendance="present", is_panel_chairman=1)
+        print("Panel Chairman: ", get_panel_chairman.panel_full_name)
+    except:
+        get_panel_chairman = None
+
+    try:
+        get_pending_panel_chairman_signature_response = FinalDefenseForm.objects.get(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, subject_teacher_username = request.user, panel_chairman_signature_response = 1)
+    except:
+        get_pending_panel_chairman_signature_response = 0
+    
+    try:
+        get_done_pc_sign = FinalDefenseForm.objects.get(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, subject_teacher_username = request.user, start_voting = 1, is_panel_chairman = True, panel_chairman_signature_response = True)
+    except:
+        get_done_pc_sign = None
+
+    try:
+        get_done_p_sign = FinalDefenseForm.objects.get(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, subject_teacher_username = request.user, start_voting = 1, is_panel_chairman = True, panel_chairman_signature_response = True)
+    except:
+        get_done_p_sign = None
+
+
+    all_pending_panel_signature_response = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=get_student_leader_data.research_final_defense_date, subject_teacher_username = request.user, start_voting = 1, panel_signature_response = False)
+    
+     # ----- Fetch Data -----
+
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+
+        "group_members": get_group_members,
+
+        "accepted_research_title": research_title,
+
+        "panel_members": get_panel_members,
+
+        "present_panel_members": get_present_panel_members,
+        "absent_panel_members": get_absent_panel_members,
+
+        "present_panel_members_proposal_defense": get_present_panel_members_proposal_defense,
+        "panel_chairman": get_panel_chairman,
+        "pending_signature_response" : get_pending_panel_chairman_signature_response,
+        "start_critique" : get_start_critique,
+        "end_critique" : get_end_critique,
+        "check_pending_critique": check_pending_critique,
+        "start_voting": get_start_voting,
+        "end_voting": get_end_voting,
+        "done_panel_chairman_sign": get_done_pc_sign,
+        "all_pending_panel_signature_response": all_pending_panel_signature_response,
+        "pending_proposal_defense": get_pending_proposal_defense,
+        "get_accepted_research_title_data": get_accepted_research_title,
+    }
+
+    return render(request, "subject-teacher-bet5-final-defense-data.html", context)
+
 # Subject Teacher
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def subjectTeacherTheDevs(request):
     current_user = request.user
     current_password = current_user.password
@@ -4987,7 +5143,7 @@ def subjectTeacherTheDevs(request):
     return render(request, "subject-teacher-the-devs.html", context)
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def topbarProcess(request):
 
     currently_loggedin_user = request.user

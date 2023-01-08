@@ -48,6 +48,8 @@
                         <th>Student ID No.</th>
                         <th>Student Name</th>
                         <th>Course</th>
+                        <th>Research Title</th>
+                        <th>Date</th>
                         <th>Response</th>
                         <th>Signature</th>
                       </tr>
@@ -58,13 +60,29 @@
                         <th>Student ID No.</th>
                         <th>Student Name</th>
                         <th>Course</th>
+                        <th>Research Title</th>
+                        <th>Date</th>
                         <th>Response</th>
                         <th>Signature</th>
                       </tr>
                     </tfoot>
                     <tbody class="text-dark">
-                      
-          
+                      {% for accepted_receipt in accepted_receipt %}
+                      <tr>
+                        <td hidden>{{accepted_receipt.id}}</td>
+                        <td>{{accepted_receipt.student_leader_username}}</td>
+                        <td>{{accepted_receipt.student_leader_full_name}}</td>
+                        <td>{{accepted_receipt.course_major_abbr}}</td>
+                        <td>{{accepted_receipt.research_title}}</td>
+                        <td>{{accepted_receipt.dit_head_response_date}}</td>
+                        <td class="text-success">{{accepted_receipt.dit_head_response}}</td>
+                        {% if accepted_receipt.dit_head_signature == True %}
+                        <td class="text-success">E-Signature</td>
+                        {% else %}
+                        <td class="text-info">Live Signature</td>
+                        {% endif %}
+                      </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>

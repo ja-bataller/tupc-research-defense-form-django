@@ -76,14 +76,12 @@
             <h6 class="collapse-header">BET-3</h6>
             <a class="collapse-item" href="{% url 'panel-bet3-panel-invitation-logs' %}">Topic - Panel Invitation</a>
             <a class="collapse-item" href="{% url 'panel-bet3-title-defense-logs' %}">Research Title Defense</a>
-            <!-- <a class="collapse-item" href="">Research Title Defense</a>
-                        <a class="collapse-item" href="">Research Adviser Conforme</a> -->
+            <a class="collapse-item" href="{% url 'panel-bet3-proposal-panel-invitation-logs' %}">Proposal - Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'panel-bet3-proposal-defense-logs' %}">Research Proposal Defense</a>
             <div class="collapse-divider"></div>
             <h6 class="collapse-header">BET-5</h6>
-            <!-- <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a>
-                        <a class="collapse-item" href="#">New Form</a> -->
+            <a class="collapse-item" href="{% url 'panel-bet5-final-panel-invitation-logs' %}">Final - Panel Invitation</a>
+            <a class="collapse-item" href="{% url 'panel-bet5-final-defense-logs' %}">Research Final Defense</a>
           </div>
         </div>
       </li>
@@ -93,7 +91,7 @@
 
       <!-- Nav Item - The Developers -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'panel-the-devs' %}">
           <i class="fa-solid fa-code"></i>
           <span>The Devs</span></a>
       </li>

@@ -32,8 +32,8 @@ today = date.today()
 date_today = today.strftime("%B %d, %Y")
 
 # Academic Affairs Office
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_library, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_library, login_url="login")
 def  libraryDashboard(request):
     currently_loggedin_user = request.user
 
@@ -53,8 +53,8 @@ def  libraryDashboard(request):
 
 
 # Research & Extension
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_library, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_library, login_url="login")
 def  libraryLogs(request):
     currently_loggedin_user = request.user
 
@@ -73,8 +73,8 @@ def  libraryLogs(request):
     return render(request, "library-logs.html", context)
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_library, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_library, login_url="login")
 def  libraryTheDevs(request):
     currently_loggedin_user = request.user
 
@@ -90,8 +90,8 @@ def  libraryTheDevs(request):
     return render(request, "library-the-devs.html", context)
 
 # Research & Extension - Profile Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_library, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_library, login_url="login")
 def  libraryProfile(request):
     currently_loggedin_user = request.user
 
@@ -132,8 +132,8 @@ def  libraryProfile(request):
 
 
 # Panel - Upload E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_library, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_library, login_url="login")
 def  libraryUploadESignature(request):
     currently_loggedin_user = request.user
 
@@ -259,8 +259,8 @@ def  libraryUploadESignature(request):
 
 
 # Panel - Remove E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_library, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_library, login_url="login")
 def  libraryDeleteESignature(request):
     currently_loggedin_user = request.user
 
@@ -270,8 +270,8 @@ def  libraryDeleteESignature(request):
 
 
 # Panel - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_library, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_library, login_url="login")
 def  libraryCreateESignature(request):
     currently_loggedin_user = request.user
 
@@ -282,7 +282,7 @@ def  libraryCreateESignature(request):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     if request.method == "POST":
         signature_url = request.POST.get("signature_link")
@@ -312,8 +312,8 @@ def  libraryCreateESignature(request):
 
 
 # Panel - Acount Settings Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_library, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_library, login_url="login")
 def  libraryAccountSettings(request):
     currently_loggedin_user = request.user
 
@@ -348,7 +348,7 @@ def  libraryAccountSettings(request):
                     User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
 
                     context = {"response": "changed password"}
-                    return render(request, "index.html", context)
+                    return render(request, "login.html", context)
 
                 else:
                     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "response": "new password and confirm new password doesnt match"}
@@ -368,8 +368,8 @@ def  libraryAccountSettings(request):
     return render(request, "library-account-settings.html", context)
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_library, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_library, login_url="login")
 def  libraryAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -441,8 +441,8 @@ def  libraryAcceptSignature(request, id):
 
 
 # Panel - Panel Conforme - Accept with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_library, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_library, login_url="login")
 def  libraryAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -495,7 +495,7 @@ def  libraryAccept(request, id):
         return redirect("library-dashboard")
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def topbarProcess(request):
 
     currently_loggedin_user = request.user
@@ -530,7 +530,7 @@ def topbarProcess(request):
     return (currently_loggedin_user_full_name, currently_loggedin_user_account)
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def fullNameProcess(request, id):
 
     print(id)

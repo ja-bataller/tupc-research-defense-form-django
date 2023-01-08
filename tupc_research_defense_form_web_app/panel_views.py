@@ -31,8 +31,8 @@ today = date.today()
 date_today = today.strftime("%B %d, %Y")
 
 # Panel - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelDashboard(request):
     currently_loggedin_user = request.user
 
@@ -43,7 +43,7 @@ def panelDashboard(request):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
     get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
@@ -109,8 +109,8 @@ def panelDashboard(request):
 
 
 # Panel - Research Title Defense Day Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelTitleDefenseDay(request, id):
     currently_loggedin_user = request.user
 
@@ -202,8 +202,8 @@ def panelTitleDefenseDay(request, id):
 
 
 # Panel - Live Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelTitleDefenseDayLiveSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -214,7 +214,7 @@ def panelTitleDefenseDayLiveSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
     get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
@@ -288,8 +288,8 @@ def panelTitleDefenseDayLiveSignature(request, id):
 
 
 # Panel - Attach Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelTitleDefenseDayAttachSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -300,7 +300,7 @@ def panelTitleDefenseDayAttachSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
     get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
@@ -375,8 +375,8 @@ def panelTitleDefenseDayAttachSignature(request, id):
 
 
 # Panel - Accept Title Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelAcceptTitle(request, id):
     currently_loggedin_user = request.user
 
@@ -404,8 +404,8 @@ def panelAcceptTitle(request, id):
 
 
 # Panel - Defer Title Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelDeferTitle(request, id):
     currently_loggedin_user = request.user
 
@@ -428,8 +428,8 @@ def panelDeferTitle(request, id):
 
 
 # Panel - Revise Title Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelReviseTitle(request, id):
     currently_loggedin_user = request.user
 
@@ -452,8 +452,8 @@ def panelReviseTitle(request, id):
 
 
 # Panel - Title Defense Mark as Done Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelTitleDefenseMarkDone(request, id):
     currently_loggedin_user = request.user
 
@@ -476,8 +476,8 @@ def panelTitleDefenseMarkDone(request, id):
 ##### PROPOSAL DEFENSE #####
 
 # Panel - Research Proposal Defense Day Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDay(request, id):
     currently_loggedin_user = request.user
 
@@ -611,8 +611,8 @@ def panelBET3ProposalDefenseDay(request, id):
 
 
 # Panel - BET-3 - Proposal Defense - Panel Chairman attach signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayPanelChairmanAttachSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -623,7 +623,7 @@ def panelBET3ProposalDefenseDayPanelChairmanAttachSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalPanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_proposal_defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalPanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_proposal_defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -698,8 +698,8 @@ def panelBET3ProposalDefenseDayPanelChairmanAttachSignature(request, id):
 
 
 # Panel - BET-3 - Proposal Defense - Save Critique
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDaySaveCritique(request, id):
     currently_loggedin_user = request.user
 
@@ -710,7 +710,7 @@ def panelBET3ProposalDefenseDaySaveCritique(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
     get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
@@ -839,8 +839,8 @@ def panelBET3ProposalDefenseDaySaveCritique(request, id):
 
             
 # Panel - BET-3 - Proposal Defense - Delete Critique
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayDeleteCritique(request, id):
     currently_loggedin_user = request.user
 
@@ -851,7 +851,7 @@ def panelBET3ProposalDefenseDayDeleteCritique(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
     get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
@@ -932,8 +932,8 @@ def panelBET3ProposalDefenseDayDeleteCritique(request, id):
 
 
 # Panel - BET-3 - Proposal Defense - Critique Form -  Panel Chairman attach signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayCritiquePanelChairmanAttachSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -944,7 +944,7 @@ def panelBET3ProposalDefenseDayCritiquePanelChairmanAttachSignature(request, id)
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -1016,8 +1016,8 @@ def panelBET3ProposalDefenseDayCritiquePanelChairmanAttachSignature(request, id)
 
 
 # Panel - BET-3 - Proposal Defense - Critique Form -  Panel attach signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayCritiquePanelAttachSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1028,7 +1028,7 @@ def panelBET3ProposalDefenseDayCritiquePanelAttachSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -1109,8 +1109,8 @@ def panelBET3ProposalDefenseDayCritiquePanelAttachSignature(request, id):
 
 
 # Panel - BET-3 - Proposal Defense - Critique Form -  Panel Chairman attach signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayCritiquePanelChairmanLiveSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1121,7 +1121,7 @@ def panelBET3ProposalDefenseDayCritiquePanelChairmanLiveSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -1171,8 +1171,8 @@ def panelBET3ProposalDefenseDayCritiquePanelChairmanLiveSignature(request, id):
 
 
 # Panel - BET-3 - Proposal Defense - Critique Form -  Panel attach signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayCritiquePanelLiveSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1183,7 +1183,7 @@ def panelBET3ProposalDefenseDayCritiquePanelLiveSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -1241,8 +1241,8 @@ def panelBET3ProposalDefenseDayCritiquePanelLiveSignature(request, id):
 
 
 # Panel - BET-3 - Proposal Defense - Accepted with Revision
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayAccepted(request, id):
     currently_loggedin_user = request.user
 
@@ -1253,7 +1253,7 @@ def panelBET3ProposalDefenseDayAccepted(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
     get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
@@ -1311,8 +1311,8 @@ def panelBET3ProposalDefenseDayAccepted(request, id):
     
 
 # Panel - BET-3 - Proposal Defense - Deferred with Revision
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayDeferred(request, id):
     currently_loggedin_user = request.user
 
@@ -1323,7 +1323,7 @@ def panelBET3ProposalDefenseDayDeferred(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
     get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
@@ -1381,8 +1381,8 @@ def panelBET3ProposalDefenseDayDeferred(request, id):
 
 
 # Panel - BET-3 - Proposal Defense - Not Accepted
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayNotAccepted(request, id):
     currently_loggedin_user = request.user
 
@@ -1393,7 +1393,7 @@ def panelBET3ProposalDefenseDayNotAccepted(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
     get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
@@ -1451,8 +1451,8 @@ def panelBET3ProposalDefenseDayNotAccepted(request, id):
 
 
 # Panel - BET-3 - Proposal Defense Form - Panel Chairman attach signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayPanelChairmanAttachSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1463,7 +1463,7 @@ def panelBET3ProposalDefenseDayPanelChairmanAttachSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -1527,8 +1527,8 @@ def panelBET3ProposalDefenseDayPanelChairmanAttachSignature(request, id):
 
 
 # Panel - BET-3 - Proposal Defense Form - Panel attach signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayPanelAttachSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1539,7 +1539,7 @@ def panelBET3ProposalDefenseDayPanelAttachSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -1602,8 +1602,8 @@ def panelBET3ProposalDefenseDayPanelAttachSignature(request, id):
     return render(request, "panel-dashboard.html", context)
 
 # Panel - BET-3 - Proposal Defense Form -  Panel Chairman live signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayPanelChairmanLiveSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1614,7 +1614,7 @@ def panelBET3ProposalDefenseDayPanelChairmanLiveSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -1657,8 +1657,8 @@ def panelBET3ProposalDefenseDayPanelChairmanLiveSignature(request, id):
 
 
 # Panel - BET-3 - Proposal Defense Form -  Panel Chairman live signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefenseDayPanelLiveSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -1669,7 +1669,7 @@ def panelBET3ProposalDefenseDayPanelLiveSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -1715,8 +1715,8 @@ def panelBET3ProposalDefenseDayPanelLiveSignature(request, id):
 
 
 # Panel - Research Final Defense Day Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalDefenseDay(request, id):
     currently_loggedin_user = request.user
 
@@ -1797,8 +1797,8 @@ def panelBET5FinalDefenseDay(request, id):
 
 
 # Panel - BET-5 - Final Defense - Accepted with Revision
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalDefenseDayAccepted(request, id):
     currently_loggedin_user = request.user
 
@@ -1809,7 +1809,7 @@ def panelBET5FinalDefenseDayAccepted(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
     get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
@@ -1867,8 +1867,8 @@ def panelBET5FinalDefenseDayAccepted(request, id):
     
 
 # Panel - BET-3 - Proposal Defense - Deferred with Revision
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalDefenseDayDeferred(request, id):
     currently_loggedin_user = request.user
 
@@ -1879,7 +1879,7 @@ def panelBET5FinalDefenseDayDeferred(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
     get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
@@ -1937,8 +1937,8 @@ def panelBET5FinalDefenseDayDeferred(request, id):
 
 
 # Panel - BET-3 - Proposal Defense - Not Accepted
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalDefenseDayNotAccepted(request, id):
     currently_loggedin_user = request.user
 
@@ -1949,7 +1949,7 @@ def panelBET5FinalDefenseDayNotAccepted(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
     get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
@@ -2007,8 +2007,8 @@ def panelBET5FinalDefenseDayNotAccepted(request, id):
 
 
 # Panel - BET-5 - Final Defense Form - Panel Chairman attach signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalDefenseDayPanelChairmanAttachSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -2019,7 +2019,7 @@ def panelBET5FinalDefenseDayPanelChairmanAttachSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -2083,8 +2083,8 @@ def panelBET5FinalDefenseDayPanelChairmanAttachSignature(request, id):
 
 
 # Panel - BET-5 - Final Defense Form - Panel attach signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalDefenseDayPanelAttachSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -2095,7 +2095,7 @@ def panelBET5FinalDefenseDayPanelAttachSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -2159,8 +2159,8 @@ def panelBET5FinalDefenseDayPanelAttachSignature(request, id):
 
 
 # Panel - BET-5 - Final Defense Form -  Panel Chairman live signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalDefenseDayPanelChairmanLiveSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -2171,7 +2171,7 @@ def panelBET5FinalDefenseDayPanelChairmanLiveSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -2214,8 +2214,8 @@ def panelBET5FinalDefenseDayPanelChairmanLiveSignature(request, id):
 
 
 # Panel - BET-5 - Final Defense Form -  Panel Chairman live signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalDefenseDayPanelLiveSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -2226,7 +2226,7 @@ def panelBET5FinalDefenseDayPanelLiveSignature(request, id):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     get_today_title_defense = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="")
     get_today_title_defense_present = ProposalDefenseForm.objects.all().filter(panel_username=currently_loggedin_user.username, defense_date=date_today, form_status="accepted", panel_attendance="present")
@@ -2270,8 +2270,8 @@ def panelBET5FinalDefenseDayPanelLiveSignature(request, id):
 
 
 # Panel - Profile Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelProfile(request):
     currently_loggedin_user = request.user
 
@@ -2312,8 +2312,8 @@ def panelProfile(request):
 
 
 # Panel - Upload E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelUploadESignature(request):
     currently_loggedin_user = request.user
 
@@ -2439,8 +2439,8 @@ def panelUploadESignature(request):
 
 
 # Panel - Remove E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelDeleteESignature(request):
     currently_loggedin_user = request.user
 
@@ -2450,8 +2450,8 @@ def panelDeleteESignature(request):
 
 
 # Panel - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelCreateESignature(request):
     currently_loggedin_user = request.user
 
@@ -2462,7 +2462,7 @@ def panelCreateESignature(request):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     if request.method == "POST":
         signature_url = request.POST.get("signature_link")
@@ -2492,8 +2492,8 @@ def panelCreateESignature(request):
 
 
 # Panel - Acount Settings Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelAccountSettings(request):
     currently_loggedin_user = request.user
 
@@ -2528,7 +2528,7 @@ def panelAccountSettings(request):
                     User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
 
                     context = {"response": "changed password"}
-                    return render(request, "index.html", context)
+                    return render(request, "login.html", context)
 
                 else:
                     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "response": "new password and confirm new password doesnt match"}
@@ -2549,8 +2549,8 @@ def panelAccountSettings(request):
 
 
 # Panel - BET3 - Topic Defense - Panel Invitation - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelPanelInvitationBet3(request):
     currently_loggedin_user = request.user
     print("Current User:", currently_loggedin_user.username)
@@ -2568,8 +2568,8 @@ def panelPanelInvitationBet3(request):
 
 
 # Panel - BET3 - Topic Defense - Panel Invitation - Accept with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3TopicPanelInvitationAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -2636,8 +2636,8 @@ def panelBET3TopicPanelInvitationAcceptSignature(request, id):
 
 
 # Panel - BET3 - Topic Defense - Panel Invitation - Decline with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3TopicPanelInvitationDeclineSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -2700,8 +2700,8 @@ def panelBET3TopicPanelInvitationDeclineSignature(request, id):
 
 
 # Panel - BET3 - Topic Defense - Panel Invitation - Accept Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelPanelInvitationBet3Accept(request, id):
     currently_loggedin_user = request.user
 
@@ -2751,8 +2751,8 @@ def panelPanelInvitationBet3Accept(request, id):
 
 
 # Panel - Panel Invitation BET-3 Decline Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelPanelInvitationBet3Decline(request, id):
     currently_loggedin_user = request.user
 
@@ -2799,8 +2799,8 @@ def panelPanelInvitationBet3Decline(request, id):
 # PANEL - PANEL CONFORME
 
 # Panel - BET3 - Panel Conforme - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelPanelConformeDashboard(request):
     currently_loggedin_user = request.user
     print("Current User:", currently_loggedin_user.username)
@@ -2820,8 +2820,8 @@ def panelPanelConformeDashboard(request):
 
 
 # Panel - Panel Conforme - Accept with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelPanelConformeAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -2890,8 +2890,8 @@ def panelPanelConformeAcceptSignature(request, id):
 
 
 # Panel - Panel Conforme - Accept with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelPanelConformeAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -2943,8 +2943,8 @@ def panelPanelConformeAccept(request, id):
 
 
 # Panel - Research Title Defense Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_subject_teacher, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
 def panelResearchTitleDefenseDashboard(request):
     currently_loggedin_user = request.user
 
@@ -2960,8 +2960,8 @@ def panelResearchTitleDefenseDashboard(request):
 
 
 # Panel - Panel Conforme BET-3 Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelPanelConformeBet3(request):
     currently_loggedin_user = request.user
 
@@ -3021,8 +3021,8 @@ def panelPanelConformeBet3(request):
 
 
 # Panel - Panel Conforme BET-3 Accept Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelPanelConformeBet3Accept(request, id):
     currently_loggedin_user = request.user
 
@@ -3078,8 +3078,8 @@ def panelPanelConformeBet3Accept(request, id):
 
 
 # Panel - BET-3 Panel Invitation Logs
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3PanelInvitationLogs(request):
     currently_loggedin_user = request.user
 
@@ -3099,10 +3099,54 @@ def panelBET3PanelInvitationLogs(request):
 
     return render(request, "panel-bet3-panel-invitation-logs.html", context)
 
+# Panel - BET-3 Panel Invitation Logs
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET3ProposalPanelInvitationLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # BET-3 Panel Invitation Logs
+    get_panel_invitation = ProposalPanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username)
+    get_panel_invitation_2 = ProposalPanelInvitationLog.objects.all().filter(panel_username=currently_loggedin_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "panel_invitations": get_panel_invitation,
+        "panel_invitations_2": get_panel_invitation_2,
+    }
+
+    return render(request, "panel-bet3-proposal-panel-invitation-logs.html", context)
+
+# Panel - BET-3 Panel Invitation Logs
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET5FinalPanelInvitationLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    # BET-3 Panel Invitation Logs
+    get_panel_invitation = FinalPanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username)
+    get_panel_invitation_2 = FinalPanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "panel_invitations": get_panel_invitation,
+        "panel_invitations_2": get_panel_invitation_2,
+    }
+
+    return render(request, "panel-bet5-final-panel-invitation-logs.html", context)
+
 
 # Panel - BET-3 Title Defense Logs
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3TitleDefenseLogs(request):
     currently_loggedin_user = request.user
 
@@ -3113,7 +3157,7 @@ def panelBET3TitleDefenseLogs(request):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     completed_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, form_status="accepted", is_completed=True)
     deferred_title_defense = TitlePanelInvitationLog.objects.all().filter(panel_username=currently_loggedin_user.username, form_status="accepted", is_completed=True)
@@ -3139,9 +3183,295 @@ def panelBET3TitleDefenseLogs(request):
     return render(request, "panel-bet3-research-title-defense-logs.html", context)
 
 
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET3ProposalDefenseLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    completed_title_defense = ProposalPanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, form_status="accepted", is_completed=True)
+    deferred_title_defense = ProposalPanelInvitationLog.objects.all().filter(panel_username=currently_loggedin_user.username, form_status="accepted", is_completed=True)
+
+    absent_title_defense = ProposalPanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, form_status="accepted", panel_attendance="absent", is_completed=False)
+    absent_title_defense_log = ProposalPanelInvitationLog.objects.all().filter(panel_username=currently_loggedin_user.username, form_status="accepted", panel_attendance="absent", is_completed=False)
+
+    present_reschedule_title_defense = ProposalPanelInvitationLog.objects.all().filter(panel_username=currently_loggedin_user.username, panel_attendance="present-reschedule")
+    absent_reschedule_title_defense = ProposalPanelInvitationLog.objects.all().filter(panel_username=currently_loggedin_user.username, panel_attendance="absent-reschedule")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+        "completed_title_defense": completed_title_defense,
+        "deferred_title_defense": deferred_title_defense,
+        "absent_title_defense": absent_title_defense,
+        "absent_title_defense_log": absent_title_defense_log,
+        "present_reschedule_title_defense": present_reschedule_title_defense,
+        "absent_reschedule_title_defense": absent_reschedule_title_defense,
+    }
+
+    return render(request, "panel-bet3-research-proposal-defense-logs.html", context)
+
+
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET5FinalDefenseLogs(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    completed_title_defense = FinalPanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, form_status="accepted", is_completed=True)
+    deferred_title_defense = FinalPanelInvitationLog.objects.all().filter(panel_username=currently_loggedin_user.username, form_status="accepted", is_completed=True)
+
+    absent_title_defense = FinalPanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, form_status="accepted", panel_attendance="absent", is_completed=False)
+    absent_title_defense_log = FinalPanelInvitationLog.objects.all().filter(panel_username=currently_loggedin_user.username, form_status="accepted", panel_attendance="absent", is_completed=False)
+
+    present_reschedule_title_defense = FinalPanelInvitationLog.objects.all().filter(panel_username=currently_loggedin_user.username, panel_attendance="present-reschedule")
+    absent_reschedule_title_defense = FinalPanelInvitationLog.objects.all().filter(panel_username=currently_loggedin_user.username, panel_attendance="absent-reschedule")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+        "completed_title_defense": completed_title_defense,
+        "deferred_title_defense": deferred_title_defense,
+        "absent_title_defense": absent_title_defense,
+        "absent_title_defense_log": absent_title_defense_log,
+        "present_reschedule_title_defense": present_reschedule_title_defense,
+        "absent_reschedule_title_defense": absent_reschedule_title_defense,
+    }
+
+    return render(request, "panel-bet5-research-final-defense-logs.html", context)
+
+# Panel - Research Final Defense Day Page
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET5FinalDefenseLogCompleted(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=id)
+    except:
+        return redirect("panel-dashboard")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+    get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=id)
+
+    get_present_panel_members_proposal_defense = FinalDefenseForm.objects.all().filter(student_leader_username=id, panel_attendance="present")
+
+    try:
+        get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
+        research_title = get_accepted_research_title.research_title
+    except:
+        pass
+    
+    try:
+        get_revise_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Revise Title")
+        research_title = get_revise_research_title.research_title
+    except:
+        pass
+
+
+    try:
+        check_start_voting = FinalDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, start_voting=1)
+    except:
+        check_start_voting = 0
+    
+    try:
+        check_pending_pc_panel_defense_signature = FinalDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, start_voting=1, panel_chairman_signature_response = False)
+    except:
+        check_pending_pc_panel_defense_signature = 0
+
+    get_end_voting = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = get_student_leader_data.bet5_subject_teacher_username, start_voting = 1, end_voting = 1)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "group_members": get_group_members,
+        "research_title": research_title,
+        "get_accepted_research_title": get_accepted_research_title,
+        # "research_titles": get_research_titles,
+        # "panel_members": get_panel_members,
+        # "present_panel_members": get_present_panel_members,
+        # "absent_panel_members": get_absent_panel_members,
+        # "current_panel_title_defense": get_current_panel_title_defense,
+        "present_panel_members_proposal_defense": get_present_panel_members_proposal_defense,
+        # "panel_chairman": get_panel_chairman,
+        # "check_panel_complete_response": check_panel_complete_response,
+        # "check_panel_mark_done": check_panel_mark_done,
+        # "research_title_data": get_research_title_data,
+        # "research_title_accepted": get_research_title_accepted,
+        # "research_title_revise": get_research_title_revise,
+        "start_voting": check_start_voting,
+        "student_username": id,
+        "end_voting": get_end_voting,
+
+        # "response_signature": get_no_response_signature
+    }
+
+    return render(request, "panel-bet5-final-defense-data.html", context)
+
+# Panel - Research Proposal Defense Day Page
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET3ProposalDefenseLogCompleted(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=id)
+    except:
+        return redirect("panel-dashboard")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+
+    get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=id)
+
+    get_present_panel_members_proposal_defense = ProposalDefenseForm.objects.all().filter(student_leader_username=id, panel_attendance="present")
+
+    try:
+        get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
+        research_title = get_accepted_research_title.research_title
+    except:
+        pass
+    
+    try:
+        get_revise_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Revise Title")
+        research_title = get_revise_research_title.research_title
+    except:
+        pass
+
+
+    get_critique_panel_chairman_signature_all = ProposalDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, is_panel_chairman = True, panel_chairman_signature_response = False)
+    
+    if not get_critique_panel_chairman_signature_all:
+        get_critique_panel_chairman_signature_all = 0
+    else:
+        get_critique_panel_chairman_signature_all = 1
+
+    get_critique_panel_signature_all = ProposalDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, panel_signature_response = False)
+    
+    if not get_critique_panel_signature_all:
+        get_critique_panel_signature_all = 0
+    else:
+        get_critique_panel_signature_all = 1
+
+
+    try:
+        check_panel_critique = ProposalDefenseCritique.objects.get(student_leader_username = id, panel_username=currently_loggedin_user.username)
+    except:
+        check_panel_critique = None
+
+    try:
+        check_start_critique = ProposalDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, start_critique=1)
+    except:
+        check_start_critique = 0
+
+    try:
+        check_end_critique = ProposalDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, end_critique=1)
+    except:
+        check_end_critique = 0
+
+    try:
+        get_panel_critique = ProposalDefenseCritique.objects.all().filter(student_leader_username=id, panel_username = currently_loggedin_user.username, panel_attendance="present")
+    except:
+        get_panel_critique = None
+
+    try:
+        check_start_voting = ProposalDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, start_voting=1)
+    except:
+        check_start_voting = 0
+    
+    try:
+        check_pending_pc_panel_defense_signature = ProposalDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, start_voting=1, panel_chairman_signature_response = False)
+    except:
+        check_pending_pc_panel_defense_signature = 0
+
+    try:
+        get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
+        research_title = get_accepted_research_title.research_title
+    except:
+       pass
+    
+    try:
+        get_revise_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Revise Title")
+        research_title = get_revise_research_title.research_title
+    except:
+        pass
+
+    get_end_voting = ProposalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = get_student_leader_data.bet3_subject_teacher_username, start_voting = 1, end_voting = 1)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "group_members": get_group_members,
+        "accepted_research_title": research_title,
+        # "research_titles": get_research_titles,
+        # "panel_members": get_panel_members,
+        # "present_panel_members": get_present_panel_members,
+        # "absent_panel_members": get_absent_panel_members,
+        # "current_panel_title_defense": get_current_panel_title_defense,
+        "present_panel_members_proposal_defense": get_present_panel_members_proposal_defense,
+
+        "critique_panel_chairman_signature_response_all": get_critique_panel_chairman_signature_all,
+        "critique_panel_signature_response_all": get_critique_panel_signature_all,
+        # "panel_chairman": get_panel_chairman,
+        # "check_panel_complete_response": check_panel_complete_response,
+        # "check_panel_mark_done": check_panel_mark_done,
+        # "research_title_data": get_research_title_data,
+        # "research_title_accepted": get_research_title_accepted,
+        # "research_title_revise": get_research_title_revise,
+        "start_critique": check_start_critique,
+        "end_critique": check_end_critique,
+        "panel_critique": get_panel_critique,
+        "check_panel_critique": check_panel_critique,
+        "start_voting": check_start_voting,
+        "student_username": id,
+        # "response_signature": get_no_response_signature
+        "get_accepted_research_title": get_accepted_research_title,
+        "end_voting": get_end_voting,
+    }
+
+    return render(request, "panel-bet3-proposal-defense-data.html", context)
+
+
 # Panel - BET-3 Title Defense Log Completed
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3TitleDefenseLogCompleted(request, id):
     currently_loggedin_user = request.user
 
@@ -3194,8 +3524,8 @@ def panelBET3TitleDefenseLogCompleted(request, id):
 
 
 # Panel - BET-3 Title Defense Log Redefense
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3TitleDefenseLogRedefense(request, id):
     currently_loggedin_user = request.user
 
@@ -3237,8 +3567,8 @@ def panelBET3TitleDefenseLogRedefense(request, id):
 ##### PANEL - PROPOSAL DEFENSE #####
 
 # Panel - BET3 - Proposal Defense - Panel Invitation - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalDefensePanelInvitationDashboard(request):
     currently_loggedin_user = request.user
     print("Current User:", currently_loggedin_user.username)
@@ -3258,8 +3588,8 @@ def panelBET3ProposalDefensePanelInvitationDashboard(request):
 
 
 # Panel - BET3 - Proposal Defense - Panel Invitation - Accept with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalPanelInvitationAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -3327,8 +3657,8 @@ def panelBET3ProposalPanelInvitationAcceptSignature(request, id):
 
 
 # Panel - BET3 - Proposal Defense - Panel Invitation - Decline with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalPanelInvitationDeclineSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -3391,8 +3721,8 @@ def panelBET3ProposalPanelInvitationDeclineSignature(request, id):
 
 
 # Panel - BET3 - Proposal Defense - Panel Invitation - Accept Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalPanelInvitationAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -3442,8 +3772,8 @@ def panelBET3ProposalPanelInvitationAccept(request, id):
 
 
 # Panel - BET3 - Proposal Defense - Panel Invitation - Decline Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET3ProposalPanelInvitationDecline(request, id):
     currently_loggedin_user = request.user
 
@@ -3491,8 +3821,8 @@ def panelBET3ProposalPanelInvitationDecline(request, id):
 ##### PANEL - FINAL DEFENSE #####
 
 # Panel - BET5 - Final Defense - Panel Invitation - Dashboard
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalDefensePanelInvitationDashboard(request):
     currently_loggedin_user = request.user
     print("Current User:", currently_loggedin_user.username)
@@ -3512,8 +3842,8 @@ def panelBET5FinalDefensePanelInvitationDashboard(request):
 
 
 # Panel - BET5 - Final Defense - Panel Invitation - Accept with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalPanelInvitationAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -3580,8 +3910,8 @@ def panelBET5FinalPanelInvitationAcceptSignature(request, id):
 
 
 # Panel - BET5 - Final Defense - Panel Invitation - Decline with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalPanelInvitationDeclineSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -3643,8 +3973,8 @@ def panelBET5FinalPanelInvitationDeclineSignature(request, id):
 
 
 # Panel - BET5 - Final Defense - Panel Invitation - Accept Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalPanelInvitationAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -3693,8 +4023,8 @@ def panelBET5FinalPanelInvitationAccept(request, id):
 
 
 # Panel - BET5 - Final Defense - Panel Invitation - Decline Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelBET5FinalPanelInvitationDecline(request, id):
     currently_loggedin_user = request.user
 
@@ -3738,8 +4068,11 @@ def panelBET5FinalPanelInvitationDecline(request, id):
         return redirect("panel-bet5-final-defense-panel-invitation-dashboard")
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+
+
+
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def panelTheDevs(request):
     currently_loggedin_user = request.user
 
@@ -3750,7 +4083,7 @@ def panelTheDevs(request):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
@@ -3760,7 +4093,8 @@ def panelTheDevs(request):
 
     return render(request, "panel-the-devs.html", context)
 
-@login_required(login_url="index")
+
+@login_required(login_url="login")
 def topbarProcess(request):
 
     currently_loggedin_user = request.user

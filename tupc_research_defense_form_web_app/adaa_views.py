@@ -32,8 +32,8 @@ today = date.today()
 date_today = today.strftime("%B %d, %Y")
 
 # Academic Affairs Office
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_academic_affairs, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_academic_affairs, login_url="login")
 def  academicAffairsOfficeDashboard(request):
     currently_loggedin_user = request.user
 
@@ -53,8 +53,8 @@ def  academicAffairsOfficeDashboard(request):
 
 
 # Research & Extension
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_academic_affairs, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_academic_affairs, login_url="login")
 def  academicAffairsOfficeLogs(request):
     currently_loggedin_user = request.user
 
@@ -73,8 +73,8 @@ def  academicAffairsOfficeLogs(request):
     return render(request, "adaa-logs.html", context)
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_academic_affairs, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_academic_affairs, login_url="login")
 def  academicAffairsOfficeTheDevs(request):
     currently_loggedin_user = request.user
 
@@ -90,8 +90,8 @@ def  academicAffairsOfficeTheDevs(request):
     return render(request, "adaa-the-devs.html", context)
 
 # Research & Extension - Profile Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_academic_affairs, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_academic_affairs, login_url="login")
 def  academicAffairsOfficeProfile(request):
     currently_loggedin_user = request.user
 
@@ -132,8 +132,8 @@ def  academicAffairsOfficeProfile(request):
 
 
 # Panel - Upload E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_academic_affairs, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_academic_affairs, login_url="login")
 def  academicAffairsOfficeUploadESignature(request):
     currently_loggedin_user = request.user
 
@@ -259,8 +259,8 @@ def  academicAffairsOfficeUploadESignature(request):
 
 
 # Panel - Remove E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_academic_affairs, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_academic_affairs, login_url="login")
 def  academicAffairsOfficeDeleteESignature(request):
     currently_loggedin_user = request.user
 
@@ -270,8 +270,8 @@ def  academicAffairsOfficeDeleteESignature(request):
 
 
 # Panel - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_academic_affairs, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_academic_affairs, login_url="login")
 def  academicAffairsOfficeCreateESignature(request):
     currently_loggedin_user = request.user
 
@@ -282,7 +282,7 @@ def  academicAffairsOfficeCreateESignature(request):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     if request.method == "POST":
         signature_url = request.POST.get("signature_link")
@@ -312,8 +312,8 @@ def  academicAffairsOfficeCreateESignature(request):
 
 
 # Panel - Acount Settings Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_academic_affairs, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_academic_affairs, login_url="login")
 def  academicAffairsOfficeAccountSettings(request):
     currently_loggedin_user = request.user
 
@@ -348,7 +348,7 @@ def  academicAffairsOfficeAccountSettings(request):
                     User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
 
                     context = {"response": "changed password"}
-                    return render(request, "index.html", context)
+                    return render(request, "login.html", context)
 
                 else:
                     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "response": "new password and confirm new password doesnt match"}
@@ -369,8 +369,8 @@ def  academicAffairsOfficeAccountSettings(request):
 
 
 # Panel - Panel Conforme - Accept with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_academic_affairs, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_academic_affairs, login_url="login")
 def  academicAffairsOfficeAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -442,8 +442,8 @@ def  academicAffairsOfficeAcceptSignature(request, id):
 
 
 # Panel - Panel Conforme - Accept with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_academic_affairs, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_academic_affairs, login_url="login")
 def  academicAffairsOfficeAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -495,7 +495,7 @@ def  academicAffairsOfficeAccept(request, id):
         return redirect("adaa-dashboard")
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def topbarProcess(request):
 
     currently_loggedin_user = request.user
@@ -530,7 +530,7 @@ def topbarProcess(request):
     return (currently_loggedin_user_full_name, currently_loggedin_user_account)
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def fullNameProcess(request, id):
 
     print(id)

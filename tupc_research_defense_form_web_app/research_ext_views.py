@@ -34,8 +34,8 @@ today = date.today()
 date_today = today.strftime("%B %d, %Y")
 
 # Research & Extension
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_research_extension, login_url="login")
 def researchExtensionDashboard(request):
     currently_loggedin_user = request.user
 
@@ -55,8 +55,8 @@ def researchExtensionDashboard(request):
 
 
 # Research & Extension
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_research_extension, login_url="login")
 def researchExtensionLogs(request):
     currently_loggedin_user = request.user
 
@@ -75,8 +75,8 @@ def researchExtensionLogs(request):
     return render(request, "research-extension-logs.html", context)
 
 
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_research_extension, login_url="login")
 def researchExtensionTheDevs(request):
     currently_loggedin_user = request.user
 
@@ -92,8 +92,8 @@ def researchExtensionTheDevs(request):
     return render(request, "research-extension-the-devs.html", context)
 
 # Research & Extension - Profile Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_research_extension, login_url="login")
 def researchExtensionProfile(request):
     currently_loggedin_user = request.user
 
@@ -134,8 +134,8 @@ def researchExtensionProfile(request):
 
 
 # Panel - Upload E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_research_extension, login_url="login")
 def researchExtensionUploadESignature(request):
     currently_loggedin_user = request.user
 
@@ -261,8 +261,8 @@ def researchExtensionUploadESignature(request):
 
 
 # Panel - Remove E-Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_research_extension, login_url="login")
 def researchExtensionDeleteESignature(request):
     currently_loggedin_user = request.user
 
@@ -272,8 +272,8 @@ def researchExtensionDeleteESignature(request):
 
 
 # Panel - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_research_extension, login_url="login")
 def researchExtensionCreateESignature(request):
     currently_loggedin_user = request.user
 
@@ -284,7 +284,7 @@ def researchExtensionCreateESignature(request):
     try:
         get_panel_data = User.objects.get(username=currently_loggedin_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     if request.method == "POST":
         signature_url = request.POST.get("signature_link")
@@ -314,8 +314,8 @@ def researchExtensionCreateESignature(request):
 
 
 # Panel - Acount Settings Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_research_extension, login_url="login")
 def researchExtensionAccountSettings(request):
     currently_loggedin_user = request.user
 
@@ -350,7 +350,7 @@ def researchExtensionAccountSettings(request):
                     User.objects.filter(username=currently_loggedin_user.username).update(password=new_password_input)
 
                     context = {"response": "changed password"}
-                    return render(request, "index.html", context)
+                    return render(request, "login.html", context)
 
                 else:
                     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "response": "new password and confirm new password doesnt match"}
@@ -371,8 +371,8 @@ def researchExtensionAccountSettings(request):
 
 
 # Panel - Panel Conforme - Accept with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_research_extension, login_url="login")
 def researchExtensionAcceptSignature(request, id):
     currently_loggedin_user = request.user
 
@@ -444,8 +444,8 @@ def researchExtensionAcceptSignature(request, id):
 
 
 # Panel - Panel Conforme - Accept with Signature
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_research_extension, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_research_extension, login_url="login")
 def researchExtensionAccept(request, id):
     currently_loggedin_user = request.user
 
@@ -497,7 +497,7 @@ def researchExtensionAccept(request, id):
         return redirect("research-extension-dashboard")
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def topbarProcess(request):
 
     currently_loggedin_user = request.user
@@ -532,7 +532,7 @@ def topbarProcess(request):
     return (currently_loggedin_user_full_name, currently_loggedin_user_account)
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def fullNameProcess(request, id):
 
     print(id)

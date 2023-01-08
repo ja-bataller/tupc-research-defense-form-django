@@ -69,83 +69,41 @@
                       </tr>
                     </tfoot>
                     <tbody class="text-dark">
-                      {% for panel_invitation in panel_invitations %} {% if panel_invitation.dit_head_response == "accepted" %}
+                      {% for panel_conforme in panel_conforme %}
                       <tr>
-                        <td hidden>{{panel_invitation.id}}</td>
-                        <td>{{panel_invitation.student_leader_username}}</td>
-                        <td>{{panel_invitation.student_leader_full_name}}</td>
-                        <td>{{panel_invitation.course_major_abbr}}</td>
-                        <td>{{panel_invitation.panel_username}}</td>
-                        <td>{{panel_invitation.panel_full_name}}</td>
-                        <td>
-                          {{panel_invitation.research_proposal_defense_date}} - {{panel_invitation.research_proposal_defense_start_time}} to
-                          {{panel_invitation.research_proposal_defense_end_time}}
-                        </td>
-                        <td class="text-success">{{panel_invitation.dit_head_response}}</td>
-                        {% if panel_invitation.dit_head_signature == True %}
-                        <td>E-Signature</td>
-                        {% else %}
-                        <td>Live Signature</td>
-                        {% endif %}
+                          <td hidden>{{panel_conforme.id}}</td>
+                          <td>{{panel_conforme.student_leader_username}}</td>
+                          <td>{{panel_conforme.student_leader_full_name}}</td>
+                          <td>{{panel_conforme.course_major_abbr}}</td>
+                          <td>{{panel_conforme.panel_username}}</td>
+                          <td>{{panel_conforme.panel_full_name}}</td>
+                          <td>{{panel_conforme.dit_head_response_date}}</td>
+                          <td>{{panel_conforme.dit_head_response}}</td>
+                          {% if panel_conforme.dit_head_signature == 1%}
+                          <td class="text-success">E-Signature</td>
+                          {% else %}
+                          <td class="text-info">Live Signature</td>
+                          {% endif %}
                       </tr>
-                      {% elif panel_invitation.dit_head_response == "declined" %}
+                      {% endfor %}
+
+                      {% for panel_conforme in panel_conforme_2 %}
                       <tr>
-                        <td hidden>{{panel_invitation.id}}</td>
-                        <td>{{panel_invitation.student_leader_username}}</td>
-                        <td>{{panel_invitation.student_leader_full_name}}</td>
-                        <td>{{panel_invitation.course_major_abbr}}</td>
-                        <td>{{panel_invitation.panel_username}}</td>
-                        <td>{{panel_invitation.panel_full_name}}</td>
-                        <td>
-                          {{panel_invitation.research_proposal_defense_date}} - {{panel_invitation.research_proposal_defense_start_time}} to
-                          {{panel_invitation.research_proposal_defense_end_time}}
-                        </td>
-                        <td class="text-danger">{{panel_invitation.dit_head_response}}</td>
-                        {% if panel_invitation.dit_head_signature == True %}
-                        <td>E-Signature</td>
-                        {% else %}
-                        <td>Live Signature</td>
-                        {% endif %}
+                          <td>{{panel_conforme.id}}</td>
+                          <td>{{panel_conforme.student_leader_username}}</td>
+                          <td>{{panel_conforme.student_leader_full_name}}</td>
+                          <td>{{panel_conforme.course_major_abbr}}</td>
+                          <td>{{panel_conforme.panel_username}}</td>
+                          <td>{{panel_conforme.panel_full_name}}</td>
+                          <td>{{panel_conforme.dit_head_response_date}}</td>
+                          <td>{{panel_conforme.dit_head_response}}</td>
+                          {% if panel_conforme.dit_head_signature == 1%}
+                          <td class="text-success">E-Signature</td>
+                          {% else %}
+                          <td class="text-info">Live Signature</td>
+                          {% endif %}
                       </tr>
-                      {% endif %} {% endfor %} {% for panel_invitation in panel_invitations_2 %} {% if panel_invitation.dit_head_response == "accepted" %}
-                      <tr>
-                        <td hidden>{{panel_invitation.id}}</td>
-                        <td>{{panel_invitation.student_leader_username}}</td>
-                        <td>{{panel_invitation.student_leader_full_name}}</td>
-                        <td>{{panel_invitation.course_major_abbr}}</td>
-                        <td>{{panel_invitation.panel_username}}</td>
-                        <td>{{panel_invitation.panel_full_name}}</td>
-                        <td>
-                          {{panel_invitation.research_title_defense_date}} - {{panel_invitation.research_title_defense_start_time}} to
-                          {{panel_invitation.research_title_defense_end_time}}
-                        </td>
-                        <td class="text-success">{{panel_invitation.dit_head_response}}</td>
-                        {% if panel_invitation.dit_head_signature == True %}
-                        <td>E-Signature</td>
-                        {% else %}
-                        <td>Live Signature</td>
-                        {% endif %}
-                      </tr>
-                      {% elif panel_invitation.dit_head_response == "declined" %}
-                      <tr>
-                        <td hidden>{{panel_invitation.id}}</td>
-                        <td>{{panel_invitation.student_leader_username}}</td>
-                        <td>{{panel_invitation.student_leader_full_name}}</td>
-                        <td>{{panel_invitation.course_major_abbr}}</td>
-                        <td>{{panel_invitation.panel_username}}</td>
-                        <td>{{panel_invitation.panel_full_name}}</td>
-                        <td>
-                          {{panel_invitation.research_title_defense_date}} - {{panel_invitation.research_title_defense_start_time}} to
-                          {{panel_invitation.research_title_defense_end_time}}
-                        </td>
-                        <td class="text-danger">{{panel_invitation.dit_head_response}}</td>
-                        {% if panel_invitation.dit_head_signature == True %}
-                        <td>E-Signature</td>
-                        {% else %}
-                        <td>Live Signature</td>
-                        {% endif %}
-                      </tr>
-                      {% endif %} {% endfor %}
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>

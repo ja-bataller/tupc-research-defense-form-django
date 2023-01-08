@@ -35,6 +35,8 @@ from.adaa_views import *
 from.library_views import *
 from .students_download_views import *
 
+import string    
+import random
 
 # Set Timezone to Manila
 # os.environ["TZ"] = "Asia/Manila"
@@ -48,6 +50,11 @@ date_today = today.strftime("%B %d, %Y")
 
 # Index / Log in Page
 def index(request):
+    return render(request, "index.html")
+
+
+# Index / Log in Page
+def loginPage(request):
 
     if request.method == "POST":
         # Get data from Front-end
@@ -64,6 +71,156 @@ def index(request):
 
                 if user_check.is_student == 1:
                     print("User: Student")
+                    # Get All Course
+                    course = StudentCourseMajor.objects.all()
+                    course_list = []
+
+                    # Check if there is DIT Head assigned
+                    try:
+                        # Get DIT Head
+                        get_department_head = User.objects.get(is_department_head=1)
+                    except:
+                        print("No DIT Head assigned")
+
+                        context = {
+                            "response": "sweet no dit head assigned"}
+
+                        return render(request, "signup.html", context)
+
+                    
+
+                    # Get All Panel
+                    panel_members = User.objects.all().filter(is_panel=1)
+
+                    # Get All Adviser
+                    adviser = User.objects.all().filter(is_adviser=1)
+
+                    # Get All Subject Teachers
+                    subject_teachers = User.objects.all().filter(is_subject_teacher=1)
+                    subject_teacher_list = []
+
+                    # Get All Academic Affairs
+                    academic_affairs = User.objects.all().filter(is_academic_affairs=1)
+
+                    # Get All Library
+                    library = User.objects.all().filter(is_library=1)
+
+                    # Get All Research & Extension
+                    research_extension = User.objects.all().filter(is_research_extension=1)
+
+                    print(panel_members.count())
+
+                    # Check if there are no available course
+                    if not course:
+                        print("No Course Available")
+
+                        context = {
+                            "response": "sweet no course available"}
+
+                        return render(request, "login.html", context)
+
+                    else:
+                        for course_abbr in course:
+                            course_list.append(course_abbr.course_major_abbr)
+
+                    # Check if there are no Panel Members assigned
+                    if not panel_members:
+                        print("No Panel assigned")
+
+                        context = {
+                            "response": "sweet no panel assigned"}
+
+                        return render(request, "login.html", context)
+
+                    else:
+                        pass
+
+                    # Check if Panel Members is incomplete
+                    if panel_members.count() < 6:
+                        print("Incomplete Panel Members")
+
+                        context = {
+                            "response": "sweet incomplete panel"}
+
+                        return render(request, "login.html", context)
+
+                    else:
+                        pass
+
+                    # Check if there are no subject teacher assigned
+                    if not subject_teachers:
+                        print("No Subject Teachers assigned")
+
+                        context = {"response": "sweet no subject teacher assigned"
+                            }
+
+                        return render(request, "login.html", context)
+
+                    else:
+                        for subject_teacher in subject_teachers:
+
+                            subject_teacher_full_name = None
+
+                            if subject_teacher.middle_name == "":
+                                subject_teacher_full_name = subject_teacher.honorific + " " + subject_teacher.first_name + " " + subject_teacher.last_name + " " + subject_teacher.suffix
+                                subject_teacher_list.append(subject_teacher_full_name)
+                            else:
+                                subject_teacher_full_name = subject_teacher.honorific + " " + subject_teacher.first_name + " " + subject_teacher.middle_name[0] + ". " + subject_teacher.last_name + " " + subject_teacher.suffix
+                                subject_teacher_list.append(subject_teacher_full_name)
+
+                        print("Available Course: ", course_list)
+                        print("Available Subject Teachers: ", subject_teacher_list)
+
+                        subject_teacher_list.sort()
+
+
+                    # Check if there are no Adviser assigned
+                    if not adviser:
+                        print("No Adviser assigned")
+
+                        context = {
+                            "response": "sweet no adviser assigned"}
+
+                        return render(request, "login.html", context)
+
+                    else:
+                        pass
+
+                    # Check if there are no Academic Affairs assigned
+                    if not academic_affairs:
+                        print("No Academic Affairs assigned")
+
+                        context = {
+                            "response": "sweet no academic affairs assigned"}
+
+                        return render(request, "login.html", context)
+
+                    else:
+                        pass
+
+                    # Check if there are no Library assigned
+                    if not library:
+                        print("No Library assigned")
+
+                        context = {
+                            "response": "sweet no library assigned"}
+
+                        return render(request, "login.html", context)
+
+                    else:
+                        pass
+
+                    # Check if there are no Research & Extension assigned
+                    if not research_extension:
+                        print("No Research & Extension assigned")
+
+                        context = {
+                            "response": "sweet no research extension assigned"}
+
+                        return render(request, "login.html", context)
+
+                    else:
+                        pass
 
                     user = User.objects.get(username=username_input_index_form, password=password_input_index_form)
                     login(request, user)
@@ -122,7 +279,7 @@ def index(request):
                 print("The Password is incorrect.")
 
                 context = {"response": "incorrect password"}
-                return render(request, "index.html", context)
+                return render(request, "login.html", context)
 
         # If the user doesn't exist
         except:
@@ -131,7 +288,7 @@ def index(request):
             context = {"response": "user does not exist"}
             return render(request, "index.html", context)
 
-    return render(request, "index.html")
+    return render(request, "login.html")
 
 
 #  Sign up Page
@@ -453,6 +610,92 @@ def signup(request):
     return render(request, "signup.html", context)
 
 
+# Index / Log in Page
+def forgotPassword(request):
+
+    if request.method == "POST":
+        # Get data from Front-end
+        email_input = request.POST.get("email_input")
+
+        if "gsfe.tupcavite.edu.ph" in email_input:
+            pass
+
+        else:
+            context = {"response": "sweet invalid email"}
+            return render(request, "forgot-password.html", context)
+
+        # Check if the user exist
+        try:
+            user_check = User.objects.get(email=email_input)
+
+            S = 10
+            generated_token = ''.join(random.choices(string.ascii_uppercase + string.digits, k = S))    
+            print(str(generated_token)) # print the random data 
+
+            create_token = ForgotPassword(
+                username = user_check.username,
+                token = str(generated_token),
+            )
+            create_token.save()
+
+            try:
+                get_token = ForgotPassword.objects.get(username = user_check.username)
+
+                # Send g-mail notifications
+                send_mail(
+                    "TUPC Research Defense Web App - Forgot Password",
+                    "Good Day " + user_check.username + ",\n" +"You have requested to reset your password, here is the link to reset your password. \n Please don't give this link to anyone. Thank you and Have a nice day. \n" + "http://127.0.0.1:8000/reset-password/" + get_token.token,
+                    "unofficial.tupc.uitc@gmail.com",
+                    [user_check.email],
+                    fail_silently=False,
+                )
+
+                context = {"response": "sweet email sent"}
+                return render(request, "login.html", context)
+
+            except:
+                context = {"response": "sweet user error"}
+                return render(request, "forgot-password.html", context)
+
+
+
+           
+        # If the user doesn't exist
+        except:
+            print("The User doesn't exist.")
+
+            context = {"response": "sweet email not found"}
+            return render(request, "forgot-password.html", context)
+
+    return render(request, "forgot-password.html")
+
+
+def resetPassword(request, id):
+
+    try:
+        check_token = ForgotPassword.objects.get(token = id)
+    except:
+        return redirect("login")
+
+    if request.method == "POST":
+        new_password = request.POST.get("new_password_input")
+        confirm_new_password = request.POST.get("confirm_new_password_input")
+
+        if new_password != confirm_new_password:
+            context = {"response": "sweet password mismatch"}
+            return render(request, "reset-password.html", context)
+        
+        User.objects.filter(username = check_token.username).update(password = new_password)
+        check_token.delete()
+
+
+        context = {"response": "sweet password changed"}
+        return render(request, "login.html", context)
+
+
+
+    return render(request, "reset-password.html")
+
 # Log out
 def logout_user(request):
     currently_loggedin_user = request.user
@@ -502,12 +745,12 @@ def logout_user(request):
     #         print("E-Sign Deleted")
 
     logout(request)
-    return redirect("index")
+    return redirect("login")
 
 
 # Index / Log in Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_panel, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
 def login_as_user_accounts(request):
     currently_loggedin_user = request.user
 
@@ -520,7 +763,7 @@ def login_as_user_accounts(request):
         return render(request, "login-as-user-accounts.html")
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def topbarProcess(request):
 
     currently_loggedin_user = request.user
@@ -555,7 +798,7 @@ def topbarProcess(request):
     return (currently_loggedin_user_full_name, currently_loggedin_user_account)
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def fullNameProcess(request, id):
 
     print(id)

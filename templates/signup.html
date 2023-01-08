@@ -88,7 +88,7 @@
               <input type="password" name="confirm_password_input" class="form-control" required />
             </div>
 
-            <button id="signup_btn" class="btn btn-class btn-outline-success mt-2 w-100" type="submit">Sign Up</button>
+            <button id="signup_btn" class="btn btn-outline-dark mt-2 w-100" type="submit">Sign Up</button>
 
             <button id="signup_spinner" class="btn btn-class mt-2 w-100" style="display: None" disabled>
               <div class="spinner-border" role="status">
@@ -97,7 +97,7 @@
             </button>
 
             <hr class="mt-5" />
-            <p class="text-center">Have an account? <a href="{% url 'index' %}">Log In</a></p>
+            <p class="text-center">Have an account? <a href="{% url 'login' %}">Log In</a></p>
           </form>
         </div>
       </div>
@@ -126,7 +126,7 @@
       Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no available Course. <br> Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'index' %}");
+        window.location.replace("{% url 'login' %}");
       }, 4000);
     </script>
     {% endif %}
@@ -136,7 +136,7 @@
       Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There is no DIT Head assigned. <br> Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'index' %}");
+        window.location.replace("{% url 'login' %}");
       }, 4000);
     </script>
     {% endif %}
@@ -146,7 +146,7 @@
       Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Panel Members assigned. <br> Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'index' %}");
+        window.location.replace("{% url 'login' %}");
       }, 4000);
     </script>
     {% endif %}
@@ -156,7 +156,7 @@
       Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> The Panel Members assigned is incomplete. <br> Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'index' %}");
+        window.location.replace("{% url 'login' %}");
       }, 4000);
     </script>
     {% endif %}
@@ -166,7 +166,7 @@
       Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Adviser assigned. <br> Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'index' %}");
+        window.location.replace("{% url 'login' %}");
       }, 4000);
     </script>
     {% endif %}
@@ -176,7 +176,7 @@
       Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Subject Teacher assigned. <br> Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'index' %}");
+        window.location.replace("{% url 'login' %}");
       }, 4000);
     </script>
     {% endif %}
@@ -186,7 +186,7 @@
       Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Academic Affairs assigned. <br> Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'index' %}");
+        window.location.replace("{% url 'login' %}");
       }, 4000);
     </script>
     {% endif %}
@@ -196,7 +196,7 @@
       Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Library assigned. <br> Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'index' %}");
+        window.location.replace("{% url 'login' %}");
       }, 4000);
     </script>
     {% endif %}
@@ -206,7 +206,7 @@
       Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Research & Extension assigned. <br> Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'index' %}");
+        window.location.replace("{% url 'login' %}");
       }, 4000);
     </script>
     {% endif %}

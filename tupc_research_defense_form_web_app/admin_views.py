@@ -29,8 +29,8 @@ date_today = today.strftime("%B %d, %Y")
 
 
 # Admin - Dashboard Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminDashboard(request):
     current_user = request.user
     current_password = current_user.password
@@ -59,8 +59,8 @@ def adminDashboard(request):
 
 
 # Admin - Profile Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminProfile(request):
     current_user = request.user
     current_password = request.user.password
@@ -101,7 +101,7 @@ def adminProfile(request):
                     User.objects.filter(username=current_user).update(password=new_password_input)
 
                     context = {"response": "changed password"}
-                    return render(request, "index.html", context)
+                    return render(request, "login.html", context)
 
                 else:
                     context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "user_first_name": user_first_name, "user_middle_name": user_middle_name, "user_last_name": user_last_name, "username": current_username, "user_email": user_email, "response": "new password and confirm new password doesnt match"}
@@ -122,8 +122,8 @@ def adminProfile(request):
 
 
 # Admin
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminStudentAccount(request):
     current_user = request.user
     current_password = current_user.password
@@ -145,8 +145,8 @@ def adminStudentAccount(request):
 
 
 # Admin - Faculty Member Individual Account Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminStudentLeaderData(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -463,8 +463,8 @@ def adminStudentLeaderData(request, id):
 
 
 # Admin
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminStudentGroupMemberAccount(request):
     current_user = request.user
     current_password = current_user.password
@@ -486,8 +486,8 @@ def adminStudentGroupMemberAccount(request):
 
 
 # Admin - Faculty Member Individual Account Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminStudentGroupMemberData(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -597,8 +597,8 @@ def adminStudentGroupMemberData(request, id):
 
 
 # Admin - Student Course and Major Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminStudentCourseMajor(request):
     current_user = request.user
     current_password = current_user.password
@@ -619,8 +619,8 @@ def adminStudentCourseMajor(request):
 
 
 # Admin - Student Add Course and Major Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminStudentAddCourseMajor(request):
     current_user = request.user
     current_password = current_user.password
@@ -682,8 +682,8 @@ def adminStudentAddCourseMajor(request):
 
 
 # Admin - Student Edit Course and Major Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminStudentEditCourseMajor(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -703,6 +703,8 @@ def adminStudentEditCourseMajor(request, id):
         course_abbr_input = request.POST.get("course_abbr_input")
 
         print(course_input)
+        old_abbr = course_major_check.course_major_abbr
+        print(old_abbr)
 
         if major_input == course_major_check.major:
             print("Major - Pass")
@@ -748,6 +750,9 @@ def adminStudentEditCourseMajor(request, id):
 
         course_major_check_new = StudentCourseMajor.objects.get(id=id)
 
+        StudentLeader.objects.filter(course_major_abbr = old_abbr).update(course =  course_major_check.course, major = course_major_check.major, course_major_abbr = course_major_check_new.course_major_abbr)
+        StudentGroupMember.objects.filter(course_major_abbr = old_abbr).update(course =  course_major_check.course, major = course_major_check.major, course_major_abbr = course_major_check_new.course_major_abbr)
+
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "currently_loggedin_user_account": currently_loggedin_user_account,
@@ -763,8 +768,8 @@ def adminStudentEditCourseMajor(request, id):
 
 
 # Admin - Student Delete Course and Major Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminStudentDeleteCourseMajor(request, id):
 
     delete_course = StudentCourseMajor.objects.filter(id=id)
@@ -784,8 +789,8 @@ def adminStudentDeleteCourseMajor(request, id):
 
 
 # Admin
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminResearchTitles(request):
     current_user = request.user
     current_password = current_user.password
@@ -811,8 +816,8 @@ def adminResearchTitles(request):
 
 
 # Admin - Department Head Account Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminFacultyMemberAcc(request):
     current_user = request.user
     current_password = current_user.password
@@ -850,8 +855,8 @@ def adminFacultyMemberAcc(request):
 
 
 # Admin - Faculty Member Create Account Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminFacultyMemberCreateAcc(request):
     current_user = request.user
     current_password = current_user.password
@@ -1223,8 +1228,8 @@ def adminFacultyMemberCreateAcc(request):
 
 
 # Admin - Faculty Member Individual Account Page
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminFacultyMemberData(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -1531,8 +1536,8 @@ def adminFacultyMemberData(request, id):
 
 
 # Admin - Faculty Member Change Password Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminFacultyMemberChangePassword(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -1661,8 +1666,8 @@ def adminFacultyMemberChangePassword(request, id):
 
 
 # Admin - Faculty Member Change User Account Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminFacultyMemberChangeUserAccount(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -1992,8 +1997,8 @@ def adminFacultyMemberChangeUserAccount(request, id):
 
 
 # Admin
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminAdviseeLimit(request):
     current_user = request.user
     current_password = current_user.password
@@ -2063,8 +2068,8 @@ def adminAdviseeLimit(request):
 
 
 # Admin
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminAdviseeLimitSet(request):
     current_user = request.user
     current_password = current_user.password
@@ -2102,8 +2107,8 @@ def adminAdviseeLimitSet(request):
 
 
 # Admin
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_administrator, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_administrator, login_url="login")
 def adminTheDevs(request):
     current_user = request.user
     current_password = current_user.password
@@ -2123,7 +2128,7 @@ def adminTheDevs(request):
     return render(request, "admin-the-devs.html", context)
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def topbarProcess(request):
 
     currently_loggedin_user = request.user

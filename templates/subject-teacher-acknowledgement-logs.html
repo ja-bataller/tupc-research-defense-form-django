@@ -1,0 +1,310 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+
+  <title>Subject Teacher - Acknowldgement Logs</title>
+
+  {% include 'css-main-cdn.html' %}
+</head>
+
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
+          <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
+          </div>
+        </a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0" />
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
+          <i class="fa-solid fa-house"></i>
+          <span>Home</span></a>
+      </li>
+
+      <!-- Divider -->
+      <!-- <hr class="sidebar-divider"> -->
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTitleDefense" aria-expanded="true" aria-controls="collapseTitleDefense">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Topic Defense</span>
+        </a>
+        <div id="collapseTitleDefense" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'subject-teacher-title-defense-schedule-dashboard' %}">My Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-students-title-defense-schedule-dashboard' %}">Students Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-set-research-title-defense-schedule' %}">Set Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-bet3-title-defense-logs' %}">Logs</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProposalDefense" aria-expanded="true" aria-controls="collapseProposalDefense">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Proposal Defense</span>
+        </a>
+        <div id="collapseProposalDefense" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'subject-teacher-proposal-defense-schedule-dashboard' %}">My Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-students-proposal-defense-schedule-dashboard' %}">Students Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-set-research-proposal-defense-schedule' %}">Set Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-bet3-proposal-defense-logs' %}">Logs</a>
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinalDefense" aria-expanded="true" aria-controls="collapseFinalDefense">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Final Defense</span>
+        </a>
+        <div id="collapseFinalDefense" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'subject-teacher-final-defense-schedule-dashboard' %}">My Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-students-final-defense-schedule-dashboard' %}">Students Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-set-research-final-defense-schedule' %}">Set Schedule</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-bet5-final-defense-logs' %}">Logs</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'subject-teacher-acknowledgement-receipt' %}">
+          <i class="fa-solid fa-file-lines"></i>
+          <span>Acknowledgement Receipt</span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'subject-teacher-acknowledgement-receipt-logs' %}">
+          <i class="fa-solid fa-file-lines"></i>
+          <span>Acknowledgement Logs</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'subject-teacher-research-titles' %}">
+          <i class="fa-solid fa-book"></i>
+          <span>Research Titles</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider" />
+
+      <!-- Nav Item - The Developers -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'subject-teacher-the-devs' %}">
+          <i class="fa-solid fa-code"></i>
+          <span>The Devs</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block" />
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+
+        {% include 'subject-teacher-topbar.html' %}
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <div class="d-sm-flex align-items-center justify-content-between mt-4">
+            <h1 class="h3 mb-0 text-gray-800">Acknowledgement Receipt - Logs</h1>
+          </div>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <!-- <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Pending Dashboard</h6>
+              </div> -->
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered text-center" id="logs" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th hidden>Ref No.</th>
+                      <th>Student ID No.</th>
+                      <th>Student Name</th>
+                      <th>Course</th>
+                      <th>Research Title</th>
+                      <th>Date</th>
+                      <th>Response</th>
+                      <th>Signature</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th hidden>Ref No.</th>
+                      <th>Student ID No.</th>
+                      <th>Student Name</th>
+                      <th>Course</th>
+                      <th>Research Title</th>
+                      <th>Date</th>
+                      <th>Response</th>
+                      <th>Signature</th>
+                    </tr>
+                  </tfoot>
+                  <tbody class="text-dark">
+                    {% for accepted_receipt in accepted_receipt %}
+                    <tr>
+                      <td hidden>{{accepted_receipt.id}}</td>
+                      <td>{{accepted_receipt.student_leader_username}}</td>
+                      <td>{{accepted_receipt.student_leader_full_name}}</td>
+                      <td>{{accepted_receipt.course_major_abbr}}</td>
+                      <td>{{accepted_receipt.research_title}}</td>
+                      <td>{{accepted_receipt.subject_teacher_response_date}}</td>
+                      <td class="text-success">{{accepted_receipt.subject_teacher_response}}</td>
+                      {% if accepted_receipt.subject_teacher_signature == True %}
+                      <td class="text-success">E-Signature</td>
+                      {% else %}
+                      <td class="text-info">Live Signature</td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Accept Response Modal -->
+      <div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="acceptModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Accept request?</h5>
+              </button>
+            </div>
+            <div class="modal-body">Are you sure you want to accept
+              <span id="student_name_accept"></span><br>
+              Acknowledgement Receipt request?
+              <br>
+              <br>
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required>
+                <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+              </div>
+              <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Accept -
+                Attach Signature</a>
+              <hr>
+              <a id="btn_accept" class="submit-button btn btn-outline-info w-100" type="button" href="#">Accept -
+                Live Signature</a>
+              <hr>
+            </div>
+            <div class="modal-footer">
+              <button id="btn_cancel_a" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      {% include 'footer.html' %}
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+
+  {% for pending_receipt in pending_receipt %}
+  <script>
+    // Accept Response - Live Signature
+    document.getElementById('accept_' + '{{pending_receipt.id}}').addEventListener("click", function () {
+      data_id = $(document.getElementById('accept_' + '{{pending_receipt.id}}')).attr("data-id")
+
+      document.getElementById('student_name_accept').textContent = "{{pending_receipt.student_leader_full_name}}";
+      document.getElementById("btn_accept").href = "{% url 'subject-teacher-acknowledgement-receipt-accept' id=0 %}".replace(/0/, data_id);
+      $("#acceptModal").modal()
+    });
+
+  </script>
+  {% endfor %}
+
+  <!-- Modal - Accept - Attach Signature -->
+  <script>
+    document.getElementById('btn_accept_signed').addEventListener("click", function () {
+      if (document.getElementById('checkbox_agreement_a').checked) {
+        document.getElementById("btn_accept_signed").href = "{% url 'subject-teacher-acknowledgement-receipt-accept-sign' id=0 %}".replace(/0/, data_id);
+      } else {
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
+      }
+    });
+  </script>
+
+
+  <!-- Modal - Cancel Button -->
+  <script>
+    document.getElementById("btn_cancel_a").addEventListener("click", function () {
+      document.getElementById("checkbox_agreement_a").checked = false;
+    });
+
+    document.getElementById("btn_cancel_d").addEventListener("click", function () {
+      document.getElementById("checkbox_agreement_d").checked = false;
+    });
+  </script>
+
+  {% if response == 'sweet panel acknowledgement receipt accepted' %}
+  <script>
+    Swal.fire("Accepted", "The Acknowledgement Receipt request of {{accepted_student_member_name}} is accepted.", "success");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-acknowledgement-receipt' %}");
+    }, 4000);
+
+  </script>
+  {% endif %}
+
+
+  {% if response == 'sweet no esign' %}
+  <script>
+    Swal.fire("Uh-oh", "No E-signature uploaded. \n Please upload you signature in your Profile. Thank you.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-acknowledgement-receipt' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+</body>
+
+</html>

@@ -28,8 +28,8 @@ today = date.today()
 date_today = today.strftime("%B %d, %Y")
 
 # Student - BET3 - Topic Defense - Panel Invitation - Download Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentDownloadPanelInvitationBet3(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -322,8 +322,8 @@ def studentDownloadPanelInvitationBet3(request, id):
 
 
 # Student - BET3 - Research Title Defense - Download Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentDownloadBET3ResearchTitleDefenseForm(request):
     current_user = request.user
     current_password = current_user.password
@@ -857,8 +857,8 @@ def studentDownloadBET3ResearchTitleDefenseForm(request):
 
 
 # Student - BET3 - Topic Defense - Panel Invitation - Download Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentTopicPanelConformeDownload(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -1108,8 +1108,8 @@ def studentTopicPanelConformeDownload(request, id):
 
 
 # Student - BET3 - Proposal Defense - Panel Invitation - Download Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentProposalPanelConformeDownload(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -1358,8 +1358,8 @@ def studentProposalPanelConformeDownload(request, id):
 
 
 # Student - BET5 - Final Defense - Panel Invitation - Download Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentFinalPanelConformeDownload(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -1604,8 +1604,8 @@ def studentFinalPanelConformeDownload(request, id):
 
 
 # Student - BET-3 Adviser Conforme - Download
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3AdviserConformeDownload(request):
     current_user = request.user
     current_password = current_user.password
@@ -1867,8 +1867,8 @@ def studentBET3AdviserConformeDownload(request):
 
 
 # Student - BET3 - Proposal Defense - Panel Invitation - Download Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3ProposalDefensePanelInvitationDownload(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -2139,8 +2139,8 @@ def studentBET3ProposalDefensePanelInvitationDownload(request, id):
 
 
 # Student - BET3 - Critique Form - Download
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3CritiqueFormDownload(request):
     current_user = request.user
     current_password = current_user.password
@@ -2155,7 +2155,7 @@ def studentBET3CritiqueFormDownload(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
     
     # Get Student Group Members
     try:
@@ -2408,8 +2408,8 @@ def studentBET3CritiqueFormDownload(request):
 
 
 # Student - BET3 - Critique Form - Download
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3ResearchProposalDefenseFormDownload(request):
     current_user = request.user
     current_password = current_user.password
@@ -2424,7 +2424,7 @@ def studentBET3ResearchProposalDefenseFormDownload(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # Get Student Group Members
     try:
@@ -2933,8 +2933,8 @@ def studentBET3ResearchProposalDefenseFormDownload(request):
 
 
 # Student - BET5 - Final Defense - Panel Invitation - Download Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET5FinalDefensePanelInvitationDownload(request, id):
     current_user = request.user
     current_password = current_user.password
@@ -3205,8 +3205,8 @@ def studentBET5FinalDefensePanelInvitationDownload(request, id):
 
 
 # Student - BET3 - Critique Form - Download
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET5ResearchFinalDefenseFormDownload(request):
     current_user = request.user
     current_password = current_user.password
@@ -3221,7 +3221,7 @@ def studentBET5ResearchFinalDefenseFormDownload(request):
     try:
         get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
     except:
-        return redirect("index")
+        return redirect("login")
 
     # Get Student Group Members
     try:
@@ -3720,8 +3720,8 @@ def studentBET5ResearchFinalDefenseFormDownload(request):
 
 
 # Student - BET3 - Proposal Defense - Panel Invitation - Download Process
-@login_required(login_url="index")
-@user_passes_test(lambda u: u.is_student, login_url="index")
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
 def studentAcknowledgmentReceiptDownload(request):
     current_user = request.user
     current_password = current_user.password
@@ -3981,7 +3981,7 @@ def studentAcknowledgmentReceiptDownload(request):
     return render(request, "student-acknowledgement-receipt-dashboard.html", context)
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def topbarProcess(request):
 
     currently_loggedin_user = request.user
@@ -4016,7 +4016,7 @@ def topbarProcess(request):
     return (currently_loggedin_user_full_name, currently_loggedin_user_account)
 
 
-@login_required(login_url="index")
+@login_required(login_url="login")
 def fullNameProcess(request, id):
 
     print(id)
