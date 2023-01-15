@@ -2009,8 +2009,11 @@ def adminAdviseeLimit(request):
 
     get_current_advisee_limit = User.objects.filter(is_panel = 1)
 
-    current_advisee_limit = get_current_advisee_limit[0].advisee_limit
-    print(current_advisee_limit)
+    try:
+        current_advisee_limit = get_current_advisee_limit[0].advisee_limit
+        print(current_advisee_limit)
+    except:
+        return redirect("admin-dashboard")
 
     advisee_limit_list = []
 

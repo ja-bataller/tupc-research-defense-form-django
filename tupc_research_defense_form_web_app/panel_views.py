@@ -2615,7 +2615,7 @@ def panelBET3TopicPanelInvitationAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Topic Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -2678,7 +2678,7 @@ def panelBET3TopicPanelInvitationDeclineSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Topic Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -2729,7 +2729,7 @@ def panelPanelInvitationBet3Accept(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Topic Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -2776,7 +2776,7 @@ def panelPanelInvitationBet3Decline(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Topic Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -2865,7 +2865,7 @@ def panelPanelConformeAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Conforme for Topic Defense",
-            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.panel_full_name + " has accepted your Panel Conforme for Topic Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.panel_full_name + " has accepted your Panel Conforme for Topic Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -2918,7 +2918,7 @@ def panelPanelConformeAccept(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Conforme for Topic Defense",
-            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.panel_full_name + " has accepted your Panel Conforme for Topic Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.panel_full_name + " has accepted your Panel Conforme for Topic Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -3635,7 +3635,7 @@ def panelBET3ProposalPanelInvitationAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Proposal Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Proposal Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -3699,7 +3699,7 @@ def panelBET3ProposalPanelInvitationDeclineSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Proposal Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Proposal Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -3750,7 +3750,7 @@ def panelBET3ProposalPanelInvitationAccept(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Proposal Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Proposal Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -3797,7 +3797,7 @@ def panelBET3ProposalPanelInvitationDecline(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Proposal Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Proposal Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -3889,7 +3889,7 @@ def panelBET5FinalPanelInvitationAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Final Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Final Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -3952,7 +3952,7 @@ def panelBET5FinalPanelInvitationDeclineSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Final Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Final Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -4002,7 +4002,7 @@ def panelBET5FinalPanelInvitationAccept(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Final Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has accepted your Panel Invitation for Final Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -4048,7 +4048,7 @@ def panelBET5FinalPanelInvitationDecline(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Final Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + check_panel_invitation.panel_full_name + " has declined your Panel Invitation for Final Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,

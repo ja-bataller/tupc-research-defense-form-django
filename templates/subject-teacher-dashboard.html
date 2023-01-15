@@ -22,7 +22,7 @@
 
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
           <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
           </div>
@@ -33,10 +33,32 @@
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
+      </li>
+
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStudents" aria-expanded="true" aria-controls="collapseStudents">
+          <i class="fa-solid fa-user-graduate"></i>
+          <span>Students</span>
+        </a>
+        <div id="collapseStudents" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'subject-teacher-students-bet3' %}">BET-3 Students</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-students-bet5' %}">BET-5 Students</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-students-logs' %}">Students Logs</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'subject-teacher-research-titles' %}">
+          <i class="fa-solid fa-book"></i>
+          <span>Research Titles</span></a>
       </li>
 
       <!-- Divider -->
@@ -89,7 +111,7 @@
         </div>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="{% url 'subject-teacher-acknowledgement-receipt' %}">
           <i class="fa-solid fa-file-lines"></i>
           <span>Acknowledgement Receipt</span></a>
@@ -101,11 +123,7 @@
           <span>Acknowledgement Logs</span></a>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'subject-teacher-research-titles' %}">
-          <i class="fa-solid fa-book"></i>
-          <span>Research Titles</span></a>
-      </li>
+
 
       <!-- Divider -->
       <hr class="sidebar-divider" />
@@ -150,7 +168,7 @@
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fa-solid fa-face-laugh-beam fa-2x tup-colorway-secondary"></i>
+                      <i class="fa-solid fa-user fa-2x tup-colorway-secondary"></i>
                     </div>
                   </div>
                 </div>
@@ -260,14 +278,14 @@
 
                       <td class="text-success">{{completed_today_defense.status}}</td>
                       {% if completed_today_defense.form == "Research Title Defense" %}
-                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-title-defense-day' completed_today_defense.student_leader_username%}"><i class="fa-solid fa-eye"></i></a></td>
+                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-title-defense-day' completed_today_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
                       {% endif %}
                       {% if completed_today_defense.form == "Research Proposal Defense" %}
-                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-proposal-defense-day' completed_today_defense.student_leader_username%}"><i class="fa-solid fa-eye"></i></a></td>
+                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet3-proposal-defense-day' completed_today_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
                       {% endif %}
 
                       {% if completed_today_defense.form == "Research Final Defense" %}
-                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet5-final-defense-day' completed_today_defense.student_leader_username%}"><i class="fa-solid fa-eye"></i></a></td>
+                      <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-bet5-final-defense-day' completed_today_defense.student_leader_username %}"><i class="fa-solid fa-eye"></i></a></td>
                       {% endif %}
                     </tr>
                     {% endfor %}
@@ -335,7 +353,7 @@
 
   {% if response == 'sweet panel voting closed' %}
   <script>
-    Swal.fire("Close Voting", "You have closed the research title voting.", "error");
+    Swal.fire("Close Voting", "You have closed the research title voting.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
     }, 4000);
@@ -459,7 +477,7 @@
 
   {% if response == 'sweet proposal defense end critique' %}
   <script>
-    Swal.fire("End Critique", "The Critique Form has ended.", "error");
+    Swal.fire("End Critique", "The Critique Form has ended.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
     }, 4000);
@@ -477,7 +495,7 @@
 
   {% if response == 'sweet proposal defense end voting' %}
   <script>
-    Swal.fire("Close Voting", "The Verdict voting has ended.", "error");
+    Swal.fire("Close Voting", "The Verdict voting has ended.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet3-proposal-defense-day' student_leader_username %}");
     }, 4000);
@@ -551,7 +569,7 @@
 
   {% if response == 'sweet final defense end voting' %}
   <script>
-    Swal.fire("End Voting", "The Verdict voting has ended.", "error");
+    Swal.fire("End Voting", "The Verdict voting has ended.", "info");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
     }, 4000);

@@ -252,6 +252,12 @@ urlpatterns = [
    path('subject-teacher/dashboard', views.subjectTeacherDashboard, name ="subject-teacher-dashboard"),
    path('subject-teacher/profile', views.subjectTeacherProfile, name ="subject-teacher-profile"),
 
+   path('subject-teacher/students/bet3', views.subjectTeacherBET3Students, name ="subject-teacher-students-bet3"),
+   path('subject-teacher/students/bet5', views.subjectTeacherBET5Students, name ="subject-teacher-students-bet5"),
+   path('subject-teacher/students/data/<str:id>', views.subjectTeacherStudentsData, name ="subject-teacher-students-data"),
+   path('subject-teacher/students/logs', views.subjectTeacherLogsStudents, name ="subject-teacher-students-logs"),
+
+
    path('subject-teacher/research-titles', views.subjectTeacherResearchTitles, name ="subject-teacher-research-titles"),
 
    path('subject-teacher/acknowledgement-receipt', views.subjectTeacherAcknowledgementReceipt, name ="subject-teacher-acknowledgement-receipt"),

@@ -1,244 +1,387 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign up - TUP-C Research Defense Form Web App</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign up - TUP-C Research Defense Form Web App</title>
 
-    <!-- Fontawesome 6.1.1 CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous" />
 
-    <!-- Izitoast 1.4.0 CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Fontawesome 6.1.1 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="{% static '/css/login_signup.css' %}" />
-  </head>
+  <!-- Izitoast 1.4.0 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <link rel="stylesheet" href="{% static '/css/login_signup.css' %}" />
+</head>
 
-  <body>
-    <div class="container">
-      <div class="row content">
-        <div class="col-md-6 mb-3">
-          <img class="img-fluid" src="{% static '/img/laptop-girl.jpg' %}" alt="" />
-        </div>
-        <div class="col-md-6">
-          <h1 class="signin-text mb-4">Sign up</h1>
-          <form method="POST" onsubmit="signupBtnSpinner()">
-            {% csrf_token %}
+<body>
+  <div class="container">
+    <div class="row content">
+      <div class="col-md-6 mb-3">
+        <img class="img-fluid" src="{% static '/img/laptop-girl.jpg' %}" alt="" />
+      </div>
+      <div class="col-md-6">
+        <h1 class="signin-text mb-4">Sign up</h1>
+        <form method="POST" onsubmit="signupBtnSpinner()">
+          {% csrf_token %}
 
-            <div class="form-group">
-              <label>First Name:</label>
-              <input type="text" name="first_name_input" class="form-control" style="text-transform: capitalize" required />
-            </div>
-            <div class="form-group">
-              <label>Middle Name:</label>
-              <input type="text" name="middle_name_input" class="form-control" style="text-transform: capitalize" />
-            </div>
-            <div class="form-group">
-              <label>Last Name:</label>
-              <input type="text" name="last_name_input" class="form-control" style="text-transform: capitalize" required />
-            </div>
+          <div class="form-group">
+            <label><sup class='text-danger'>*</sup>First Name:</label>
+            <input type="text" id="first_name_input" name="first_name_input" class="form-control" style="text-transform: capitalize" required />
+          </div>
+          <div class="form-group">
+            <label>Middle Name:</label>
+            <input type="text" id="middle_name_input" name="middle_name_input" class="form-control" style="text-transform: capitalize" />
+          </div>
+          <div class="form-group">
+            <label><sup class='text-danger'>*</sup>Last Name:</label>
+            <input type="text" id="last_name_input" name="last_name_input" class="form-control" style="text-transform: capitalize" required />
+          </div>
 
-            <div class="form-group">
-              <label>Suffix:</label>
-              <select class="custom-select" name="suffix_input">
-                <option value="" selected>None</option>
-                <option value="Sr.">Sr.</option>
-                <option value="Jr.">Jr.</option>
-                <option value="I">I</option>
-                <option value="II">II</option>
-                <option value="III">III</option>
-                <option value="IV">IV</option>
-                <option value="V.">V.</option>
+          <div class="form-group">
+            <label>Suffix:</label>
+            <select class="custom-select" id="suffix_input" name="suffix_input">
+              <option value="" selected>None</option>
+              <option value="Sr.">Sr.</option>
+              <option value="Jr.">Jr.</option>
+              <option value="I">I</option>
+              <option value="II">II</option>
+              <option value="III">III</option>
+              <option value="IV">IV</option>
+              <option value="V.">V.</option>
 
-              </select>
-            </div>
+            </select>
+          </div>
 
-            <div class="form-group">
-              <label>Course:</label>
-              <select class="custom-select" name="course_input" required>
-                <option value="default" selected>What is you Course?</option>
-                {% for abbr in course %}
-                <option value="{{abbr.course_major_abbr}}">{{abbr.course_major_abbr}}</option>
-                {% endfor %}
-              </select>
-            </div>
+          <div class="form-group">
+            <label><sup class='text-danger'>*</sup>Course:</label>
+            <select class="custom-select" id="course_input" name="course_input" required>
+              <option value="" selected>What is you Course?</option>
+              {% for abbr in course %}
+              <option value="{{abbr.course_major_abbr}}">{{abbr.course_major_abbr}}</option>
+              {% endfor %}
+            </select>
+          </div>
 
-            <div class="form-group">
-              <label>BET-3 Subject Teacher:</label>
-              <select class="custom-select" name="subject_teacher_input" required>
-                <option value="default" selected>Who is your BET-3 Subject Teacher?</option>
-                {% for subject_teacher in subject_teachers %}
-                {% if subject_teacher.middle_name == "" %}
-                <option value="{{subject_teacher.username}}">{{subject_teacher.honorific}} {{subject_teacher.first_name}} {{subject_teacher.last_name}} {{subject_teacher.suffix}}</option>
-                {% else %}
-                <option value="{{subject_teacher.username}}">{{subject_teacher.honorific}} {{subject_teacher.first_name}} {{subject_teacher.middle_name}} {{subject_teacher.last_name}} {{subject_teacher.suffix}}</option>
-                {% endif %}
-                {% endfor %}
-              </select>
-            </div>
+          <div class="form-group">
+            <label><sup class='text-danger'>*</sup>BET-3 Subject Teacher:</label>
+            <select class="custom-select" id="subject_teacher_input" name="subject_teacher_input" required>
+              <option value="" selected>Who is your BET-3 Subject Teacher?</option>
+              {% for subject_teacher in subject_teachers %}
+              {% if subject_teacher.middle_name == "" %}
+              <option value="{{subject_teacher.username}}">{{subject_teacher.honorific}} {{subject_teacher.first_name}} {{subject_teacher.last_name}} {{subject_teacher.suffix}}</option>
+              {% else %}
+              <option value="{{subject_teacher.username}}">{{subject_teacher.honorific}} {{subject_teacher.first_name}} {{subject_teacher.middle_name}} {{subject_teacher.last_name}} {{subject_teacher.suffix}}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
 
-            <div class="form-group">{{form}}</div>
+          <div class="form-group">{{form}}</div>
 
-            <div class="form-group">
-              <label for="password">Confirm Password:</label>
-              <input type="password" name="confirm_password_input" class="form-control" required />
-            </div>
+          <div class="form-group">
+            <label for="password"><sup class='text-danger'>*</sup>Confirm Password:</label>
+            <input type="password" id="confirm_password_input" name="confirm_password_input" class="form-control" required />
+          </div>
 
-            <button id="signup_btn" class="btn btn-outline-dark mt-2 w-100" type="submit">Sign Up</button>
+          <button type="button" class="btn btn-outline-success w-100" onclick="validateResearchTitleForm()">
+            Sign Up
+          </button>
 
-            <button id="signup_spinner" class="btn btn-class mt-2 w-100" style="display: None" disabled>
-              <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
+          <!-- Modal -->
+          <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">New Account Profile</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+
+                  <div class="form-group mb-4">
+                    <h6 class="h6 mb-0 text-gray-800 mb-2">Full Name:</h6>
+                    <h4 class="h4 mb-0 text-gray-800 mb-2" id="full_name_verification" style="text-transform: capitalize;"></h4>
+
+                    <h6 class="h6 mb-0 text-gray-800 mb-2">Course:</h6>
+                    <h4 class="h4 mb-0 text-gray-800 mb-2" id="course_verification"></h4>
+
+                    <h6 class="h6 mb-0 text-gray-800 mb-2">BET-3 Subject Teacher:</h6>
+                    <h4 class="h4 mb-0 text-gray-800 mb-2" id="subject_teacher_verification"></h4>
+
+                    <h6 class="h6 mb-0 text-gray-800 mb-2">Username:</h6>
+                    <h4 class="h4 mb-0 text-gray-800 mb-2" id="username_verification"></h4>
+
+                    <h6 class="h6 mb-0 text-gray-800 mb-2">Email:</h6>
+                    <h4 class="h4 mb-0 text-gray-800 mb-2" id="email_verification"></h4>
+
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="submmit" class="btn btn-outline-success">Confirm - Sign Up</button>
+                </div>
               </div>
-            </button>
+            </div>
+          </div>
 
-            <hr class="mt-5" />
-            <p class="text-center">Have an account? <a href="{% url 'login' %}">Log In</a></p>
-          </form>
-        </div>
+          <hr class="mt-5" />
+          <p class="text-center">Have an account? <a href="{% url 'login' %}">Log In</a></p>
+        </form>
       </div>
     </div>
+  </div>
 
-    <!-- Izitoast 1.4.0 CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Izitoast 1.4.0 CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Sweetalert 2.11 Script CDN-->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Sweetalert 2.11 Script CDN-->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-      let signup_btn = document.querySelector("#signup_btn");
-      let signup_spinner = document.querySelector("#signup_spinner");
+  <script>
+    let signup_btn = document.querySelector("#signup_btn");
+    let signup_spinner = document.querySelector("#signup_spinner");
 
-      function signupBtnSpinner() {
-        signup_btn.style.display = "none";
-        signup_spinner.style.display = "block";
+    function signupBtnSpinner() {
+      signup_btn.style.display = "none";
+      signup_spinner.style.display = "block";
+    }
+  </script>
+
+  {% include 'alert-validation.html' %}
+  {% include 'script-cdn.html' %}
+
+  <script>
+    let first_name_input = document.querySelector("#first_name_input");
+    let middle_name_input = document.querySelector("#middle_name_input");
+    let last_name_input = document.querySelector("#last_name_input");
+    let suffix_input = document.querySelector("#suffix_input");
+
+    let course_input = document.querySelector("#course_input");
+
+    let subject_teacher_input = document.querySelector("#subject_teacher_input");
+    let subject_teacher_input_value = subject_teacher_input.options[subject_teacher_input.selectedIndex].text;
+
+    let username_input = document.querySelector("#username_input");
+    let email_input = document.querySelector("#email_input");
+    let password_input = document.querySelector("#password_input");
+    let confirm_password_input = document.querySelector("#confirm_password_input");
+
+    function validateResearchTitleForm() {
+
+      if (!first_name_input.value || first_name_input.value == "") {
+        iziToast.error({
+          title: "Invalid",
+          message: "You didn't input any First Name.",
+          position: "topCenter",
+          timeout: 5000,
+        });
+        return
       }
-    </script>
 
-    {% include 'alert-validation.html' %} 
-    
-    {% if response == 'sweet no course available' %}
-    <script>
-      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no available Course. <br> Please try again later.", "error");
+      if (!last_name_input.value || last_name_input.value == "") {
+        iziToast.error({
+          title: "Invalid",
+          message: "You didn't input any Last Name.",
+          position: "topCenter",
+          timeout: 5000,
+        });
+        return
+      }
 
-      setTimeout(function () {
-        window.location.replace("{% url 'login' %}");
-      }, 4000);
-    </script>
-    {% endif %}
+      if (!course_input.value || course_input.value == "") {
+        iziToast.error({
+          title: "Invalid",
+          message: "You didn't input any Course.",
+          position: "topCenter",
+          timeout: 5000,
+        });
+        return
+      }
 
-    {% if response == 'sweet no dit head assigned' %}
-    <script>
-      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There is no DIT Head assigned. <br> Please try again later.", "error");
+      if (!subject_teacher_input.value || subject_teacher_input.value == "") {
+        iziToast.error({
+          title: "Invalid",
+          message: "You didn't input any BET-3 Subject Teacher.",
+          position: "topCenter",
+          timeout: 5000,
+        });
+        return
+      }
 
-      setTimeout(function () {
-        window.location.replace("{% url 'login' %}");
-      }, 4000);
-    </script>
-    {% endif %}
+      if (!username_input.value || username_input.value == "") {
+        iziToast.error({
+          title: "Invalid",
+          message: "You didn't input any Username.",
+          position: "topCenter",
+          timeout: 5000,
+        });
+        return
+      }
 
-    {% if response == 'sweet no panel assigned' %}
-    <script>
-      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Panel Members assigned. <br> Please try again later.", "error");
-
-      setTimeout(function () {
-        window.location.replace("{% url 'login' %}");
-      }, 4000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet incomplete panel' %}
-    <script>
-      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> The Panel Members assigned is incomplete. <br> Please try again later.", "error");
-
-      setTimeout(function () {
-        window.location.replace("{% url 'login' %}");
-      }, 4000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet no adviser assigned' %}
-    <script>
-      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Adviser assigned. <br> Please try again later.", "error");
-
-      setTimeout(function () {
-        window.location.replace("{% url 'login' %}");
-      }, 4000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet no subject teacher assigned' %}
-    <script>
-      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Subject Teacher assigned. <br> Please try again later.", "error");
-
-      setTimeout(function () {
-        window.location.replace("{% url 'login' %}");
-      }, 4000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet no academic affairs assigned' %}
-    <script>
-      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Academic Affairs assigned. <br> Please try again later.", "error");
-
-      setTimeout(function () {
-        window.location.replace("{% url 'login' %}");
-      }, 4000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet no library assigned' %}
-    <script>
-      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Library assigned. <br> Please try again later.", "error");
-
-      setTimeout(function () {
-        window.location.replace("{% url 'login' %}");
-      }, 4000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet no research extension assigned' %}
-    <script>
-      Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Research & Extension assigned. <br> Please try again later.", "error");
-
-      setTimeout(function () {
-        window.location.replace("{% url 'login' %}");
-      }, 4000);
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet invalid suffix' %}
-    <script>
-      Swal.fire("Invalid", "You just entered a Suffix which is not in the list. Please choose one from the choices given.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet invalid course' %}
-    <script>
-      Swal.fire("Invalid", "You just entered a Course which is not in the list. Please choose one from the choices given.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet invalid subject teacher' %}
-    <script>
-      Swal.fire("Invalid", "You just entered a Subjec Teacher which is not in the list. Please choose one from the choices given.", "error");
-    </script>
-    {% endif %}
-
-    {% if response == 'sweet user exist' %}
-    <script>
-      Swal.fire("{{student_member_check_username}} \n {{student_member_check_name}}", "You're already a part of a Group. <br> One Account per group is allowed.", "error");
-    </script>
-    {% endif %}
+      if (!email_input.value || email_input.value == "") {
+        iziToast.error({
+          title: "Invalid",
+          message: "You didn't input any Email.",
+          position: "topCenter",
+          timeout: 5000,
+        });
+        return
+      }
 
 
-    <script>
-      
-    </script>
+      if (!password_input.value || password_input.value == "") {
+        iziToast.error({
+          title: "Invalid",
+          message: "You didn't input any password.",
+          position: "topCenter",
+          timeout: 5000,
+        });
+        return
+      }
 
-  </body>
+      if (!confirm_password_input.value || confirm_password_input.value == "") {
+        iziToast.error({
+          title: "Invalid",
+          message: "You didn't input any Confirm Password.",
+          position: "topCenter",
+          timeout: 5000,
+        });
+        return
+      }
+      if (password_input.value != confirm_password_input.value) {
+        Swal.fire("Invalid", "Password and Confirm Password doesn't match.", "error");
+        return
+      }
+
+      document.querySelector("#full_name_verification").innerHTML = `${first_name_input.value} ${middle_name_input.value} ${last_name_input.value} ${suffix_input.value}`
+      document.querySelector("#course_verification").innerHTML = course_input.value
+      document.querySelector("#subject_teacher_verification").innerHTML = $("#subject_teacher_input option:selected").text();
+      document.querySelector("#username_verification").innerHTML = username_input.value
+      document.querySelector("#email_verification").innerHTML = email_input.value
+      $("#signupModal").modal();
+    }
+  </script>
+
+  {% if response == 'sweet no course available' %}
+  <script>
+    Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no available Course. <br> Please try again later.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'login' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no dit head assigned' %}
+  <script>
+    Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There is no DIT Head assigned. <br> Please try again later.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'login' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no panel assigned' %}
+  <script>
+    Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Panel Members assigned. <br> Please try again later.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'login' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet incomplete panel' %}
+  <script>
+    Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> The Panel Members assigned is incomplete. <br> Please try again later.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'login' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no adviser assigned' %}
+  <script>
+    Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Adviser assigned. <br> Please try again later.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'login' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no subject teacher assigned' %}
+  <script>
+    Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Subject Teacher assigned. <br> Please try again later.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'login' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no academic affairs assigned' %}
+  <script>
+    Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Academic Affairs assigned. <br> Please try again later.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'login' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no library assigned' %}
+  <script>
+    Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Library assigned. <br> Please try again later.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'login' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet no research extension assigned' %}
+  <script>
+    Swal.fire("Uh-oh", "Sorry, can't sign up at the moment.<br> There are no Research & Extension assigned. <br> Please try again later.", "error");
+
+    setTimeout(function () {
+      window.location.replace("{% url 'login' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet invalid suffix' %}
+  <script>
+    Swal.fire("Invalid", "You just entered a Suffix which is not in the list. Please choose one from the choices given.", "error");
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet invalid course' %}
+  <script>
+    Swal.fire("Invalid", "You just entered a Course which is not in the list. Please choose one from the choices given.", "error");
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet invalid subject teacher' %}
+  <script>
+    Swal.fire("Invalid", "You just entered a Subjec Teacher which is not in the list. Please choose one from the choices given.", "error");
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet user exist' %}
+  <script>
+    Swal.fire("{{student_member_check_username}} \n {{student_member_check_name}}", "You're already a part of a Group. <br> One Account per group is allowed.", "error");
+  </script>
+  {% endif %}
+</body>
+
 </html>

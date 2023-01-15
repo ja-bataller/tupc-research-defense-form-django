@@ -357,7 +357,7 @@
   <script>
     document.getElementById("btn_accept_proposal_defense").addEventListener("click", function () {
       data_id = "{{student_username}}";
-      document.getElementById("accepted_research_title").textContent = "{{accepted_research_title}}";
+      document.getElementById("accepted_research_title").textContent = "{{research_title}}";
       document.getElementById("accept_title_btn").href = "{% url 'panel-bet5-final-defense-day-accepted' id=0 %}".replace(/0/, data_id);
       $("#acceptedTitleModal").modal();
     });
@@ -365,7 +365,7 @@
     document.getElementById("btn_deferred_proposal_defense").addEventListener("click", function () {
       data_id = "{{student_username}}";
   
-      document.getElementById("deferred_research_title").textContent = "{{accepted_research_title}}";
+      document.getElementById("deferred_research_title").textContent = "{{research_title}}";
       document.getElementById("defer_title_btn").href = "{% url 'panel-bet5-final-defense-day-deferred' id=0 %}"
         .replace(/0/, data_id);
       $("#deferredTitleModal").modal();
@@ -374,7 +374,7 @@
     document.getElementById("btn_not_accepted_proposal_defense").addEventListener("click", function () {
       data_id = "{{student_username}}";
   
-      document.getElementById("revise_research_title").textContent = "{{accepted_research_title}}";
+      document.getElementById("revise_research_title").textContent = "{{research_title}}";
       document.getElementById("revise_title_btn").href = "{% url 'panel-bet5-final-defense-day-not-accepted' id=0 %}".replace(/0/, data_id);
       $("#reviseTitleModal").modal();
     });

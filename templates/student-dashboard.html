@@ -52,7 +52,11 @@
         <div id="collapseGroup" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{% url 'student-group-members' %}">Members</a>
+            {% if student_leader_data.group_members_status %}
             <a class="collapse-item" href="{% url 'student-research-titles' %}">Research Titles</a>
+            {% else %}
+            <a class="collapse-item" href="" style="pointer-events: none">Research Titles</a>
+            {% endif %}
           </div>
         </div>
       </li>
@@ -67,31 +71,132 @@
           <div class="bg-white py-2 collapse-inner rounded">
             
             <h6 class="collapse-header">BET-3</h6>
-            <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Topic - Panel Invitation</a>
-            <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
-            <a class="collapse-item" href="{% url 'student-bet3-topic-panel-conforme'%}">Topic - Panel Conforme</a>
-            <a class="collapse-item" href="{% url 'student-bet3-adviser-dashboard' %}">Adviser Conforme</a>
-            <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation' %}">Proposal - Panel Invitation</a>
-            <a class="collapse-item" href="{% url 'student-bet3-critique-form' %}">Critique Form</a>
-            <a class="collapse-item" href="{% url 'student-bet3-research-proposal-defense' %}">Research Proposal Defense</a>
-            <a class="collapse-item" href="{% url 'student-bet3-proposal-panel-conforme' %}">Proposal - Panel Conforme</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">BET-5</h6>
-            {% if student_leader_data.bet3_proposal_defense_status %}
-            {% if not student_leader_data.bet5_subject_teacher_name %}
-            <a class="collapse-item" href="{% url 'student-bet5-subject-teacher' %}">BET-5 Subject Teacher</a>
+            {% if student_leader_data.group_members_status and student_leader_data.research_titles_status %}
+              <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Topic - Panel Invitation</a>
+
+              {% if student_leader_data.group_members_status and student_leader_data.research_titles_status and student_leader_data.bet3_panel_invitation_status and student_leader_data.title_defense_status %}
+                <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
+                <a class="collapse-item" href="{% url 'student-bet3-topic-panel-conforme'%}">Topic - Panel Conforme</a>
+                <a class="collapse-item" href="{% url 'student-bet3-adviser-dashboard' %}">Adviser Conforme</a>
+                <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation' %}">Proposal - Panel Invitation</a>
+
+                {% if student_leader_data.group_members_status and student_leader_data.research_titles_status and student_leader_data.bet3_panel_invitation_status and student_leader_data.title_defense_status and student_leader_data.bet3_proposal_defense_status %}
+                  <a class="collapse-item" href="{% url 'student-bet3-critique-form' %}">Critique Form</a>
+                  <a class="collapse-item" href="{% url 'student-bet3-research-proposal-defense' %}">Research Proposal Defense</a>
+                  <a class="collapse-item" href="{% url 'student-bet3-proposal-panel-conforme' %}">Proposal - Panel Conforme</a>
+                  <div class="collapse-divider"></div>
+                  <h6 class="collapse-header">BET-5</h6>
+
+                  {% if student_leader_data.group_members_status and student_leader_data.research_titles_status and student_leader_data.bet3_panel_invitation_status and student_leader_data.title_defense_status and student_leader_data.bet3_proposal_defense_status and student_leader_data.adviser_conforme_status %}
+                    {% if student_leader_data.bet3_proposal_defense_status %}
+                      {% if not student_leader_data.bet5_subject_teacher_name %}
+                        <a class="collapse-item" href="{% url 'student-bet5-subject-teacher' %}">BET-5 Subject Teacher</a>
+                      {% endif %}
+                    {% endif %}
+                    <a class="collapse-item" href="{% url 'student-bet5-final-defense-panel-invitation' %}">Final - Panel Invitation</a>
+
+                    {% if student_leader_data.group_members_status and student_leader_data.research_titles_status and student_leader_data.bet3_panel_invitation_status and student_leader_data.title_defense_status and student_leader_data.bet3_proposal_defense_status and student_leader_data.adviser_conforme_status and student_leader_data.bet5_final_defense_panel_invitation_status and student_leader_data.bet5_final_defense_status %}
+                      <a class="collapse-item" href="{% url 'student-bet5-research-final-defense'%}">Research Final Defense</a>
+                      <a class="collapse-item" href="{% url 'student-bet5-final-panel-conforme' %}">Final - Panel Conforme</a>
+                      
+                      {% if student_leader_data.group_members_status and student_leader_data.research_titles_status and student_leader_data.bet3_panel_invitation_status and student_leader_data.title_defense_status and student_leader_data.bet3_proposal_defense_status and student_leader_data.adviser_conforme_status and student_leader_data.bet5_final_defense_panel_invitation_status and student_leader_data.bet5_final_defense_status and student_leader_data.topic_panel_conforme and student_leader_data.proposal_panel_conforme and student_leader_data.final_panel_conforme %}
+                      <a class="collapse-item" href="{% url 'student-acknowledgement-receipt' %}">Acknowledgement Receipt</a>
+
+                      <!-- else for incomeplete final defense and incomplete all panel conforme  -->
+                      {% else %}
+                      <a class="collapse-item" href="" style="pointer-events: none">Acknowledgement Receipt</a>
+                      {% endif %}
+
+                    <!-- else for incomplete final panel invitation and incomplete final defense -->
+                    {% else %}
+                      <a class="collapse-item" href="" style="pointer-events: none">Research Final Defense</a>
+                      <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Conforme</a>
+                      <a class="collapse-item" href="" style="pointer-events: none">Acknowledgement Receipt</a>
+                    {% endif %}
+                  
+                  <!-- else for incomplete proposal defense and incomplete adviser conforme  -->
+                  {% else %}
+                    <!-- <h6 class="collapse-header">BET-5</h6> -->
+                    {% if student_leader_data.bet3_proposal_defense_status %}
+                      {% if not student_leader_data.bet5_subject_teacher_name %}
+                        <a class="collapse-item" href="" style="pointer-events: none">BET-5 Subject Teacher</a>
+                      {% endif %}
+                    {% endif %}
+                    <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Invitation</a>
+                    <a class="collapse-item" href="" style="pointer-events: none">Research Final Defense</a>
+                    <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Conforme</a>
+                    <a class="collapse-item" href="" style="pointer-events: none">Acknowledgement Receipt</a>
+                  {% endif %}
+                
+                <!-- else for incomplete proposal panel invitation and incomplete proposal defense -->
+                {% else %}
+                <a class="collapse-item" href="" style="pointer-events: none">Critique Form</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Research Proposal Defense</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Proposal - Panel Conforme</a>
+                <div class="collapse-divider"></div>
+                <h6 class="collapse-header">BET-5</h6>
+                {% if student_leader_data.bet3_proposal_defense_status %}
+                  {% if not student_leader_data.bet5_subject_teacher_name %}
+                    <a class="collapse-item" href="" style="pointer-events: none">BET-5 Subject Teacher</a>
+                  {% endif %}
+                {% endif %}
+                <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Invitation</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Research Final Defense</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Conforme</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Acknowledgement Receipt</a>
+                {% endif %}
+
+              <!-- else for incomplete topic panel invitation and incomplete topic defense -->
+              {% else %}
+                <a class="collapse-item" href="" style="pointer-events: none">Research Title Defense</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Topic - Panel Conforme</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Adviser Conforme</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Proposal - Panel Invitation</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Critique Form</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Research Proposal Defense</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Proposal - Panel Conforme</a>
+                <div class="collapse-divider"></div>
+                <h6 class="collapse-header">BET-5</h6>
+                {% if student_leader_data.bet3_proposal_defense_status %}
+                  {% if not student_leader_data.bet5_subject_teacher_name %}
+                    <a class="collapse-item" href="" style="pointer-events: none">BET-5 Subject Teacher</a>
+                  {% endif %}
+                {% endif %}
+                <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Invitation</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Research Final Defense</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Conforme</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Acknowledgement Receipt</a>
+              {% endif %}
+
+              
+            <!-- else for incomplete research titles -->
+            {% else %}
+              <a class="collapse-item" href="" style="pointer-events: none">Topic - Panel Invitation</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Research Title Defense</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Topic - Panel Conforme</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Adviser Conforme</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Proposal - Panel Invitation</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Critique Form</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Research Proposal Defense</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Proposal - Panel Conforme</a>
+              <div class="collapse-divider"></div>
+              <h6 class="collapse-header">BET-5</h6>
+              {% if student_leader_data.bet3_proposal_defense_status %}
+                {% if not student_leader_data.bet5_subject_teacher_name %}
+                  <a class="collapse-item" href="" style="pointer-events: none">BET-5 Subject Teacher</a>
+                {% endif %}
+              {% endif %}
+              <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Invitation</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Research Final Defense</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Conforme</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Acknowledgement Receipt</a>
             {% endif %}
-            {% endif %}
-            <a class="collapse-item" href="{% url 'student-bet5-final-defense-panel-invitation' %}">Final - Panel Invitation</a>
-            <a class="collapse-item" href="{% url 'student-bet5-research-final-defense'%}">Research Final Defense</a>
-            <a class="collapse-item" href="{% url 'student-bet5-final-panel-conforme' %}">Final - Panel Conforme</a>
-            <a class="collapse-item" href="{% url 'student-acknowledgement-receipt' %}">Acknowledgement Receipt</a>
           </div>
         </div>
       </li>
 
       <!-- Nav Item - Logs Collapse Menu -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true" aria-controls="collapseLogs">
           <i class="fa-solid fa-clock-rotate-left"></i>
           <span>Logs</span>
@@ -107,7 +212,7 @@
             <a class="collapse-item" href="#">Final - Panel Invitation</a>
           </div>
         </div>
-      </li>
+      </li> -->
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -154,7 +259,7 @@
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fa-solid fa-face-laugh-beam fa-2x tup-colorway-secondary"></i>
+                      <i class="fa-solid fa-user fa-2x tup-colorway-secondary"></i>
                     </div>
                   </div>
                 </div>

@@ -22,7 +22,7 @@
 
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
           <div class="img-fluid text-center"><img src="{% static 'img/TUP-Logo.png' %}" style="max-width: 55%;" alt="">
           </div>
@@ -33,10 +33,32 @@
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
+      </li>
+
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStudents" aria-expanded="true" aria-controls="collapseStudents">
+          <i class="fa-solid fa-user-graduate"></i>
+          <span>Students</span>
+        </a>
+        <div id="collapseStudents" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'subject-teacher-students-bet3' %}">BET-3 Students</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-students-bet5' %}">BET-5 Students</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-students-logs' %}">Students Logs</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'subject-teacher-research-titles' %}">
+          <i class="fa-solid fa-book"></i>
+          <span>Research Titles</span></a>
       </li>
 
       <!-- Divider -->
@@ -101,11 +123,7 @@
           <span>Acknowledgement Logs</span></a>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'subject-teacher-research-titles' %}">
-          <i class="fa-solid fa-book"></i>
-          <span>Research Titles</span></a>
-      </li>
+
 
       <!-- Divider -->
       <hr class="sidebar-divider" />
@@ -373,7 +391,7 @@
           {% if panel_chairman %}
             {% if start_critique %}
               {% if not end_critique %}
-              <a class="btn btn-outline-danger mb-2 w-100"
+              <a class="btn btn-outline-success mb-2 w-100"
                 href="{% url 'subject-teacher-bet3-proposal-defense-day-end-critique' student_leader_data.username %}">End Critique</a>
                 {% endif %}
               {% endif %}
@@ -392,7 +410,7 @@
             {% if done_panel_chairman_sign %}
               {% if not all_pending_panel_signature_response %}
                   {% if not end_voting %}
-                    <a class="btn btn-outline-danger mb-2 w-100" href="{% url 'subject-teacher-bet3-proposal-defense-day-end-voting' student_leader_data.username %}">End Voting</a>
+                    <a class="btn btn-outline-success mb-2 w-100" href="{% url 'subject-teacher-bet3-proposal-defense-day-end-voting' student_leader_data.username %}">End Voting</a>
                   {% endif %}
                 {% endif %}
             {% endif %}
@@ -400,7 +418,7 @@
 
           {% if end_voting %}
             {% if pending_proposal_defense %}
-              <a class="btn btn-outline-danger mb-2 w-100" href="{% url 'subject-teacher-bet3-proposal-defense-day-end-defense' student_leader_data.username %}">End Defense</a>
+              <a class="btn btn-outline-success mb-2 w-100" href="{% url 'subject-teacher-bet3-proposal-defense-day-end-defense' student_leader_data.username %}">End Defense</a>
             {% endif %}
           {% endif %}
 

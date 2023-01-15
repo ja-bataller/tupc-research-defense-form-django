@@ -384,7 +384,7 @@ def subjectTeacherTitleDefenseDay(request, id):
              # Send g-mail notifications
             send_mail(
                 "Topic Defense - Panel Conforme",
-                "Good Day " + get_present_panel_members[i].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Topic Defense Panel Conforme. \nThank you and Have a nice day.",
+                "Good Day " + get_present_panel_members[i].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Topic Defense Panel Conforme. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
                 "unofficial.tupc.uitc@gmail.com",
                 ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                 fail_silently=False,
@@ -2208,7 +2208,7 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
     
     if get_student_research_title.proposal_defense_status == "Accepted with Revision":
         DefenseSchedule.objects.filter(username = request.user, student_leader_username=id, form = "Research Proposal Defense").update(status = "Completed")
-        StudentLeader.objects.filter(username=id).update(bet3_proposal_defense_status = "completed", request_limit = 5)
+        StudentLeader.objects.filter(username=id).update(bet3_status = "Completed", bet5_status = "Ongoing", bet3_proposal_defense_status = "completed", request_limit = 5)
         ProposalPanelInvitation.objects.filter(student_leader_username=id, form_status="accepted", form="Proposal Defense Panel Invitation", research_proposal_defense_date=date_today, panel_attendance="present").update(is_completed = True)
         
         get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
@@ -2246,7 +2246,7 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
              # Send g-mail notifications
             send_mail(
                 "Proposal Defense - Panel Conforme",
-                "Good Day " + get_present_panel_members[i].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Proposal Defense Panel Conforme. \nThank you and Have a nice day.",
+                "Good Day " + get_present_panel_members[i].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Proposal Defense Panel Conforme. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
                 "unofficial.tupc.uitc@gmail.com",
                 ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                 fail_silently=False,
@@ -3256,7 +3256,7 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
         # Send g-mail notifications
         send_mail(
             "Final Defense - Panel Conforme",
-            "Good Day " + get_present_panel_members[i].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Final Defense Panel Conforme. \nThank you and Have a nice day.",
+            "Good Day " + get_present_panel_members[i].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Final Defense Panel Conforme. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -3553,6 +3553,178 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
 
         return render(request, "subject-teacher-dashboard.html", context)
 
+
+# Subject Teacher - BET-3 Students Dashboard
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
+def subjectTeacherBET3Students(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    course_handled_list_unfiltered = []
+
+    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username)
+
+    for course in course_handled:
+        course_handled_list_unfiltered.append(course.course_major_abbr)
+
+    course_handled_list = list(dict.fromkeys(course_handled_list_unfiltered))
+    print(course_handled_list)
+
+    if request.method == "POST":
+        course_input = request.POST.get("course_input")
+        print(course_input)
+
+        try:
+            all_ongoing_bet3_students = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username, course_major_abbr=course_input, bet3_status = "Ongoing")
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "course_handled_list": course_handled_list,
+                "all_ongoing_bet3_students": all_ongoing_bet3_students,
+            }
+
+            return render(request, "subject-teacher-bet3-students.html", context)
+
+        except:
+            pass
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "course_handled_list": course_handled_list,
+    }
+
+    return render(request, "subject-teacher-bet3-students.html", context)
+
+
+# Subject Teacher - BET-3 Students Dashboard
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
+def subjectTeacherStudentsData(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        student_leader_data = StudentLeader.objects.get(username = id)
+    except:
+        pass
+
+    try:
+        group_members = StudentGroupMember.objects.all().filter(student_leader_username=id)
+    except:
+        pass
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "student_leader_data":student_leader_data,
+        "group_members": group_members,
+    }
+
+    return render(request, "subject-teacher-student-data.html", context)
+
+
+# Subject Teacher - BET-5 Students Dashboard
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
+def subjectTeacherBET5Students(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    course_handled_list_unfiltered = []
+
+    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username)
+
+    for course in course_handled:
+        course_handled_list_unfiltered.append(course.course_major_abbr)
+
+    course_handled_list = list(dict.fromkeys(course_handled_list_unfiltered))
+    print(course_handled_list)
+
+    if request.method == "POST":
+        course_input = request.POST.get("course_input")
+        print(course_input)
+
+        try:
+            all_ongoing_bet5_students = StudentLeader.objects.all().filter(bet5_subject_teacher_username=currently_loggedin_user.username, course_major_abbr=course_input, bet5_status = "Ongoing")
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "course_handled_list": course_handled_list,
+                "all_ongoing_bet5_students": all_ongoing_bet5_students,
+            }
+
+            return render(request, "subject-teacher-bet5-students.html", context)
+
+        except:
+            pass
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "course_handled_list": course_handled_list,
+    }
+
+    return render(request, "subject-teacher-bet5-students.html", context)
+
+
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
+def subjectTeacherLogsStudents(request):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    course_handled_list_unfiltered = []
+
+    course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username)
+
+    for course in course_handled:
+        course_handled_list_unfiltered.append(course.course_major_abbr)
+
+    course_handled_list = list(dict.fromkeys(course_handled_list_unfiltered))
+    print(course_handled_list)
+
+    if request.method == "POST":
+        course_input = request.POST.get("course_input")
+        print(course_input)
+
+        try:
+            bet3_students = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username, course_major_abbr=course_input, bet3_status = "Completed")
+
+        except:
+            bet3_students = ""
+
+        try:
+            bet5_students = StudentLeader.objects.all().filter(bet5_subject_teacher_username=currently_loggedin_user.username, course_major_abbr=course_input, bet5_status = "Completed")
+
+        except:
+            bet5_students = ""
+        
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "course_handled_list": course_handled_list,
+            "bet3_students": bet3_students,
+            "bet5_students": bet5_students,
+        }
+
+        return render(request, "subject-teacher-logs-students.html", context)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "course_handled_list": course_handled_list,
+    }
+
+    return render(request, "subject-teacher-logs-students.html", context)
 
 # Subject Teacher - User Profile -  Page
 @login_required(login_url="login")
@@ -4873,7 +5045,7 @@ def subjectTeacherAcknowledgementReceiptAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Acknowledgement Receipt",
-            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Faculty in charge) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Faculty in charge) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -4917,7 +5089,7 @@ def subjectTeacherAcknowledgementReceiptAccept(request, id):
         # Send g-mail notifications
         send_mail(
             "Acknowledgement Receipt",
-            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Faculty in charge) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Faculty in charge) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,

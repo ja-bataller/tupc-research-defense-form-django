@@ -203,7 +203,7 @@
                       <form method="POST" enctype="multipart/form-data" action="{% url 'adviser-upload-esignature' %}">
                         {% csrf_token %}
                         <div class="form-group">
-                          <label>Upload Signature</label>
+                         <label>Upload Signature(<i><sup class="text-danger">*</sup>PNG file only</i>)</label>
                           <input type="file" class="form-control-file mb-2" id="esignature" name="esignature"
                             accept="image/png" required>
                           <div class="form-group form-check">
@@ -218,7 +218,7 @@
                       <form method="POST" enctype="multipart/form-data" action="{% url 'adviser-upload-esignature' %}">
                         {% csrf_token %}
                         <div class="form-group">
-                          <label>Upload Signature</label>
+                         <label>Upload Signature(<i><sup class="text-danger">*</sup>PNG file only</i>)</label>
                           <input type="file" class="form-control-file mb-2" id="esignature" name="esignature"
                             accept="image/png" required>
                           <div class="form-group form-check">

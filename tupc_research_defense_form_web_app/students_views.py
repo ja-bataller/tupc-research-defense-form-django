@@ -11,6 +11,7 @@ from .models import *
 
 # Import Date & Time
 from datetime import date
+import datetime
 
 # Import Docx and PDF Convert
 from docx import Document
@@ -26,6 +27,18 @@ import cv2
 
 today = date.today()
 date_today = today.strftime("%B %d, %Y")
+
+def adviserConformePendingRequests():
+    date_today_int = today.strftime("%m/%d/%Y")
+    print(date_today_int)
+    pending_adviser_request = AdviserConforme.objects.all().filter(adviser_response = "Pending", adviser_response_date_exp = date_today_int)
+
+    print(pending_adviser_request)
+    if not pending_adviser_request:
+        print("No Pending Adviser Conforme")
+    else:
+        pending_adviser_request.delete()
+        print("Pending Adviser Conforme Deleted")
 
 # Student - Dashboard Page
 @login_required(login_url="login")
@@ -69,6 +82,12 @@ def studentProfile(request):
     currently_loggedin_user_account = topbar_data[1]
     ############## TOPBAR ##############
 
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("logout")
+
     # Student - Get the currently logged in user data
     student = StudentLeader.objects.get(username=current_user)
     user_username = student.username
@@ -93,6 +112,7 @@ def studentProfile(request):
         "major_name": major_name,
         "username": user_username,
         "user_email": user_email,
+        "student_leader_data": get_student_leader_data,
     }
 
     if request.method == "POST":
@@ -112,17 +132,17 @@ def studentProfile(request):
                     return render(request, "login.html", context)
 
                 else:
-                    context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "user_first_name": user_first_name, "user_middle_name": user_middle_name, "user_last_name": user_last_name, "user_course": user_course, "course_name": course_name, "major_name": major_name, "username": user_username, "user_email": user_email, "response": "new password and confirm new password doesnt match"}
+                    context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "user_first_name": user_first_name, "user_middle_name": user_middle_name, "user_last_name": user_last_name, "user_course": user_course, "course_name": course_name, "major_name": major_name, "username": user_username, "user_email": user_email, "student_leader_data": get_student_leader_data, "response": "new password and confirm new password doesnt match"}
 
                     return render(request, "student-profile.html", context)
 
             else:
-                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "user_first_name": user_first_name, "user_middle_name": user_middle_name, "user_last_name": user_last_name, "user_course": user_course, "course_name": course_name, "major_name": major_name, "username": user_username, "user_email": user_email, "response": "current password and new password is same"}
+                context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "user_first_name": user_first_name, "user_middle_name": user_middle_name, "user_last_name": user_last_name, "user_course": user_course, "course_name": course_name, "major_name": major_name, "username": user_username, "user_email": user_email, "student_leader_data": get_student_leader_data, "response": "current password and new password is same"}
 
                 return render(request, "student-profile.html", context)
 
         else:
-            context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "user_first_name": user_first_name, "user_middle_name": user_middle_name, "user_last_name": user_last_name, "user_course": user_course, "course_name": course_name, "major_name": major_name, "username": user_username, "user_email": user_email, "response": "current password is incorrect"}
+            context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "user_first_name": user_first_name, "user_middle_name": user_middle_name, "user_last_name": user_last_name, "user_course": user_course, "course_name": course_name, "major_name": major_name, "username": user_username, "user_email": user_email,"student_leader_data": get_student_leader_data, "response": "current password is incorrect"}
 
             return render(request, "student-profile.html", context)
 
@@ -1071,7 +1091,7 @@ def studentPanelInvitationBet3Create(request):
             # Send g-mail notifications
             send_mail(
                 "Panel Invitation for Topic Defense",
-                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Topic Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
                 "unofficial.tupc.uitc@gmail.com",
                 ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                 fail_silently=False,
@@ -1138,7 +1158,7 @@ def studentPanelInvitationBet3Create(request):
                 # Send g-mail notifications
                 send_mail(
                     "Panel Invitation for Topic Defense",
-                    "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Topic Defense. \nThank you and Have a nice day.",
+                    "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Topic Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
                     "unofficial.tupc.uitc@gmail.com",
                     ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                     fail_silently=False,
@@ -1636,6 +1656,7 @@ def studentFinalPanelConformeSave(request):
 @login_required(login_url="login")
 @user_passes_test(lambda u: u.is_student, login_url="login")
 def studentBET3AdviserDashboard(request):
+    adviserConformePendingRequests()
     current_user = request.user
     current_password = current_user.password
 
@@ -1770,7 +1791,7 @@ def studentBET3AdviserDashboard(request):
         # Send g-mail notifications
         send_mail(
             "Adviser Conforme",
-            "Good Day " + dit_head_name + ",\n" + student_leader_full_name +" ("+get_student_leader_data.course_major_abbr+")" + " needs an approval for Adviser Conforme.\nThank you and Have a nice day.",
+            "Good Day " + dit_head_name + ",\n" + student_leader_full_name +" ("+get_student_leader_data.course_major_abbr+")" + " needs an approval for Adviser Conforme.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             get_student_leader_data.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -2101,7 +2122,7 @@ def studentBET3ProposalDefensePanelInvitationCreatePanel(request):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+            "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Proposal Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -2400,7 +2421,7 @@ def studentBET3ProposalDefensePanelInvitationCreate(request):
             # Send g-mail notifications
             send_mail(
                 "Panel Invitation for Topic Defense",
-                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Proposal Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
                 "unofficial.tupc.uitc@gmail.com",
                 ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                 fail_silently=False,
@@ -2476,7 +2497,7 @@ def studentBET3ProposalDefensePanelInvitationCreate(request):
                 # Send g-mail notifications
                 send_mail(
                     "Panel Invitation for Topic Defense",
-                    "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Proposal Defense. \nThank you and Have a nice day.",
+                    "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Proposal Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
                     "unofficial.tupc.uitc@gmail.com",
                     ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                     fail_silently=False,
@@ -3149,7 +3170,7 @@ def studentBET5FinalDefensePanelInvitationCreatePanel(request):
             # Send g-mail notifications
             send_mail(
                 "Panel Invitation for Final Defense",
-                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
                 "unofficial.tupc.uitc@gmail.com",
                 ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                 fail_silently=False,
@@ -3173,7 +3194,7 @@ def studentBET5FinalDefensePanelInvitationCreatePanel(request):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+            "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -3472,7 +3493,7 @@ def studentBET5FinalDefensePanelInvitationCreate(request):
             # Send g-mail notifications
             send_mail(
                 "Panel Invitation for Topic Defense",
-                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+                "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
                 "unofficial.tupc.uitc@gmail.com",
                 ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                 fail_silently=False,
@@ -3548,7 +3569,7 @@ def studentBET5FinalDefensePanelInvitationCreate(request):
                 # Send g-mail notifications
                 send_mail(
                     "Panel Invitation for Topic Defense",
-                    "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day.",
+                    "Good Day " + dept_head_name + ",\n" + student_leader_full_name + " needs an approval for their Panel Invitation for Final Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
                     "unofficial.tupc.uitc@gmail.com",
                     ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                     fail_silently=False,
@@ -3879,6 +3900,7 @@ def studentAcknowledgementReceiptSave(request):
     ############## PAGE VALIDATION ##############
 
     get_student_leader_data.acknowledgement_receipt = "completed"
+    get_student_leader_data.bet5_status = "Completed"
     get_student_leader_data.save()
 
     try:
@@ -3981,12 +4003,19 @@ def studentTheDevs(request):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("logout")
+
     user_middle_name = current_user.middle_name
     user_middle_initial = None
 
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
         "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data":get_student_leader_data,
     }
 
     return render(request, "student-the-devs.html", context)

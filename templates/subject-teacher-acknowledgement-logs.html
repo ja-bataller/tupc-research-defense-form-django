@@ -39,6 +39,28 @@
           <span>Home</span></a>
       </li>
 
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStudents" aria-expanded="true" aria-controls="collapseStudents">
+          <i class="fa-solid fa-user-graduate"></i>
+          <span>Students</span>
+        </a>
+        <div id="collapseStudents" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'subject-teacher-students-bet3' %}">BET-3 Students</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-students-bet5' %}">BET-5 Students</a>
+            <a class="collapse-item" href="{% url 'subject-teacher-students-logs' %}">Students Logs</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'subject-teacher-research-titles' %}">
+          <i class="fa-solid fa-book"></i>
+          <span>Research Titles</span></a>
+      </li>
+
       <!-- Divider -->
       <!-- <hr class="sidebar-divider"> -->
 
@@ -101,11 +123,7 @@
           <span>Acknowledgement Logs</span></a>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'subject-teacher-research-titles' %}">
-          <i class="fa-solid fa-book"></i>
-          <span>Research Titles</span></a>
-      </li>
+
 
       <!-- Divider -->
       <hr class="sidebar-divider" />

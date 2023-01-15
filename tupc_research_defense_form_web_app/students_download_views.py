@@ -3770,36 +3770,40 @@ def studentAcknowledgmentReceiptDownload(request):
         student_table.cell(1, 2).text = student_member_list[1]
         student_table.cell(1, 4).text = course
     except:
-        pass
+        student_table.cell(1, 2).text = ""
+        student_table.cell(1, 4).text = ""
 
     try:
         student_table.cell(2, 2).text = student_member_list[2]
         student_table.cell(2, 4).text = course
     except:
-        pass
+        student_table.cell(2, 2).text = ""
+        student_table.cell(2, 4).text = ""
 
     try:
         student_table.cell(3, 2).text = student_member_list[3]
         student_table.cell(3, 4).text = course
     except:
-        pass
+        student_table.cell(3, 2).text = ""
+        student_table.cell(3, 4).text = ""
 
     try:
         student_table.cell(4, 2).text = student_member_list[4]
         student_table.cell(4, 4).text = course
     except:
-        pass
+        student_table.cell(4, 2).text = ""
+        student_table.cell(4, 4).text = ""
 
-    department_box.cell(1, 2).text = ""
-    dit_name = department_box.cell(1, 2).add_paragraph(get_receipt.dit_head_full_name)
-    dit_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    # department_box.cell(1, 2).text = ""
+    # dit_name = department_box.cell(1, 2).add_paragraph(get_receipt.dit_head_full_name)
+    # dit_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
-    department_box.cell(1, 6).text = ""
-    dit_date = department_box.cell(1, 6).add_paragraph(get_receipt.dit_head_response_date)
-    dit_date.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    #department_box.cell(1, 2).text = get_receipt.dit_head_full_name
-    #department_box.cell(1, 6).text = get_receipt.dit_head_response_date
+    # department_box.cell(1, 6).text = ""
+    # dit_date = department_box.cell(1, 6).add_paragraph(get_receipt.dit_head_response_date)
+    # dit_date.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    department_box.cell(1, 2).text = get_receipt.dit_head_full_name
+    department_box.cell(1, 6).text = get_receipt.dit_head_response_date
 
     department_box.cell(2, 2).text = get_receipt.adaa_full_name
     department_box.cell(2, 6).text = get_receipt.adaa_response_date

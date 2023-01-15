@@ -409,13 +409,14 @@ class AdviserConforme(models.Model):
     dit_head_response_date = models.CharField(max_length=256)
     dit_head_signature = models.BooleanField(default=False)
 
-
     adviser_username = models.CharField(max_length=256)
     adviser_name = models.CharField(max_length=256)
     adviser_response = models.CharField(max_length=256)
     adviser_response_date = models.CharField(max_length=256)
     adviser_signature = models.BooleanField(default=False)
     form_status = models.CharField(max_length=256)
+
+    adviser_response_date_exp = models.CharField(max_length=256, blank=True)
 
     thesis_completed = models.BooleanField(default=False)
 

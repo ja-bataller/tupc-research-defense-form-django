@@ -435,6 +435,7 @@ def adviserBET3AdviserConformeAcceptSignature(request, id):
         check_adviser_conforme.adviser_response_date = date_today
         check_adviser_conforme.form_status = "Accepted"
         check_adviser_conforme.adviser_signature = True
+        check_adviser_conforme.adviser_response_date_exp = ""
 
         check_adviser_conforme.save()
 
@@ -450,7 +451,7 @@ def adviserBET3AdviserConformeAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.adviser_name + " has accepted your Adviser Conforme, and is now your Research Adviser. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.adviser_name + " has accepted your Adviser Conforme, and is now your Research Adviser. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -545,7 +546,7 @@ def adviserBET3AdviserConformeDeclineSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.adviser_name + " has declined your Adviser Conforme, you can try applying to other Faculty. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.adviser_name + " has declined your Adviser Conforme, you can try applying to other Faculty. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -592,6 +593,7 @@ def adviserBET3AdviserConformeAccept(request, id):
         check_adviser_conforme.adviser_response = "Accepted"
         check_adviser_conforme.adviser_response_date = date_today
         check_adviser_conforme.form_status = "Accepted"
+        check_adviser_conforme.adviser_response_date_exp = ""
 
         check_adviser_conforme.save()
 
@@ -607,7 +609,7 @@ def adviserBET3AdviserConformeAccept(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.adviser_name + " has accepted your Adviser Conforme, and is now your Research Adviser. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.adviser_name + " has accepted your Adviser Conforme, and is now your Research Adviser. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -681,7 +683,7 @@ def adviserBET3AdviserConformeDecline(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.adviser_name + " has declined your Adviser Conforme, you can try applying to other Faculty. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.adviser_name + " has declined your Adviser Conforme, you can try applying to other Faculty. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -765,7 +767,7 @@ def adviserAcknowledgementReceiptAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Acknowledgement Receipt",
-            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Adviser) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Adviser) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -809,7 +811,7 @@ def adviserAcknowledgementReceiptAccept(request, id):
         # Send g-mail notifications
         send_mail(
             "Acknowledgement Receipt",
-            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Adviser) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Adviser) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,

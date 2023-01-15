@@ -1,0 +1,126 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+
+    <title>Subject Teacher - BET-3 Students</title>
+
+    {% include 'css-main-cdn.html' %}
+  </head>
+
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        
+      {% include 'subject-teacher-sidebar-students.html' %}
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          
+          {% include 'subject-teacher-topbar.html' %}
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-0 text-gray-800"><i class="fa-solid fa-user-graduate"></i> Ongoing BET-3 Students</h1>
+            </div>
+
+            <form  id="course_available_sched" method="POST">
+              {% csrf_token %}
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Course:</label>
+                </div>
+                <select id="course_list" class="custom-select" name="course_input" required>
+                  <option selected>---</option>
+                  {% for course in course_handled_list %}
+                  <option value="{{course}}">{{course}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </form>
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+              <!-- <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Pending Dashboard</h6>
+                </div> -->
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Student Leader ID</th>
+                        <th>Student Leader Name</th>
+                        <th>Course</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Student Leader ID</th>
+                        <th>Student Leader Name</th>
+                        <th>Course</th>
+                        <th>Action</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      {% for student_leader in all_ongoing_bet3_students %}
+                      <tr>
+                        <td>{{student_leader.username}}</td>
+                        <td>{{student_leader.first_name}} {{student_leader.middle_name}} {{student_leader.last_name}} {{student_leader.suffix}}</td>
+                        <td>{{student_leader.course_major_abbr}}</td>
+                        <td class="text-center"><a class="btn btn-outline-primary" href="{% url 'subject-teacher-students-data' student_leader.username %}"><i class="fa-solid fa-eye"></i></a></td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    {% include 'logout-modal.html' %} {% include 'script-cdn.html' %}
+
+    <script>
+      let course_list = document.querySelector("#course_list");
+
+      course_list.addEventListener("change", (event) => {
+        if (course_list.value == "---") {
+          console.log("1");
+          window.location.replace("{% url 'subject-teacher-set-research-title-defense-schedule' %}");
+        } else {
+          document.getElementById("course_available_sched").submit();
+        }
+      });
+    </script>
+  </body>
+</html>

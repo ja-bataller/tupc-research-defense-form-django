@@ -48,6 +48,8 @@ date_today = today.strftime("%B %d, %Y")
 
 ##########################################################################################################################
 
+
+
 # Index / Log in Page
 def index(request):
     return render(request, "index.html")
@@ -286,7 +288,7 @@ def loginPage(request):
             print("The User doesn't exist.")
 
             context = {"response": "user does not exist"}
-            return render(request, "index.html", context)
+            return render(request, "login.html", context)
 
     return render(request, "login.html")
 
@@ -818,3 +820,19 @@ def fullNameProcess(request, id):
     else:
         faculty_full_name = get_faculty_data.honorific + " " + get_faculty_data.first_name + " " + get_faculty_data.middle_name[0] + ". " + get_faculty_data.last_name + " " + get_faculty_data.suffix
         return faculty_full_name
+    
+def adviserConformePendingRequests():
+    date_today_int = today.strftime("%m/%d/%Y")
+    print(date_today_int)
+    pending_adviser_request = AdviserConforme.objects.all().filter(adviser_response = "Pending", adviser_response_date_exp = date_today_int)
+
+    print(pending_adviser_request)
+    if not pending_adviser_request:
+        print("No Pending Adviser Conforme")
+    else:
+        pending_adviser_request.delete()
+        print("Pending Adviser Conforme Deleted")
+        
+
+
+adviserConformePendingRequests()

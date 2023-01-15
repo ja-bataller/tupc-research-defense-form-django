@@ -306,7 +306,7 @@
                       {% elif title_data.status == "Title Defense - Deferred" %}
                         <td class="text-center text-danger">Deferred</td>
                       {% elif title.status == "Title Defense - Revise Title" %}
-                        <td class="text-center text-secondary">Revise Title</td>
+                        <td class="text-center text-info">Revise Title</td>
                       {% endif %}
                       
                     
@@ -317,7 +317,7 @@
                           >Accepted</a>
                         <a id="deferred_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-danger w-100 mb-2"
                           >Deferred</a>
-                        <a id="revise_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-secondary w-100 mb-2"
+                        <a id="revise_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-info w-100 mb-2"
                           >Revise Title</a>
                       </td>
                       {% endif %}

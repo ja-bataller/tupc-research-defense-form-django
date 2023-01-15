@@ -11,6 +11,7 @@ from .models import *
 
 # Import Date & Time
 from datetime import date
+import datetime
 
 # Import Docx and PDF Convert
 from docx import Document
@@ -29,11 +30,25 @@ from .admin_views import *
 today = date.today()
 date_today = today.strftime("%B %d, %Y")
 
+def adviserConformePendingRequests():
+    date_today_int = today.strftime("%m/%d/%Y")
+    print(date_today_int)
+    pending_adviser_request = AdviserConforme.objects.all().filter(adviser_response = "Pending", adviser_response_date_exp = date_today_int)
+
+    print(pending_adviser_request)
+    if not pending_adviser_request:
+        print("No Pending Adviser Conforme")
+    else:
+        pending_adviser_request.delete()
+        print("Pending Adviser Conforme Deleted")
+        
 
 # DIT Head - Dashboard Page
 @login_required(login_url="login")
 @user_passes_test(lambda u: u.is_department_head, login_url="login")
 def ditHeadDashboard(request):
+    adviserConformePendingRequests()
+    
     currently_loggedin_user = request.user
 
     topbar_data = topbarProcess(request)
@@ -45,6 +60,7 @@ def ditHeadDashboard(request):
     get_pending_final_panel_invitation = FinalPanelInvitation.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
     get_pending_adviser_conforme = AdviserConforme.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
     get_pending_panel_conforme = PanelConforme.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
+    get_pending_acknowledgement_receipt = AcknowledgementReceipt.objects.all().filter(dit_head_username = currently_loggedin_user, dit_head_response = "pending")
 
     context = {
         "currently_loggedin_user_data": currently_loggedin_user, 
@@ -56,6 +72,7 @@ def ditHeadDashboard(request):
         "pending_final_panel_invitation": get_pending_final_panel_invitation.count(),
         "pending_adviser_conforme": get_pending_adviser_conforme.count(),
         "pending_panel_conforme": get_pending_panel_conforme.count(),
+        "pending_acknowledgement_receipt":get_pending_acknowledgement_receipt.count()
         }
 
     return render(request, "dit-head-dashboard.html", context)
@@ -457,7 +474,7 @@ def ditHeadBET3TopicPanelInvitationAcceptSignature(request, id):
         # gmail notification for Student
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Topic Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Topic Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -466,7 +483,7 @@ def ditHeadBET3TopicPanelInvitationAcceptSignature(request, id):
         # gmail notification for Panel
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Topic Defense on " + check_panel_invitation.research_title_defense_date + " " + check_panel_invitation.research_title_defense_start_time + " to " + check_panel_invitation.research_title_defense_end_time + "\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Topic Defense on " + check_panel_invitation.research_title_defense_date + " " + check_panel_invitation.research_title_defense_start_time + " to " + check_panel_invitation.research_title_defense_end_time + "\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -517,7 +534,7 @@ def ditHeadPanelInvitationBet3Accept(request, id):
         # gmail notification for Student
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Topic Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Topic Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -526,7 +543,7 @@ def ditHeadPanelInvitationBet3Accept(request, id):
         # gmail notification for Panel
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Topic Defense on " + check_panel_invitation.research_title_defense_date + " " + check_panel_invitation.research_title_defense_start_time + " to " + check_panel_invitation.research_title_defense_end_time + "\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Topic Defense on " + check_panel_invitation.research_title_defense_date + " " + check_panel_invitation.research_title_defense_start_time + " to " + check_panel_invitation.research_title_defense_end_time + "\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -628,7 +645,7 @@ def ditHeadBET3TopicPanelInvitationDeclineSignature(request, id):
         # gmail notification for Student
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " (DIT Head) has declined your Panel Invitation for Topic Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " (DIT Head) has declined your Panel Invitation for Topic Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -704,7 +721,7 @@ def ditHeadPanelInvitationBet3Decline(request, id):
         # gmail notification for Student
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " (DIT Head) has declined your Panel Invitation for Topic Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " (DIT Head) has declined your Panel Invitation for Topic Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -795,7 +812,7 @@ def ditHeadBET3ProposalPanelInvitationAcceptSignature(request, id):
         # gmail notification for Student
         send_mail(
             "Panel Invitation for Proposal Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Proposal Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Proposal Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -804,7 +821,7 @@ def ditHeadBET3ProposalPanelInvitationAcceptSignature(request, id):
         # gmail notification for Panel
         send_mail(
             "Panel Invitation for Proposal Defense",
-            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Proposal Defense on " + check_panel_invitation.research_proposal_defense_date + " " + check_panel_invitation.research_proposal_defense_start_time + " to " + check_panel_invitation.research_proposal_defense_end_time + "\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Proposal Defense on " + check_panel_invitation.research_proposal_defense_date + " " + check_panel_invitation.research_proposal_defense_start_time + " to " + check_panel_invitation.research_proposal_defense_end_time + "\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -855,7 +872,7 @@ def ditHeadBET3ProposalPanelInvitationAccept(request, id):
         # gmail notification for Student
         send_mail(
             "Panel Invitation for Proposal Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Proposal Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Proposal Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -864,7 +881,7 @@ def ditHeadBET3ProposalPanelInvitationAccept(request, id):
         # gmail notification for Panel
         send_mail(
             "Panel Invitation for Proposal Defense",
-            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Proposal Defense on " + check_panel_invitation.research_proposal_defense_date + " " + check_panel_invitation.research_proposal_defense_start_time + " to " + check_panel_invitation.research_proposal_defense_end_time + "\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Proposal Defense on " + check_panel_invitation.research_proposal_defense_date + " " + check_panel_invitation.research_proposal_defense_start_time + " to " + check_panel_invitation.research_proposal_defense_end_time + "\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -966,7 +983,7 @@ def ditHeadBET3ProposalPanelInvitationDeclineSignature(request, id):
         # gmail notification for Student
         send_mail(
             "Panel Invitation for Proposal Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Proposal Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Proposal Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1045,7 +1062,7 @@ def ditHeadBET3ProposalPanelInvitationDecline(request, id):
         # gmail notification for Student
         send_mail(
             "Panel Invitation for Proposal Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Proposal Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Proposal Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1123,8 +1140,14 @@ def ditHeadBET3AdviserConformeAcceptSignature(request, id):
     try:
         check_adviser_conforme = AdviserConforme.objects.get(id=id)
 
+        future_date = today + datetime.timedelta(days=7)
+        future_date_formatted = future_date.strftime("%m/%d/%Y")
+
+        print("Adviser Conforme Expire Date:",future_date_formatted)
+
         check_adviser_conforme.dit_head_response = "Accepted"
         check_adviser_conforme.dit_head_response_date = date_today
+        check_adviser_conforme.adviser_response_date_exp = future_date_formatted
         check_adviser_conforme.dit_head_signature = True
 
         check_adviser_conforme.adviser_response = "Pending"
@@ -1136,7 +1159,7 @@ def ditHeadBET3AdviserConformeAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has accepted your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has accepted your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1144,7 +1167,7 @@ def ditHeadBET3AdviserConformeAcceptSignature(request, id):
 
         send_mail(
             "Adviser Conforme",
-            "Good Day " + check_adviser_conforme.adviser_name + ",\n" + check_adviser_conforme.student_leader_full_name +" ("+check_adviser_conforme.course+")" + " has requested you to be their Adviser for their Research. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.adviser_name + ",\n" + check_adviser_conforme.student_leader_full_name +" ("+check_adviser_conforme.course+")" + " has requested you to be their Adviser for their Research. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1180,16 +1203,19 @@ def ditHeadBET3AdviserConformeAccept(request, id):
     try:
         check_adviser_conforme = AdviserConforme.objects.get(id=id)
 
+        future_date = today + datetime.timedelta(days=7)
+        future_date_formatted = future_date.strftime("%m/%d/%Y")
+
         check_adviser_conforme.dit_head_response = "Accepted"
         check_adviser_conforme.dit_head_response_date = date_today
-
+        check_adviser_conforme.adviser_response_date_exp = future_date_formatted
         check_adviser_conforme.adviser_response = "Pending"
         check_adviser_conforme.save()
 
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has accepted your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has accepted your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1197,7 +1223,7 @@ def ditHeadBET3AdviserConformeAccept(request, id):
 
         send_mail(
             "Adviser Conforme",
-            "Good Day " + check_adviser_conforme.adviser_name + ",\n" + check_adviser_conforme.student_leader_full_name +" ("+check_adviser_conforme.course+")" + " has requested you to be their Adviser for their Research. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.adviser_name + ",\n" + check_adviser_conforme.student_leader_full_name +" ("+check_adviser_conforme.course+")" + " has requested you to be their Adviser for their Research. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1292,7 +1318,7 @@ def ditHeadBET3AdviserConformeDeclineSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has declined your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has declined your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1360,7 +1386,7 @@ def ditHeadBET3AdviserConformeDecline(request, id):
         # Send g-mail notifications
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has declined your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day.",
+            "Good Day " + check_adviser_conforme.student_leader_full_name + ",\n" + check_adviser_conforme.dit_head_name + " has declined your Adviser Conforme request. \nYou may click this link and login to your account. linkhere. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             currently_loggedin_user.email,
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1453,7 +1479,7 @@ def ditHeadPanelConformeAcceptSignature(request, id):
         # Email Notification - DIT Head to Student
         send_mail(
             "Panel Conforme for Topic Defense",
-            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.dit_head_full_name + " has accepted your Panel Conforme for Topic Defense request.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.dit_head_full_name + " has accepted your Panel Conforme for Topic Defense request.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1462,7 +1488,7 @@ def ditHeadPanelConformeAcceptSignature(request, id):
         # Email Notification - DIT Head to Panel
         send_mail(
             "Panel Conforme for Topic Defense",
-            "Good Day " + check_panel_conforme.panel_full_name + ",\n" + check_panel_conforme.student_leader_full_name +" ("+check_panel_conforme.course_major_abbr+")" + " needs an approval for their Panel Conforme for Topic Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_conforme.panel_full_name + ",\n" + check_panel_conforme.student_leader_full_name +" ("+check_panel_conforme.course_major_abbr+")" + " needs an approval for their Panel Conforme for Topic Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1506,7 +1532,7 @@ def ditHeadPanelConformeAccept(request, id):
         # Email Notification - DIT Head to Student
         send_mail(
             "Panel Conforme for Topic Defense",
-            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.dit_head_full_name + " has accepted your Panel Conforme for Topic Defense request.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_conforme.student_leader_full_name + ",\n" + check_panel_conforme.dit_head_full_name + " has accepted your Panel Conforme for Topic Defense request.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1515,7 +1541,7 @@ def ditHeadPanelConformeAccept(request, id):
         # Email Notification - DIT Head to Panel
         send_mail(
             "Panel Conforme for Topic Defense",
-            "Good Day " + check_panel_conforme.panel_full_name + ",\n" + check_panel_conforme.student_leader_full_name +" ("+check_panel_conforme.course_major_abbr+")" + " needs an approval for their Panel Conforme for Topic Defense. \nThank you and Have a nice day.",
+            "Good Day " + check_panel_conforme.panel_full_name + ",\n" + check_panel_conforme.student_leader_full_name +" ("+check_panel_conforme.course_major_abbr+")" + " needs an approval for their Panel Conforme for Topic Defense. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1616,7 +1642,7 @@ def ditHeadBET5FinalPanelInvitationAcceptSignature(request, id):
         # gmail notification for Student
         send_mail(
             "Panel Invitation for Final Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Final Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Final Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1625,7 +1651,7 @@ def ditHeadBET5FinalPanelInvitationAcceptSignature(request, id):
         # gmail notification for Panel
         send_mail(
             "Panel Invitation for Final Defense",
-            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Final Defense on " + check_panel_invitation.research_final_defense_date + " " + check_panel_invitation.research_final_defense_start_time + " to " + check_panel_invitation.research_final_defense_end_time + "\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Final Defense on " + check_panel_invitation.research_final_defense_date + " " + check_panel_invitation.research_final_defense_start_time + " to " + check_panel_invitation.research_final_defense_end_time + "\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1674,7 +1700,7 @@ def ditHeadBET5FinalPanelInvitationAccept(request, id):
         # gmail notification for Student
         send_mail(
             "Panel Invitation for Final Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Final Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has accepted your Panel Invitation for Final Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1683,7 +1709,7 @@ def ditHeadBET5FinalPanelInvitationAccept(request, id):
         # gmail notification for Panel
         send_mail(
             "Panel Invitation for Final Defense",
-            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Final Defense on " + check_panel_invitation.research_final_defense_date + " " + check_panel_invitation.research_final_defense_start_time + " to " + check_panel_invitation.research_final_defense_end_time + "\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.panel_full_name + ",\n" + "You have been invited as a Panel for Final Defense on " + check_panel_invitation.research_final_defense_date + " " + check_panel_invitation.research_final_defense_start_time + " to " + check_panel_invitation.research_final_defense_end_time + "\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1785,7 +1811,7 @@ def ditHeadBET5FinalPanelInvitationDeclineSignature(request, id):
         # gmail notification for Student
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Final Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Final Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -1867,7 +1893,7 @@ def ditHeadBET5FinalPanelInvitationDecline(request, id):
           # gmail notification for Student
         send_mail(
             "Panel Invitation for Topic Defense",
-            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Final Defense.\nThank you and Have a nice day.",
+            "Good Day " + check_panel_invitation.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + " has declined your Panel Invitation for Final Defense.\nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -2039,7 +2065,7 @@ def ditHeadAcknowledgementReceiptAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Acknowledgement Receipt",
-            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(DIT Head) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(DIT Head) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -2083,7 +2109,7 @@ def ditHeadAcknowledgementReceiptAccept(request, id):
         # Send g-mail notifications
         send_mail(
             "Acknowledgement Receipt",
-            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(DIT Head) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(DIT Head) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,

@@ -416,7 +416,7 @@ def  academicAffairsOfficeAcceptSignature(request, id):
         # Send g-mail notifications
         send_mail(
             "Acknowledgement Receipt",
-            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Academic Affairs Office) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Academic Affairs Office) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
@@ -471,7 +471,7 @@ def  academicAffairsOfficeAccept(request, id):
         # Send g-mail notifications
         send_mail(
             "Acknowledgement Receipt",
-            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Academic Affairs Office) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day.",
+            "Good Day " + check_receipt.student_leader_full_name + ",\n" + currently_loggedin_user_full_name + "(Academic Affairs Office) has accepted your Acknowledgement Receipt. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
