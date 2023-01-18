@@ -45,8 +45,7 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-          aria-controls="collapsePages">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
           <i class="fa-solid fa-folder-open"></i>
           <span>Forms</span>
         </a>
@@ -66,8 +65,7 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true"
-          aria-controls="collapseLogs">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true" aria-controls="collapseLogs">
           <i class="fa-solid fa-clock-rotate-left"></i>
           <span>Logs</span>
         </a>
@@ -116,7 +114,7 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <div class="d-sm-flex align-items-center justify-content-between">
-            <h1 class="h3 text-gra-800">Research Title Defense</h1>
+            <h1 class="h3 text-gray-800">Research Title Defense</h1>
           </div>
           <h1 class="h6 mb-0 text-gray-800 mb-2">{{student_leader_data.research_title_defense_date}} -
             {{student_leader_data.research_title_defense_start_time}} to
@@ -130,10 +128,10 @@
                     <div class="col-sm-12 font-weight-bold">Group Members:</div>
                     <div class="col-sm-12">- {{student_leader_full_name}}</div>
 
-                    {% if group_members %} 
+                    {% if group_members %}
                     {% for group_member in group_members %}
                     <div class="col-sm-12">- {{group_member.student_member_full_name}}</div>
-                    {% endfor %} 
+                    {% endfor %}
                     {% endif %}
 
                     <div class="col-sm-12 mt-4 font-weight-bold">Course:</div>
@@ -168,7 +166,7 @@
 
                     {% if research_title.title_defense_status == "Revise Title" %}
                     <div class="col-sm-12">
-                      {% if research_title.old_research_title  %}
+                      {% if research_title.old_research_title %}
                       - {{research_title.old_research_title}} - <span class="text-info">Revise Title</span>
                       {% else %}
                       - {{research_title.research_title}} - <span class="text-info">Revise Title</span>
@@ -187,13 +185,13 @@
 
                     {% if research_title_accepted.research_title %}
                     <div class="col-sm-12 mt-4 font-weight-bold">
-                     Accepted Title:
+                      Accepted Title:
                     </div>
-                    
+
                     <div class="col-sm-12">
                       {{research_title_accepted.research_title}}
                     </div>
-                    
+
                     {% elif research_title_revise.research_title %}
                     <div class="col-sm-12 mt-4 font-weight-bold">
                       Accepted - Revise Title:
@@ -201,9 +199,9 @@
 
                     <div class="col-sm-12">
                       {% if research_title_revise.old_research_title %}
-                        {{research_title_revise.old_research_title}}
+                      {{research_title_revise.old_research_title}}
                       {% else %}
-                        {{research_title_revise.research_title}}
+                      {{research_title_revise.research_title}}
                       {% endif %}
                     </div>
 
@@ -234,7 +232,7 @@
                     {% else %}
                     <div class="col-sm-12">- {{panel_member.panel_full_name}}</div>
                     {% endif %}
-                    {% endfor %} 
+                    {% endfor %}
                     {% endif %}
 
                     <div class="col-sm-12 mt-4 font-weight-bold">Subject Teacher:</div>
@@ -248,14 +246,42 @@
           </div>
 
           {% if panel_chairman %}
-            {% if response_signature == 1 %}
+            {% if end_voting_1 %}
+              {% if response_signature == 1 %}
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required>
+                <label class="form-check-label">I agree to attach my uploaded signature in this Research Title Defense Form.</label>
+              </div>
+              <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature</a>
+              <hr>
+              <a id="btn_accept_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature</a>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+
+
+          <!-- Critique Form Signature -->
+          {% if end_critique_1 %}
+            {% if critique_panel_chairman_signature_response_all == 1 %}
             <div class="form-group form-check">
-              <input type="checkbox" class="form-check-input" id="checkbox_agreement_a" required>
-              <label class="form-check-label">I agree to attach my uploaded signature in this form.</label>
+              <input type="checkbox" class="form-check-input" id="checkbox_agreement_pc" required>
+              <label class="form-check-label">I agree to attach my uploaded signature as a Panel Chairman in this Critique Form.</label>
             </div>
-            <a id="btn_accept_signed" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature</a>
+            <a id="btn_panel_chairman_esign" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature - Panel Chairman</a>
             <hr>
-            <a id="btn_accept_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature</a>
+            <a id="btn_panel_chairman_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature - Panel Chairman</a>
+            <hr>
+            {% endif %}
+
+            
+            {% if critique_panel_signature_response_all == 1 %}
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="checkbox_agreement_p" required>
+              <label class="form-check-label">I agree to attach my uploaded signature as a Panel in this Critique Form.</label>
+            </div>
+            <a id="btn_panel_esign" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature - Panel</a>
+            <hr>
+            <a id="btn_panel_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature - Panel</a>
             {% endif %}
           {% endif %}
 
@@ -267,7 +293,7 @@
                   <thead>
                     <tr>
                       <th>Research Title</th>
-                      <th>Your Response</th>                
+                      <th>Your Response</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -281,44 +307,41 @@
                   <tbody>
                     {% for title in research_titles %}
                     <tr>
-                    
+
                       <td>{{title.research_title}}</td>
 
                       {% if title.panel_response == "accepted" %}
-                          <td class="text-center text-success">{{title.panel_response}}</td>
-                          <td></td>
+                      <td class="text-center text-success">{{title.panel_response}}</td>
+                      <td></td>
 
                       {% elif title.panel_response == "deferred" %}
-                          <td class="text-center text-danger">{{title.panel_response}}</td>
-                          <td></td>
+                      <td class="text-center text-danger">{{title.panel_response}}</td>
+                      <td></td>
 
                       {% elif title.panel_response == "revise title" %}
-                          <td class="text-center text-info">{{title.panel_response}}</td>
-                          <td></td>
+                      <td class="text-center text-info">{{title.panel_response}}</td>
+                      <td></td>
 
                       {% else %}
-                          <td class="text-center text-secondary">Pending</td>
+                      <td class="text-center text-secondary">Pending</td>
                       {% endif %}
-                      
+
 
                       {% if research_title_data.status == "Title Defense - Accepted" %}
-                        <td class="text-center text-success">Accepted</td>
+                      <td class="text-center text-success">Accepted</td>
                       {% elif title_data.status == "Title Defense - Deferred" %}
-                        <td class="text-center text-danger">Deferred</td>
+                      <td class="text-center text-danger">Deferred</td>
                       {% elif title.status == "Title Defense - Revise Title" %}
-                        <td class="text-center text-info">Revise Title</td>
+                      <td class="text-center text-info">Revise Title</td>
                       {% endif %}
-                      
-                    
+
+
                       {% if start_voting.start_voting == 1 %}
                       {% if title.panel_response == "" %}
                       <td class="text-center text-success">
-                        <a id="accepted_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-success w-100 mb-2"
-                          >Accepted</a>
-                        <a id="deferred_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-danger w-100 mb-2"
-                          >Deferred</a>
-                        <a id="revise_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-info w-100 mb-2"
-                          >Revise Title</a>
+                        <a id="accepted_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-success w-100 mb-2">Accepted</a>
+                        <a id="deferred_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-danger w-100 mb-2">Deferred</a>
+                        <a id="revise_{{title.id}}" data-id="{{title.id}}" class="btn btn-outline-info w-100 mb-2">Revise Title</a>
                       </td>
                       {% endif %}
                       {% else %}
@@ -331,18 +354,108 @@
               </div>
             </div>
           </div>
+
           {% if not check_panel_complete_response %}
           {% if check_panel_mark_done %}
-          <a class="btn btn-outline-success w-100 mb-2"
-            href="{% url 'panel-title-defense-mark-done' current_panel_title_defense.id %}">Mark as Done</a>
+          <a class="btn btn-outline-success w-100 mb-2" href="{% url 'panel-title-defense-mark-done' current_panel_title_defense.id %}">Mark as Done</a>
           {% endif %}
           {% endif %}
-          
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-2">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table id="critiqueTable" class="table table-bordered text-center" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th hidden>Ref No.</th>
+                      <th>Your Critique</th>                
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th hidden>Ref No.</th>
+                      <th>Your Critique</th>                
+                      <th>Action</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    {% for critique in panel_critique %}
+                      {% if critique.critique != "" %}
+                      <tr>
+                        <td  hidden>{{critique.id}}</td>
+                        <td id="{{critique.id}}">{{critique.critique}}</td>
+  
+                        {% if end_critique_0 %}
+                        <td class="text-center">
+                          <button type="button" id="edit_{{critique.id}}" class="edit_btn btn btn-outline-primary mr-2" data-id="{{critique.id}}">
+                            <i class="fa-solid fa-edit"></i>
+                          </button>
+
+                          <!-- <a type="button" class="btn btn-outline-primary mr-2" href="{% url 'panel-title-defense-day-delete-critique' critique.id %}"><i class="fa-solid fa-edit"></i></a> -->
+
+                          <a type="button" class="btn btn-outline-danger" href="{% url 'panel-title-defense-day-delete-critique' critique.id %}"><i class="fa-solid fa-trash-can"></i></a>
+                        </td>
+
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+  
+                      </tr>
+                      {% endif %}
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
+
+          {% if start_critique_1 %}
+            {% if end_critique_0 %}
+              <form method="POST" action="{% url 'panel-title-defense-day-save-critique' start_critique_1.student_leader_username %}">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Critique:</label>
+                  <input type="text" class="form-control" name="critique_input" required>
+                </div>
+                <button class="btn btn-outline-success mb-2 w-100">Save</button>
+              </form>
+              {% endif %}
+          {% endif %}
+
+        </div>
 
         <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
+
+      <!-- Modal -->
+      <form method="POST" id="edit_critique_form" action="#">
+        {% csrf_token %}
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Critique</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Critique:</label>
+                  <input type="text" class="form-control" id="edit_critique" placeholder="" name="critique_input" required>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-outline-success">Confirm - Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
 
       <!-- Footer -->
       {% include 'footer.html' %}
@@ -358,16 +471,14 @@
   </a>
 
   <!-- Accept Title Modal -->
-  <div class="modal fade" id="acceptedTitleModal" tabindex="-1" aria-labelledby="acceptedTitleModal" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="acceptedTitleModal" tabindex="-1" aria-labelledby="acceptedTitleModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Accept Title?</h5>
           </button>
         </div>
-        <div class="modal-body">Are you sure you want to mark this research title "<span
-            id="accepted_research_title"></span>" as accepted?</div>
+        <div class="modal-body">Are you sure you want to mark this research title "<span id="accepted_research_title"></span>" as accepted?</div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No</button>
           <a id="accept_title_btn" class="btn btn-outline-success" type="button" href="#">Yes - Accept</a>
@@ -377,16 +488,14 @@
   </div>
 
   <!-- Deferred Title Modal -->
-  <div class="modal fade" id="deferredTitleModal" tabindex="-1" aria-labelledby="deferredTitleModal" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="deferredTitleModal" tabindex="-1" aria-labelledby="deferredTitleModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Defer Title?</h5>
           </button>
         </div>
-        <div class="modal-body">Are you sure you want to mark this research title "<span
-            id="deferred_research_title"></span>" as deferred?</div>
+        <div class="modal-body">Are you sure you want to mark this research title "<span id="deferred_research_title"></span>" as deferred?</div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No</button>
           <a id="defer_title_btn" class="btn btn-outline-danger" type="button" href="#">Yes - Defer</a>
@@ -396,16 +505,14 @@
   </div>
 
   <!-- Revise Title Modal -->
-  <div class="modal fade" id="reviseTitleModal" tabindex="-1" aria-labelledby="reviseTitleModal" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="reviseTitleModal" tabindex="-1" aria-labelledby="reviseTitleModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Revise Title?</h5>
           </button>
         </div>
-        <div class="modal-body">Are you sure you want to mark this research title "<span
-            id="revise_research_title"></span>" for revision?</div>
+        <div class="modal-body">Are you sure you want to mark this research title "<span id="revise_research_title"></span>" for revision?</div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No</button>
           <a id="revise_title_btn" class="btn btn-outline-info" type="button" href="#">Yes - Revise</a>
@@ -414,15 +521,66 @@
     </div>
   </div>
 
-  {% include 'logout-modal.html' %} 
+  {% include 'logout-modal.html' %}
   {% include 'script-cdn.html' %}
+
+  <!-- Critique Form - Panel Chairman e-sign -->
+  <script>
+    document.getElementById('btn_panel_chairman_esign').addEventListener("click", function () {
+      if (document.getElementById('checkbox_agreement_pc').checked) {
+        document.getElementById("btn_panel_chairman_esign").href = "{% url 'panel-title-defense-day-critique-panel-chairman-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+      } else {
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
+      }
+    });
+  </script>
+
+  <!-- Critique Form - Panel e-sign -->
+  <script>
+    document.getElementById('btn_panel_esign').addEventListener("click", function () {
+      if (document.getElementById('checkbox_agreement_p').checked) {
+        document.getElementById("btn_panel_esign").href = "{% url 'panel-title-defense-day-critique-panel-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+      } else {
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
+      }
+    });
+  </script>
+
+  <!-- Critique Form - Panel Chairman Live Signature -->
+  <script>
+    document.getElementById('btn_panel_chairman_live').addEventListener("click", function () {
+      document.getElementById("btn_panel_chairman_live").href = "{% url 'panel-title-defense-day-critique-panel-chairman-live-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+    });
+  </script>
+
+  <!-- Critique Form - Panel Live Signature -->
+  <script>
+    document.getElementById('btn_panel_live').addEventListener("click", function () {
+      document.getElementById("btn_panel_live").href = "{% url 'panel-title-defense-day-critique-panel-live-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+    });
+  </script>
+
+  {% for critique in panel_critique %}
+  <script>
+    critique_id = document.querySelector("#edit_{{critique.id}}");
+
+    critique_id.addEventListener("click", function(){
+      data_user = $(this).data("id");
+      console.log(data_user);
+      document.getElementById("edit_critique_form").action = "{% url 'panel-title-defense-day-edit-critique' id=112233 %}".replace("112233", data_user);
+      
+      $("#exampleModal").modal()
+    });
+
+  </script>
+  {% endfor %}
 
   <script>
     document.getElementById('btn_accept_signed').addEventListener("click", function () {
       if (document.getElementById('checkbox_agreement_a').checked) {
         document.getElementById("btn_accept_signed").href = "{% url 'panel-title-defense-day-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
       } else {
-        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");''
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error"); ''
       }
     });
   </script>
@@ -432,30 +590,30 @@
       document.getElementById("btn_accept_live").href = "{% url 'panel-title-defense-day-live-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
     });
   </script>
-  
+
   {% for title in research_titles %}
   <script>
     document.getElementById("accepted_" + "{{title.id}}").addEventListener("click", function () {
       data_id = $(document.getElementById("accepted_" + "{{title.id}}")).attr("data-id");
-  
+
       document.getElementById("accepted_research_title").textContent = "{{title.research_title}}";
       document.getElementById("accept_title_btn").href = "{% url 'panel-accept-title' id=0 %}"
         .replace(/0/, data_id);
       $("#acceptedTitleModal").modal();
     });
-  
+
     document.getElementById("deferred_" + "{{title.id}}").addEventListener("click", function () {
       data_id = $(document.getElementById("deferred_" + "{{title.id}}")).attr("data-id");
-  
+
       document.getElementById("deferred_research_title").textContent = "{{title.research_title}}";
       document.getElementById("defer_title_btn").href = "{% url 'panel-defer-title' id=0 %}"
         .replace(/0/, data_id);
       $("#deferredTitleModal").modal();
     });
-  
+
     document.getElementById("revise_" + "{{title.id}}").addEventListener("click", function () {
       data_id = $(document.getElementById("revise_" + "{{title.id}}")).attr("data-id");
-  
+
       document.getElementById("revise_research_title").textContent = "{{title.research_title}}";
       document.getElementById("revise_title_btn").href = "{% url 'panel-revise-title' id=0 %}"
         .replace(/0/, data_id);

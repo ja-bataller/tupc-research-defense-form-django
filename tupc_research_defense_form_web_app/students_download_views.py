@@ -321,6 +321,274 @@ def studentDownloadPanelInvitationBet3(request, id):
     return render(request, "student-bet3-panel-invitation-dashboard.html", context)
 
 
+# Student - BET3 - Critique Form - Download
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
+def studentTopicCritiqueFormDownload(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("login")
+    
+    # Get Student Group Members
+    try:
+        get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+    except:
+        get_student_group_members = None
+
+    try:
+        research_title = ResearchTitle.objects.get(student_leader_username=current_user.username, title_defense_status = "Accepted")
+    except:
+        pass
+    try:
+        research_title = ResearchTitle.objects.get(student_leader_username=current_user.username, title_defense_status = "Revise Title")
+    except:
+        pass
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+    get_critique_form = TitleDefenseCritique.objects.all().filter(student_leader_username=current_user.username, defense_date = get_student_leader_data.research_title_defense_date)
+    get_proposal_defense_form = TitleDefenseForm.objects.all().filter(student_leader_username=current_user.username, defense_date = get_student_leader_data.research_title_defense_date)
+
+    get_critique_form_panel_data = TitleDefenseCritique.objects.all().filter(student_leader_username=current_user.username, critique = "", is_panel_chairman = False, defense_date = get_student_leader_data.research_title_defense_date)
+    get_critique_form_panel_chair_data = TitleDefenseCritique.objects.filter(student_leader_username=current_user.username, critique = "", is_panel_chairman = True, defense_date = get_student_leader_data.research_title_defense_date)
+
+    doc = Document("static/forms/5-CRITIQUE-FORM.docx")
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/5-CRITIQUE-FORM.docx')
+    
+    paragraph = doc.add_paragraph()
+
+    for i in range(len(get_critique_form)):
+        if get_critique_form[i].critique:
+            paragraph.add_run("     ● " + get_critique_form[i].critique)
+            run = paragraph.add_run()
+            run.add_break()
+        i + 1
+    
+
+    panel_1 = doc.tables[1]
+    panel_chair = doc.tables[2]
+    panel_3 = doc.tables[3]
+    panel_4 = doc.tables[5]
+    panel_5 = doc.tables[6]
+    panel_table_1 = doc.tables[4]
+    panel_table_2 = doc.tables[8]
+    date_table = doc.tables[7]
+    qr_code_box = doc.tables[9]
+
+    # Date of the Form
+    date_table.cell(0, 1).text = get_critique_form_panel_chair_data[0].defense_date
+
+    # Panel Chairman
+    if get_critique_form_panel_chair_data[0]:
+        panel_table_1.cell(1, 2).paragraphs[0].runs[0].text = get_critique_form_panel_chair_data[0].panel_full_name
+        if get_critique_form_panel_chair_data[0].panel_chairman_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_chair_data[0].panel_username) + ".png"):
+                panel_table_1.cell(0, 2).text = ""
+                panel_chair_sign = panel_chair.cell(0, 0).add_paragraph()
+                panel_chair_sign_run = panel_chair_sign.add_run()
+                panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": research_title.research_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-topic-critique-form.html", context)
+
+    # Panel 1
+    if get_critique_form_panel_data[0]:
+        panel_table_1.cell(1, 0).paragraphs[0].runs[0].text = get_critique_form_panel_data[0].panel_full_name
+        if get_critique_form_panel_data[0].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[0].panel_username) + ".png"):
+                panel_table_1.cell(0, 0).text = ""
+                panel_sign = panel_1.cell(0, 0).add_paragraph()
+                panel_sign_run = panel_sign.add_run()
+                panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": research_title.research_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-topic-critique-form.html", context)
+    
+    # Panel 2
+    if get_critique_form_panel_data[1]:
+        panel_table_1.cell(1, 4).paragraphs[0].runs[0].text = get_critique_form_panel_data[1].panel_full_name
+        if get_critique_form_panel_data[1].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[1].panel_username) + ".png"):
+                panel_table_1.cell(0, 4).text = ""
+                panel_sign = panel_3.cell(0, 0).add_paragraph()
+                panel_sign_run = panel_sign.add_run()
+                panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[1].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": research_title.research_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-topic-critique-form.html", context)
+    
+    # Panel 3
+    try:
+        if get_critique_form_panel_data[2]:
+            panel_table_2.cell(1, 0).paragraphs[0].runs[0].text = get_critique_form_panel_data[2].panel_full_name
+            if get_critique_form_panel_data[2].panel_signature_attach == True:
+                if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[2].panel_username) + ".png"):
+                    panel_table_2.cell(0, 0).text = ""
+                    panel_sign = panel_4.cell(0, 0).add_paragraph()
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[2].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                else:
+                    context = {
+                        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                        "currently_loggedin_user_account": currently_loggedin_user_account,
+                        "student_leader_data": get_student_leader_data,
+                        "student_leader_full_name": student_leader_full_name,
+                        "student_group_members": get_student_group_members,
+                        "student_research_title": research_title.research_title,
+                        "critiques": get_critique_form,
+                        "proposal_defense_form": get_proposal_defense_form,
+                        "response": "sweet faculty member no signature"
+                    }
+
+                    return render(request, "student-topic-critique-form.html", context)
+    except:
+        panel_table_2.cell(1, 0).paragraphs[0].runs[0].text = ""
+        panel_table_2.cell(0, 0).text = ""
+
+    try:
+        # Panel 4
+        if get_critique_form_panel_data[3]:
+            panel_table_2.cell(1, 4).paragraphs[0].runs[0].text = get_critique_form_panel_data[3].panel_full_name
+            if get_critique_form_panel_data[1].panel_signature_attach == True:
+                if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[3].panel_username) + ".png"):
+                    panel_table_2.cell(0, 4).text = ""
+                    panel_sign = panel_5.cell(0, 0).add_paragraph()
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[3].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                else:
+                    context = {
+                        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                        "currently_loggedin_user_account": currently_loggedin_user_account,
+                        "student_leader_data": get_student_leader_data,
+                        "student_leader_full_name": student_leader_full_name,
+                        "student_group_members": get_student_group_members,
+                        "student_research_title": research_title.research_title,
+                        "critiques": get_critique_form,
+                        "proposal_defense_form": get_proposal_defense_form,
+                        "response": "sweet faculty member no signature"
+                    }
+
+                    return render(request, "student-topic-critique-form.html", context)
+    except:
+        panel_table_2.cell(1, 4).paragraphs[0].runs[0].text = ""
+        panel_table_2.cell(0, 4).text = ""
+
+
+    # Create - QR Code
+    auth_qr_code = qrcode.make('Topic Critique Form\nDate:' + get_student_leader_data.research_title_defense_date)
+    type(auth_qr_code)  
+    auth_qr_code.save(current_user.username + "-BET3-CRITIQUE-FORM-QR.png")
+
+    # INSERT IMAGE
+    qr_code = qr_code_box.cell(0, 0).add_paragraph()
+    qr_code_run = qr_code.add_run()
+    qr_code_run.add_picture(current_user.username + "-BET3-CRITIQUE-FORM-QR.png", width=Inches(1), height=Inches(1))
+
+    doc.save(current_user.username + "-TOPIC-CRITIQUE-FORM.docx")
+    convert(current_user.username + "-TOPIC-CRITIQUE-FORM.docx")
+
+    filePath = FilePath(
+        student_leader_username=current_user.username, 
+        file_path=current_user.username + "-TOPIC-CRITIQUE-FORM.pdf"
+        )
+    filePath.save()
+
+    os.startfile(current_user.username + "-TOPIC-CRITIQUE-FORM.pdf")
+
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-CRITIQUE-FORM.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-TOPIC-CRITIQUE-FORM.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "www.ditresearchdefense.online/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-CRITIQUE-FORM.pdf'
+
+    # filePath =  FilePath(
+    #     student_leader_username = current_user.username,
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-CRITIQUE-FORM.pdf'
+    # )
+    # filePath.save()
+
+    qr_code_path = current_user.username + "-BET3-CRITIQUE-FORM-QR.png"
+
+    if os.path.isfile(qr_code_path):
+        os.remove(qr_code_path)
+        print("Critique Form QR - Deleted")
+    else:
+        print("Critique Form QR - Not Found")
+
+    delete_critique_form = current_user.username + "-TOPIC-CRITIQUE-FORM.docx"
+    # delete_critique_form = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-TOPIC-CRITIQUE-FORM.docx')
+
+    if os.path.isfile(delete_critique_form):
+        os.remove(delete_critique_form)
+        print("Critique Form - Deleted")
+    else:
+        print("Critique Form - Form")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "student_group_members": get_student_group_members,
+        "student_research_title": research_title.research_title,
+        "critiques": get_critique_form,
+        "proposal_defense_form": get_proposal_defense_form,
+        "response": "sweet downloaded"
+    }
+
+    return render(request, "student-topic-critique-form.html", context)
+
+
 # Student - BET3 - Research Title Defense - Download Process
 @login_required(login_url="login")
 @user_passes_test(lambda u: u.is_student, login_url="login")
@@ -3203,6 +3471,274 @@ def studentBET5FinalDefensePanelInvitationDownload(request, id):
 
     return render(request, "student-bet5-final-defense-panel-invitation-dashboard.html", context)
 
+
+# Student - BET3 - Critique Form - Download
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
+def studentFinalCritiqueFormDownload(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("login")
+    
+    # Get Student Group Members
+    try:
+        get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+    except:
+        get_student_group_members = None
+
+    # Get Student Proposal Defense Accepted with Revision
+    try:
+        get_accepted_proposal_title = ResearchTitle.objects.get(student_leader_username=current_user.username, proposal_defense_status = "Accepted with Revision")
+    except:
+        print("pass research titles")
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.group_members_status != "completed" and get_student_leader_data.research_titles_status != "completed" and get_student_leader_data.bet3_panel_invitation_status != "completed":
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+    get_critique_form = FinalDefenseCritique.objects.all().filter(student_leader_username=current_user.username, defense_date = get_student_leader_data.research_final_defense_date)
+    get_proposal_defense_form = FinalDefenseForm.objects.all().filter(student_leader_username=current_user.username, defense_date = get_student_leader_data.research_final_defense_date)
+
+    get_critique_form_panel_data = FinalDefenseCritique.objects.all().filter(student_leader_username=current_user.username, critique = "", is_panel_chairman = False, defense_date = get_student_leader_data.research_final_defense_date)
+    get_critique_form_panel_chair_data = FinalDefenseCritique.objects.filter(student_leader_username=current_user.username, critique = "", is_panel_chairman = True, defense_date = get_student_leader_data.research_final_defense_date)
+
+    doc = Document("static/forms/5-CRITIQUE-FORM.docx")
+    # doc = Document('/home/johnanthonybataller/tupc-research-defense-form-django/static/forms/5-CRITIQUE-FORM.docx')
+    
+    paragraph = doc.add_paragraph()
+
+    for i in range(len(get_critique_form)):
+        if get_critique_form[i].critique:
+            paragraph.add_run("     ● " + get_critique_form[i].critique)
+            run = paragraph.add_run()
+            run.add_break()
+        i + 1
+    
+
+    panel_1 = doc.tables[1]
+    panel_chair = doc.tables[2]
+    panel_3 = doc.tables[3]
+    panel_4 = doc.tables[5]
+    panel_5 = doc.tables[6]
+    panel_table_1 = doc.tables[4]
+    panel_table_2 = doc.tables[8]
+    date_table = doc.tables[7]
+    qr_code_box = doc.tables[9]
+
+    # Date of the Form
+    date_table.cell(0, 1).text = get_critique_form_panel_chair_data[0].defense_date
+
+    # Panel Chairman
+    if get_critique_form_panel_chair_data[0]:
+        panel_table_1.cell(1, 2).paragraphs[0].runs[0].text = get_critique_form_panel_chair_data[0].panel_full_name
+        if get_critique_form_panel_chair_data[0].panel_chairman_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_chair_data[0].panel_username) + ".png"):
+                panel_table_1.cell(0, 2).text = ""
+                panel_chair_sign = panel_chair.cell(0, 0).add_paragraph()
+                panel_chair_sign_run = panel_chair_sign.add_run()
+                panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-final-critique-form.html", context)
+
+    # Panel 1
+    if get_critique_form_panel_data[0]:
+        panel_table_1.cell(1, 0).paragraphs[0].runs[0].text = get_critique_form_panel_data[0].panel_full_name
+        if get_critique_form_panel_data[0].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[0].panel_username) + ".png"):
+                panel_table_1.cell(0, 0).text = ""
+                panel_sign = panel_1.cell(0, 0).add_paragraph()
+                panel_sign_run = panel_sign.add_run()
+                panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-final-critique-form.html", context)
+    
+    # Panel 2
+    if get_critique_form_panel_data[1]:
+        panel_table_1.cell(1, 4).paragraphs[0].runs[0].text = get_critique_form_panel_data[1].panel_full_name
+        if get_critique_form_panel_data[1].panel_signature_attach == True:
+            if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[1].panel_username) + ".png"):
+                panel_table_1.cell(0, 4).text = ""
+                panel_sign = panel_3.cell(0, 0).add_paragraph()
+                panel_sign_run = panel_sign.add_run()
+                panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[1].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+            else:
+                context = {
+                    "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                    "currently_loggedin_user_account": currently_loggedin_user_account,
+                    "student_leader_data": get_student_leader_data,
+                    "student_leader_full_name": student_leader_full_name,
+                    "student_group_members": get_student_group_members,
+                    "student_research_title": get_accepted_proposal_title,
+                    "critiques": get_critique_form,
+                    "proposal_defense_form": get_proposal_defense_form,
+                    "response": "sweet faculty member no signature"
+                }
+
+                return render(request, "student-final-critique-form.html", context)
+    
+    # Panel 3
+    try:
+        if get_critique_form_panel_data[2]:
+            panel_table_2.cell(1, 0).paragraphs[0].runs[0].text = get_critique_form_panel_data[2].panel_full_name
+            if get_critique_form_panel_data[2].panel_signature_attach == True:
+                if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[2].panel_username) + ".png"):
+                    panel_table_2.cell(0, 0).text = ""
+                    panel_sign = panel_4.cell(0, 0).add_paragraph()
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[2].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                else:
+                    context = {
+                        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                        "currently_loggedin_user_account": currently_loggedin_user_account,
+                        "student_leader_data": get_student_leader_data,
+                        "student_leader_full_name": student_leader_full_name,
+                        "student_group_members": get_student_group_members,
+                        "student_research_title": get_accepted_proposal_title,
+                        "critiques": get_critique_form,
+                        "proposal_defense_form": get_proposal_defense_form,
+                        "response": "sweet faculty member no signature"
+                    }
+
+                    return render(request, "student-final-critique-form.html", context)
+    except:
+        panel_table_2.cell(1, 0).paragraphs[0].runs[0].text = ""
+        panel_table_2.cell(0, 0).text = ""
+
+    try:
+        # Panel 4
+        if get_critique_form_panel_data[3]:
+            panel_table_2.cell(1, 4).paragraphs[0].runs[0].text = get_critique_form_panel_data[3].panel_full_name
+            if get_critique_form_panel_data[1].panel_signature_attach == True:
+                if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(get_critique_form_panel_data[3].panel_username) + ".png"):
+                    panel_table_2.cell(0, 4).text = ""
+                    panel_sign = panel_5.cell(0, 0).add_paragraph()
+                    panel_sign_run = panel_sign.add_run()
+                    panel_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_data[3].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                    # panel_chair_sign_run.add_picture('uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/'+get_critique_form_panel_chair_data[0].panel_username +'.png',width=Inches(1.2), height=Inches(0.45))
+                else:
+                    context = {
+                        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                        "currently_loggedin_user_account": currently_loggedin_user_account,
+                        "student_leader_data": get_student_leader_data,
+                        "student_leader_full_name": student_leader_full_name,
+                        "student_group_members": get_student_group_members,
+                        "student_research_title": get_accepted_proposal_title,
+                        "critiques": get_critique_form,
+                        "proposal_defense_form": get_proposal_defense_form,
+                        "response": "sweet faculty member no signature"
+                    }
+
+                    return render(request, "student-final-critique-form.html", context)
+    except:
+        panel_table_2.cell(1, 4).paragraphs[0].runs[0].text = ""
+        panel_table_2.cell(0, 4).text = ""
+
+
+    # Create - QR Code
+    auth_qr_code = qrcode.make('Critique Form\nDate:' + get_student_leader_data.research_proposal_defense_date)
+    type(auth_qr_code)  
+    auth_qr_code.save(current_user.username + "-BET3-CRITIQUE-FORM-QR.png")
+
+    # INSERT IMAGE
+    qr_code = qr_code_box.cell(0, 0).add_paragraph()
+    qr_code_run = qr_code.add_run()
+    qr_code_run.add_picture(current_user.username + "-BET3-CRITIQUE-FORM-QR.png", width=Inches(1), height=Inches(1))
+
+    doc.save(current_user.username + "-FINAL-CRITIQUE-FORM.docx")
+    convert(current_user.username + "-FINAL-CRITIQUE-FORM.docx")
+
+    filePath = FilePath(
+        student_leader_username=current_user.username, 
+        file_path=current_user.username + "-FINAL-CRITIQUE-FORM.pdf"
+        )
+    filePath.save()
+
+    os.startfile(current_user.username + "-FINAL-CRITIQUE-FORM.pdf")
+
+    # doc.save('/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-FINAL-CRITIQUE-FORM.docx')
+    # subprocess.call(['libreoffice', '--headless', '--convert-to', 'pdf', "/home/johnanthonybataller/tupc-research-defense-form-django/static/"+current_user.username+"-"+panel_username+"-"+panel_response+'-FINAL-CRITIQUE-FORM.docx', "--outdir" ,"/home/johnanthonybataller/tupc-research-defense-form-django/static/"])
+    # download_link = "www.ditresearchdefense.online/static/" +current_user.username +"-"+panel_username+"-"+panel_response+'-FINAL-CRITIQUE-FORM.pdf'
+
+    # filePath =  FilePath(
+    #     student_leader_username = current_user.username,
+    #     file_path = '/home/johnanthonybataller/tupc-research-defense-form-django/static/'+current_user.username +"-"+panel_username+"-"+panel_response+'-FINAL-CRITIQUE-FORM.pdf'
+    # )
+    # filePath.save()
+
+    qr_code_path = current_user.username + "-BET3-CRITIQUE-FORM-QR.png"
+
+    if os.path.isfile(qr_code_path):
+        os.remove(qr_code_path)
+        print("Critique Form QR - Deleted")
+    else:
+        print("Critique Form QR - Not Found")
+
+    delete_critique_form = current_user.username + "-FINAL-CRITIQUE-FORM.docx"
+    # delete_critique_form = ("/home/johnanthonybataller/tupc-research-defense-form-django/static/" + current_user.username +"-"+panel_username+"-"+panel_response+'-FINAL-CRITIQUE-FORM.docx')
+
+    if os.path.isfile(delete_critique_form):
+        os.remove(delete_critique_form)
+        print("Critique Form - Deleted")
+    else:
+        print("Critique Form - Form")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "student_group_members": get_student_group_members,
+        "student_research_title": get_accepted_proposal_title,
+        "critiques": get_critique_form,
+        "proposal_defense_form": get_proposal_defense_form,
+        "response": "sweet downloaded"
+    }
+
+    return render(request, "student-final-critique-form.html", context)
 
 # Student - BET3 - Critique Form - Download
 @login_required(login_url="login")

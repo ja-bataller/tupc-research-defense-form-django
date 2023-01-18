@@ -222,6 +222,32 @@
                 </div>
               </div>
             </div>
+
+            <div class="col-md-12 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">
+                      Topic Defense - Critiques:
+                    </div>
+
+                    {% if title_critiques %}
+                    {% for critique in title_critiques %}
+
+                    {% if critique.critique %}
+                    <div class="col-sm-12">
+                      - {{critique.critique}}
+                    </div>
+                    {% endif %}
+ 
+
+                    {% endfor %}
+                    {% endif %}
+
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- DataTales Example -->
@@ -246,7 +272,7 @@
                       <th>Panel Name</th>
                       <th>Attendance</th>
                       <th>Critique Signature</th>
-                      <th>Defense Signature</th>
+                      <th>Proposal Defense Signature</th>
                       <th>Vote Status</th>
                       <th>Action</th>
                     </tr>

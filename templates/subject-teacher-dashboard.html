@@ -33,7 +33,7 @@
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="{% url 'subject-teacher-dashboard' %}">
           <i class="fa-solid fa-house"></i>
           <span>Home</span></a>
@@ -111,7 +111,7 @@
         </div>
       </li>
 
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'subject-teacher-acknowledgement-receipt' %}">
           <i class="fa-solid fa-file-lines"></i>
           <span>Acknowledgement Receipt</span></a>
@@ -430,6 +430,32 @@
   {% endif %}
 
 
+  {% if response == 'sweet title defense start critique' %}
+  <script>
+    Swal.fire("Start Critique", "The Critique Form has started.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet title defense end critique' %}
+  <script>
+    Swal.fire("End Critique", "The Critique Form has ended.", "info");
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-title-defense-day' student_leader_username %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+
+
+
+
+
+
+
+
   {% if response == 'sweet proposal defense present panel' %}
   <script>
     Swal.fire("Present", "{{panel_invitation_data.panel_full_name}} is marked as present", "success");
@@ -590,6 +616,15 @@
     Swal.fire("Completed", "The Final Defense has ended.", "success");
     setTimeout(function () {
       window.location.replace("{% url 'subject-teacher-dashboard' %}");
+    }, 4000);
+  </script>
+  {% endif %}
+
+  {% if response == 'sweet final defense start critique' %}
+  <script>
+    Swal.fire("Start Critique", "The Critique Form has started.", "success");
+    setTimeout(function () {
+      window.location.replace("{% url 'subject-teacher-bet5-final-defense-day' student_leader_username %}");
     }, 4000);
   </script>
   {% endif %}

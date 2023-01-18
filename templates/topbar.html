@@ -25,12 +25,20 @@
           <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
           Profile
         </a>
+        <a type="button" class="dropdown-item" data-toggle="modal" data-target="#studentHelp">
+          <i class="fas fa-info fa-sm fa-fw mr-2 text-gray-400"></i>
+          Help
+        </a>
         {% endif %}
 
         {% if currently_loggedin_user_account == 'Administrator' %}
         <a class="dropdown-item" href="{% url 'admin-profile' %}">
           <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
           Profile
+        </a>
+        <a type="button" class="dropdown-item" data-toggle="modal" data-target="#adminHelp">
+          <i class="fas fa-info fa-sm fa-fw mr-2 text-gray-400"></i>
+          Help
         </a>
         {% endif %}
 
@@ -44,3 +52,84 @@
   </ul>
 </nav>
 <!-- End of Topbar -->
+
+<!-- Student Help Modal -->
+<div class="modal fade" id="studentHelp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="exampleModalLabel"><i class="fas fa-info fa-sm fa-fw mr-2 text-dark"></i> Student Help</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center text-dark">
+        Hi Students! 
+        <br>
+        Thank you for using the TUP-C DIT Research Defense Web App.
+        It seems like you need some help in order to use this Web Application.
+        <br>
+        <br>
+
+        In your Home Page, there are check-list which depends on your progress during the Research Defense (BET-3 & BET-5/5L). <br>
+        Every process of the Research Defense is important, you will be required to finish all the check-list in order complete and pass your Research Subjects.
+
+        <br>
+        <br>
+        REMINDERS:
+        <br>
+        - Carefully read all the field label, and answer all the required fields correctly and properly <br>
+        - Each Steps of the Research Defense will be only be enabled, once you completed the first step, and so on... <br>
+  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Help Modal -->
+<div class="modal fade" id="adminHelp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="exampleModalLabel"><i class="fas fa-info fa-sm fa-fw mr-2 text-dark"></i> Admin Help</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center text-dark">
+        Hi Admin! 
+        <br>
+        Thank you for using the TUP-C DIT Research Defense Web App.
+        It seems like you need some help in order to use this Web Application.
+        <br>
+        <br>
+        NOTES:
+        <br>
+        - You have the control to Create and Update the account of Faculty Members<br>
+        - You can edit the Students Information<br>
+        - You have the control to Create, Update, and Delete Course for the Students.
+
+        <br>
+        <br>
+        REMINDER IN ORDER FOR STUDENTS TO SIGN UP:
+        <br>
+        - You have to create One (1) account for Department Head Account<br>
+        - You have to create an account at least Six (6) Panel/Adviser/Subject Teacher Account<br>
+        - You have to create an account for Academic Affairs Office (1), Library (1), and Research & Extension (1)
+        - You have to create the available course that the Departtment of Industrial Technology offers.
+
+        
+
+  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

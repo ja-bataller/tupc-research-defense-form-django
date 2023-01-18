@@ -94,9 +94,30 @@ def subjectTeacherTitleDefenseDay(request, id):
 
     get_pending_signature_response = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username, panel_signature_response = 0)
 
-    get_start_voting = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username, panel_signature_response = 1, start_voting = 1)
+    title_voting_signature_0 = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username, end_voting = 1, panel_signature_response = 0)
 
-    
+    start_voting_1 = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username, start_voting = 1)
+    start_voting_0 = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username, start_voting = 0)
+
+    end_voting_1 = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, panel_attendance="present", end_voting = True)
+    end_voting_0 = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, panel_attendance="present", end_voting = False)
+
+    start_critique_1 = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username, start_critique = 1)
+    start_critique_0 = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username, start_critique = 0)
+
+    end_critique_1 = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, panel_attendance="present", end_critique = True)
+    end_critique_0 = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, panel_attendance="present", end_critique = False)
+
+    pending_critique_sign_1 = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, panel_attendance="present", end_critique = True, critique_sign_response = False)
+
+    try:
+        research_title = ResearchTitle.objects.get(student_leader_username=id, title_defense_status = "Accepted")
+    except:
+        pass
+    try:
+        research_title = ResearchTitle.objects.get(student_leader_username=id, title_defense_status = "Revise Title")
+    except:
+        pass
 
     try:
         check_accepted_title = ResearchTitle.objects.get(student_leader_username=id, title_defense_status="Accepted")
@@ -345,6 +366,24 @@ def subjectTeacherTitleDefenseDay(request, id):
         else:
             print("not all deferred")
             pass
+            
+        get_panel_critiques = ProposalDefenseCritique.objects.all().filter(subject_teacher_username=currently_loggedin_user.username, defense_date=date_today, student_leader_username=id)
+
+        critiques = []
+
+        for i in range(len(get_panel_critiques)):
+
+            if get_panel_critiques[i].critique:
+                critiques.append(get_panel_critiques[i].critique)
+                i + 1
+        
+        string_critiques = ""
+    
+        # traverse in the string
+        for crit in critiques:
+            string_critiques += crit+", "
+
+        print(string_critiques)
 
         get_student_title_defense_schedule.status = "Completed"
         get_student_title_defense_schedule.save()
@@ -389,6 +428,13 @@ def subjectTeacherTitleDefenseDay(request, id):
                 ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                 fail_silently=False,
             )
+            send_mail(
+                "Topic Defense - Critique",
+                "Good Day " + get_present_panel_members[i].panel_full_name + ",\n" + "Here are the Topic Defense Critique of the Group of "+ get_present_panel_members[i].student_leader_full_name + " ( "+string_critiques+ " ) " + "and their Research Title is '"+research_title.research_title+"' \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
+                "unofficial.tupc.uitc@gmail.com",
+                ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                fail_silently=False,
+            )
             i + 1
 
         context = {
@@ -417,10 +463,73 @@ def subjectTeacherTitleDefenseDay(request, id):
         "research_title_all_deferred": all_deferred,
         "title_defense_completed": check_title_defense_completed,
         "pending_signature_response" : get_pending_signature_response,
-        "start_voting" : get_start_voting,
+
+        "start_voting_1" : start_voting_1,
+        "start_voting_0" : start_voting_0,
+
+        "end_voting_1" : end_voting_1,
+        "end_voting_0" : end_voting_0,
+
+        "title_voting_signature_0": title_voting_signature_0,
+
+        "start_critique_1" : start_critique_1,
+        "start_critique_0" : start_critique_0,
+
+        "end_critique_1" : end_critique_1,
+        "end_critique_0" : end_critique_0,
+
+        "pending_critique_sign_1": pending_critique_sign_1,
+        
     }
 
     return render(request, "subject-teacher-title-defense-day.html", context)
+
+# Subject Teacher - Research Proposal Defense Day - End Critique
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
+def subjectTeacherTitleDefenseDayEndCritique(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+
+    get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
+    get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
+
+
+    get_done_signature_response = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username)
+    
+    for i in range(len(get_done_signature_response)):
+        get_done_signature_response[i].end_critique = True
+        get_done_signature_response[i].save()
+        i + 1
+    
+    try:
+        get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
+    get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "subject_teacher_data": get_subject_teacher_data,
+        "today_defense_schedule": get_today_defense_schedule,
+        "completed_today_defense_schedule": get_completed_today_defense_schedule,
+        "student_leader_username": id,
+        "response": "sweet title defense end critique",
+    }
+
+    return render(request, "subject-teacher-dashboard.html", context)
 
 
 # Subject Teacher - Research Title Defense Day - Present Process
@@ -561,36 +670,14 @@ def subjectTeacherTitleDefenseDayStartVote(request, id):
     except:
         return redirect("login")
 
-    # try:
-    #     get_available_today_defense_schedule = DefenseSchedule.objects.all().filter(username = currently_loggedin_user.username, date = date_today, status = "Available")
-    # except:
-    #     pass
-
     get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
     get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
 
-    get_pending_signature_response = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username, panel_signature_response = 0)
+    get_present_panel_members = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username)
     
-    if get_pending_signature_response:
-        
-        context = {
-            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
-            "date_today": today.strftime("%B %d, %Y"),
-            "subject_teacher_data": get_subject_teacher_data,
-            "today_defense_schedule": get_today_defense_schedule,
-            "completed_today_defense_schedule": get_completed_today_defense_schedule,
-            "student_leader_username": id,
-            "response": "sweet panel esign incomplete"
-        }
-
-        return render(request, "subject-teacher-dashboard.html", context)
-
-
-    get_done_signature_response = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username, panel_signature_response = 1)
-    
-    for i in range(len(get_done_signature_response)):
-        get_done_signature_response[i].start_voting = True
-        get_done_signature_response[i].save()
+    for i in range(len(get_present_panel_members)):
+        get_present_panel_members[i].start_voting = True
+        get_present_panel_members[i].save()
         i + 1
     
     try:
@@ -670,6 +757,8 @@ def subjectTeacherTitleDefenseDayCloseVote(request, id):
         }
 
         return render(request, "subject-teacher-dashboard.html", context)
+    
+    get_pending_voting_panel_members_title_defense = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, panel_attendance="present", end_voting = False).update(end_voting = True)
 
     #######################################################################################
     # Research Title 1 is Accepted
@@ -1494,6 +1583,78 @@ def subjectTeacherTitleDefenseDayCloseVote(request, id):
     return render(request, "subject-teacher-dashboard.html", context)
 
 
+# Subject Teacher - Research Title Defense Day - Start Critique
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
+def subjectTeacherTitleDefenseDayStartCritique(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+
+    get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
+    get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
+
+    get_done_signature_response = TitleDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username)
+
+    for i in range(len(get_done_signature_response)):
+        get_done_signature_response[i].start_critique = True
+        get_done_signature_response[i].save()
+
+        save_critique = TitleDefenseCritique(
+            student_leader_username = get_done_signature_response[i].student_leader_username,
+            student_leader_full_name = get_done_signature_response[i].student_leader_full_name,
+            course_major_abbr = get_done_signature_response[i].course_major_abbr,
+
+            panel_username = get_done_signature_response[i].panel_username,
+            panel_full_name = get_done_signature_response[i].panel_full_name,
+            panel_attendance = get_done_signature_response[i].panel_attendance,
+            is_panel_chairman = get_done_signature_response[i].is_panel_chairman,
+
+            form_date = date_today,
+
+            form_status = get_done_signature_response[i].form_status,
+            form = "Critique Form",
+
+            subject_teacher_username = get_done_signature_response[i].subject_teacher_username,
+            subject_teacher_full_name = get_done_signature_response[i].subject_teacher_full_name,
+
+            defense_date = get_done_signature_response[i].defense_date,
+            defense_start_time = get_done_signature_response[i].defense_start_time,
+            defense_end_time = get_done_signature_response[i].defense_end_time,
+            )
+        save_critique.save()
+
+        i + 1
+
+    try:
+        get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
+    get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "subject_teacher_data": get_subject_teacher_data,
+        "today_defense_schedule": get_today_defense_schedule,
+        "completed_today_defense_schedule": get_completed_today_defense_schedule,
+        "student_leader_username": id,
+        "response": "sweet title defense start critique",
+    }
+
+    return render(request, "subject-teacher-dashboard.html", context)
+
+
 # Subject Teacher - Research Proposal Defense Day
 @login_required(login_url="login")
 @user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
@@ -1561,6 +1722,8 @@ def subjectTeacherBET3ProposalDefenseDay(request, id):
     get_end_voting = ProposalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = request.user, start_voting = 1, end_voting = 1)
 
     check_pending_vote = ProposalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = request.user, proposal_defense_response = "")
+
+    title_critiques = TitleDefenseCritique.objects.all().filter(student_leader_username=id)
 
     try:
         get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
@@ -1731,6 +1894,7 @@ def subjectTeacherBET3ProposalDefenseDay(request, id):
         "done_panel_chairman_sign": get_done_pc_sign,
         "all_pending_panel_signature_response": all_pending_panel_signature_response,
         "pending_proposal_defense": get_pending_proposal_defense,
+        "title_critiques": title_critiques,
     }
 
     return render(request, "subject-teacher-bet3-proposal-defense-day.html", context)
@@ -2196,6 +2360,11 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
         get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
     except:
         return redirect("login")
+    
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=id)
+    except:
+        return redirect("login")
 
     
     get_present_panel_members = ProposalPanelInvitation.objects.all().filter(student_leader_username=id, form_status="accepted", form="Proposal Defense Panel Invitation", research_proposal_defense_date=date_today, panel_attendance="present")
@@ -2213,7 +2382,26 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
         
         get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
         get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
+
+        get_panel_critiques = ProposalDefenseCritique.objects.all().filter(subject_teacher_username=currently_loggedin_user.username, defense_date=date_today, student_leader_username=id)
+
+        critiques = []
+
+        for i in range(len(get_panel_critiques)):
+
+            if get_panel_critiques[i].critique:
+                critiques.append(get_panel_critiques[i].critique)
+                i + 1
         
+        string_critiques = ""
+    
+        # traverse in the string
+        for crit in critiques:
+            string_critiques += crit+", "
+
+        print(string_critiques)
+
+
         for i in range(len(get_present_panel_members)):
             save_topic_panel_conforme = PanelConforme(
                 student_leader_username = get_present_panel_members[i].student_leader_username,
@@ -2243,15 +2431,32 @@ def subjectTeacherBET3ProposalDefenseDayEndDefense(request, id):
             )
             save_topic_panel_conforme.save()
 
-             # Send g-mail notifications
             send_mail(
-                "Proposal Defense - Panel Conforme",
-                "Good Day " + get_present_panel_members[i].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Proposal Defense Panel Conforme. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
+                "Proposal Defense - Critique",
+                "Good Day " + get_present_panel_members[i].panel_full_name + ",\n" + "Here are the Proposal Defense Critique of the Group of "+ get_present_panel_members[i].student_leader_full_name + " ( "+string_critiques+ " ) " + "and their Research Title is '"+get_student_research_title.research_title+"' \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
                 "unofficial.tupc.uitc@gmail.com",
                 ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
                 fail_silently=False,
             )
             i + 1
+
+            # Send g-mail notifications
+            send_mail(
+                "Proposal Defense - Panel Conforme",
+                "Good Day " + get_present_panel_members[0].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Proposal Defense Panel Conforme. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
+                "unofficial.tupc.uitc@gmail.com",
+                ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                fail_silently=False,
+            )
+
+            if get_student_leader_data.adviser_username:
+                send_mail(
+                "Proposal Defense - Critique",
+                "Good Day " + get_student_leader_data.adviser_name + ",\n" + "Here are the Proposal Defense Critique of the Group of "+ get_present_panel_members[0].student_leader_full_name + " ( "+string_critiques+ " ) " + "and their Research Title is '"+get_student_research_title.research_title+"' \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
+                "unofficial.tupc.uitc@gmail.com",
+                ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                fail_silently=False,
+                )
         context = {
             "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
             "date_today": today.strftime("%B %d, %Y"),
@@ -2738,9 +2943,9 @@ def subjectTeacherBET5FinalDefenseDay(request, id):
 
     get_present_panel_members_proposal_defense = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, panel_attendance="present")
 
-    get_start_critique = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = request.user)
+    get_start_critique = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = request.user, start_critique = 1)
 
-    get_end_critique = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = request.user)
+    get_end_critique = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = request.user, end_critique = 1)
 
     check_pending = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = request.user)
     
@@ -2751,6 +2956,8 @@ def subjectTeacherBET5FinalDefenseDay(request, id):
     get_end_voting = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = request.user, start_voting = 1, end_voting = 1)
 
     check_pending_vote = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = request.user, final_defense_response = "")
+
+    title_critiques = ProposalDefenseCritique.objects.all().filter(student_leader_username=id)
 
     try:
         get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
@@ -2921,6 +3128,7 @@ def subjectTeacherBET5FinalDefenseDay(request, id):
         "all_pending_panel_signature_response": all_pending_panel_signature_response,
         "pending_proposal_defense": get_pending_proposal_defense,
         "get_accepted_research_title_data": get_accepted_research_title,
+        "title_critiques": title_critiques,
     }
 
     return render(request, "subject-teacher-bet5-final-defense-day.html", context)
@@ -3032,6 +3240,90 @@ def subjectTeacherBET5FinalDefenseDaySetPanelChairman(request, id):
     return render(request, "subject-teacher-dashboard.html", context)
 
 
+# Subject Teacher - Research Proposal Defense Day - Start Critique
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
+def subjectTeacherBET5FinalDefenseDayStartCritique(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    try:
+        get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
+        research_title = get_accepted_research_title.research_title
+    except:
+        pass
+    
+    try:
+        get_revise_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Revise Title")
+        research_title = get_revise_research_title.research_title
+    except:
+        pass
+
+
+
+    get_done_signature_response = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username)
+
+    for i in range(len(get_done_signature_response)):
+        get_done_signature_response[i].start_critique = True
+        get_done_signature_response[i].save()
+
+        save_critique = FinalDefenseCritique(
+            student_leader_username = get_done_signature_response[i].student_leader_username,
+            student_leader_full_name = get_done_signature_response[i].student_leader_full_name,
+            course_major_abbr = get_done_signature_response[i].course_major_abbr,
+
+            panel_username = get_done_signature_response[i].panel_username,
+            panel_full_name = get_done_signature_response[i].panel_full_name,
+            panel_attendance = get_done_signature_response[i].panel_attendance,
+            is_panel_chairman = get_done_signature_response[i].is_panel_chairman,
+
+            form_date = date_today,
+
+            form_status = get_done_signature_response[i].form_status,
+            form = "Critique Form",
+
+            subject_teacher_username = get_done_signature_response[i].subject_teacher_username,
+            subject_teacher_full_name = get_done_signature_response[i].subject_teacher_full_name,
+
+            defense_date = get_done_signature_response[i].defense_date,
+            defense_start_time = get_done_signature_response[i].defense_start_time,
+            defense_end_time = get_done_signature_response[i].defense_end_time,
+            
+            research_title = research_title
+            )
+        save_critique.save()
+
+        i + 1
+
+    try:
+        get_subject_teacher_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    get_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Reserved")
+    get_completed_today_defense_schedule = DefenseSchedule.objects.all().filter(username=currently_loggedin_user.username, date=date_today, status="Completed")
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "subject_teacher_data": get_subject_teacher_data,
+        "today_defense_schedule": get_today_defense_schedule,
+        "completed_today_defense_schedule": get_completed_today_defense_schedule,
+        "student_leader_username": id,
+        "response": "sweet final defense start critique",
+    }
+
+    return render(request, "subject-teacher-dashboard.html", context)
+
+
 # Subject Teacher - Research FInal Defense Day - Start Voting
 @login_required(login_url="login")
 @user_passes_test(lambda u: u.is_subject_teacher, login_url="login")
@@ -3110,6 +3402,13 @@ def subjectTeacherBET5FinalDefenseDayEndVoting(request, id):
     accepted_with_revision_count = get_accepted_panel_response.count()
     deferred_with_revision_count = get_deferred_panel_response.count()
     not_accepted_count = get_not_accepted_panel_response.count()
+
+    get_done_signature_response = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = currently_loggedin_user.username)
+    
+    for i in range(len(get_done_signature_response)):
+        get_done_signature_response[i].end_critique = True
+        get_done_signature_response[i].save()
+        i + 1
 
     print("Accepted with Revision: ", accepted_with_revision_count)
     print("Deferred with Revision: ", deferred_with_revision_count)
@@ -3211,11 +3510,36 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
     except:
         return redirect("login")
 
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=id)
+        print("Student Leader: ", get_student_leader_data.username)
+    except:
+        return redirect("subject-teacher-dashboard")
+
 
     try:
         get_student_research_title = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
     except:
         get_student_research_title = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Revise Title")
+
+    
+    get_panel_critiques = FinalDefenseCritique.objects.all().filter(subject_teacher_username=currently_loggedin_user.username, defense_date=date_today, student_leader_username=id)
+    print(get_panel_critiques)
+    critiques = []
+
+    for i in range(len(get_panel_critiques)):
+
+        if get_panel_critiques[i].critique:
+            critiques.append(get_panel_critiques[i].critique)
+            i + 1
+    
+    string_critiques = ""
+
+    # traverse in the string
+    for crit in critiques:
+        string_critiques += crit+", "
+
+    print(string_critiques)
     
     if get_student_research_title.final_defense_status == "Accepted with Revision":
         DefenseSchedule.objects.filter(username = request.user, student_leader_username=id, form = "Research Final Defense").update(status = "Completed")
@@ -3251,16 +3575,32 @@ def subjectTeacherBET5FinalDefenseDayEndDefense(request, id):
                 subject_teacher_full_name = get_present_panel_members[i].subject_teacher_full_name,
             )
             save_topic_panel_conforme.save()
+            send_mail(
+                "Final Defense - Critique",
+                "Good Day " + get_present_panel_members[i].panel_full_name + ",\n" + "Here are the Final Defense Critique of the Group of "+ get_present_panel_members[i].student_leader_full_name + " ( "+string_critiques+ " ) " + "and their Research Title is '"+get_student_research_title.research_title+"' \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
+                "unofficial.tupc.uitc@gmail.com",
+                ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                fail_silently=False,
+            )
             i + 1
 
         # Send g-mail notifications
         send_mail(
             "Final Defense - Panel Conforme",
-            "Good Day " + get_present_panel_members[i].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Final Defense Panel Conforme. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
+            "Good Day " + get_present_panel_members[0].dit_head_full_name + ",\n" + get_present_panel_members[i].student_leader_full_name + " needs an approval for their Final Defense Panel Conforme. \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
             "unofficial.tupc.uitc@gmail.com",
             ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
             fail_silently=False,
         )
+
+        if get_student_leader_data.adviser_username:
+                send_mail(
+                "Final Defense - Critique",
+                "Good Day " + get_student_leader_data.adviser_name + ",\n" + "Here are the Final Defense Critique of the Group of "+ get_present_panel_members[0].student_leader_full_name + " ( "+string_critiques+ " ) " + "and their Research Title is '"+get_student_research_title.research_title+"' \nThank you and Have a nice day. \n https://www.ditresearchdefense.online/login",
+                "unofficial.tupc.uitc@gmail.com",
+                ['johnanthony.bataller@gsfe.tupcavite.edu.ph'],
+                fail_silently=False,
+                )
 
         try:
             get_dit_head = User.objects.get(is_department_head = 1)
@@ -4777,7 +5117,7 @@ def subjectTeacherSaveResearchFinalDefenseSchedule(request):
     currently_loggedin_user_account = topbar_data[1]
 
     course_handled_list_unfiltered = []
-    defense_time_list = ["8:00 AM-9:00 AM", "9:00 AM-10:00 AM", "10:00 AM-11:00 AM", "1:00 PM-2:00 PM", "2:00 PM-3:00 PM", "3:00 PM-4:00 PM", "4:00 PM-5:00 PM"]
+    defense_time_list = ["8:00 AM-10:00 AM", "10:00 AM-12:00 NN", "1:00 PM-3:00 PM", "3:00 PM-5:00 PM", "6:00 PM-8:00 PM"]
 
     course_handled = StudentLeader.objects.all().filter(bet3_subject_teacher_username=currently_loggedin_user.username)
 

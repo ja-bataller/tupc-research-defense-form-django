@@ -192,7 +192,59 @@
               </div>
             </div>
 
+            <div class="col-md-12 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">
+                      Proposal Defense - Critiques:
+                    </div>
+
+                    {% if title_critiques %}
+                    {% for critique in title_critiques %}
+
+                    {% if critique.critique %}
+                    <div class="col-sm-12">
+                      - {{critique.critique}}
+                    </div>
+                    {% endif %}
+ 
+
+                    {% endfor %}
+                    {% endif %}
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
+
+          <!-- Critique Form Signature -->
+          {% if end_critique %}
+            {% if critique_panel_chairman_signature_response_all == 1 %}
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="checkbox_agreement_pc" required>
+              <label class="form-check-label">I agree to attach my uploaded signature as a Panel Chairman in this Critique Form.</label>
+            </div>
+            <a id="btn_panel_chairman_esign" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature - Panel Chairman</a>
+            <hr>
+            <a id="btn_panel_chairman_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature - Panel Chairman</a>
+            <hr>
+            {% endif %}
+
+            
+            {% if critique_panel_signature_response_all == 1 %}
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="checkbox_agreement_p" required>
+              <label class="form-check-label">I agree to attach my uploaded signature as a Panel in this Critique Form.</label>
+            </div>
+            <a id="btn_panel_esign" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature - Panel</a>
+            <hr>
+            <a id="btn_panel_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature - Panel</a>
+            {% endif %}
+
+          {% endif %}
 
           <!-- Proposal Defense Signature -->
           {% if start_voting %}
@@ -207,6 +259,17 @@
                 <a id="btn_proposal_panel_chairman_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature - Panel Chairman</a>
                 <hr>
               {% endif %}
+
+              {% if critique_panel_chairman_signature_response_all == 1 %}
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="checkbox_agreement_pc" required>
+                <label class="form-check-label">I agree to attach my uploaded signature as a Panel Chairman in this Critique Form.</label>
+              </div>
+              <a id="btn_panel_chairman_esign" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature - Panel Chairman</a>
+              <hr>
+              <a id="btn_panel_chairman_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature - Panel Chairman</a>
+              <hr>
+              {% endif %}
               
               {% if start_voting.panel_signature_response == False %}
                 <div class="form-group form-check">
@@ -217,8 +280,79 @@
                 <hr>
                 <a id="btn_proposal_panel_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature - Panel</a>
               {% endif %}
+
+
+              {% if critique_panel_signature_response_all == 1 %}
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="checkbox_agreement_p" required>
+                <label class="form-check-label">I agree to attach my uploaded signature as a Panel in this Critique Form.</label>
+              </div>
+              <a id="btn_panel_esign" class="submit-button btn btn-outline-success w-100" type="button" href="#">Attach Signature - Panel</a>
+              <hr>
+              <a id="btn_panel_live" class="submit-button btn btn-outline-info w-100 mb-3" type="button" href="#">Live Signature - Panel</a>
+              {% endif %}
+
             {% endif %}
 
+          {% endif %}
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-2">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table id="critiqueTable" class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th hidden>Ref No.</th>
+                      <th>Your Critique</th>                
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th hidden>Ref No.</th>
+                      <th>Your Critique</th>                
+                      <th>Action</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    {% for critique in panel_critique %}
+                      {% if critique.critique != "" %}
+                      <tr>
+                        <td hidden>{{critique.id}}</td>
+                        <td>{{critique.critique}}</td>
+  
+                        {% if end_critique == 0 %}
+                        <td class="text-center">
+                          <button type="button" id="edit_{{critique.id}}" class="edit_btn btn btn-outline-primary mr-2" data-id="{{critique.id}}">
+                            <i class="fa-solid fa-edit"></i>
+                          </button>
+                          <a type="button" class="btn btn-outline-danger" href="{% url 'panel-bet5-final-defense-day-delete-critique' critique.id %}"><i class="fa-solid fa-trash-can"></i></a>
+                        </td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+  
+                      </tr>
+                      {% endif %}
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          {% if end_critique == 0 %}
+            {% if start_critique %}
+              <form class="mb-3" method="POST" action="{% url 'panel-bet5-final-defense-day-save-critique' start_critique.student_leader_username %}">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Critique:</label>
+                  <input type="text" class="form-control" name="critique_input" required>
+                </div>
+                <button class="btn btn-outline-success mb-2 w-100">Save</button>
+              </form>
+            {% endif %}
           {% endif %}
 
           {% if start_voting %}
@@ -243,6 +377,33 @@
         <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
+
+      <!-- Modal -->
+      <form method="POST" id="edit_critique_form" action="">
+        {% csrf_token %}
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Critique</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Critique:</label>
+                  <input type="text" class="form-control" id="edit_critique" placeholder="" name="critique_input" required>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-outline-success">Confirm - Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
 
       <!-- Footer -->
       {% include 'footer.html' %}
@@ -316,6 +477,57 @@
 
   {% include 'logout-modal.html' %}
   {% include 'script-cdn.html' %}
+
+  {% for critique in panel_critique %}
+  <script>
+    critique_id = document.querySelector("#edit_{{critique.id}}");
+
+    critique_id.addEventListener("click", function(){
+      data_user = $(this).data("id");
+      console.log(data_user);
+      document.getElementById("edit_critique_form").action = "{% url 'panel-bet5-final-defense-day-edit-critique' id=112233 %}".replace("112233", data_user);
+      
+      $("#exampleModal").modal()
+    });
+
+  </script>
+  {% endfor %}
+
+  <!-- Critique Form - Panel Chairman e-sign -->
+  <script>
+    document.getElementById('btn_panel_chairman_esign').addEventListener("click", function () {
+      if (document.getElementById('checkbox_agreement_pc').checked) {
+        document.getElementById("btn_panel_chairman_esign").href = "{% url 'panel-bet5-final-defense-day-critique-panel-chairman-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+      } else {
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
+      }
+    });
+  </script>
+
+  <!-- Critique Form - Panel e-sign -->
+  <script>
+    document.getElementById('btn_panel_esign').addEventListener("click", function () {
+      if (document.getElementById('checkbox_agreement_p').checked) {
+        document.getElementById("btn_panel_esign").href = "{% url 'panel-bet5-final-defense-day-critique-panel-attach-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+      } else {
+        Swal.fire("Uh-oh", "Please kindly read and check the agreement if you wish to proceed. Thank you.", "error");
+      }
+    });
+  </script>
+
+  <!-- Critique Form - Panel Chairman Live Signature -->
+  <script>
+    document.getElementById('btn_panel_chairman_live').addEventListener("click", function () {
+      document.getElementById("btn_panel_chairman_live").href = "{% url 'panel-bet5-final-defense-day-critique-panel-chairman-live-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+    });
+  </script>
+
+  <!-- Critique Form - Panel Live Signature -->
+  <script>
+    document.getElementById('btn_panel_live').addEventListener("click", function () {
+      document.getElementById("btn_panel_live").href = "{% url 'panel-bet5-final-defense-day-critique-panel-live-signature' id=0 %}".replace(/0/, '{{student_leader_data.username}}');
+    });
+  </script>
 
    <!-- Proposal Defense Form - Panel Chairman e-sign -->
   <script>

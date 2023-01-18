@@ -75,13 +75,14 @@
               <a class="collapse-item" href="{% url 'student-panel-invitation-bet3' %}">Topic - Panel Invitation</a>
 
               {% if student_leader_data.group_members_status and student_leader_data.research_titles_status and student_leader_data.bet3_panel_invitation_status and student_leader_data.title_defense_status %}
+                <a class="collapse-item" href="{% url 'student-topic-critique-form' %}">Topic - Critique Form</a>
                 <a class="collapse-item" href="{% url 'student-bet3-research-title-defense' %}">Research Title Defense</a>
                 <a class="collapse-item" href="{% url 'student-bet3-topic-panel-conforme'%}">Topic - Panel Conforme</a>
                 <a class="collapse-item" href="{% url 'student-bet3-adviser-dashboard' %}">Adviser Conforme</a>
                 <a class="collapse-item" href="{% url 'student-bet3-proposal-defense-panel-invitation' %}">Proposal - Panel Invitation</a>
 
                 {% if student_leader_data.group_members_status and student_leader_data.research_titles_status and student_leader_data.bet3_panel_invitation_status and student_leader_data.title_defense_status and student_leader_data.bet3_proposal_defense_status %}
-                  <a class="collapse-item" href="{% url 'student-bet3-critique-form' %}">Critique Form</a>
+                  <a class="collapse-item" href="{% url 'student-bet3-critique-form' %}">Proposal - Critique Form</a>
                   <a class="collapse-item" href="{% url 'student-bet3-research-proposal-defense' %}">Research Proposal Defense</a>
                   <a class="collapse-item" href="{% url 'student-bet3-proposal-panel-conforme' %}">Proposal - Panel Conforme</a>
                   <div class="collapse-divider"></div>
@@ -96,6 +97,7 @@
                     <a class="collapse-item" href="{% url 'student-bet5-final-defense-panel-invitation' %}">Final - Panel Invitation</a>
 
                     {% if student_leader_data.group_members_status and student_leader_data.research_titles_status and student_leader_data.bet3_panel_invitation_status and student_leader_data.title_defense_status and student_leader_data.bet3_proposal_defense_status and student_leader_data.adviser_conforme_status and student_leader_data.bet5_final_defense_panel_invitation_status and student_leader_data.bet5_final_defense_status %}
+                      <a class="collapse-item" href="{% url 'student-final-critique-form' %}">Final - Critique Form</a>
                       <a class="collapse-item" href="{% url 'student-bet5-research-final-defense'%}">Research Final Defense</a>
                       <a class="collapse-item" href="{% url 'student-bet5-final-panel-conforme' %}">Final - Panel Conforme</a>
                       
@@ -109,6 +111,7 @@
 
                     <!-- else for incomplete final panel invitation and incomplete final defense -->
                     {% else %}
+                      <a class="collapse-item" href="" style="pointer-events: none">Final - Critique Form</a>
                       <a class="collapse-item" href="" style="pointer-events: none">Research Final Defense</a>
                       <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Conforme</a>
                       <a class="collapse-item" href="" style="pointer-events: none">Acknowledgement Receipt</a>
@@ -123,6 +126,7 @@
                       {% endif %}
                     {% endif %}
                     <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Invitation</a>
+                    <a class="collapse-item" href="" style="pointer-events: none">Final - Critique Form</a>
                     <a class="collapse-item" href="" style="pointer-events: none">Research Final Defense</a>
                     <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Conforme</a>
                     <a class="collapse-item" href="" style="pointer-events: none">Acknowledgement Receipt</a>
@@ -130,7 +134,7 @@
                 
                 <!-- else for incomplete proposal panel invitation and incomplete proposal defense -->
                 {% else %}
-                <a class="collapse-item" href="" style="pointer-events: none">Critique Form</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Proposal - Critique Form</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Research Proposal Defense</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Proposal - Panel Conforme</a>
                 <div class="collapse-divider"></div>
@@ -141,6 +145,7 @@
                   {% endif %}
                 {% endif %}
                 <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Invitation</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Final - Critique Form</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Research Final Defense</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Conforme</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Acknowledgement Receipt</a>
@@ -148,11 +153,12 @@
 
               <!-- else for incomplete topic panel invitation and incomplete topic defense -->
               {% else %}
+                <a class="collapse-item" href="" style="pointer-events: none">Topic - Critique Form</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Research Title Defense</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Topic - Panel Conforme</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Adviser Conforme</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Proposal - Panel Invitation</a>
-                <a class="collapse-item" href="" style="pointer-events: none">Critique Form</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Proposal - Critique Form</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Research Proposal Defense</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Proposal - Panel Conforme</a>
                 <div class="collapse-divider"></div>
@@ -163,6 +169,7 @@
                   {% endif %}
                 {% endif %}
                 <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Invitation</a>
+                <a class="collapse-item" href="" style="pointer-events: none">Final - Critique Form</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Research Final Defense</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Conforme</a>
                 <a class="collapse-item" href="" style="pointer-events: none">Acknowledgement Receipt</a>
@@ -172,11 +179,12 @@
             <!-- else for incomplete research titles -->
             {% else %}
               <a class="collapse-item" href="" style="pointer-events: none">Topic - Panel Invitation</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Topic - Critique Form</a>
               <a class="collapse-item" href="" style="pointer-events: none">Research Title Defense</a>
               <a class="collapse-item" href="" style="pointer-events: none">Topic - Panel Conforme</a>
               <a class="collapse-item" href="" style="pointer-events: none">Adviser Conforme</a>
               <a class="collapse-item" href="" style="pointer-events: none">Proposal - Panel Invitation</a>
-              <a class="collapse-item" href="" style="pointer-events: none">Critique Form</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Proposal - Critique Form</a>
               <a class="collapse-item" href="" style="pointer-events: none">Research Proposal Defense</a>
               <a class="collapse-item" href="" style="pointer-events: none">Proposal - Panel Conforme</a>
               <div class="collapse-divider"></div>
@@ -187,6 +195,7 @@
                 {% endif %}
               {% endif %}
               <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Invitation</a>
+              <a class="collapse-item" href="" style="pointer-events: none">Final - Critique Form</a>
               <a class="collapse-item" href="" style="pointer-events: none">Research Final Defense</a>
               <a class="collapse-item" href="" style="pointer-events: none">Final - Panel Conforme</a>
               <a class="collapse-item" href="" style="pointer-events: none">Acknowledgement Receipt</a>
@@ -365,9 +374,15 @@
 
                           {% if student_leader_data.title_defense_status == "completed" %}
                           <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
+                           Topic - Critique Form</div>
+                          <hr class="m-1">
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
                             Research Title Defense Form</div>
                           <hr class="m-1">
                           {% else %}
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
+                            Topic - Critique Form</div>
+                          <hr class="m-1">
                           <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
                             Research Title Defense Form</div>
                           <hr class="m-1">
@@ -405,7 +420,7 @@
 
                           {% if student_leader_data.bet3_proposal_defense_status == "completed" %}
                           <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
-                            Critique Form</div>
+                            Proposal - Critique Form</div>
                           <hr class="m-1">
 
                           <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
@@ -415,7 +430,7 @@
                           {% else %}
 
                           <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
-                            Critique Form</div>
+                            Proposal - Critique Form</div>
                           <hr class="m-1">
                           <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
                             Research Proposal Defense Form</div>
@@ -466,9 +481,15 @@
 
                           {% if student_leader_data.bet5_final_defense_status == "completed" %}
                           <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
+                            Final - Critique Form</div>
+                          <hr class="m-1">
+                          <div class="h6 mb-1 font-weight-bold text-success"><i class="fa-regular fa-circle-check"></i>&nbsp;&nbsp;
                             Research Final Defense Form</div>
                           <hr class="m-1">
                           {% else %}
+                          <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
+                            Final - Critique Form</div>
+                          <hr class="m-1">
                           <div class="h6 mb-1 font-weight-bold text-danger"><i class="fa-regular fa-circle-xmark"></i>&nbsp;&nbsp;
                             Research Final Defense Form</div>
                           <hr class="m-1">

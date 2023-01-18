@@ -279,6 +279,41 @@ class TitlePanelInvitation(models.Model):
         return self.student_leader_username
 
 
+# BET-3 - Title Defense Critique Form
+class TitleDefenseCritique(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256, blank=True)
+
+    panel_username = models.CharField(max_length=256)
+    panel_full_name = models.CharField(max_length=256)
+    panel_attendance = models.CharField(max_length=256)
+    panel_signature_response = models.BooleanField(default=False)
+    panel_signature_attach = models.BooleanField(default=False)
+
+    is_panel_chairman = models.BooleanField(default=False)
+    panel_chairman_signature_response = models.BooleanField(default=False)
+    panel_chairman_signature_attach = models.BooleanField(default=False)  
+
+    form_date = models.CharField(max_length=256)
+
+    critique = models.CharField(max_length=256)
+
+    form_status = models.CharField(max_length=256)
+    form = models.CharField(max_length=256)
+
+    subject_teacher_username = models.CharField(max_length=256, blank=True)
+    subject_teacher_full_name = models.CharField(max_length=256, blank=True)
+
+    defense_date = models.CharField(max_length=256, blank=True)
+    defense_start_time = models.CharField(max_length=256, blank=True)
+    defense_end_time = models.CharField(max_length=256, blank=True)
+
+    research_title = models.CharField(max_length=256, blank=True)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
 # BET-3 - Title Defense Form
 class TitleDefenseForm(models.Model):
     student_leader_username = models.CharField(max_length=256)
@@ -288,22 +323,33 @@ class TitleDefenseForm(models.Model):
     panel_username = models.CharField(max_length=256)
     panel_full_name = models.CharField(max_length=256)
     panel_attendance = models.CharField(max_length=256)
-    is_panel_chairman = models.BooleanField(default=False)
     panel_signature_response = models.BooleanField(default=False)
     panel_signature_attach = models.BooleanField(default=False)
 
+    is_panel_chairman = models.BooleanField(default=False)
+    panel_chairman_signature_response = models.BooleanField(default=False)
+    panel_chairman_signature_attach = models.BooleanField(default=False)
+
     form_date = models.CharField(max_length=256)
 
+    start_critique = models.BooleanField(default=False)
+    end_critique = models.BooleanField(default=False)
+
     start_voting = models.BooleanField(default=False)
+    end_voting = models.BooleanField(default=False)
 
     form_status = models.CharField(max_length=256)
     form = models.CharField(max_length=256)
 
     subject_teacher_username = models.CharField(max_length=256, blank=True)
     subject_teacher_full_name = models.CharField(max_length=256, blank=True)
+
     defense_date = models.CharField(max_length=256, blank=True)
     defense_start_time = models.CharField(max_length=256, blank=True)
     defense_end_time = models.CharField(max_length=256, blank=True)
+
+    critique_sign_response = models.BooleanField(default=False)
+    title_defense_response = models.CharField(max_length=256, blank=True)
 
     def __str__(self) -> str:
         return self.student_leader_username
@@ -686,6 +732,42 @@ class FinalPanelInvitation(models.Model):
         return self.student_leader_username
 
 
+# BET-3 - Final Defense Critique Form
+class FinalDefenseCritique(models.Model):
+    student_leader_username = models.CharField(max_length=256)
+    student_leader_full_name = models.CharField(max_length=256)
+    course_major_abbr = models.CharField(max_length=256, blank=True)
+
+    panel_username = models.CharField(max_length=256)
+    panel_full_name = models.CharField(max_length=256)
+    panel_attendance = models.CharField(max_length=256)
+    panel_signature_response = models.BooleanField(default=False)
+    panel_signature_attach = models.BooleanField(default=False)
+
+    is_panel_chairman = models.BooleanField(default=False)
+    panel_chairman_signature_response = models.BooleanField(default=False)
+    panel_chairman_signature_attach = models.BooleanField(default=False)  
+
+    form_date = models.CharField(max_length=256)
+
+    critique = models.CharField(max_length=256)
+
+    form_status = models.CharField(max_length=256)
+    form = models.CharField(max_length=256)
+
+    subject_teacher_username = models.CharField(max_length=256, blank=True)
+    subject_teacher_full_name = models.CharField(max_length=256, blank=True)
+
+    defense_date = models.CharField(max_length=256, blank=True)
+    defense_start_time = models.CharField(max_length=256, blank=True)
+    defense_end_time = models.CharField(max_length=256, blank=True)
+
+    research_title = models.CharField(max_length=256, blank=True)
+
+    def __str__(self) -> str:
+        return self.student_leader_username
+
+
 #  BET-5 - Final Defense - Panel Invitation - Logs
 class FinalPanelInvitationLog(models.Model):
     student_leader_username = models.CharField(max_length=256)
@@ -741,6 +823,9 @@ class FinalDefenseForm(models.Model):
 
     form_date = models.CharField(max_length=256)
 
+    start_critique = models.BooleanField(default=False)
+    end_critique = models.BooleanField(default=False)
+
     start_voting = models.BooleanField(default=False)
     end_voting = models.BooleanField(default=False)
 
@@ -754,6 +839,7 @@ class FinalDefenseForm(models.Model):
     defense_start_time = models.CharField(max_length=256, blank=True)
     defense_end_time = models.CharField(max_length=256, blank=True)
 
+    critique_sign_response = models.BooleanField(default=False)
     final_defense_response = models.CharField(max_length=256, blank=True)
 
     def __str__(self) -> str:

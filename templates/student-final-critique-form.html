@@ -11,7 +11,7 @@
   <meta name="author" content="" />
   <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 
-  <title>Student - BET-3 - Proposal - Critique Form</title>
+  <title>Student - BET-5 - Final - Critique Form</title>
 
   {% include 'css-main-cdn.html' %}
   <link href="{% static 'css/file-loader.css' %}" rel="stylesheet" />
@@ -33,7 +33,7 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <div class="d-sm-flex align-items-center justify-content-between">
-            <h1 class="h3 text-gray-800">BET-3 - Proposal - Critique Form</h1>
+            <h1 class="h3 text-gray-800">BET-5 - Final - Critique Form</h1>
           </div>
 
           <div class="row">
@@ -147,7 +147,7 @@
                 </div>
               </div>
             </div>
-            <a href="{% url 'student-bet3-critique-form-download' %}" onclick="generatingForm()"
+            <a href="{% url 'student-final-critique-form-download' %}" onclick="generatingForm()"
               class="btn btn-outline-success w-100">DOWNLOAD FORM</a>
           </div>
         </div>
@@ -246,7 +246,7 @@
     }
 
     setTimeout(function () {
-        window.location.replace("{% url 'student-bet3-critique-form' %}");
+        window.location.replace("{% url 'student-topic-critique-form' %}");
       }, 4000);
   </script>
   {% endif %}
@@ -256,7 +256,7 @@
       Swal.fire("Uh-oh", "The Faculty Member might have remove his or her signature. Please try again later.", "error");
 
       setTimeout(function () {
-        window.location.replace("{% url 'student-bet3-critique-form' %}");
+        window.location.replace("{% url 'student-topic-critique-form' %}");
       }, 4000);
     </script>
     {% endif %}

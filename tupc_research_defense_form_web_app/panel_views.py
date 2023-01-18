@@ -174,6 +174,50 @@ def panelTitleDefenseDay(request, id):
     except:
         get_no_response_signature = 0
 
+    
+    try:
+        end_voting_1 = TitleDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, end_voting=1)
+    except:
+        end_voting_1 = None
+    
+    try:
+        end_voting_0 = TitleDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, end_voting=0)
+    except:
+        end_voting_0 = None
+
+    
+    try:
+        start_critique_1 = TitleDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, start_critique=1)
+    except:
+        start_critique_1 = None
+    
+    try:
+        end_critique_1 = TitleDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, end_critique=1)
+    except:
+        end_critique_1 = None
+
+    try:
+        get_panel_critique = TitleDefenseCritique.objects.all().filter(student_leader_username=id, panel_username = request.user, panel_attendance="present")
+    except:
+        get_panel_critique = None
+    
+    get_critique_panel_chairman_signature_all = TitleDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, is_panel_chairman = True, panel_chairman_signature_response = False)
+    
+    if not get_critique_panel_chairman_signature_all:
+        critique_panel_chairman_signature_all = 0
+    else:
+        critique_panel_chairman_signature_all = 1
+
+    get_critique_panel_signature_all = TitleDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, panel_signature_response = False)
+    
+    if not get_critique_panel_signature_all:
+        critique_panel_signature_all = 0
+    else:
+        critique_panel_signature_all = 1
+
+    print(critique_panel_chairman_signature_all)
+    print(critique_panel_signature_all)
+
     print(check_panel_complete_response)
     print(check_start_voting)
 
@@ -195,6 +239,18 @@ def panelTitleDefenseDay(request, id):
         "research_title_accepted": get_research_title_accepted,
         "research_title_revise": get_research_title_revise,
         "start_voting": check_start_voting,
+
+        "end_voting_1": end_voting_1,
+        "end_voting_0": end_voting_0,
+
+        "start_critique_1": start_critique_1,
+        "end_critique_1": end_critique_1,
+
+        "panel_critique": get_panel_critique,
+
+        "critique_panel_chairman_signature_response_all": critique_panel_chairman_signature_all,
+        "critique_panel_signature_response_all" : critique_panel_signature_all,
+
         "response_signature": get_no_response_signature
     }
 
@@ -473,6 +529,444 @@ def panelTitleDefenseMarkDone(request, id):
 
     return render(request, "panel-dashboard.html", context)
 
+
+
+# Panel - BET-3 - Proposal Defense - Save Critique
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelTitleDefenseDaySaveCritique(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
+    get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
+
+    # Get Student Leader Data
+    try:
+        get_student_title_defense_data = StudentLeader.objects.get(username=get_today_title_defense.student_leader_username)
+    except:
+        get_student_title_defense_data = None
+
+    
+    # Student Leader - Get Student Proposal Defense Form Data
+    try:
+        get_student_proposal_defense_form = TitleDefenseForm.objects.get(student_leader_username=id, panel_username = request.user)
+    except:
+        get_student_proposal_defense_form = None
+    
+
+    if request.method == "POST":
+        critique = request.POST.get("critique_input")
+        print("Critique: ", critique)
+
+        check_end_voting = TitleDefenseForm.objects.filter(student_leader_username=id, panel_username=currently_loggedin_user.username, end_critique=1)
+
+        if check_end_voting:
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": today.strftime("%B %d, %Y"),
+                "panel_data": get_panel_data,
+
+                "today_title_defense": get_today_title_defense,
+                "today_title_defense_present": get_today_title_defense_present,
+
+                "student_username": id,
+
+                "response": "sweet critique form has ended",
+                }
+
+            return render(request, "panel-dashboard.html", context)
+        else:
+            save_critique = TitleDefenseCritique(
+                student_leader_username = get_student_proposal_defense_form.student_leader_username,
+                student_leader_full_name = get_student_proposal_defense_form.student_leader_full_name,
+                course_major_abbr = get_student_proposal_defense_form.course_major_abbr,
+
+                panel_username = get_student_proposal_defense_form.panel_username,
+                panel_full_name = get_student_proposal_defense_form.panel_full_name,
+                panel_attendance = get_student_proposal_defense_form.panel_attendance,
+                panel_signature_response = get_student_proposal_defense_form.panel_signature_response,
+                panel_signature_attach = get_student_proposal_defense_form.panel_signature_attach,
+                is_panel_chairman = get_student_proposal_defense_form.is_panel_chairman,
+                panel_chairman_signature_response = get_student_proposal_defense_form.panel_chairman_signature_response,
+                panel_chairman_signature_attach = get_student_proposal_defense_form.panel_chairman_signature_attach,
+
+                form_date = date_today,
+
+                critique = critique,
+
+                form_status = get_student_proposal_defense_form.form_status,
+                form = "Critique Form",
+
+                subject_teacher_username = get_student_proposal_defense_form.subject_teacher_username,
+                subject_teacher_full_name = get_student_proposal_defense_form.subject_teacher_full_name,
+
+                defense_date = get_student_proposal_defense_form.defense_date,
+                defense_start_time = get_student_proposal_defense_form.defense_start_time,
+                defense_end_time = get_student_proposal_defense_form.defense_end_time,
+
+                )
+            save_critique.save()
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": today.strftime("%B %d, %Y"),
+                "panel_data": get_panel_data,
+
+                "today_title_defense": get_today_title_defense,
+                "today_title_defense_present": get_today_title_defense_present,
+
+                "student_username": id,
+
+                "response": "sweet title defense critique saved",
+            }
+
+            return render(request, "panel-dashboard.html", context)
+
+
+
+# Panel - BET-3 - Proposal Defense - Delete Critique
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelTitleDefenseDayDeleteCritique(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+
+    try:
+        delete_critique = TitleDefenseCritique.objects.get(panel_username=request.user, id=id)
+        student_username = delete_critique.student_leader_username
+        print(delete_critique.critique)
+        delete_critique.delete()
+        
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": today.strftime("%B %d, %Y"),
+            "panel_data": get_panel_data,
+
+            "student_username": student_username,
+
+            "response": "sweet title defense critique deleted",
+        }
+
+        return render(request, "panel-dashboard.html", context)
+
+    except:
+        
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": today.strftime("%B %d, %Y"),
+            "panel_data": get_panel_data,
+
+            "student_username": id,
+
+            "response": "sweet title defense critique not found",
+        }
+
+        return render(request, "panel-dashboard.html", context)
+
+
+# Panel - BET-3 - Proposal Defense - Delete Critique
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelTitleDefenseDayEditCritique(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+
+    if request.method == "POST":
+        critique = request.POST.get("critique_input")
+
+        try:
+            update_critique = TitleDefenseCritique.objects.filter(panel_username=currently_loggedin_user.username, id=id)
+            student_username = update_critique[0].student_leader_username
+            update_critique.update(critique = critique)
+            
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": today.strftime("%B %d, %Y"),
+                "panel_data": get_panel_data,
+
+                "student_username": student_username,
+
+                "response": "sweet title defense critique edited",
+            }
+
+            return render(request, "panel-dashboard.html", context)
+
+        except:
+            
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": today.strftime("%B %d, %Y"),
+                "panel_data": get_panel_data,
+
+                "student_username": id,
+
+                "response": "sweet title defense critique not found",
+            }
+
+            return render(request, "panel-dashboard.html", context)
+
+
+
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelTitleDefenseDayCritiquePanelChairmanAttachSignature(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+    
+    # Student Leader - Get Student Proposal Defense Form Data
+    try:
+        get_student_proposal_defense_form = TitleDefenseForm.objects.get(student_leader_username=id, panel_username = currently_loggedin_user.username)
+    except:
+        get_student_proposal_defense_form = None
+
+    # Check - E-sign exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        pass
+        print("Panel Chairman - E-sign exist")
+
+    else:
+        print("Panel - E-sign doesn't exist.")
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": today.strftime("%B %d, %Y"),
+            "panel_data": get_panel_data,
+            "student_username" : id,
+            "response": "sweet title defense no esign"
+        }
+
+        return render(request, "panel-dashboard.html", context)
+    
+
+    get_all_panel_chairman_no_esign_response = TitleDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, is_panel_chairman =  True, panel_chairman_signature_response = False)
+    
+    if get_all_panel_chairman_no_esign_response:
+        for i in range(len(get_all_panel_chairman_no_esign_response)):
+            get_all_panel_chairman_no_esign_response[i].panel_chairman_signature_response = True
+            get_all_panel_chairman_no_esign_response[i].panel_chairman_signature_attach = True
+            get_all_panel_chairman_no_esign_response[i].save()
+            i + 1
+    
+    if get_student_proposal_defense_form.is_panel_chairman == True and get_all_panel_chairman_no_esign_response[0].is_panel_chairman == True and get_all_panel_chairman_no_esign_response[0].panel_signature_response == True:
+        TitleDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+    
+
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+        "student_username" : id,
+        "response": "sweet title critique panel chairman esign"
+    }
+
+    return render(request, "panel-dashboard.html", context)
+
+
+
+# Panel - BET-3 - Proposal Defense - Critique Form -  Panel attach signature
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelTitleDefenseDayCritiquePanelAttachSignature(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    
+    # Check - E-sign exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        pass
+        print("Panel Chairman - E-sign exist")
+
+    else:
+        print("Panel - E-sign doesn't exist.")
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": today.strftime("%B %d, %Y"),
+            "panel_data": get_panel_data,
+            "student_username" : id,
+            "response": "sweet title defense no esign"
+        }
+
+        return render(request, "panel-dashboard.html", context)
+
+
+    get_all_panel_no_esign_response = TitleDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, panel_signature_response = False)
+
+    if get_all_panel_no_esign_response:
+        for i in range (len(get_all_panel_no_esign_response)):
+            get_all_panel_no_esign_response[i].panel_signature_response = True
+            get_all_panel_no_esign_response[i].panel_signature_attach = True
+            get_all_panel_no_esign_response[i].save()
+            i + 1
+        print("Panel Critique Signature Response Updated")
+    
+        # Student Leader - Get Student Proposal Defense Form Data
+
+    try:
+        get_student_proposal_defense_form = TitleDefenseForm.objects.get(student_leader_username=id, panel_username = request.user)
+    except:
+        pass
+
+    
+    if get_student_proposal_defense_form.is_panel_chairman == True and get_all_panel_no_esign_response[0].is_panel_chairman == True and get_all_panel_no_esign_response[0].panel_chairman_signature_response == True:
+        TitleDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+        print("Panel Chairman Title Defense Updated")
+    
+    if get_student_proposal_defense_form.is_panel_chairman == False and get_all_panel_no_esign_response[0].is_panel_chairman == False:
+        TitleDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+        print("Panel Title Defense Updated")
+    
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+        "student_username" : id,
+        "response": "sweet title critique panel esign"
+    }
+
+    return render(request, "panel-dashboard.html", context)
+
+
+
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelTitleDefenseDayCritiquePanelChairmanLiveSignature(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    
+    # Student Leader - Get Student Proposal Defense Form Data
+    try:
+        get_student_proposal_defense_form = TitleDefenseForm.objects.get(student_leader_username=id, panel_username = request.user)
+    except:
+        get_student_proposal_defense_form = None
+  
+
+    get_all_panel_chairman_no_esign_response = TitleDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, is_panel_chairman =  True, panel_chairman_signature_response = False)
+    
+    if get_all_panel_chairman_no_esign_response:
+        for i in range(len(get_all_panel_chairman_no_esign_response)):
+            get_all_panel_chairman_no_esign_response[i].panel_chairman_signature_response = True
+            get_all_panel_chairman_no_esign_response[i].save()
+            i + 1
+    
+    if get_student_proposal_defense_form.is_panel_chairman == True and get_all_panel_chairman_no_esign_response[0].is_panel_chairman == True and get_all_panel_chairman_no_esign_response[0].panel_signature_response == True:
+        TitleDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+    
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+        "student_username" : id,
+        "response": "sweet title critique panel chairman live"
+    }
+
+    return render(request, "panel-dashboard.html", context)
+
+
+# Panel - BET-3 - Proposal Defense - Critique Form -  Panel attach signature
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelTitleDefenseDayCritiquePanelLiveSignature(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    get_all_panel_no_esign_response = TitleDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, panel_signature_response = False)
+
+    if get_all_panel_no_esign_response:
+        for i in range (len(get_all_panel_no_esign_response)):
+            get_all_panel_no_esign_response[i].panel_signature_response = True
+            get_all_panel_no_esign_response[i].save()
+            i + 1
+        print("Panel Critique Signature Response Updated")
+    
+        # Student Leader - Get Student Proposal Defense Form Data
+
+    try:
+        get_student_proposal_defense_form = TitleDefenseForm.objects.get(student_leader_username=id, panel_username = request.user)
+    except:
+        pass
+
+    
+    if get_student_proposal_defense_form.is_panel_chairman == True and get_all_panel_no_esign_response[0].is_panel_chairman == True and get_all_panel_no_esign_response[0].panel_chairman_signature_response == True:
+        TitleDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+        print("Panel Chairman Proposal Defense Updated")
+    
+    if get_student_proposal_defense_form.is_panel_chairman == False and get_all_panel_no_esign_response[0].is_panel_chairman == False:
+        TitleDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+        print("Panel Proposal Defense Updated")
+    
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+        "student_username" : id,
+        "response": "sweet title critique panel live sign"
+    }
+
+    return render(request, "panel-dashboard.html", context)
+
 ##### PROPOSAL DEFENSE #####
 
 # Panel - Research Proposal Defense Day Page
@@ -574,6 +1068,8 @@ def panelBET3ProposalDefenseDay(request, id):
 
     get_end_voting = ProposalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = get_student_leader_data.bet3_subject_teacher_username, start_voting = 1, end_voting = 1)
 
+    title_critiques = TitleDefenseCritique.objects.all().filter(student_leader_username=id)
+
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
 
@@ -605,6 +1101,7 @@ def panelBET3ProposalDefenseDay(request, id):
         # "response_signature": get_no_response_signature
         "get_accepted_research_title": get_accepted_research_title,
         "end_voting": get_end_voting,
+        "title_critiques": title_critiques,
     }
 
     return render(request, "panel-bet3-proposal-defense-day.html", context)
@@ -837,7 +1334,58 @@ def panelBET3ProposalDefenseDaySaveCritique(request, id):
 
             return render(request, "panel-dashboard.html", context)
 
+
+# Panel - BET-3 - Proposal Defense - Delete Critique
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET3ProposalDefenseDayEditCritique(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+
+    if request.method == "POST":
+        critique = request.POST.get("critique_input")
+
+        try:
+            update_critique = ProposalDefenseCritique.objects.filter(panel_username=currently_loggedin_user.username, id=id)
+            student_username = update_critique[0].student_leader_username
+            update_critique.update(critique = critique)
             
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": today.strftime("%B %d, %Y"),
+                "panel_data": get_panel_data,
+
+                "student_username": student_username,
+
+                "response": "sweet proposal defense critique edited",
+            }
+
+            return render(request, "panel-dashboard.html", context)
+
+        except:
+            
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": today.strftime("%B %d, %Y"),
+                "panel_data": get_panel_data,
+
+                "student_username": id,
+
+                "response": "sweet defense critique not found",
+            }
+
+            return render(request, "panel-dashboard.html", context)
+
+
 # Panel - BET-3 - Proposal Defense - Delete Critique
 @login_required(login_url="login")
 @user_passes_test(lambda u: u.is_panel, login_url="login")
@@ -1724,6 +2272,7 @@ def panelBET5FinalDefenseDay(request, id):
     currently_loggedin_user_full_name = topbar_data[0]
     currently_loggedin_user_account = topbar_data[1]
 
+
     try:
         get_student_leader_data = StudentLeader.objects.get(username=id)
     except:
@@ -1740,6 +2289,8 @@ def panelBET5FinalDefenseDay(request, id):
     get_group_members = StudentGroupMember.objects.all().filter(student_leader_username=id)
 
     get_present_panel_members_proposal_defense = FinalDefenseForm.objects.all().filter(student_leader_username=id, panel_attendance="present")
+
+    title_critiques = ProposalDefenseCritique.objects.all().filter(student_leader_username=id)
 
     try:
         get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
@@ -1766,6 +2317,38 @@ def panelBET5FinalDefenseDay(request, id):
 
     get_end_voting = FinalDefenseForm.objects.all().filter(student_leader_username=id, defense_date=date_today, subject_teacher_username = get_student_leader_data.bet5_subject_teacher_username, start_voting = 1, end_voting = 1)
 
+    try:
+        check_start_critique = FinalDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, start_critique=1)
+    except:
+        check_start_critique = 0
+
+    try:
+        check_end_critique = FinalDefenseForm.objects.get(student_leader_username=id, panel_username=currently_loggedin_user.username, end_critique=1)
+    except:
+        check_end_critique = 0
+    
+
+    try:
+        panel_critique = FinalDefenseCritique.objects.all().filter(student_leader_username=id, panel_username = currently_loggedin_user.username, panel_attendance="present")
+    except:
+        panel_critique = None
+
+    
+    get_critique_panel_chairman_signature_all = FinalDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, is_panel_chairman = True, panel_chairman_signature_response = False)
+    
+    if not get_critique_panel_chairman_signature_all:
+        get_critique_panel_chairman_signature_all = 0
+    else:
+        get_critique_panel_chairman_signature_all = 1
+
+    get_critique_panel_signature_all = FinalDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, panel_signature_response = False)
+    
+    if not get_critique_panel_signature_all:
+        get_critique_panel_signature_all = 0
+    else:
+        get_critique_panel_signature_all = 1
+    
+    
     context = {
         "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
 
@@ -1774,26 +2357,495 @@ def panelBET5FinalDefenseDay(request, id):
         "group_members": get_group_members,
         "research_title": research_title,
         "get_accepted_research_title": get_accepted_research_title,
-        # "research_titles": get_research_titles,
-        # "panel_members": get_panel_members,
-        # "present_panel_members": get_present_panel_members,
-        # "absent_panel_members": get_absent_panel_members,
-        # "current_panel_title_defense": get_current_panel_title_defense,
         "present_panel_members_proposal_defense": get_present_panel_members_proposal_defense,
-        # "panel_chairman": get_panel_chairman,
-        # "check_panel_complete_response": check_panel_complete_response,
-        # "check_panel_mark_done": check_panel_mark_done,
-        # "research_title_data": get_research_title_data,
-        # "research_title_accepted": get_research_title_accepted,
-        # "research_title_revise": get_research_title_revise,
         "start_voting": check_start_voting,
         "student_username": id,
         "end_voting": get_end_voting,
-
-        # "response_signature": get_no_response_signature
+        "title_critiques": title_critiques,
+        "start_critique": check_start_critique,
+        "end_critique":check_end_critique,
+        "panel_critique": panel_critique,
+        "critique_panel_chairman_signature_response_all":get_critique_panel_chairman_signature_all,
+        "critique_panel_signature_response_all":get_critique_panel_signature_all,
     }
 
     return render(request, "panel-bet5-final-defense-day.html", context)
+
+
+# Panel - BET-3 - Proposal Defense - Critique Form -  Panel Chairman attach signature
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET5FinalDefenseDayCritiquePanelChairmanAttachSignature(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+    
+    # Student Leader - Get Student Proposal Defense Form Data
+    try:
+        get_student_proposal_defense_form = FinalDefenseForm.objects.get(student_leader_username=id, panel_username = request.user)
+    except:
+        get_student_proposal_defense_form = None
+
+    # Check - E-sign exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        pass
+        print("Panel Chairman - E-sign exist")
+
+    else:
+        print("Panel - E-sign doesn't exist.")
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": today.strftime("%B %d, %Y"),
+            "panel_data": get_panel_data,
+            "student_username" : id,
+            "response": "sweet final defense no esign"
+        }
+
+        return render(request, "panel-dashboard.html", context)
+    
+
+    get_all_panel_chairman_no_esign_response = FinalDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, is_panel_chairman =  True, panel_chairman_signature_response = False)
+    
+    if get_all_panel_chairman_no_esign_response:
+        for i in range(len(get_all_panel_chairman_no_esign_response)):
+            get_all_panel_chairman_no_esign_response[i].panel_chairman_signature_response = True
+            get_all_panel_chairman_no_esign_response[i].panel_chairman_signature_attach = True
+            get_all_panel_chairman_no_esign_response[i].save()
+            i + 1
+    
+    if get_student_proposal_defense_form.is_panel_chairman == True and get_all_panel_chairman_no_esign_response[0].is_panel_chairman == True and get_all_panel_chairman_no_esign_response[0].panel_signature_response == True:
+        FinalDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+    
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+        "student_username" : id,
+        "response": "sweet final critique panel chairman esign"
+    }
+
+    return render(request, "panel-dashboard.html", context)
+
+
+# Panel - BET-3 - Proposal Defense - Critique Form -  Panel attach signature
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET5FinalDefenseDayCritiquePanelAttachSignature(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+
+    # Check - E-sign exist
+    if os.path.exists("uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV5vvhui9/" + str(currently_loggedin_user) + ".png"):
+        pass
+        print("Panel Chairman - E-sign exist")
+
+    else:
+        print("Panel - E-sign doesn't exist.")
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": today.strftime("%B %d, %Y"),
+            "panel_data": get_panel_data,
+            "student_username" : id,
+            "response": "sweet final defense no esign"
+        }
+
+        return render(request, "panel-dashboard.html", context)
+
+
+    get_all_panel_no_esign_response = FinalDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, panel_signature_response = False)
+
+    if get_all_panel_no_esign_response:
+        for i in range (len(get_all_panel_no_esign_response)):
+            get_all_panel_no_esign_response[i].panel_signature_response = True
+            get_all_panel_no_esign_response[i].panel_signature_attach = True
+            get_all_panel_no_esign_response[i].save()
+            i + 1
+        print("Panel Critique Signature Response Updated")
+    
+        # Student Leader - Get Student Proposal Defense Form Data
+
+    try:
+        get_student_proposal_defense_form = FinalDefenseForm.objects.get(student_leader_username=id, panel_username = request.user)
+    except:
+        pass
+
+    
+    if get_student_proposal_defense_form.is_panel_chairman == True and get_all_panel_no_esign_response[0].is_panel_chairman == True and get_all_panel_no_esign_response[0].panel_chairman_signature_response == True:
+        FinalDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+        print("Panel Chairman Proposal Defense Updated")
+    
+    if get_student_proposal_defense_form.is_panel_chairman == False and get_all_panel_no_esign_response[0].is_panel_chairman == False:
+        FinalDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+        print("Panel Proposal Defense Updated")
+    
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+        "student_username" : id,
+        "response": "sweet final critique panel esign"
+    }
+
+    return render(request, "panel-dashboard.html", context)
+
+
+# Panel - BET-3 - Proposal Defense - Critique Form -  Panel Chairman attach signature
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET5FinalDefenseDayCritiquePanelChairmanLiveSignature(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+
+    # Student Leader - Get Student Proposal Defense Form Data
+    try:
+        get_student_proposal_defense_form = FinalDefenseForm.objects.get(student_leader_username=id, panel_username = request.user)
+    except:
+        get_student_proposal_defense_form = None
+  
+
+    get_all_panel_chairman_no_esign_response = FinalDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, is_panel_chairman =  True, panel_chairman_signature_response = False)
+    
+    if get_all_panel_chairman_no_esign_response:
+        for i in range(len(get_all_panel_chairman_no_esign_response)):
+            get_all_panel_chairman_no_esign_response[i].panel_chairman_signature_response = True
+            get_all_panel_chairman_no_esign_response[i].save()
+            i + 1
+    
+    if get_student_proposal_defense_form.is_panel_chairman == True and get_all_panel_chairman_no_esign_response[0].is_panel_chairman == True and get_all_panel_chairman_no_esign_response[0].panel_signature_response == True:
+        FinalDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+    
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+        "student_username" : id,
+        "response": "sweet final critique panel chairman esign"
+    }
+
+    return render(request, "panel-dashboard.html", context)
+
+
+# Panel - BET-3 - Proposal Defense - Critique Form -  Panel attach signature
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET5FinalDefenseDayCritiquePanelLiveSignature(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+
+    get_all_panel_no_esign_response = FinalDefenseCritique.objects.all().filter(student_leader_username = id, panel_username=currently_loggedin_user.username, panel_signature_response = False)
+
+    if get_all_panel_no_esign_response:
+        for i in range (len(get_all_panel_no_esign_response)):
+            get_all_panel_no_esign_response[i].panel_signature_response = True
+            get_all_panel_no_esign_response[i].save()
+            i + 1
+        print("Panel Critique Signature Response Updated")
+    
+        # Student Leader - Get Student Proposal Defense Form Data
+
+    try:
+        get_student_proposal_defense_form = FinalDefenseForm.objects.get(student_leader_username=id, panel_username = request.user)
+    except:
+        pass
+
+    
+    if get_student_proposal_defense_form.is_panel_chairman == True and get_all_panel_no_esign_response[0].is_panel_chairman == True and get_all_panel_no_esign_response[0].panel_chairman_signature_response == True:
+        FinalDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+        print("Panel Chairman Proposal Defense Updated")
+    
+    if get_student_proposal_defense_form.is_panel_chairman == False and get_all_panel_no_esign_response[0].is_panel_chairman == False:
+        FinalDefenseForm.objects.filter(student_leader_username=id, panel_username = request.user).update(critique_sign_response = True)
+        print("Panel Proposal Defense Updated")
+    
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "date_today": today.strftime("%B %d, %Y"),
+        "panel_data": get_panel_data,
+        "student_username" : id,
+        "response": "sweet final critique panel live sign"
+    }
+
+    return render(request, "panel-dashboard.html", context)
+
+
+# Panel - BET-3 - Proposal Defense - Save Critique
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET5FinalDefenseDaySaveCritique(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    # Student Leader - Get Student Proposal Defense Form Data
+    try:
+        get_student_proposal_defense_form = ProposalDefenseForm.objects.get(student_leader_username=id, panel_username = request.user)
+    except:
+        get_student_proposal_defense_form = None
+    
+    try:
+        get_accepted_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Accepted")
+        research_title = get_accepted_research_title.research_title
+    except:
+       pass
+    
+    try:
+        get_revise_research_title  = ResearchTitle.objects.get(student_leader_username = id, title_defense_status = "Revise Title")
+        research_title = get_revise_research_title.research_title
+    except:
+       pass
+
+    
+
+    if request.method == "POST":
+        critique = request.POST.get("critique_input")
+        print("Critique: ", critique)
+
+        check_end_voting = FinalDefenseForm.objects.filter(student_leader_username=id, panel_username=currently_loggedin_user.username, end_critique=1)
+
+        if check_end_voting:
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": today.strftime("%B %d, %Y"),
+                "panel_data": get_panel_data,
+                "student_username": id,
+
+                "response": "sweet critique form has ended",
+                }
+
+            return render(request, "panel-dashboard.html", context)
+        else:
+            save_critique = FinalDefenseCritique(
+                student_leader_username = get_student_proposal_defense_form.student_leader_username,
+                student_leader_full_name = get_student_proposal_defense_form.student_leader_full_name,
+                course_major_abbr = get_student_proposal_defense_form.course_major_abbr,
+
+                panel_username = get_student_proposal_defense_form.panel_username,
+                panel_full_name = get_student_proposal_defense_form.panel_full_name,
+                panel_attendance = get_student_proposal_defense_form.panel_attendance,
+                panel_signature_response = get_student_proposal_defense_form.panel_signature_response,
+                panel_signature_attach = get_student_proposal_defense_form.panel_signature_attach,
+                is_panel_chairman = get_student_proposal_defense_form.is_panel_chairman,
+                panel_chairman_signature_response = get_student_proposal_defense_form.panel_chairman_signature_response,
+                panel_chairman_signature_attach = get_student_proposal_defense_form.panel_chairman_signature_attach,
+
+                form_date = date_today,
+
+                critique = critique,
+
+                form_status = get_student_proposal_defense_form.form_status,
+                form = "Critique Form",
+
+                subject_teacher_username = get_student_proposal_defense_form.subject_teacher_username,
+                subject_teacher_full_name = get_student_proposal_defense_form.subject_teacher_full_name,
+
+                defense_date = get_student_proposal_defense_form.defense_date,
+                defense_start_time = get_student_proposal_defense_form.defense_start_time,
+                defense_end_time = get_student_proposal_defense_form.defense_end_time,
+
+                research_title = research_title,
+                )
+            save_critique.save()
+
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": today.strftime("%B %d, %Y"),
+                "panel_data": get_panel_data,
+
+                "student_username": id,
+
+                "response": "sweet final defense critique saved",
+            }
+
+            return render(request, "panel-dashboard.html", context)
+
+
+# Panel - BET-3 - Proposal Defense - Delete Critique
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET5FinalDefenseDayEditCritique(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+
+    if request.method == "POST":
+        critique = request.POST.get("critique_input")
+
+        try:
+            update_critique = FinalDefenseCritique.objects.filter(panel_username=currently_loggedin_user.username, id=id)
+            student_username = update_critique[0].student_leader_username
+            update_critique.update(critique = critique)
+            
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": today.strftime("%B %d, %Y"),
+                "panel_data": get_panel_data,
+
+                "student_username": student_username,
+
+                "response": "sweet final defense critique edited",
+            }
+
+            return render(request, "panel-dashboard.html", context)
+
+        except:
+            
+            context = {
+                "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+                "date_today": today.strftime("%B %d, %Y"),
+                "panel_data": get_panel_data,
+
+                "student_username": id,
+
+                "response": "sweet final defense critique not found",
+            }
+
+            return render(request, "panel-dashboard.html", context)
+
+
+# Panel - BET-3 - Proposal Defense - Delete Critique
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_panel, login_url="login")
+def panelBET5FinalDefenseDayDeleteCritique(request, id):
+    currently_loggedin_user = request.user
+
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+
+    try:
+        get_panel_data = User.objects.get(username=currently_loggedin_user.username)
+    except:
+        return redirect("login")
+
+    get_today_title_defense = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="")
+    get_today_title_defense_present = TitlePanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_title_defense_date=today.strftime("%B %d, %Y"), form_status="accepted", panel_attendance="present")
+
+    # Get Student Leader Data
+    try:
+        get_student_title_defense_data = StudentLeader.objects.get(username=get_today_title_defense.student_leader_username)
+    except:
+        get_student_title_defense_data = None
+
+    try:
+        get_completed_title_defense = DefenseSchedule.objects.get(student_leader_username=get_student_title_defense_data.username, name=get_student_title_defense_data.bet3_subject_teacher_name, form="Research Title Defense", date=date_today, status="Completed")
+    except:
+        get_completed_title_defense = None
+    
+    get_today_proposal_defense = ProposalPanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_proposal_defense_date=date_today, form_status="accepted", panel_attendance="")
+    get_today_proposal_defense_present = ProposalPanelInvitation.objects.all().filter(panel_username=currently_loggedin_user.username, research_proposal_defense_date=date_today, form_status="accepted", panel_attendance="present")
+
+    # Get Student Leader Data
+    try:
+        get_student_proposal_defense_data = StudentLeader.objects.get(username=get_today_proposal_defense.student_leader_username)
+    except:
+        get_student_proposal_defense_data = None
+
+    try:
+        get_completed_proposal_defense = DefenseSchedule.objects.get(student_leader_username=get_student_proposal_defense_data.username, name=get_student_proposal_defense_data.bet3_subject_teacher_name, form="Research Proposal Defense", date=date_today, status="Completed")
+    except:
+        get_completed_proposal_defense = None
+
+    
+    try:
+        delete_critique = FinalDefenseCritique.objects.get(panel_username=request.user, id=id)
+        student_username = delete_critique.student_leader_username
+        print(delete_critique.critique)
+        delete_critique.delete()
+        
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": today.strftime("%B %d, %Y"),
+            "panel_data": get_panel_data,
+
+            "today_title_defense": get_today_title_defense,
+            "today_title_defense_present": get_today_title_defense_present,
+            "completed_title_defense": get_completed_title_defense,
+
+            "today_proposal_defense": get_today_proposal_defense,
+            "today_proposal_defense_present": get_today_proposal_defense_present,
+            "completed_proposal_defense": get_completed_proposal_defense,
+
+            "student_username": student_username,
+
+            "response": "sweet final defense critique deleted",
+        }
+
+        return render(request, "panel-dashboard.html", context)
+
+    except:
+        
+        context = {
+            "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+            "date_today": today.strftime("%B %d, %Y"),
+            "panel_data": get_panel_data,
+
+            "today_title_defense": get_today_title_defense,
+            "today_title_defense_present": get_today_title_defense_present,
+            "completed_title_defense": get_completed_title_defense,
+
+            "today_proposal_defense": get_today_proposal_defense,
+            "today_proposal_defense_present": get_today_proposal_defense_present,
+            "completed_proposal_defense": get_completed_proposal_defense,
+
+            "student_username": id,
+
+            "response": "sweet final defense critique not found",
+        }
+
+        return render(request, "panel-dashboard.html", context)
 
 
 # Panel - BET-5 - Final Defense - Accepted with Revision

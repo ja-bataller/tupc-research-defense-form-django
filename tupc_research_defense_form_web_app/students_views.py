@@ -1219,6 +1219,86 @@ def studentPanelInvitationBet3Save(request):
     return render(request, "student-bet3-panel-invitation-dashboard.html", context)
 
 
+# Student - BET3 - Critique Form - Page
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
+def studentTopicCritiqueForm(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("student-dashboard")
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+
+    if get_student_leader_data.bet3_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
+
+        return render(request, "student-bet3-panel-invitation-dashboard.html", context)
+
+    if get_student_leader_data.title_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
+
+        return render(request, "student-dashboard.html", context)
+    ############## PAGE VALIDATION ##############
+
+    # Get Student Group Members
+    try:
+        get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+    except:
+        get_student_group_members = None
+
+    try:
+        research_title = ResearchTitle.objects.get(student_leader_username=current_user.username, title_defense_status = "Accepted")
+    except:
+        pass
+    try:
+        research_title = ResearchTitle.objects.get(student_leader_username=current_user.username, title_defense_status = "Revise Title")
+    except:
+        pass
+
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+    get_critique_form = TitleDefenseCritique.objects.all().filter(student_leader_username=current_user.username)
+    get_proposal_defense_form = TitleDefenseForm.objects.all().filter(student_leader_username=current_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "student_group_members": get_student_group_members,
+        "student_research_title": research_title.research_title,
+        "critiques": get_critique_form,
+        "proposal_defense_form": get_proposal_defense_form,
+    }
+
+    return render(request, "student-topic-critique-form.html", context)
+
+
+
 # Student - BET3 - Research Title Defense - Page
 @login_required(login_url="login")
 @user_passes_test(lambda u: u.is_student, login_url="login")
@@ -3649,6 +3729,115 @@ def studentBET5FinalDefensePanelInvitationSave(request):
 
     return render(request, "student-bet5-final-defense-panel-invitation-dashboard.html", context)
 
+
+
+# Student - BET3 - Critique Form - Page
+@login_required(login_url="login")
+@user_passes_test(lambda u: u.is_student, login_url="login")
+def studentFinalCritiqueForm(request):
+    current_user = request.user
+    current_password = current_user.password
+
+    ############## TOPBAR ##############
+    topbar_data = topbarProcess(request)
+    currently_loggedin_user_full_name = topbar_data[0]
+    currently_loggedin_user_account = topbar_data[1]
+    ############## TOPBAR ##############
+
+    # Student - Get Student Leader Data
+    try:
+        get_student_leader_data = StudentLeader.objects.get(username=current_user.username)
+    except:
+        return redirect("login")
+
+    ############## PAGE VALIDATION ##############
+    if get_student_leader_data.group_members_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete group members"}
+
+        return render(request, "student-add-group-member.html", context)
+
+    if get_student_leader_data.research_titles_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete research titles"}
+
+        return render(request, "student-add-research-title.html", context)
+
+    if get_student_leader_data.bet3_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "response": "sweet incomplete bet3 panel invitation"}
+
+        return render(request, "student-bet3-panel-invitation-dashboard.html", context)
+
+    if get_student_leader_data.title_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete title defense"}
+
+        return render(request, "student-dashboard.html", context)
+
+    if get_student_leader_data.adviser_conforme_status != "Completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete adviser conforme"}
+
+        return render(request, "student-bet3-adviser-dashboard.html", context)
+    
+    if get_student_leader_data.bet3_proposal_defense_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete proposal panel invitation"}
+
+        return render(request, "student-bet3-proposal-defense-panel-invitation-dashboard.html", context)
+    
+    if get_student_leader_data.bet3_proposal_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete proposal defense"}
+
+        return render(request, "student-dashboard.html", context)
+    
+    if get_student_leader_data.bet5_subject_teacher_username == "":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet no bet5 subject teacher"}
+
+        return render(request, "student-bet5-subject-teacher.html", context)
+    
+    if get_student_leader_data.bet5_final_defense_panel_invitation_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete final panel invitation"}
+
+        return render(request, "student-bet5-final-defense-panel-invitation-dashboard.html", context)
+    
+    if get_student_leader_data.bet5_final_defense_status != "completed":
+        context = {"currently_loggedin_user_full_name": currently_loggedin_user_full_name, "currently_loggedin_user_account": currently_loggedin_user_account, "student_leader_data": get_student_leader_data, "date_today": date_today, "response": "sweet incomplete final defense"}
+
+        return render(request, "student-dashboard.html", context)
+    ############## PAGE VALIDATION ##############
+
+    # Get Student Group Members
+    try:
+        get_student_group_members = StudentGroupMember.objects.all().filter(student_leader_username=current_user.username)
+    except:
+        get_student_group_members = None
+
+    # Get Student Proposal Defense Accepted with Revision
+    try:
+        get_accepted_proposal_title = ResearchTitle.objects.get(student_leader_username=current_user.username, proposal_defense_status = "Accepted with Revision")
+    except:
+        print("pass research titles")
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.group_members_status != "completed" and get_student_leader_data.research_titles_status != "completed" and get_student_leader_data.bet3_panel_invitation_status != "completed":
+        return redirect("student-dashboard")
+
+    if get_student_leader_data.middle_name == "":
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name
+    else:
+        student_leader_full_name = get_student_leader_data.last_name + " " + get_student_leader_data.suffix + ", " + get_student_leader_data.first_name + " " + get_student_leader_data.middle_name[0] + "."
+
+    get_critique_form = FinalDefenseCritique.objects.all().filter(student_leader_username=current_user.username)
+    get_proposal_defense_form = FinalDefenseForm.objects.all().filter(student_leader_username=current_user.username)
+
+    context = {
+        "currently_loggedin_user_full_name": currently_loggedin_user_full_name,
+        "currently_loggedin_user_account": currently_loggedin_user_account,
+        "student_leader_data": get_student_leader_data,
+        "student_leader_full_name": student_leader_full_name,
+        "student_group_members": get_student_group_members,
+        "student_research_title": get_accepted_proposal_title,
+        "critiques": get_critique_form,
+        "proposal_defense_form": get_proposal_defense_form,
+    }
+
+    return render(request, "student-final-critique-form.html", context)
 
 
 # Student - BET3 - Research Final Defense Form - Page

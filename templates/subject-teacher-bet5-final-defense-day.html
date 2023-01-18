@@ -225,6 +225,32 @@
                 </div>
               </div>
             </div>
+
+            <div class="col-md-12 col-sm-12 mb-3">
+              <div class="card bg-white text-dark shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 font-weight-bold">
+                      Proposal Defense - Critiques:
+                    </div>
+
+                    {% if title_critiques %}
+                    {% for critique in title_critiques %}
+
+                    {% if critique.critique %}
+                    <div class="col-sm-12">
+                      - {{critique.critique}}
+                    </div>
+                    {% endif %}
+ 
+
+                    {% endfor %}
+                    {% endif %}
+
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- DataTales Example -->
@@ -237,6 +263,7 @@
                       <th>Panel ID No.</th>
                       <th>Panel Name</th>
                       <th>Attendance</th>
+                      <th>Critique Signature</th>
                       <th>Final Defense Signature</th>
                       <th>Vote Status</th>
                       <th>Action</th>
@@ -247,7 +274,8 @@
                       <th>Panel ID No.</th>
                       <th>Panel Name</th>
                       <th>Attendance</th>
-                      <th>Final Signature</th>
+                      <th>Critique Signature</th>
+                      <th>Final Defense Signature</th>
                       <th>Vote Status</th>
                       <th>Action</th>
                     </tr>
@@ -264,6 +292,7 @@
                       </td>
                       <td>pending</td>
                       <td>pending</td>
+                      <td>pending</td>
                       <td></td>
                     </tr>
                     {% endfor %}
@@ -278,6 +307,7 @@
                       <td class="text-success">
                         Present
                       </td>
+                      <td>pending</td>
                       <td>Pending</td>
                       <td>Pending</td>
                       <td class="text-success">
@@ -300,6 +330,12 @@
                         Present - Panel Chairman
                       </td>
 
+                      {% if panel_member.critique_sign_response == True %}
+                          <td class="text-success">Done</td>
+                      {% else %}
+                          <td>Pending</td>
+                      {% endif %}
+
                       {% if panel_member.panel_signature_response == True and panel_member.panel_chairman_signature_response == True %}
                       <td class="text-success">Done</td>
                       {% else %}
@@ -310,6 +346,12 @@
                       <td class="text-success">
                         Present
                       </td>
+
+                      {% if panel_member.critique_sign_response == True %}
+                          <td class="text-success">Done</td>
+                        {% else %}
+                          <td>Pending</td>
+                      {% endif %}
 
                       {% if panel_member.panel_signature_response == True %}
                       <td class="text-success">Done</td>
@@ -337,6 +379,7 @@
                       <td>pending</td>
                       <td>pending</td>
                       <td>pending</td>
+                      <td>pending</td>
                       <td class="text-center">
                         <a id="present_{{panel_member.id}}" data-id="{{panel_member.id}}" class="btn btn-outline-success mb-2 w-100" href="#">Present</a>
                         <a id="absent_{{panel_member.id}}" data-id="{{panel_member.id}}" class="btn btn-outline-danger mb-2 w-100" href="#">Absent</a>
@@ -354,6 +397,7 @@
                       <td>N/A</td>
                       <td>N/A</td>
                       <td>N/A</td>
+                      <td>N/A</td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -363,10 +407,27 @@
           </div>
 
           {% if panel_chairman %}
+            {% if not start_critique %}
+            <a class="btn btn-outline-success mb-2 w-100"
+              href="{% url 'subject-teacher-bet5-final-defense-day-start-critique' student_leader_data.username %}">Start Critique</a>
+            {% endif %}
+          {% endif %}
+
+          <!-- {% if panel_chairman %}
+            {% if start_critique %}
+              {% if not end_critique %}
+              <a class="btn btn-outline-success mb-2 w-100"
+                href="{% url 'subject-teacher-bet3-proposal-defense-day-end-critique' student_leader_data.username %}">End Critique</a>
+                {% endif %}
+              {% endif %}
+          {% endif %} -->
+
+          {% if panel_chairman %}
           {% if not start_voting %}
           <a class="btn btn-outline-success mb-2 w-100" href="{% url 'subject-teacher-bet5-final-defense-day-start-voting' student_leader_data.username %}">Start Voting</a>
           {% endif %}
           {% endif %}
+
 
 
           {% if start_voting %}

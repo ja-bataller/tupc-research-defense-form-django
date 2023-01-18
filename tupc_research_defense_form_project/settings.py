@@ -156,7 +156,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uhsG1tCRrm3fUHcG4dyEMDDq31WQULMNJkSGQFq0oiV
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "unofficial.tupc.uitc@gmail.com"
-EMAIL_HOST_PASSWORD = "pyuhbqjiwogsvdtp"
+EMAIL_HOST_PASSWORD = "uugdpikjxniqiqrg"
 EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = False
 
@@ -168,7 +168,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Auto Logout
 AUTO_LOGOUT = {
-    'IDLE_TIME': 300,
+    'IDLE_TIME': 3000,
     'REDIRECT_TO_LOGIN_IMMEDIATELY': True,
     'MESSAGE': 'The Session has expired. Please login again to continue.'
 }

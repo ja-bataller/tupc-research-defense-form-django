@@ -285,8 +285,9 @@
                       <th>Panel ID No.</th>
                       <th>Panel Name</th>
                       <th>Attendance</th>
-                      <th>Signature</th>
+                      <th>Critique Signature</th>
                       <th>Vote Status</th>
+                      <th>Vote Signature</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -295,96 +296,140 @@
                       <th>Panel ID No.</th>
                       <th>Panel Name</th>
                       <th>Attendance</th>
-                      <th>Signature</th>
+                      <th>Critique Signature</th>
                       <th>Vote Status</th>
+                      <th>Vote Signature</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
                   <tbody class="text-dark">
 
                     {% if panel_members %}
-                    {% for panel_member in present_panel_members %}
-                    <tr>
-                      <td>{{panel_member.panel_username}}</td>
-                      <td>{{panel_member.panel_full_name}}</td>
-                      <td class="text-center text-success">
-                        Present
-                      </td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    {% endfor %}
+                      {% for panel_member in present_panel_members %}
+                      <tr>
+                        <td>{{panel_member.panel_username}}</td>
+                        <td>{{panel_member.panel_full_name}}</td>
+                        <td class="text-center text-success">
+                          Present
+                        </td>
+                        <td>pending</td>
+                        <td>pending</td>
+                        <td>pending</td>
+                        <td></td>
+                      </tr>
+                      {% endfor %}
 
                     {% else %}
 
-                    {% if not panel_chairman%}
-                    {% for panel_member in present_panel_members_title_defense %}
-                    <tr>
-                      <td>{{panel_member.panel_username}}</td>
-                      <td>{{panel_member.panel_full_name}}</td>
-                      <td class="text-success">
-                        Present
-                      </td>
-                      <td></td>
-                      <td></td>
-                      <td class="text-success">
-                        <a id="panel_chairman_{{panel_member.id}}" data-id="{{panel_member.id}}"
-                          class="btn btn-outline-success mb-2 w-100" href="#}">Set as Panel Chairman</a>
-                      </td>
-                    </tr>
-                    {% endfor %}
-                    {% endif %}
+                      {% if not panel_chairman%}
+                        {% for panel_member in present_panel_members_title_defense %}
+                        <tr>
+                          <td>{{panel_member.panel_username}}</td>
+                          <td>{{panel_member.panel_full_name}}</td>
+                          <td class="text-success">
+                            Present
+                          </td>
+                          <td>pending</td>
+                          <td>pending</td>
+                          <td>pending</td>
+                          <td class="text-success">
+                            <a id="panel_chairman_{{panel_member.id}}" data-id="{{panel_member.id}}"
+                              class="btn btn-outline-success mb-2 w-100" href="#}">Set as Panel Chairman</a>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      {% endif %}
+
                     {% endif %}
 
 
                     {% if panel_chairman %}
-                    {% for panel_member in present_panel_members_title_defense %}
-                    <tr>
-                      <td>{{panel_member.panel_username}}</td>
-                      <td>{{panel_member.panel_full_name}}</td>
-                      {% if panel_member.is_panel_chairman == 1 %}
-                        <td class="text-success">
-                          Present - Panel Chairman
-                        </td>
+                      {% for panel_member in present_panel_members_title_defense %}
+                      <tr>
+                        <td>{{panel_member.panel_username}}</td>
+                        <td>{{panel_member.panel_full_name}}</td>
 
-                        {% if panel_member.panel_signature_response == 1 %}
-                            <td class="text-success">Done</td>
+                        {% if panel_member.is_panel_chairman == 1 %}
+                          <td class="text-success">
+                            Present - Panel Chairman
+                          </td>
+
+                          {% if panel_member.critique_sign_response == True %}
+                            <td class="text-success">
+                              Done
+                            </td>
+                            {% else %}
+                            <td>
+                              Pending
+                            </td>
+                          {% endif %}
+
+
+                          {% if panel_member.form_status == "completed" %}
+                            <td class="text-success">
+                              Done
+                            </td>
+                            {% else %}
+                            <td>
+                              Pending
+                            </td>
+                          {% endif %}
+                       
+
+                          {% if panel_member.panel_signature_response == 1 %}
+                              <td class="text-success">Done</td>
+                          {% else %}
+                            <td>Pending</td>
+                          {% endif %}
+                            
+                          <td></td>
+
                         {% else %}
-                          <td>Pending</td>
+                          <td class="text-success">
+                            Present
+                          </td>
+
+                          {% if panel_member.critique_sign_response == True %}
+                          <td class="text-success">
+                            Done
+                          </td>
+                          {% else %}
+                          <td>
+                            Pending
+                          </td>
+                          {% endif %}
+
+                          {% if panel_member.form_status == "completed" %}
+                            <td class="text-success">
+                              Done
+                            </td>
+                            {% else %}
+                            <td>
+                              Pending
+                            </td>
+                            {% endif %}
+                       
+
+                          {% if panel_member.panel_signature_response == 1 %}
+                              <td class="text-success">Done</td>
+                          {% else %}
+                            <td>Pending</td>
+                          {% endif %}
+                            
+                          <td></td>
+
                         {% endif %}
 
-                        {% else %}
-                        <td class="text-success">
-                          Present
-                        </td>
-
-                        {% if panel_member.panel_signature_response == 1 %}
-                            <td class="text-success">Done</td>
-                        {% else %}
-                          <td>Pending</td>
-                        {% endif %}
-
-                      {% endif %}
-                      {% if panel_member.form_status == "completed" %}
-                      <td class="text-success">
-                        Done
-                      </td>
-                      {% else %}
-                      <td class="text-secondary">
-                        Pending
-                      </td>
-                      {% endif %}
-
-                      <td></td>
-                    </tr>
-                    {% endfor %}
+                        
+                      </tr>
+                      {% endfor %}
                     {% endif %}
 
                     {% for panel_member in panel_members %}
                     <tr>
                       <td>{{panel_member.panel_username}}</td>
                       <td>{{panel_member.panel_full_name}}</td>
+                      <td>pending</td>
                       <td>pending</td>
                       <td>pending</td>
                       <td>pending</td>
@@ -406,6 +451,7 @@
                       </td>
                       <td>N/A</td>
                       <td>N/A</td>
+                      <td>N/A</td>
                       <td></td>
                     </tr>
                     {% endfor %}
@@ -414,14 +460,28 @@
               </div>
             </div>
           </div>
-          
+
           {% if panel_chairman %}
-            {% if not pending_signature_response %}
-              {% if not start_voting %}
+            {% if not title_voting_signature_0 %}
+              {% if start_critique_0 %}
+                <a class="btn btn-outline-success mb-2 w-100" href="{% url 'subject-teacher-title-defense-day-start-critique' student_leader_data.username %}">Start Critique</a>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+
+          {% if panel_chairman %}
+            {% if start_critique_1 %}
+              {% if end_critique_0 %}
+              <a class="btn btn-outline-success mb-2 w-100" href="{% url 'subject-teacher-title-defense-day-end-critique' student_leader_data.username  %}">End Critique</a>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+
+          {% if panel_chairman %}
+              {% if start_voting_0 %}
               <a class="btn btn-outline-success mb-2 w-100"
                 href="{% url 'subject-teacher-title-defense-day-start-vote' student_leader_data.username %}">Start Title Voting</a>
               {% endif %}
-            {% endif %}
           {% endif %}
 
           {% if not panel_members %}
@@ -434,6 +494,8 @@
           {% endif %}
           {% endif %}
           
+          {% if not pending_critique_sign_1 %}
+          {% if end_critique_1 %}
           {% if has_accepted_title != None %}
           {% if not title_defense_completed %}
           <form method="POST">
@@ -464,6 +526,8 @@
             {% csrf_token %}
             <button class="btn btn-outline-success mb-2 w-100">End Defense Session</button>
           </form>
+          {% endif %}
+          {% endif %}
           {% endif %}
           {% endif %}
         </div>
